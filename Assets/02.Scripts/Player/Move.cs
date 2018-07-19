@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour {
+public class Move : MonoBehaviour {
 
     private float h = 0.0f;     //좌우 이동방향
     private float v = 0.0f;     //상하 이동방향
