@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum STATE { STAND, JUMP }
+
 
 public class Player : MonoBehaviour {
     private float r = 0.0f;

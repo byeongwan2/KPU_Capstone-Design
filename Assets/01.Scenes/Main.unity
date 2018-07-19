@@ -216,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 604432087}
   distance: 10
-  height: 5
+  height: 4.5
   rotationDamping: 3
   heightDamping: 3
 --- !u!20 &282840813
@@ -492,8 +492,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba6ea33bf0e62f45aa06d8f9e1e5b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 1.6
-  jumpSpeed: 5
 --- !u!1 &792283127
 GameObject:
   m_ObjectHideFlags: 0
