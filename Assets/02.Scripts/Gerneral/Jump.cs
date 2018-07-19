@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Jump : MonoBehaviour {
-    [SerializeField]
-    private float jumpForce = 1.6f;
-    [SerializeField]
-    private float jumpSpeed = 5f;
+
 
     private bool isJumping = false;
 
@@ -19,19 +16,21 @@ public class Jump : MonoBehaviour {
 
     void Update ()
     {
-        if (isJumping)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                this_rigidbody.AddForce(new Vector3(0, jumpForce, 0) * jumpSpeed, ForceMode.Impulse); //위방향으로 올라가게함
-                isJumping = false;
-            }
-        }
+       
     }
 
     private void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Ground")
             isJumping = true;
+    }
+
+    public void Action(float _jumpForce, float _jumpSpeed)
+    {
+        if (isJumping)
+        {
+            this_rigidbody.AddForce(new Vector3(0, _jumpForce, 0) * _jumpSpeed, ForceMode.Impulse); //위방향으로 올라가게함
+            isJumping = false;
+        }
     }
 }
