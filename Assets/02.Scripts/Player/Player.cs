@@ -16,6 +16,8 @@ public class Player : MonoBehaviour {
     private STATE eState = STATE.STAND;
     private bool isDoubleJump = false;
 
+    public bool npcTalk = false;
+ 
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
@@ -24,6 +26,8 @@ public class Player : MonoBehaviour {
 
         eState = STATE.STAND;
         isDoubleJump = false;
+
+     
     }
 
 
@@ -52,6 +56,10 @@ public class Player : MonoBehaviour {
                 jump.Action(1.6f, 5.0f);     //점프력,점프스피드
                 isDoubleJump = true;
             }
+        }
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+         //뭐를쓸까낭?
         }
     }
 
