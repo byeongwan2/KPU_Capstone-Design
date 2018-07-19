@@ -2,18 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+enum STATE { STAND, JUMP }
+
 public class Player : MonoBehaviour {
     private float r = 0.0f;
 
     private Transform playerTr;
-
+    private Rigidbody playerRb;
     private Jump jump;
     public float rotSpeed = 250.0f; //회전 속도
-   
+
+
+    private STATE eState = STATE.STAND;
+    private bool isDoubleJump = false;
+
     void Start()
     {
+        playerRb = GetComponent<Rigidbody>();
         playerTr = GetComponent<Transform>(); //Player Transform 컴포넌트 할당
         jump = GetComponent<Jump>();
+
+        eState = STATE.STAND;
+        isDoubleJump = false;
     }
 
 
@@ -31,9 +41,33 @@ public class Player : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            jump.Action(1.6f,5.0f);     //점프력,점프스피드
+            if (eState == STATE.JUMP && isDoubleJump == true)
+            {
+                playerRb.AddForce(new Vector3(0, 1.6f, 0) * 5.0f, ForceMode.Impulse);
+                isDoubleJump = false;
+            }
+            else if(eState == STATE.STAND)
+            {
+                eState = STATE.JUMP;
+                jump.Action(1.6f, 5.0f);     //점프력,점프스피드
+                isDoubleJump = true;
+            }
         }
     }
-   
+
+    private void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "Ground")
+        {
+            eState = STATE.STAND;
+            isDoubleJump = false;
+        }
+    }
+
+    void State()
+    {
+        
+    }
+
 }
  
