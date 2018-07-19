@@ -467,7 +467,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &604432090
 MonoBehaviour:
@@ -481,7 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotSpeed: 150
-  npcTalk: 0
+  eState: 0
 --- !u!114 &604432091
 MonoBehaviour:
   m_ObjectHideFlags: 0
