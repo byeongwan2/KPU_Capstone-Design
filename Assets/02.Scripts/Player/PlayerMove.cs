@@ -6,7 +6,7 @@ public class PlayerMove : MonoBehaviour {
 
     private float h = 0.0f;     //좌우 이동방향
     private float v = 0.0f;     //상하 이동방향
-
+    //김병완 ㅋ.ㅋ
     //주인공 Transform 컴포넌트 변수
     private Transform tr;
 
