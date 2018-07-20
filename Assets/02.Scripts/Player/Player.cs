@@ -68,8 +68,9 @@ public class Player : MonoBehaviour {
          //뭐를쓸까낭?
         }
 
-        
-     
+        Running();
+
+
 
     }
 
@@ -90,13 +91,13 @@ public class Player : MonoBehaviour {
     private void MoveManual()
     {
         if (eState == STATE.JUMP) return;
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             eState = STATE.WALK;
         }
         else
         {
-             eState = STATE.STAND;
+            eState = STATE.STAND;
 
         }
 
@@ -113,6 +114,14 @@ public class Player : MonoBehaviour {
             default:
                 move.SetMoveSpeed(10.0f);
                 break;
+        }
+    }
+
+    private void Running()
+    {
+        if (Input.GetKeyDown(KeyCode.W) && eState == STATE.WALK)
+        {
+            eState = STATE.RUN;
         }
     }
 }

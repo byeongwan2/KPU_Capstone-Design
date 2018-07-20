@@ -11,7 +11,7 @@ public class Move : MonoBehaviour {
     private Transform tr;
 
     //이동 속도
-    public float moveSpeed = 10.0f;
+    private float moveSpeed = 10.0f;
 	
 	void Start () {
         tr = GetComponent<Transform>(); //tr에 주인공 Transform 할당
