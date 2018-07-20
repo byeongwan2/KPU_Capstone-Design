@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
     private Transform playerTr;
     private Rigidbody playerRb;
     private Jump jump;
+    private Move move;
     public float rotSpeed = 250.0f; //회전 속도
 
     [SerializeField]
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour {
         playerRb = GetComponent<Rigidbody>();
         playerTr = GetComponent<Transform>(); //Player Transform 컴포넌트 할당
         jump = GetComponent<Jump>();
+        move = GetComponent<Move>();
 
         eState = STATE.STAND;
         isDoubleJump = false;
@@ -39,6 +41,8 @@ public class Player : MonoBehaviour {
 
         KeyboardManual();
         MoveManual();
+
+        LogicManual();
     }
 
 
@@ -63,6 +67,8 @@ public class Player : MonoBehaviour {
         {
          //뭐를쓸까낭?
         }
+
+        
      
 
     }
@@ -92,6 +98,21 @@ public class Player : MonoBehaviour {
         {
              eState = STATE.STAND;
 
+        }
+
+        
+    }
+
+    private void LogicManual()
+    {
+        switch(eState)
+        {
+            case STATE.RUN:
+                move.SetMoveSpeed(20.0f);
+                break;
+            default:
+                move.SetMoveSpeed(10.0f);
+                break;
         }
     }
 }

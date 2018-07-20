@@ -29,4 +29,9 @@ public class Move : MonoBehaviour {
         tr.Translate(moveDir.normalized * moveSpeed * Time.deltaTime, Space.Self);
 
 	}
+
+    public void SetMoveSpeed(float _moveSpeed)
+    {
+        moveSpeed = _moveSpeed;
+    }
 }
