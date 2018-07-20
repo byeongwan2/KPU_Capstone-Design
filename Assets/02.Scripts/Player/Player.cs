@@ -16,7 +16,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private STATE eState = STATE.STAND;
     private bool isDoubleJump = false;
-
+    private bool isRun = false;
   
  
     void Start()
@@ -28,8 +28,8 @@ public class Player : MonoBehaviour {
 
         eState = STATE.STAND;
         isDoubleJump = false;
+        isRun = false;
 
-     
     }
 
 
@@ -93,6 +93,7 @@ public class Player : MonoBehaviour {
         if (eState == STATE.JUMP) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
+            if (eState == STATE.RUN) return;
             eState = STATE.WALK;
         }
         else
@@ -119,10 +120,22 @@ public class Player : MonoBehaviour {
 
     private void Running()
     {
-        if (Input.GetKeyDown(KeyCode.W) && eState == STATE.WALK)
+        if (Input.GetKey(KeyCode.W) && isRun == true)
         {
+            isRun = false;
             eState = STATE.RUN;
         }
+        else if(Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)
+        {
+            isRun = true;
+            StartCoroutine(RunningStart());
+        }
+    }
+
+    IEnumerator RunningStart()
+    {
+        yield return new WaitForSeconds(0.2f);
+        isRun = false;
     }
 }
  
