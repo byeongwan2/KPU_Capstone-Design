@@ -15,6 +15,7 @@ public class Player : MonoBehaviour {
 
     [SerializeField]
     private STATE eState = STATE.STAND;
+    private STATE ePreState = STATE.STAND;
     private bool isDoubleJump = false;
     private bool isRun = false;
   
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour {
         move = GetComponent<Move>();
 
         eState = STATE.STAND;
+        ePreState = STATE.STAND;
         isDoubleJump = false;
         isRun = false;
 
@@ -60,6 +62,7 @@ public class Player : MonoBehaviour {
             }
             else if(eState != STATE.JUMP)
             {
+                ePreState = eState;
                 eState = STATE.JUMP;
                 jump.Action(1.6f, 5.0f);     //점프력,점프스피드
                 isDoubleJump = true;
@@ -81,7 +84,7 @@ public class Player : MonoBehaviour {
     {
         if (col.gameObject.tag == "Ground" && eState == STATE.JUMP)
         {
-            eState = STATE.STAND;
+            eState = ePreState;
             isDoubleJump = false;
         }
     }
@@ -115,7 +118,7 @@ public class Player : MonoBehaviour {
             case STATE.RUN:
                 move.SetMoveSpeed(20.0f);
                 break;
-            default:
+            case STATE.WALK:
                 move.SetMoveSpeed(10.0f);
                 break;
         }
