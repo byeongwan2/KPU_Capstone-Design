@@ -18,20 +18,26 @@ public class Player : MonoBehaviour {
     private STATE ePreState = STATE.STAND;
     private bool isDoubleJump = false;
     private bool isRun = false;
-  
- 
+
+    public Bomb playerBomb;
     void Start()
     {
-        playerRb = GetComponent<Rigidbody>();
-        playerTr = GetComponent<Transform>(); //Player Transform 컴포넌트 할당
-        jump = GetComponent<Jump>();
-        move = GetComponent<Move>();
 
         eState = STATE.STAND;
         ePreState = STATE.STAND;
+
+        playerRb = GetComponent<Rigidbody>();
+        playerTr = GetComponent<Transform>(); //Player Transform 컴포넌트 할당
+
+
+        jump = GetComponent<Jump>();
         isDoubleJump = false;
+
+
+        move = GetComponent<Move>();
         isRun = false;
 
+      
     }
 
 
@@ -76,7 +82,12 @@ public class Player : MonoBehaviour {
 
         Running();
 
-
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+           
+           var bomb =Instantiate(playerBomb);
+            bomb.SetPower(100.0f);
+        }
 
     }
 

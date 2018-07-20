@@ -481,6 +481,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: 150
   eState: 0
+  playerBomb: {fileID: 114770627689239492, guid: 85941ee62a7e8f442b19563ab7fd7ec5,
+    type: 2}
 --- !u!114 &604432091
 MonoBehaviour:
   m_ObjectHideFlags: 0
