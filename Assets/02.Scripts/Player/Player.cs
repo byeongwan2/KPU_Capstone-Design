@@ -39,6 +39,9 @@ public class Player : MonoBehaviour {
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
 
+        move.Horizontal = Input.GetAxis("Horizontal");
+        move.Vertical = Input.GetAxis("Vertical");
+
         KeyboardManual();
         MoveManual();
 
@@ -120,12 +123,12 @@ public class Player : MonoBehaviour {
 
     private void Running()
     {
-        if (Input.GetKey(KeyCode.W) && isRun == true)
+        if (Input.GetKey(KeyCode.W) && isRun == true)       //두번누르면 여기로들어옴
         {
             isRun = false;
             eState = STATE.RUN;
         }
-        else if(Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)
+        else if(Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)       
         {
             isRun = true;
             StartCoroutine(RunningStart());
@@ -134,7 +137,7 @@ public class Player : MonoBehaviour {
 
     IEnumerator RunningStart()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.2f);          //0.2초안에 두번눌러야 달리기
         isRun = false;
     }
 }
