@@ -19,7 +19,9 @@ public class Player : MonoBehaviour {
     private bool isDoubleJump = false;
     private bool isRun = false;
 
-    public Bomb playerBomb;
+    public GameObject playerBomb;
+
+
     void Start()
     {
 
@@ -37,7 +39,8 @@ public class Player : MonoBehaviour {
         move = GetComponent<Move>();
         isRun = false;
 
-      
+      playerBomb = Resources.Load("Prefabs/PlayerBomb") as GameObject;
+        playerBomb.GetComponentInChildren<Bomb>().SetPower(15.0f);        
     }
 
 
@@ -85,8 +88,7 @@ public class Player : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.E))
         {
            
-           var bomb =Instantiate(playerBomb);
-            bomb.SetPower(100.0f);
+          
         }
 
     }

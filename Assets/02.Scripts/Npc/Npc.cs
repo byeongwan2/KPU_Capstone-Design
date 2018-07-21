@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Npc : MonoBehaviour {
 
-    [SerializeField]
-    private GameObject player;
+   // [SerializeField]
     private Transform npcTr;
     public bool isTalk = false;
 
+
+    private GameSystem system;
     public void Init()
     {
-        player = GameObject.Find("Player");
+        system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
+
         npcTr = GetComponent<Transform>();
         StartCoroutine(PlayerPosition());
         isTalk = false;
@@ -24,7 +26,7 @@ public class Npc : MonoBehaviour {
 
     IEnumerator PlayerPosition()
     {
-        float dis = Check.Distance(player.transform, npcTr);
+        float dis = Check.Distance(system.player.transform, npcTr);
         if (dis < 4.0f) isTalk = true;
         else isTalk = false;
 
