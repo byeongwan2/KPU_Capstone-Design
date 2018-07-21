@@ -8,8 +8,8 @@ public class Npc : MonoBehaviour {
     private Transform npcTr;
     public bool isTalk = false;
 
-
     private GameSystem system;
+
     public void Init()
     {
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
@@ -26,7 +26,7 @@ public class Npc : MonoBehaviour {
 
     IEnumerator PlayerPosition()
     {
-        float dis = Check.Distance(system.player.transform, npcTr);
+        float dis = Check.Distance(system.Player.transform, npcTr);
         if (dis < 4.0f) isTalk = true;
         else isTalk = false;
 

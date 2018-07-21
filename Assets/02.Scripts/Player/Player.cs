@@ -19,9 +19,11 @@ public class Player : MonoBehaviour {
     private bool isDoubleJump = false;
     private bool isRun = false;
 
-    public GameObject playerBomb;
 
+    [SerializeField]
+    private float bombPower;
 
+    
     void Start()
     {
 
@@ -39,8 +41,7 @@ public class Player : MonoBehaviour {
         move = GetComponent<Move>();
         isRun = false;
 
-      playerBomb = Resources.Load("Prefabs/PlayerBomb") as GameObject;
-        playerBomb.GetComponentInChildren<Bomb>().SetPower(15.0f);        
+        bombPower = 15.0f;
     }
 
 

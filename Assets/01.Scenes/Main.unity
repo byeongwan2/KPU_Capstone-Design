@@ -481,7 +481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: 150
   eState: 0
-  playerBomb: {fileID: 0}
+  bombPower: 0
 --- !u!114 &604432091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,7 +871,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1434216832}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7400942, y: -0.14005756, z: 0.5572281}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -888,7 +888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb2cb213ad3595e4eb2229997f718d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 604432090}
 --- !u!1 &1680625328
 GameObject:
   m_ObjectHideFlags: 0
