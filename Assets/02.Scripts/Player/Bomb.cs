@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour {
+    private Vector3 launchPos;
+    public void SetLaunchPos(Vector3 _launchPos)
+    {
+        launchPos = _launchPos;
+    }
     [SerializeField]
     float power = 0.0f;
    

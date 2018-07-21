@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class Player : MonoBehaviour {
     private float r = 0.0f;
 
@@ -23,7 +22,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private float bombPower;
 
-    
+    private int MAXPLAYERBOMB = 10;
     void Start()
     {
         eState = STATE.STAND;
@@ -39,8 +38,8 @@ public class Player : MonoBehaviour {
         isRun = false;
 
         bombThrow = GetComponent<Throw>();
+        bombThrow.Init("PlayerBomb", MAXPLAYERBOMB);
         bombPower = 15.0f;
-
 
     }
 

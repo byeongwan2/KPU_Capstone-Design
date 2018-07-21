@@ -4,16 +4,28 @@ using UnityEngine;
 
 public class Throw : MonoBehaviour {
 
-    private PrefabSystem prefabSystem;
+    private GameObject bomb;
+ 
 
-    private Transform tr;
-    void Start()
+    private Transform this_transForm;
+
+    private PrefabSystem system;
+
+    void Awake()
     {
-        tr = GetComponent<Transform>();
-        prefabSystem = GameObject.Find("GameSystem").GetComponent<PrefabSystem>();
+        this_transForm = GetComponent<Transform>();
+        system = GameObject.Find("GameSystem").GetComponent<PrefabSystem>();
     }
-    public void Work(float _power)
+    public void Init(string _link, int _maxCount)
     {
-        prefabSystem.ActiveBomb();
+
+        bomb = Resources.Load("Prefabs/" + _link) as GameObject;
+        system.CreatePrefab(bomb, _maxCount);
+    }
+    
+    public void Work(float _bombPower)
+    {
+        var bomb = system.ActivePrefab();
+        
     }
 }

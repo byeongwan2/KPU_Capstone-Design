@@ -2,39 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrefabSystem :MonoBehaviour {
-    [SerializeField]
-    private int MAXPLAYERBOMB = 10;
-
-
-    private GameObject bomb;
+public  class PrefabSystem : MonoBehaviour {
+    enum WHO { PLAYER }
     private List<GameObject> bombPool = new List<GameObject>();
-	void Start()
-    { 
-
-        bomb = Resources.Load("Prefabs/PlayerBomb") as GameObject;
-        for(int i = 0; i < MAXPLAYERBOMB; i++)
+    public void CreatePrefab(GameObject _gameObject , int _count)
+    {
+        for (int i = 0; i < _count; i++)
         {
-            var obj = Instantiate<GameObject>(bomb,this.transform);
+           var obj =   Instantiate<GameObject>(_gameObject, this.transform);
             obj.SetActive(false);
             bombPool.Add(obj);
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    public void ActiveBomb()
+   
+    public GameObject ActivePrefab()
     {
-        for (int i = 0; i < MAXPLAYERBOMB; i++)
+        foreach(var o in bombPool)
         {
-            if (bombPool[i].activeSelf == false)
+            if(o.activeSelf == false)
             {
-                bombPool[i].SetActive(true);
-                return;
+                o.SetActive(true);
+                return o;
             }
         }
+        return null;
     }
 }
