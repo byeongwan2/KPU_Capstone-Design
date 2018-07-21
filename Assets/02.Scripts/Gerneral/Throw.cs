@@ -11,7 +11,7 @@ public class Throw : MonoBehaviour {
 
     private PrefabSystem system;
 
-    void Awake()
+    void Awake()            //Awake 종속 수정필요 Awake이여만 되는코드는 나중에 문제가 생길수있음
     {
         this_transForm = GetComponent<Transform>();
         system = GameObject.Find("GameSystem").GetComponent<PrefabSystem>();
@@ -25,7 +25,7 @@ public class Throw : MonoBehaviour {
     
     public void Work(float _bombPower)
     {
-        var bomb = system.ActivePrefab();
+        var bomb = system.ActivePrefab();           //게임오브젝트가 리턴되므로 이부분 수정해야함
         
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour {
     private Vector3 launchPos;
-    public void SetLaunchPos(Vector3 _launchPos)
+    public void SetLaunchPos(Vector3 _launchPos)                //폭탄이 생성되는 위치
     {
         launchPos = _launchPos;
     }
@@ -21,8 +21,8 @@ public class Bomb : MonoBehaviour {
        
     }
 	
-
-	void FixedUpdate () {
+        
+	void FixedUpdate () {                           //폭탄 그자체가 날라가는 코드를 기입하면댐
         this_rigidbody.AddForce(power * transform.forward);
     }
 
