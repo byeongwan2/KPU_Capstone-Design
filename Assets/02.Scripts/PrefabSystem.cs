@@ -6,14 +6,12 @@ public class PrefabSystem :MonoBehaviour {
     [SerializeField]
     private int MAXPLAYERBOMB = 10;
 
-    private GameSystem system;
-    // Use this for initialization
 
     private GameObject bomb;
     private List<GameObject> bombPool = new List<GameObject>();
 	void Start()
     { 
-        system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
+
         bomb = Resources.Load("Prefabs/PlayerBomb") as GameObject;
         for(int i = 0; i < MAXPLAYERBOMB; i++)
         {
@@ -27,4 +25,16 @@ public class PrefabSystem :MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void ActiveBomb()
+    {
+        for (int i = 0; i < MAXPLAYERBOMB; i++)
+        {
+            if (bombPool[i].activeSelf == false)
+            {
+                bombPool[i].SetActive(true);
+                return;
+            }
+        }
+    }
 }

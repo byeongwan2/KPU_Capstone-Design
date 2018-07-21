@@ -15,9 +15,5 @@ public class GameSystem : MonoBehaviour {
         }
     }
 
-	void Awake ()
-    {
-      //  Player = GameObject.Find("Player");
-    }
 
 }

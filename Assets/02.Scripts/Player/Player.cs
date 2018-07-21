@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     private Rigidbody playerRb;
     private Jump jump;
     private Move move;
+    private Throw bombThrow;
     public float rotSpeed = 250.0f; //회전 속도
 
     [SerializeField]
@@ -19,31 +20,29 @@ public class Player : MonoBehaviour {
     private bool isDoubleJump = false;
     private bool isRun = false;
 
-
     [SerializeField]
     private float bombPower;
 
     
     void Start()
     {
-
         eState = STATE.STAND;
         ePreState = STATE.STAND;
 
         playerRb = GetComponent<Rigidbody>();
         playerTr = GetComponent<Transform>(); //Player Transform 컴포넌트 할당
 
-
         jump = GetComponent<Jump>();
         isDoubleJump = false;
-
 
         move = GetComponent<Move>();
         isRun = false;
 
+        bombThrow = GetComponent<Throw>();
         bombPower = 15.0f;
-    }
 
+
+    }
 
     void Update()
     {
@@ -88,7 +87,7 @@ public class Player : MonoBehaviour {
 
         if(Input.GetKeyDown(KeyCode.E))
         {
-           
+            bombThrow.Work(bombPower);
           
         }
 

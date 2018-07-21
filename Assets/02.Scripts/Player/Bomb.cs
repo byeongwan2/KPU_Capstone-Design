@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour {
     [SerializeField]
-    float bombPower = 0.0f;
-    public void SetPower(float _power){  bombPower = _power; }
-   // Vector3 velocity = new Vector3(0.2f, 0.2f,0.0f);
+    float power = 0.0f;
+   
+    public void SetPower(float _power){ power = _power; }
+    private Vector3 velocity;
+    public void SetVelocity(Vector3 _velocity)  { velocity = _velocity; }
 
     Rigidbody this_rigidbody;
     void Start () {
         this_rigidbody = GetComponent<Rigidbody>();
-        this_rigidbody.AddForce(bombPower * transform.forward);
+       
     }
 	
 
 	void FixedUpdate () {
-     
+        this_rigidbody.AddForce(power * transform.forward);
     }
 
-    public void Work()
-    {
-      
-    }
+  
 }
