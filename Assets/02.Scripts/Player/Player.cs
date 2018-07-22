@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     private float r = 0.0f;
+    private float ry = 0.0f;
 
     private Transform playerTr;
     private Rigidbody playerRb;
@@ -46,8 +47,10 @@ public class Player : MonoBehaviour {
     void Update()
     {
         r = Input.GetAxis("Mouse X");
+        ry = Input.GetAxis("Mouse Y");
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
+        playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
 
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
