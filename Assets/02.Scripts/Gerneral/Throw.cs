@@ -11,14 +11,14 @@ public class Throw : MonoBehaviour {
 
     private PrefabSystem system;
 
-    void Awake()            //Awake 종속 수정필요 Awake이여만 되는코드는 나중에 문제가 생길수있음
+    void Start()            //Awake 종속 수정필요 Awake이여만 되는코드는 나중에 문제가 생길수있음
     {
-        this_transForm = GetComponent<Transform>();
-        system = GameObject.Find("GameSystem").GetComponent<PrefabSystem>();
+       
     }
     public void Init(string _link, int _maxCount)
     {
-
+        this_transForm = GetComponent<Transform>();
+        system = GameObject.Find("GameSystem").GetComponent<PrefabSystem>();
         bomb = Resources.Load("Prefabs/" + _link) as GameObject;
         system.CreatePrefab(bomb, _maxCount);
     }
