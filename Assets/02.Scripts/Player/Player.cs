@@ -160,5 +160,13 @@ public class Player : MonoBehaviour {
         yield return new WaitForSeconds(0.2f);          //0.2초안에 두번눌러야 달리기
         isRun = false;
     }
+
+    void OnTriggerEnter(Collider _obj)
+    {
+        if(_obj.tag == "Item"){
+            _obj.gameObject.SetActive(false);       // 필드에서 아이템흡수
+        }
+        
+    }
 }
  
