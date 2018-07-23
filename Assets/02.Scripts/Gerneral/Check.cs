@@ -13,4 +13,5 @@ public class Check  {
     {
         return Vector3.Distance(_a.transform.position, _b.transform.position);
     }
+   
 }

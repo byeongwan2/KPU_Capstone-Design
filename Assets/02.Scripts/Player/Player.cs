@@ -66,10 +66,12 @@ public class Player : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (eState == STATE.JUMP && isDoubleJump == true)
+            if (eState == STATE.JUMP && isDoubleJump == true)       //이단점프
             {
+                playerRb.mass = 1.0f;           //무게를잠시수정
                 playerRb.AddForce(new Vector3(0, 1.6f, 0) * 5.0f, ForceMode.Impulse);
                 isDoubleJump = false;
+                playerRb.mass = 1.2f;
             }
             else if(eState != STATE.JUMP)
             {

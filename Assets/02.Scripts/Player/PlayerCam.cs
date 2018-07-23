@@ -9,8 +9,7 @@ public class PlayerCam : MonoBehaviour{
     private float moveSpeed = 30.0f;       //카메라 이동 속도
 
     private float rotateSpeed = 10.0f;     //카메라 회전 속도
-    private float distance = 7.0f;           //카메라와 주인공과의 거리
-    private float height = 4.5f;             //카메라 높이 
+    private float distance = 7.0f;           //카메라와 주인공과의 거리 
     private float playerOffset = 4.0f;       //Player 좌표의 오프셋
 
     

@@ -17,12 +17,12 @@ public  class PrefabSystem : MonoBehaviour {
    
     public GameObject ActivePrefab()
     {
-        foreach(var o in bombPool)
+        foreach(var obj in bombPool)
         {
-            if(o.activeSelf == false)
+            if(obj.activeSelf == false)
             {
-                o.SetActive(true);      
-                return o;               //꼭 반환아니여도 다른방법이 있을지 생각해볼필요
+                obj.SetActive(true);      
+                return obj;               //꼭 반환아니여도 다른방법이 있을지 생각해볼필요
             }
         }
         return null;
