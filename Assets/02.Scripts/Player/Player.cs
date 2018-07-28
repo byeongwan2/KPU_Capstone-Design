@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
 
     private Transform playerTr;
     private Rigidbody playerRb;
+    private Animator playerAni;
     private Jump jump;
     private Move move;
     private Throw bombThrow;
@@ -17,6 +18,8 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private STATE eState = STATE.STAND;
     private STATE ePreState = STATE.STAND;
+
+    private WAY eWay = WAY.FORWARD;
     private bool isDoubleJump = false;
     private bool isRun = false;
 
@@ -28,10 +31,10 @@ public class Player : MonoBehaviour {
     {
         eState = STATE.STAND;
         ePreState = STATE.STAND;
-
+        eWay = WAY.FORWARD;
         playerRb = GetComponent<Rigidbody>();
         playerTr = GetComponent<Transform>(); //Player Transform 컴포넌트 할당
-
+        playerAni = GetComponent<Animator>();
         jump = GetComponent<Jump>();
         isDoubleJump = false;
 
@@ -56,9 +59,10 @@ public class Player : MonoBehaviour {
         move.Vertical = Input.GetAxis("Vertical");
 
         KeyboardManual();
+        WayManual();
         MoveManual();
 
-        LogicManual();
+        LogicAttribute();
     }
 
 
@@ -111,24 +115,38 @@ public class Player : MonoBehaviour {
         
     }
 
-    private void MoveManual()
+    private void MoveManual()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
     {
         if (eState == STATE.JUMP) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             if (eState == STATE.RUN) return;
             eState = STATE.WALK;
+
         }
         else
         {
             eState = STATE.STAND;
-
         }
-
-        
+  
+    }
+    private void WayManual()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            eWay = WAY.LEFT;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            eWay = WAY.RIGHT;
+        }
+        else
+        {
+            eWay = WAY.FORWARD;
+        }
     }
 
-    private void LogicManual()
+    private void LogicAttribute()
     {
         switch(eState)
         {
@@ -137,6 +155,23 @@ public class Player : MonoBehaviour {
                 break;
             case STATE.WALK:
                 move.SetMoveSpeed(10.0f);
+                playerAni.SetBool("IsMove", true);
+                break;
+            case STATE.STAND:
+                playerAni.SetBool("IsMove", false);
+                break;
+        }
+
+        switch(eWay)
+        {
+            case WAY.LEFT:
+                playerAni.SetInteger("IsWay", 1);
+                break;
+            case WAY.RIGHT:
+                playerAni.SetInteger("IsWay", 2);
+                break;
+            case WAY.FORWARD:
+                playerAni.SetInteger("IsWay", 0);
                 break;
         }
     }
