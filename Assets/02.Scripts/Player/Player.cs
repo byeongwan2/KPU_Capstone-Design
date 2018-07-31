@@ -56,17 +56,15 @@ public class Player : MonoBehaviour {
     void Update()
     {
         r = Input.GetAxis("Mouse X");
-<<<<<<< HEAD
+
        // ry = Input.GetAxis("Mouse Y");
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
        // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
-=======
+
         // ry = Input.GetAxis("Mouse Y");
 
-        playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
-                                                                     // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
->>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
+
 
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
@@ -75,19 +73,9 @@ public class Player : MonoBehaviour {
         //WayManual();
         MoveManual();
 
-        LogicAttribute();
+        LogicAnimation();
 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-        {
-            playerAni.SetBool(hashMove, true);
-        }
-        else
-        {
-            playerAni.SetBool(hashMove, false);
-        }
-
-        playerAni.SetFloat(hashV, move.Vertical);
-        playerAni.SetFloat(hashH, move.Horizontal);
+        
     }
 
 
@@ -193,55 +181,51 @@ public class Player : MonoBehaviour {
     }
     */
 
-    private void LogicAttribute()
+    private void LogicAnimation()
     {
-        switch(eState)
+        if (isRun) return;
+        switch (eState)
         {
+            
             case STATE.RUN:
-                move.SetMoveSpeed(20.0f);
+                move.SetMoveSpeed(10.0f);
+                playerAni.SetBool("IsRun", true);
+                playerAni.SetBool("IsWalk", false);
                 break;
             case STATE.WALK:
-                move.SetMoveSpeed(10.0f);
-                playerAni.SetBool("IsMove", true);
+                move.SetMoveSpeed(5.0f);
+                playerAni.SetBool("IsWalk", true);
+                playerAni.SetBool("IsRun", false);
                 break;
             case STATE.STAND:
-                playerAni.SetBool("IsMove", false);
+
+                
+                playerAni.SetBool("IsWalk", false);
+                playerAni.SetBool("IsRun", false);
                 break;
         }
 
-       /* switch(eWay)
+        switch(eWay)
         {
             case WAY.FORWARD:
                 playerAni.SetInteger("IsWay", 0);
                 break;
-<<<<<<< HEAD
-            case WAY.BACKWARD:                
-=======
-            case WAY.BACKWARD:
->>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
-                playerAni.SetInteger("IsWay", 1);
-                break;
+
             case WAY.LEFT:
                 playerAni.SetInteger("IsWay", 2);
                 break;
             case WAY.RIGHT:
-<<<<<<< HEAD
+
                 playerAni.SetInteger("IsWay", 3);   
-=======
-                playerAni.SetInteger("IsWay", 3);
->>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
+
+
                 break;
-            case WAY.F45L:
-                playerAni.SetInteger("IsWay", 4);
-                break;
-            case WAY.F45R:
-                playerAni.SetInteger("IsWay", 5);
-                break;
-<<<<<<< HEAD
-        } */
-=======
+         
+
+        
+
         }
->>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
+
     }
 
     private void Running()
@@ -260,7 +244,7 @@ public class Player : MonoBehaviour {
 
     IEnumerator RunningStart()
     {
-        yield return new WaitForSeconds(0.2f);          //0.2초안에 두번눌러야 달리기
+        yield return new WaitForSeconds(0.2f);          //0.4초안에 두번눌러야 달리기h
         isRun = false;
     }
 
