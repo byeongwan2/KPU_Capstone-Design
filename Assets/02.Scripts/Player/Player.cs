@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     //애니메이터 컨트롤러 해시값 추출
     private readonly int hashMove = Animator.StringToHash("IsMove");
     private readonly int hashV = Animator.StringToHash("v");
+    private readonly int hashH = Animator.StringToHash("h");
 
     void Start()
     {
@@ -59,11 +60,7 @@ public class Player : MonoBehaviour
         // ry = Input.GetAxis("Mouse Y");
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
-<<<<<<< HEAD
                                                                      // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
-=======
-       // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
->>>>>>> a9f132254e6b4f4e3c2dcfb1400499efddc9ec11
 
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
@@ -84,6 +81,7 @@ public class Player : MonoBehaviour
         }
 
         playerAni.SetFloat(hashV, move.Vertical);
+        playerAni.SetFloat(hashH, move.Horizontal);
     }
 
 
@@ -151,13 +149,8 @@ public class Player : MonoBehaviour
 
     }
     private void WayManual()
-<<<<<<< HEAD
     {
         if (Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
-=======
-    {//ㅎㅎㅎ하이
-        if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
->>>>>>> a9f132254e6b4f4e3c2dcfb1400499efddc9ec11
         {
             //eWay = WAY.F45L;
         }
@@ -175,7 +168,7 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            eWay = WAY.BACKWARD;
+          //  eWay = WAY.BACKWARD;
         }
 
     }
@@ -201,21 +194,21 @@ public class Player : MonoBehaviour
             case WAY.FORWARD:
                 playerAni.SetInteger("IsWay", 0);
                 break;
-            case WAY.BACKWARD:
-                playerAni.SetInteger("IsWay", 1);
-                break;
+          //  case WAY.BACKWARD:
+            //    playerAni.SetInteger("IsWay", 1);
+             //   break;
             case WAY.LEFT:
                 playerAni.SetInteger("IsWay", 2);
                 break;
             case WAY.RIGHT:
                 playerAni.SetInteger("IsWay", 3);
                 break;
-            case WAY.F45L:
-                playerAni.SetInteger("IsWay", 4);
-                break;
-            case WAY.F45R:
-                playerAni.SetInteger("IsWay", 5);
-                break;
+           // case WAY.F45L:
+           //     playerAni.SetInteger("IsWay", 4);
+           //     break;
+           // case WAY.F45R:
+           //     playerAni.SetInteger("IsWay", 5);
+            //    break;
         }
     }
 
