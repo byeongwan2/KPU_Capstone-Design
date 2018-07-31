@@ -31,6 +31,7 @@ public class Player : MonoBehaviour {
     //애니메이터 컨트롤러 해시값 추출
     private readonly int hashMove = Animator.StringToHash("IsMove");
     private readonly int hashV = Animator.StringToHash("v");
+    private readonly int hashH = Animator.StringToHash("h");
 
     void Start()
     {
@@ -79,6 +80,7 @@ public class Player : MonoBehaviour {
         }
 
         playerAni.SetFloat(hashV, move.Vertical);
+        playerAni.SetFloat(hashH, move.Horizontal);
     }
 
 
