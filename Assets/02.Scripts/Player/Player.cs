@@ -148,7 +148,7 @@ public class Player : MonoBehaviour {
   
     }
     private void WayManual()
-    {
+    {//ㅎㅎㅎ하이
         if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
         {
             //eWay = WAY.F45L;
