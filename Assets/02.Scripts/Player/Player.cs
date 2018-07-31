@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     //애니메이터 컨트롤러 해시값 추출
     private readonly int hashMove = Animator.StringToHash("IsMove");
     private readonly int hashV = Animator.StringToHash("v");
+    private readonly int hashH = Animator.StringToHash("h");
 
     void Start()
     {
@@ -80,6 +81,7 @@ public class Player : MonoBehaviour
         }
 
         playerAni.SetFloat(hashV, move.Vertical);
+        playerAni.SetFloat(hashH, move.Horizontal);
     }
 
 
@@ -166,7 +168,7 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-          //  eWay = WAY.BACKWARD;
+            eWay = WAY.BACKWARD;
         }
 
     }
@@ -192,21 +194,21 @@ public class Player : MonoBehaviour
             case WAY.FORWARD:
                 playerAni.SetInteger("IsWay", 0);
                 break;
-          //  case WAY.BACKWARD:
-            //    playerAni.SetInteger("IsWay", 1);
-             //   break;
+            case WAY.BACKWARD:
+                playerAni.SetInteger("IsWay", 1);
+                break;
             case WAY.LEFT:
                 playerAni.SetInteger("IsWay", 2);
                 break;
             case WAY.RIGHT:
                 playerAni.SetInteger("IsWay", 3);
                 break;
-           // case WAY.F45L:
-           //     playerAni.SetInteger("IsWay", 4);
-           //     break;
-           // case WAY.F45R:
-           //     playerAni.SetInteger("IsWay", 5);
-            //    break;
+            case WAY.F45L:
+                playerAni.SetInteger("IsWay", 4);
+                break;
+            case WAY.F45R:
+                playerAni.SetInteger("IsWay", 5);
+                break;
         }
     }
 
