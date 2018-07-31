@@ -21,16 +21,16 @@ public class Move : MonoBehaviour {
 	}	
 	
 	void Update ()
-    {   
+    {
+
         //전후좌우 이동 방향 벡터 계산
         Vector3 moveDir = (Vector3.forward * Vertical) + (Vector3.right * Horizontal);
-
         //Translate(이동 방향 * 속도 * 변위값 * Time.deltaTime, 기준 좌표)
-        tr.Translate(moveDir.normalized * moveSpeed * Time.deltaTime, Space.Self);
+        //tr.Translate(moveDir.normalized * moveSpeed * Time.deltaTime, Space.Self);
                 
 	}
 
-    private float moveSpeed = 0.0f;         
+    public float moveSpeed = 0.0f;         
     public void SetMoveSpeed(float _moveSpeed)
     {
         moveSpeed = _moveSpeed;
