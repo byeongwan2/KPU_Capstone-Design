@@ -32,7 +32,6 @@ public class Player : MonoBehaviour
     //애니메이터 컨트롤러 해시값 추출
     private readonly int hashMove = Animator.StringToHash("IsMove");
     private readonly int hashV = Animator.StringToHash("v");
-    private readonly int hashH = Animator.StringToHash("h");
 
     void Start()
     {
@@ -60,7 +59,11 @@ public class Player : MonoBehaviour
         // ry = Input.GetAxis("Mouse Y");
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
+<<<<<<< HEAD
                                                                      // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
+=======
+       // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
+>>>>>>> a9f132254e6b4f4e3c2dcfb1400499efddc9ec11
 
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
@@ -81,7 +84,6 @@ public class Player : MonoBehaviour
         }
 
         playerAni.SetFloat(hashV, move.Vertical);
-        playerAni.SetFloat(hashH, move.Horizontal);
     }
 
 
@@ -149,8 +151,13 @@ public class Player : MonoBehaviour
 
     }
     private void WayManual()
+<<<<<<< HEAD
     {
         if (Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
+=======
+    {//ㅎㅎㅎ하이
+        if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
+>>>>>>> a9f132254e6b4f4e3c2dcfb1400499efddc9ec11
         {
             //eWay = WAY.F45L;
         }
