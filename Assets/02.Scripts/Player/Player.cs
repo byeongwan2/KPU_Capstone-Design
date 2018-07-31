@@ -58,11 +58,11 @@ public class Player : MonoBehaviour {
         r = Input.GetAxis("Mouse X");
        // ry = Input.GetAxis("Mouse Y");
 
-        playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
+       // playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime *r); // Y축을 기준으로 rotSpeed 만큼 회전
        // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
 
-        move.Horizontal = Input.GetAxis("Horizontal");
-        move.Vertical = Input.GetAxis("Vertical");
+        //move.Horizontal = Input.GetAxis("Horizontal");
+        //move.Vertical = Input.GetAxis("Vertical");
 
         KeyboardManual();
         WayManual();
@@ -72,12 +72,15 @@ public class Player : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-            playerAni.SetBool(hashMove, true);
+           // playerAni.SetBool(hashMove, true);
         }
         else
         {
             playerAni.SetBool(hashMove, false);
         }
+
+
+        //playerAni.SetFloat(hashV, -1.0f);
 
         playerAni.SetFloat(hashV, move.Vertical);
         playerAni.SetFloat(hashH, move.Horizontal);
@@ -177,11 +180,12 @@ public class Player : MonoBehaviour {
         switch(eState)
         {
             case STATE.RUN:
-                move.SetMoveSpeed(20.0f);
+               // move.SetMoveSpeed(20.0f);
+               // playerAni.SetBool("IsMove", true);
                 break;
             case STATE.WALK:
-                move.SetMoveSpeed(10.0f);
-                playerAni.SetBool("IsMove", true);
+               // move.SetMoveSpeed(10.0f);
+              //  playerAni.SetBool("IsMove", true);
                 break;
             case STATE.STAND:
                 playerAni.SetBool("IsMove", false);
@@ -191,7 +195,7 @@ public class Player : MonoBehaviour {
         switch(eWay)
         {
             case WAY.FORWARD:
-                playerAni.SetInteger("IsWay", 0);
+              //  playerAni.SetInteger("IsWay", 0);
                 break;
             case WAY.BACKWARD:                
                 playerAni.SetInteger("IsWay", 1);
