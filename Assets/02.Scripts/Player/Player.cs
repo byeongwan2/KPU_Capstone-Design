@@ -27,11 +27,6 @@ public class Player : MonoBehaviour {
     private float bombPower;
 
     private int MAXPLAYERBOMB = 10;
-
-    //애니메이터 컨트롤러 해시값 추출
-    private readonly int hashMove = Animator.StringToHash("IsMove");
-    private readonly int hashV = Animator.StringToHash("v");
-
     void Start()
     {
         eState = STATE.STAND;
@@ -55,10 +50,10 @@ public class Player : MonoBehaviour {
     void Update()
     {
         r = Input.GetAxis("Mouse X");
-       // ry = Input.GetAxis("Mouse Y");
+        ry = Input.GetAxis("Mouse Y");
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
-       // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
+        playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
 
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
@@ -68,17 +63,6 @@ public class Player : MonoBehaviour {
         MoveManual();
 
         LogicAttribute();
-
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-        {
-            playerAni.SetBool(hashMove, true);
-        }
-        else
-        {
-            playerAni.SetBool(hashMove, false);
-        }
-
-        playerAni.SetFloat(hashV, move.Vertical);
     }
 
 
@@ -114,6 +98,7 @@ public class Player : MonoBehaviour {
             bombThrow.Work(bombPower);
           
         }
+
     }
 
     private void OnCollisionEnter(Collision col)
@@ -146,28 +131,28 @@ public class Player : MonoBehaviour {
   
     }
     private void WayManual()
+<<<<<<< HEAD
     {//ㅎㅎㅎ하이
         if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
         {
             //eWay = WAY.F45L;
         }
         else if (Input.GetKeyDown(KeyCode.A))
+=======
+    {
+        if (Input.GetKey(KeyCode.A))
+>>>>>>> parent of 87b47ea... 휴머노이드타입변경 & 애니메이션 구현
         {
             eWay = WAY.LEFT;
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             eWay = WAY.RIGHT;
         }
-        else if(move.Horizontal == 1.0f)
+        else
         {
-          //  eWay = WAY.FORWARD;           
+            eWay = WAY.FORWARD;
         }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            eWay = WAY.BACKWARD;
-        }
-        
     }
 
     private void LogicAttribute()
@@ -188,23 +173,14 @@ public class Player : MonoBehaviour {
 
         switch(eWay)
         {
-            case WAY.FORWARD:
-                playerAni.SetInteger("IsWay", 0);
-                break;
-            case WAY.BACKWARD:                
+            case WAY.LEFT:
                 playerAni.SetInteger("IsWay", 1);
                 break;
-            case WAY.LEFT:
+            case WAY.RIGHT:
                 playerAni.SetInteger("IsWay", 2);
                 break;
-            case WAY.RIGHT:
-                playerAni.SetInteger("IsWay", 3);   
-                break;
-            case WAY.F45L:
-                playerAni.SetInteger("IsWay", 4);
-                break;
-            case WAY.F45R:
-                playerAni.SetInteger("IsWay", 5);
+            case WAY.FORWARD:
+                playerAni.SetInteger("IsWay", 0);
                 break;
         }
     }
