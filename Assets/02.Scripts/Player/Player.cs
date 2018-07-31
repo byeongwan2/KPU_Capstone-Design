@@ -56,10 +56,17 @@ public class Player : MonoBehaviour {
     void Update()
     {
         r = Input.GetAxis("Mouse X");
+<<<<<<< HEAD
        // ry = Input.GetAxis("Mouse Y");
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
        // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
+=======
+        // ry = Input.GetAxis("Mouse Y");
+
+        playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
+                                                                     // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
+>>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
 
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
@@ -150,7 +157,11 @@ public class Player : MonoBehaviour {
     /*
     private void WayManual()
     {
+<<<<<<< HEAD
         if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
+=======
+        if (Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
+>>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
         {
             //eWay = WAY.F45L;
         }
@@ -162,7 +173,11 @@ public class Player : MonoBehaviour {
         {
             eWay = WAY.RIGHT;
         }
+<<<<<<< HEAD
         else if(move.Horizontal == 1.0f)
+=======
+        else if (move.Horizontal == 1.0f)
+>>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
         {
           //  eWay = WAY.FORWARD;           
         }
@@ -170,7 +185,11 @@ public class Player : MonoBehaviour {
         {
             eWay = WAY.BACKWARD;
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
     }
     */
 
@@ -195,14 +214,22 @@ public class Player : MonoBehaviour {
             case WAY.FORWARD:
                 playerAni.SetInteger("IsWay", 0);
                 break;
+<<<<<<< HEAD
             case WAY.BACKWARD:                
+=======
+            case WAY.BACKWARD:
+>>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
                 playerAni.SetInteger("IsWay", 1);
                 break;
             case WAY.LEFT:
                 playerAni.SetInteger("IsWay", 2);
                 break;
             case WAY.RIGHT:
+<<<<<<< HEAD
                 playerAni.SetInteger("IsWay", 3);   
+=======
+                playerAni.SetInteger("IsWay", 3);
+>>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
                 break;
             case WAY.F45L:
                 playerAni.SetInteger("IsWay", 4);
@@ -210,7 +237,11 @@ public class Player : MonoBehaviour {
             case WAY.F45R:
                 playerAni.SetInteger("IsWay", 5);
                 break;
+<<<<<<< HEAD
         } */
+=======
+        }
+>>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
     }
 
     private void Running()
