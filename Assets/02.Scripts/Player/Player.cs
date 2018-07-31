@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
     private float r = 0.0f;
     private float ry = 0.0f;
 
@@ -28,15 +27,12 @@ public class Player : MonoBehaviour
     private float bombPower;
 
     private int MAXPLAYERBOMB = 10;
-<<<<<<< HEAD
-=======
 
     //애니메이터 컨트롤러 해시값 추출
     private readonly int hashMove = Animator.StringToHash("IsMove");
     private readonly int hashV = Animator.StringToHash("v");
     private readonly int hashH = Animator.StringToHash("h");
 
->>>>>>> e277ddffaca333be579b47ccf72c996a44275aab
     void Start()
     {
         eState = STATE.STAND;
@@ -60,28 +56,19 @@ public class Player : MonoBehaviour
     void Update()
     {
         r = Input.GetAxis("Mouse X");
-<<<<<<< HEAD
-        ry = Input.GetAxis("Mouse Y");
+       // ry = Input.GetAxis("Mouse Y");
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
-        playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
-=======
-        // ry = Input.GetAxis("Mouse Y");
-
-        playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
-                                                                     // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
->>>>>>> e277ddffaca333be579b47ccf72c996a44275aab
+       // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
 
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
 
         KeyboardManual();
-        WayManual();
+        //WayManual();
         MoveManual();
 
         LogicAttribute();
-<<<<<<< HEAD
-=======
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
@@ -94,7 +81,6 @@ public class Player : MonoBehaviour
 
         playerAni.SetFloat(hashV, move.Vertical);
         playerAni.SetFloat(hashH, move.Horizontal);
->>>>>>> e277ddffaca333be579b47ccf72c996a44275aab
     }
 
 
@@ -109,7 +95,7 @@ public class Player : MonoBehaviour
                 isDoubleJump = false;
                 playerRb.mass = 1.2f;
             }
-            else if (eState != STATE.JUMP)
+            else if(eState != STATE.JUMP)
             {
                 ePreState = eState;
                 eState = STATE.JUMP;
@@ -117,20 +103,19 @@ public class Player : MonoBehaviour
                 isDoubleJump = true;
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Return))
+       
+        if(Input.GetKeyDown(KeyCode.Return))
         {
-            //뭐를쓸까낭?
+         //뭐를쓸까낭?
         }
 
         Running();
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             bombThrow.Work(bombPower);
-
+          
         }
-
     }
 
     private void OnCollisionEnter(Collision col)
@@ -144,7 +129,7 @@ public class Player : MonoBehaviour
 
     void State()
     {
-
+        
     }
 
     private void MoveManual()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
@@ -160,53 +145,38 @@ public class Player : MonoBehaviour
         {
             eState = STATE.STAND;
         }
-
+  
     }
+    /*
     private void WayManual()
-<<<<<<< HEAD
-<<<<<<< HEAD
-    {//ㅎㅎㅎ하이
-        if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
-=======
     {
-        if (Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
->>>>>>> e277ddffaca333be579b47ccf72c996a44275aab
+        if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
         {
             //eWay = WAY.F45L;
         }
         else if (Input.GetKeyDown(KeyCode.A))
-=======
-    {
-        if (Input.GetKey(KeyCode.A))
->>>>>>> parent of 87b47ea... 휴머노이드타입변경 & 애니메이션 구현
         {
             eWay = WAY.LEFT;
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             eWay = WAY.RIGHT;
         }
-<<<<<<< HEAD
-        else
+        else if(move.Horizontal == 1.0f)
         {
-            eWay = WAY.FORWARD;
-        }
-=======
-        else if (move.Horizontal == 1.0f)
-        {
-            //  eWay = WAY.FORWARD;           
+          //  eWay = WAY.FORWARD;           
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-          //  eWay = WAY.BACKWARD;
+            eWay = WAY.BACKWARD;
         }
-
->>>>>>> e277ddffaca333be579b47ccf72c996a44275aab
+        
     }
+    */
 
     private void LogicAttribute()
     {
-        switch (eState)
+        switch(eState)
         {
             case STATE.RUN:
                 move.SetMoveSpeed(20.0f);
@@ -220,37 +190,27 @@ public class Player : MonoBehaviour
                 break;
         }
 
-        switch (eWay)
+       /* switch(eWay)
         {
-<<<<<<< HEAD
-=======
             case WAY.FORWARD:
                 playerAni.SetInteger("IsWay", 0);
                 break;
-          //  case WAY.BACKWARD:
-            //    playerAni.SetInteger("IsWay", 1);
-             //   break;
->>>>>>> e277ddffaca333be579b47ccf72c996a44275aab
-            case WAY.LEFT:
+            case WAY.BACKWARD:                
                 playerAni.SetInteger("IsWay", 1);
                 break;
-            case WAY.RIGHT:
-<<<<<<< HEAD
+            case WAY.LEFT:
                 playerAni.SetInteger("IsWay", 2);
                 break;
-            case WAY.FORWARD:
-                playerAni.SetInteger("IsWay", 0);
-=======
-                playerAni.SetInteger("IsWay", 3);
->>>>>>> e277ddffaca333be579b47ccf72c996a44275aab
+            case WAY.RIGHT:
+                playerAni.SetInteger("IsWay", 3);   
                 break;
-           // case WAY.F45L:
-           //     playerAni.SetInteger("IsWay", 4);
-           //     break;
-           // case WAY.F45R:
-           //     playerAni.SetInteger("IsWay", 5);
-            //    break;
-        }
+            case WAY.F45L:
+                playerAni.SetInteger("IsWay", 4);
+                break;
+            case WAY.F45R:
+                playerAni.SetInteger("IsWay", 5);
+                break;
+        } */
     }
 
     private void Running()
@@ -260,7 +220,7 @@ public class Player : MonoBehaviour
             isRun = false;
             eState = STATE.RUN;
         }
-        else if (Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)
+        else if(Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)       
         {
             isRun = true;
             StartCoroutine(RunningStart());
@@ -275,10 +235,10 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter(Collider _obj)
     {
-        if (_obj.tag == "Item")
-        {
+        if(_obj.tag == "Item"){
             _obj.gameObject.SetActive(false);       // 필드에서 아이템흡수
         }
-
+        
     }
 }
+ 
