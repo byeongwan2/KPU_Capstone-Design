@@ -311,7 +311,7 @@ ModelImporter:
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 1
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
@@ -336,7 +336,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 119
+      additiveReferencePoseFrame: 1
     - serializedVersion: 16
       name: EllenRunForward45Left
       takeName: Take 001
@@ -353,7 +353,7 @@ ModelImporter:
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 1
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
@@ -845,7 +845,7 @@ ModelImporter:
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 1
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
@@ -1091,7 +1091,7 @@ ModelImporter:
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 1
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
