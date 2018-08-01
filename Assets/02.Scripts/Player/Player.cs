@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+enum SPECIAL_STATE {  NONE,TURNONSPOT}
 
 public class Player : MonoBehaviour {
+
     private float r = 0.0f;
     private float ry = 0.0f;
 
@@ -18,7 +20,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private STATE eState = STATE.STAND;
     private STATE ePreState = STATE.STAND;
-
+    private SPECIAL_STATE eSpecialState = SPECIAL_STATE.NONE;
     private WAY eWay = WAY.FORWARD;
     private bool isDoubleJump = false;
     private bool isRun = false;
@@ -61,9 +63,6 @@ public class Player : MonoBehaviour {
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
        // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
-
-        
-
 
 
         move.Horizontal = Input.GetAxis("Horizontal");
@@ -111,25 +110,29 @@ public class Player : MonoBehaviour {
         }
 
 
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.R))
         {
             bombThrow.Work(bombPower);
           
         }
-    }
 
-    private void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.tag == "Ground" && eState == STATE.JUMP)
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            eState = ePreState;
-            isDoubleJump = false;
+            playerAni.SetInteger("TurnOnSpot", 1);
+            eSpecialState = SPECIAL_STATE.TURNONSPOT;
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            playerAni.SetInteger("TurnOnSpot", 2);
+            eSpecialState = SPECIAL_STATE.TURNONSPOT;
         }
     }
 
-    void State()
+   
+
+    public void TurnOnSpotCancel()
     {
-        
+        playerAni.SetInteger("TurnOnSpot", 0);
     }
 
     private void MoveManual()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
@@ -186,6 +189,15 @@ public class Player : MonoBehaviour {
     }
     */
 
+    private void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "Ground" && eState == STATE.JUMP)
+        {
+            eState = ePreState;
+            isDoubleJump = false;
+        }
+    }
+
     private void LogicAnimation()
     {
         if (isRun) return;
@@ -213,6 +225,7 @@ public class Player : MonoBehaviour {
                 playerAni.SetBool("IsJump", false);
                 playerAni.SetBool("IsWalk", false);
                 playerAni.SetBool("IsRun", false);
+              
                 break;
         }
 
@@ -231,13 +244,11 @@ public class Player : MonoBehaviour {
 
 
                 break;
-         
-
-        
 
         }
 
     }
+
 
     private void Running()
     {
@@ -259,6 +270,9 @@ public class Player : MonoBehaviour {
         isRun = false;
     }
 
+
+
+
     void OnTriggerEnter(Collider _obj)
     {
         if(_obj.tag == "Item"){
@@ -266,5 +280,8 @@ public class Player : MonoBehaviour {
         }
         
     }
+
+
+    
 }
  
