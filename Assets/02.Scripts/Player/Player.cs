@@ -97,9 +97,10 @@ public class Player : MonoBehaviour {
             }
             else if(eState != STATE.JUMP)
             {
-                ePreState = eState;
+                ePreState = eState;     //점프전 상태보관
                 eState = STATE.JUMP;
-                jump.Action(1.6f, 5.0f);     //점프력,점프스피드
+                if (ePreState == STATE.STAND) jump.Action(16.6f, 5.0f);
+                else jump.Action(1.6f, 5.0f);     //점프력,점프스피드
                 isDoubleJump = true;
             }
         }
@@ -197,11 +198,13 @@ public class Player : MonoBehaviour {
             
             case STATE.RUN:
                 move.SetMoveSpeed(10.0f);
+                playerAni.SetBool("IsJump", false);
                 playerAni.SetBool("IsRun", true);
                 playerAni.SetBool("IsWalk", false);
                 break;
             case STATE.WALK:
                 move.SetMoveSpeed(5.0f);
+                playerAni.SetBool("IsJump", false);
                 playerAni.SetBool("IsWalk", true);
                 playerAni.SetBool("IsRun", false);
                 break;
@@ -252,7 +255,7 @@ public class Player : MonoBehaviour {
 
     IEnumerator RunningStart()
     {
-        yield return new WaitForSeconds(0.2f);          //0.4초안에 두번눌러야 달리기h
+        yield return new WaitForSeconds(0.2f);          //0.2초안에 두번눌러야 달리기h
         isRun = false;
     }
 
