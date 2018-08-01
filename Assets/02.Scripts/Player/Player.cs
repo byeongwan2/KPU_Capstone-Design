@@ -118,7 +118,6 @@ public class Player : MonoBehaviour {
     {
         if (col.gameObject.tag == "Ground" && eState == STATE.JUMP)
         {
-
             eState = ePreState;
             isDoubleJump = false;
         }
