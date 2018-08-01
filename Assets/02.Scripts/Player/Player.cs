@@ -72,6 +72,8 @@ public class Player : MonoBehaviour {
         KeyboardManual();
         //WayManual();
         MoveManual();
+        Running();
+
 
         LogicAnimation();
 
@@ -104,7 +106,6 @@ public class Player : MonoBehaviour {
          //뭐를쓸까낭?
         }
 
-        Running();
 
         if(Input.GetKeyDown(KeyCode.E))
         {
@@ -117,6 +118,7 @@ public class Player : MonoBehaviour {
     {
         if (col.gameObject.tag == "Ground" && eState == STATE.JUMP)
         {
+
             eState = ePreState;
             isDoubleJump = false;
         }
@@ -186,6 +188,10 @@ public class Player : MonoBehaviour {
         if (isRun) return;
         switch (eState)
         {
+            case STATE.JUMP:
+                playerAni.SetBool("IsJump",true);
+
+                break;
             
             case STATE.RUN:
                 move.SetMoveSpeed(10.0f);
@@ -199,7 +205,7 @@ public class Player : MonoBehaviour {
                 break;
             case STATE.STAND:
 
-                
+                playerAni.SetBool("IsJump", false);
                 playerAni.SetBool("IsWalk", false);
                 playerAni.SetBool("IsRun", false);
                 break;
