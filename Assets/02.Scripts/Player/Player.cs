@@ -57,12 +57,12 @@ public class Player : MonoBehaviour {
     {
         r = Input.GetAxis("Mouse X");
 
-       // ry = Input.GetAxis("Mouse Y");
+       // ry = Input.GetAxis("Mouse Y"); 완벽하지 않아서 주석처리
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
        // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
 
-        // ry = Input.GetAxis("Mouse Y");
+        
 
 
 
@@ -77,6 +77,9 @@ public class Player : MonoBehaviour {
 
         LogicAnimation();
 
+        //해시에 이동 계수 전달
+        playerAni.SetFloat(hashV, move.Vertical);
+        playerAni.SetFloat(hashH, move.Horizontal);
         
     }
 
