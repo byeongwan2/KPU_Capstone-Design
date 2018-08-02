@@ -63,12 +63,7 @@ public class Player : MonoBehaviour {
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
        // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
-<<<<<<< HEAD
-                
-=======
 
-
->>>>>>> d68fa198e5271f596568b8ba6dc09bb6fa85d0c1
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
 
@@ -84,8 +79,6 @@ public class Player : MonoBehaviour {
         playerAni.SetFloat(hashV, move.Vertical);
         playerAni.SetFloat(hashH, move.Horizontal);
         playerAni.SetFloat(hashJ, jump.airborneSpeed);
-
-
     }
 
 
@@ -101,19 +94,13 @@ public class Player : MonoBehaviour {
                 playerRb.mass = 1.2f;
             }
             else if(eState != STATE.JUMP)
-            {
-<<<<<<< HEAD
-                ePreState = eState;
-                eState = STATE.JUMP;                
-                jump.Action(50.0f, 3.0f);     //점프력,점프스피드               
-                
-=======
+            {                                
                 ePreState = eState;     //점프전 상태보관
                 eState = STATE.JUMP;
                 if (ePreState == STATE.STAND) jump.Action(16.6f, 5.0f);
                 else jump.Action(1.6f, 5.0f);     //점프력,점프스피드
->>>>>>> d68fa198e5271f596568b8ba6dc09bb6fa85d0c1
-                isDoubleJump = true;
+
+                isDoubleJump = true; 
             }
         }
        
@@ -125,8 +112,7 @@ public class Player : MonoBehaviour {
 
         if(Input.GetKeyDown(KeyCode.R))
         {
-            bombThrow.Work(bombPower);
-          
+            bombThrow.Work(bombPower);          
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -141,12 +127,10 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void State()
    
 
     public void TurnOnSpotCancel()
     {
-        
         playerAni.SetInteger("TurnOnSpot", 0);
     }
 
@@ -165,44 +149,7 @@ public class Player : MonoBehaviour {
         }
   
     }
-    /*
-    private void WayManual()
-    {
-<<<<<<< HEAD
-        if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
-=======
-        if (Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.A))
->>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
-        {
-            //eWay = WAY.F45L;
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            eWay = WAY.LEFT;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            eWay = WAY.RIGHT;
-        }
-<<<<<<< HEAD
-        else if(move.Horizontal == 1.0f)
-=======
-        else if (move.Horizontal == 1.0f)
->>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
-        {
-          //  eWay = WAY.FORWARD;           
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            eWay = WAY.BACKWARD;
-        }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> 5e045fb543243235bcae10fd8fe0e9962603c322
-    }
-    */
+  
 
     private void OnCollisionEnter(Collision col)
     {
@@ -220,7 +167,6 @@ public class Player : MonoBehaviour {
         {
             case STATE.JUMP:
                 playerAni.SetBool("IsJump",true);
-
                 break;
             
             case STATE.RUN:
@@ -242,29 +188,7 @@ public class Player : MonoBehaviour {
                 playerAni.SetBool("IsRun", false);
               
                 break;
-        }
-        /*
-        switch(eWay)
-        {
-            case WAY.FORWARD:
-                playerAni.SetInteger("IsWay", 0);
-                break;
-
-            case WAY.LEFT:
-                playerAni.SetInteger("IsWay", 2);
-                break;
-            case WAY.RIGHT:
-
-                playerAni.SetInteger("IsWay", 3);   
-
-
-                break;
-         
-
-        
-
-        }
-        */
+        }    
     }
 
 
@@ -284,7 +208,6 @@ public class Player : MonoBehaviour {
 
     IEnumerator RunningStart()
     {
-        yield return new WaitForSeconds(0.2f);          //0.4초안에 두번눌러야 달리기h
         yield return new WaitForSeconds(0.2f);          //0.2초안에 두번눌러야 달리기h
         isRun = false;
     }
