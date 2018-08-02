@@ -12,7 +12,6 @@ public class Move : MonoBehaviour {
     private Transform tr;
 
     //이동 속도
-    
 	
 	void Start () {
         Vertical = 0.0f;
@@ -36,5 +35,12 @@ public class Move : MonoBehaviour {
     public void SetMoveSpeed(float _moveSpeed)
     {
         moveSpeed = _moveSpeed;
+    }
+
+    public void Init()
+    {
+        Vertical = 0.0f;
+        Horizontal = 0.0f;
+        moveSpeed = 0.0f;
     }
 }

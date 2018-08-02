@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum SPECIAL_STATE {  NONE,TURNONSPOT}
+enum SPECIAL_STATE {  NONE,TURNONSPOT , DOUBLEJUMPLANDING}
 
 public class Player : MonoBehaviour {
-
-    private float r = 0.0f;
-    private float ry = 0.0f;
 
     private Transform playerTr;
     private Rigidbody playerRb;
@@ -17,22 +14,20 @@ public class Player : MonoBehaviour {
     private Throw bombThrow;
     public float rotSpeed = 250.0f; //회전 속도
 
-    [SerializeField]
+    [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
     private STATE eState = STATE.STAND;
+    [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
     private STATE ePreState = STATE.STAND;
+    [SerializeField]
     private SPECIAL_STATE eSpecialState = SPECIAL_STATE.NONE;
     private WAY eWay = WAY.FORWARD;
-    private bool isDoubleJump = false;
 
     [SerializeField]
     private float bombPower;
 
     private int MAXPLAYERBOMB = 10;
 
-    //애니메이터 컨트롤러 해시값 추출    
-    private readonly int hashV = Animator.StringToHash("v");
-    private readonly int hashH = Animator.StringToHash("h");
-    private readonly int hashJ = Animator.StringToHash("airborne");
+    //절대 바뀌지않는 초기화//컴포넌트관련내용만
 
     void Start()
     {
@@ -52,61 +47,62 @@ public class Player : MonoBehaviour {
         bombPower = 15.0f;
 
     }
-
-    void Update()
+    private float r = 0.0f;
+    private float ry = 0.0f;
+    private void PlayerManual()
     {
         r = Input.GetAxis("Mouse X");
 
-       // ry = Input.GetAxis("Mouse Y"); 완벽하지 않아서 주석처리
+        // ry = Input.GetAxis("Mouse Y"); 완벽하지 않아서 주석처리
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
-       // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
 
+        // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
+        if (eSpecialState == SPECIAL_STATE.DOUBLEJUMPLANDING)
+        {
+            move.Init();
+            return;
+
+        }
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
 
-        KeyboardManual();
-        //WayManual();
-        MoveManual();
-        Running();
+    }
+    //애니메이터 컨트롤러 해시값 추출    
+    private readonly int hashV = Animator.StringToHash("v");
+    private readonly int hashH = Animator.StringToHash("h");
+    private readonly int hashJ = Animator.StringToHash("airborne");
+    void Update()
+    {
+        PlayerManual();
+        KeyboardManual();//입력
+        //WayManual();//방향
+        MoveManual();//움직임
+        Running();//달리기
 
 
-        LogicAnimation();
+        LogicAnimation();//애니메이션 웬만하면 제일마지막
 
         //해시에 이동 계수 전달
+     
         playerAni.SetFloat(hashV, move.Vertical);
         playerAni.SetFloat(hashH, move.Horizontal);
         playerAni.SetFloat(hashJ, jump.airborneSpeed);
     }
 
-
+    private bool isDoubleJump = false;
+    //키보드 입력
     private void KeyboardManual()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (eState == STATE.JUMP && isDoubleJump == true)       //이단점프
-            {
-                playerRb.mass = 1.0f;           //무게를잠시수정
-                playerRb.AddForce(new Vector3(0, 1.6f, 0) * 5.0f, ForceMode.Impulse);
-                isDoubleJump = false;
-                playerRb.mass = 1.2f;
-            }
-            else if(eState != STATE.JUMP)
-            {                                
-                ePreState = eState;     //점프전 상태보관
-                eState = STATE.JUMP;
-                if (ePreState == STATE.STAND) jump.Action(16.6f, 5.0f);
-                else jump.Action(1.6f, 5.0f);     //점프력,점프스피드
-
-                isDoubleJump = true; 
-            }
+            DoubleJump();
         }
        
         if(Input.GetKeyDown(KeyCode.Return))
         {
          //뭐를쓸까낭?
         }
-
 
         if(Input.GetKeyDown(KeyCode.R))
         {
@@ -124,23 +120,48 @@ public class Player : MonoBehaviour {
             eSpecialState = SPECIAL_STATE.TURNONSPOT;
         }
     }
-
+    //상태리셋
    private void ResetState()
     {
         playerAni.Play("PlayerIdle");
         eState = STATE.STAND;
+        eSpecialState = SPECIAL_STATE.NONE;
     }
 
-    
+    //점프및 더블점프
+    private bool isDoubleJumping = false;
+    private void DoubleJump()
+    {
+        if (eState == STATE.JUMP && isDoubleJump == true)       //이단점프
+        {
+            //if (ePreState == STATE.STAND)
+            // playerRb.AddForce(new Vector3(0, 16.6f, 0) * 5.0f, ForceMode.VelocityChange);
+            playerRb.AddForce(new Vector3(0, 1.6f, 0) * 5.0f, ForceMode.VelocityChange);
+            isDoubleJump = false;
+            isDoubleJumping = true;
+        }
+        else if (eState != STATE.JUMP)
+        {
+            ePreState = eState;     //점프전 상태보관
+            eState = STATE.JUMP;
+            if (ePreState == STATE.STAND) jump.Action(16.6f, 5.0f);
+            else jump.Action(1.6f, 5.0f);     //점프력,점프스피드
 
+            isDoubleJump = true;
+        }
+    }
+    
+   
+
+    //기본적인 움직임 상태값
     private void MoveManual()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
     {
         if (eState == STATE.JUMP) return;
+   
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             if (eState == STATE.RUN) return;
             eState = STATE.WALK;
-
         }
         else
         {
@@ -148,17 +169,29 @@ public class Player : MonoBehaviour {
         }
   
     }
-  
+    //착지후 다시움직일수있음
+    private void LandingDoubleJumpExit()         //착지가 끝나면 자동으로 호출 
+    {
+        eSpecialState = SPECIAL_STATE.NONE;
+    }
 
+    //애니메이션 해제용 이벤트
     private void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Ground" && eState == STATE.JUMP)
         {
+            if (isDoubleJumping)
+            {          //더블점프끄나면 착지
+                playerAni.Play("EllenIdleLandFast");
+                eSpecialState = SPECIAL_STATE.DOUBLEJUMPLANDING;
+            }
+            
+            isDoubleJumping = false;
             eState = ePreState;
-            isDoubleJump = false;
         }
     }
 
+    //애니메이션 상태
     private void LogicAnimation()
     {
         switch (eState)
@@ -168,19 +201,18 @@ public class Player : MonoBehaviour {
                 break;
             
             case STATE.RUN:
-                move.SetMoveSpeed(10.0f);
+                SetMove(10.0f);
                 playerAni.SetBool("IsJump", false);
                 playerAni.SetBool("IsRun", true);
                 playerAni.SetBool("IsWalk", false);
                 break;
             case STATE.WALK:
-                move.SetMoveSpeed(5.0f);
+                SetMove(5.0f);
                 playerAni.SetBool("IsJump", false);
                 playerAni.SetBool("IsWalk", true);
                 playerAni.SetBool("IsRun", false);
                 break;
             case STATE.STAND:
-
                 playerAni.SetBool("IsJump", false);
                 playerAni.SetBool("IsWalk", false);
                 playerAni.SetBool("IsRun", false);
@@ -188,20 +220,13 @@ public class Player : MonoBehaviour {
                 break;
         }    
     }
-    private void Dumbling()
-    {
-        if (Input.GetKey(KeyCode.W) ) //&& isRun == true)       //두번누르면 여기로들어옴
-        {
-            //isRun = false;
-            // eState = STATE.RUN;
-        }
-        else if (Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)
-        {
-            // isRun = true;
-            //StartCoroutine(RunningStart());
-        }
-    }
 
+    private void SetMove(float _speed)
+    {
+        move.SetMoveSpeed(_speed);
+    }
+   
+    //달리기
     private void Running()          //달리기는 쉬프트
     {
        if(Input.GetKey(KeyCode.LeftShift) &&eState == STATE.WALK  )
@@ -214,6 +239,20 @@ public class Player : MonoBehaviour {
         }
     }
 
+    //구르기
+    private void Dumbling()
+    {
+        if (Input.GetKey(KeyCode.W)) //&& isRun == true)       //두번누르면 여기로들어옴
+        {
+            //isRun = false;
+            // eState = STATE.RUN;
+        }
+        else if (Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)
+        {
+            // isRun = true;
+            //StartCoroutine(RunningStart());
+        }
+    }
     IEnumerator RunningStart()
     {
         yield return new WaitForSeconds(0.2f);          //0.2초안에 두번눌러야 달리기h
@@ -222,7 +261,7 @@ public class Player : MonoBehaviour {
 
 
 
-
+    //아이템습득
     void OnTriggerEnter(Collider _obj)
     {
         if(_obj.tag == "Item"){
