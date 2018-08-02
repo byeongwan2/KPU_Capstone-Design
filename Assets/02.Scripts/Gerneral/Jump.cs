@@ -5,38 +5,51 @@ using UnityEngine;
 public class Jump : MonoBehaviour {
 
 
-    private bool isJumping = false;
-   
+    private bool isJumping = false;    
+    private float gravity = 25.0f;     //중력
+    private float gravityProportion = 0.03f;
+    public float airborneSpeed;
+
 
     private Rigidbody this_rigidbody;
-    // Use this for initialization
-    void Start()
-    {
-        this_rigidbody = GetComponent<Rigidbody>();
    
+
+    void Start()
+    {          
+
+        this_rigidbody = GetComponent<Rigidbody>();
+        airborneSpeed = -10.0f;
         isJumping = false;
+
     }
 
     void Update ()
     {
-       
+        if (isJumping)
+        {
+            airborneSpeed -= gravity * Time.deltaTime;
+        }
     }
 
     private void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Ground")
         {
-            isJumping = true;
+            isJumping = false;
 
         }
+        
     }
 
+                
     public void Action(float _jumpForce, float _jumpSpeed)
     {
          if (isJumping) return;
 
-        this_rigidbody.AddForce(new Vector3(0, _jumpForce, 0) * _jumpSpeed, ForceMode.Impulse);
-        isJumping = false;
+        this_rigidbody.AddForce(new Vector3(0, _jumpForce, 0) * _jumpSpeed, ForceMode.VelocityChange);
+        airborneSpeed = 7.0f;
+        
+        isJumping = true;
         
        
     }

@@ -28,10 +28,10 @@ public class Player : MonoBehaviour {
 
     private int MAXPLAYERBOMB = 10;
 
-    //애니메이터 컨트롤러 해시값 추출
-    private readonly int hashMove = Animator.StringToHash("IsMove");
+    //애니메이터 컨트롤러 해시값 추출    
     private readonly int hashV = Animator.StringToHash("v");
     private readonly int hashH = Animator.StringToHash("h");
+    private readonly int hashJ = Animator.StringToHash("airborne");
 
     void Start()
     {
@@ -61,11 +61,7 @@ public class Player : MonoBehaviour {
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
        // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
-
-        
-
-
-
+                
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
 
@@ -80,7 +76,9 @@ public class Player : MonoBehaviour {
         //해시에 이동 계수 전달
         playerAni.SetFloat(hashV, move.Vertical);
         playerAni.SetFloat(hashH, move.Horizontal);
-        
+        playerAni.SetFloat(hashJ, jump.airborneSpeed);
+
+
     }
 
 
@@ -98,8 +96,9 @@ public class Player : MonoBehaviour {
             else if(eState != STATE.JUMP)
             {
                 ePreState = eState;
-                eState = STATE.JUMP;
-                jump.Action(1.6f, 5.0f);     //점프력,점프스피드
+                eState = STATE.JUMP;                
+                jump.Action(50.0f, 3.0f);     //점프력,점프스피드               
+                
                 isDoubleJump = true;
             }
         }
@@ -212,7 +211,7 @@ public class Player : MonoBehaviour {
                 playerAni.SetBool("IsRun", false);
                 break;
         }
-
+        /*
         switch(eWay)
         {
             case WAY.FORWARD:
@@ -233,7 +232,7 @@ public class Player : MonoBehaviour {
         
 
         }
-
+        */
     }
 
     private void Running()
