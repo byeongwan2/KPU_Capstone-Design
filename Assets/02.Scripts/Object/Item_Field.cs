@@ -41,7 +41,7 @@ public class Item_Field : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(MovePosition());
     }
-
+  
   
 
     

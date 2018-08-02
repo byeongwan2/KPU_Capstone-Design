@@ -44,7 +44,6 @@ public class Jump : MonoBehaviour {
                 
     public void Action(float _jumpForce, float _jumpSpeed)
     {
-         if (isJumping) return;
 
         this_rigidbody.AddForce(new Vector3(0, _jumpForce, 0) * _jumpSpeed, ForceMode.VelocityChange);
         airborneSpeed = 7.0f;
