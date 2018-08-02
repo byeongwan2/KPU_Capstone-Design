@@ -50,7 +50,5 @@ public class Jump : MonoBehaviour {
         airborneSpeed = 7.0f;
         
         isJumping = true;
-        
-       
     }
 }
