@@ -23,7 +23,6 @@ public class Player : MonoBehaviour {
     private SPECIAL_STATE eSpecialState = SPECIAL_STATE.NONE;
     private WAY eWay = WAY.FORWARD;
     private bool isDoubleJump = false;
-    private bool isRun = false;
 
     [SerializeField]
     private float bombPower;
@@ -47,7 +46,6 @@ public class Player : MonoBehaviour {
         isDoubleJump = false;
 
         move = GetComponent<Move>();
-        isRun = false;
 
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", MAXPLAYERBOMB);
@@ -117,22 +115,23 @@ public class Player : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            playerAni.SetInteger("TurnOnSpot", 1);
+            playerAni.Play("EllenTurnOnSpotLeft45");
             eSpecialState = SPECIAL_STATE.TURNONSPOT;
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            playerAni.SetInteger("TurnOnSpot", 2);
+            playerAni.Play("EllenTurnOnSpotRight45");
             eSpecialState = SPECIAL_STATE.TURNONSPOT;
         }
     }
 
-   
-
-    public void TurnOnSpotCancel()
+   private void ResetState()
     {
-        playerAni.SetInteger("TurnOnSpot", 0);
+        playerAni.Play("PlayerIdle");
+        eState = STATE.STAND;
     }
+
+    
 
     private void MoveManual()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
     {
@@ -162,7 +161,6 @@ public class Player : MonoBehaviour {
 
     private void LogicAnimation()
     {
-        if (isRun) return;
         switch (eState)
         {
             case STATE.JUMP:
@@ -190,26 +188,36 @@ public class Player : MonoBehaviour {
                 break;
         }    
     }
-
-
-    private void Running()
+    private void Dumbling()
     {
-        if (Input.GetKey(KeyCode.W) && isRun == true)       //두번누르면 여기로들어옴
+        if (Input.GetKey(KeyCode.W) ) //&& isRun == true)       //두번누르면 여기로들어옴
         {
-            isRun = false;
+            //isRun = false;
+            // eState = STATE.RUN;
+        }
+        else if (Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)
+        {
+            // isRun = true;
+            //StartCoroutine(RunningStart());
+        }
+    }
+
+    private void Running()          //달리기는 쉬프트
+    {
+       if(Input.GetKey(KeyCode.LeftShift) &&eState == STATE.WALK  )
+        {
             eState = STATE.RUN;
         }
-        else if(Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)       
+       else if(Input.GetKeyUp(KeyCode.LeftShift) && eState == STATE.RUN)
         {
-            isRun = true;
-            StartCoroutine(RunningStart());
+            eState = STATE.WALK;
         }
     }
 
     IEnumerator RunningStart()
     {
         yield return new WaitForSeconds(0.2f);          //0.2초안에 두번눌러야 달리기h
-        isRun = false;
+        //isRun = false;
     }
 
 
