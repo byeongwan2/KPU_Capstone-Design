@@ -58,16 +58,18 @@ public class Player : MonoBehaviour {
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
 
         // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
-        if (eSpecialState == SPECIAL_STATE.DOUBLEJUMPLANDING)
+       
+        if(isKeyNone)           //어디서든지 움직임을 중단시킬수있는 변수
         {
             move.Init();
             return;
-
         }
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
 
     }
+    private bool isKeyNone = false;
+   
     //애니메이터 컨트롤러 해시값 추출    
     private readonly int hashV = Animator.StringToHash("v");
     private readonly int hashH = Animator.StringToHash("h");
@@ -109,6 +111,12 @@ public class Player : MonoBehaviour {
             bombThrow.Work(bombPower);          
         }
 
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            playerAni.SetTrigger("Attack");
+            isKeyNone = true;
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             playerAni.Play("EllenTurnOnSpotLeft45");
@@ -119,6 +127,7 @@ public class Player : MonoBehaviour {
             playerAni.Play("EllenTurnOnSpotRight45");
             eSpecialState = SPECIAL_STATE.TURNONSPOT;
         }
+
     }
     //상태리셋
    private void ResetState()
@@ -126,6 +135,7 @@ public class Player : MonoBehaviour {
         playerAni.Play("PlayerIdle");
         eState = STATE.STAND;
         eSpecialState = SPECIAL_STATE.NONE;
+        isKeyNone = false;
     }
 
     //점프및 더블점프
@@ -173,6 +183,7 @@ public class Player : MonoBehaviour {
     private void LandingDoubleJumpExit()         //착지가 끝나면 자동으로 호출 
     {
         eSpecialState = SPECIAL_STATE.NONE;
+        isKeyNone = false;
     }
 
     //애니메이션 해제용 이벤트
@@ -184,6 +195,7 @@ public class Player : MonoBehaviour {
             {          //더블점프끄나면 착지
                 playerAni.Play("EllenIdleLandFast");
                 eSpecialState = SPECIAL_STATE.DOUBLEJUMPLANDING;
+                isKeyNone = true;
             }
             
             isDoubleJumping = false;
@@ -212,11 +224,17 @@ public class Player : MonoBehaviour {
                 playerAni.SetBool("IsWalk", true);
                 playerAni.SetBool("IsRun", false);
                 break;
+            case STATE.ATTACK:
+
+                
+                break;
             case STATE.STAND:
                 playerAni.SetBool("IsJump", false);
                 playerAni.SetBool("IsWalk", false);
                 playerAni.SetBool("IsRun", false);
-              
+
+
+               
                 break;
         }    
     }
