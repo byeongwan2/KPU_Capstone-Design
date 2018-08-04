@@ -19,4 +19,6 @@ public class GameSystem : MonoBehaviour {
     {
         player = GameObject.Find("Player").GetComponent<Player>();
     }
+
+
 }
