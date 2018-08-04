@@ -87,8 +87,8 @@ public class Player : MonoBehaviour {
         LogicAnimation();//애니메이션 웬만하면 제일마지막
 
         //해시에 이동 계수 전달
-     
-        playerAni.SetFloat(hashV, move.Vertical);
+      
+       playerAni.SetFloat(hashV, move.Vertical);
         playerAni.SetFloat(hashH, move.Horizontal);
         playerAni.SetFloat(hashJ, jump.airborneSpeed);
     }
@@ -98,10 +98,9 @@ public class Player : MonoBehaviour {
     private void KeyboardManual()
     {
         if (Input.GetKeyDown(KeyCode.Space)) {   FuncJump(); }
-       
-        
+      
 
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             bombThrow.Work(bombPower);          
         }
@@ -163,16 +162,13 @@ public class Player : MonoBehaviour {
             eState = STATE.JUMP;
             if (ePreState == STATE.STAND)
             {
-
-                move.Vertical = 1.0f;
-                Debug.Log(move.moveDir);
-                Debug.Log(move.moveDir.normalized);
-                
-                jump.Action(16.6f, 5.0f);
-               
-
+                jump.Action(1.6f, 5.0f);
             }
-            else { Debug.Log(move.moveDir); Debug.Log(move.moveDir.normalized); jump.Action(1.6f, 5.0f);  } //점프력,점프스피드
+
+            else
+            {
+                jump.Action(1.6f, 5.0f);//점프력,점프스피드
+            } 
 
             isDoubleJump = true;
             StartCoroutine(JumpingStart());
@@ -201,7 +197,7 @@ public class Player : MonoBehaviour {
         else
         {
             eState = STATE.STAND;
-           
+            
         }
   
     }
