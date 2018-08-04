@@ -161,8 +161,18 @@ public class Player : MonoBehaviour {
         {
             ePreState = eState;     //점프전 상태보관
             eState = STATE.JUMP;
-            if (ePreState == STATE.STAND) jump.Action(16.6f, 5.0f);
-            else jump.Action(1.6f, 5.0f);     //점프력,점프스피드
+            if (ePreState == STATE.STAND)
+            {
+
+                move.Vertical = 1.0f;
+                Debug.Log(move.moveDir);
+                Debug.Log(move.moveDir.normalized);
+                
+                jump.Action(16.6f, 5.0f);
+               
+
+            }
+            else { Debug.Log(move.moveDir); Debug.Log(move.moveDir.normalized); jump.Action(1.6f, 5.0f);  } //점프력,점프스피드
 
             isDoubleJump = true;
             StartCoroutine(JumpingStart());
