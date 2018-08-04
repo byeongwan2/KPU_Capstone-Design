@@ -131,16 +131,20 @@ public class Player : MonoBehaviour {
         eState = STATE.STAND;
         eSpecialState = SPECIAL_STATE.NONE;
         isKeyNone = false;
-        isJumpNone = false;
+    }
+
+    //이전상태로 리셋
+    private void ResetPreState()
+    {
+        eState = ePreState;
+        isKeyNone = false;
     }
 
 
     //점프및 더블점프
-    private bool isJumpNone = false;            //점프가 가능한 상태임을 나타내는 변수
     private bool isDoubleJumping = false;
     private void FuncJump()
     {
-        if (isJumpNone) return; 
         if (eState == STATE.JUMP && isDoubleJump == true)       //이단점프
         {
             //if (ePreState == STATE.STAND)
@@ -183,7 +187,6 @@ public class Player : MonoBehaviour {
     {
         eSpecialState = SPECIAL_STATE.NONE;
         isKeyNone = false;
-        isJumpNone = false;
     }
 
     //애니메이션 해제용 이벤트
@@ -196,7 +199,6 @@ public class Player : MonoBehaviour {
                 playerAni.Play("EllenIdleLandFast");
                 eSpecialState = SPECIAL_STATE.DOUBLEJUMPLANDING;
                 isKeyNone = true;
-                isJumpNone = true;
             }
             
             isDoubleJumping = false;
@@ -294,20 +296,10 @@ public class Player : MonoBehaviour {
     {
         if(Input.GetMouseButtonDown(0))
         {
-            ePreState = eState;
-            eState = STATE.ATTACK;
             playerAni.SetTrigger("ShortAttack");
             isKeyNone = true;
-            isJumpNone = true;
         }
     }
-
-    //이전상태로 리셋
-    private void ResetPreState()
-    {
-        eState = ePreState;
-        isKeyNone = false;
-        isJumpNone = false;
-    }
+    
 }
  
