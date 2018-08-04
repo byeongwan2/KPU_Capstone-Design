@@ -47,17 +47,18 @@ public class Player : MonoBehaviour {
         bombPower = 15.0f;
 
     }
+    private bool isKeyNone = false;
     private float r = 0.0f;
     private float ry = 0.0f;
     private void PlayerManual()
     {
         r = Input.GetAxis("Mouse X");
 
-        // ry = Input.GetAxis("Mouse Y"); 완벽하지 않아서 주석처리
+        // ry = Input.GetAxis("Mouse Y"); //완벽하지 않아서 주석처리
 
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
 
-        // playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
+       //  playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
        
         if(isKeyNone)           //어디서든지 움직임을 중단시킬수있는 변수
         {
@@ -68,7 +69,7 @@ public class Player : MonoBehaviour {
         move.Vertical = Input.GetAxis("Vertical");
 
     }
-    private bool isKeyNone = false;
+  
    
     //애니메이터 컨트롤러 해시값 추출    
     private readonly int hashV = Animator.StringToHash("v");
@@ -79,9 +80,9 @@ public class Player : MonoBehaviour {
         PlayerManual();
         KeyboardManual();//입력
         //WayManual();//방향
-        MoveManual();//움직임
+        SetMove();//움직임
         Running();//달리기
-
+        MouseManual();//마우스
 
         LogicAnimation();//애니메이션 웬만하면 제일마지막
 
@@ -96,15 +97,9 @@ public class Player : MonoBehaviour {
     //키보드 입력
     private void KeyboardManual()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DoubleJump();
-        }
+        if (Input.GetKeyDown(KeyCode.Space)) {   FuncJump(); }
        
-        if(Input.GetKeyDown(KeyCode.Return))
-        {
-         //뭐를쓸까낭?
-        }
+        
 
         if(Input.GetKeyDown(KeyCode.R))
         {
@@ -138,9 +133,17 @@ public class Player : MonoBehaviour {
         isKeyNone = false;
     }
 
+    //이전상태로 리셋
+    private void ResetPreState()
+    {
+        eState = ePreState;
+        isKeyNone = false;
+    }
+
+
     //점프및 더블점프
     private bool isDoubleJumping = false;
-    private void DoubleJump()
+    private void FuncJump()
     {
         if (eState == STATE.JUMP && isDoubleJump == true)       //이단점프
         {
@@ -164,7 +167,7 @@ public class Player : MonoBehaviour {
    
 
     //기본적인 움직임 상태값
-    private void MoveManual()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
+    private void SetMove()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
     {
         if (eState == STATE.JUMP) return;
    
@@ -225,7 +228,7 @@ public class Player : MonoBehaviour {
                 playerAni.SetBool("IsRun", false);
                 break;
             case STATE.ATTACK:
-
+  
                 
                 break;
             case STATE.STAND:
@@ -289,6 +292,14 @@ public class Player : MonoBehaviour {
     }
 
 
+    private void MouseManual()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            playerAni.SetTrigger("ShortAttack");
+            isKeyNone = true;
+        }
+    }
     
 }
  
