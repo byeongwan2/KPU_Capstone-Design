@@ -8,7 +8,7 @@ public class Jump : MonoBehaviour {
     private bool isJumping = false;    
     private float gravity = 25.0f;     //중력
     private float gravityProportion = 0.03f;
-    public float airborneSpeed;
+   public float airborneSpeed;
 
 
     private Rigidbody this_rigidbody;
@@ -47,7 +47,7 @@ public class Jump : MonoBehaviour {
          if (isJumping) return;
 
         this_rigidbody.AddForce(new Vector3(0, _jumpForce, 0) * _jumpSpeed, ForceMode.VelocityChange);
-        airborneSpeed = 7.0f;
+        airborneSpeed = 15.0f;
         
         isJumping = true;
     }

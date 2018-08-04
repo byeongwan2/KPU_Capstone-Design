@@ -134,22 +134,26 @@ public class Player : MonoBehaviour {
     }
 
     //이전상태로 리셋
+    //이전상태로 리셋
     private void ResetPreState()
     {
         eState = ePreState;
         isKeyNone = false;
+        isJumpNone = false;
     }
 
 
     //점프및 더블점프
+    private bool isJumpNone = false;            //점프가 가능한 상태임을 나타내는 변수
     private bool isDoubleJumping = false;
     private void FuncJump()
     {
+        if (isJumpNone) return;
         if (eState == STATE.JUMP && isDoubleJump == true)       //이단점프
         {
-            //if (ePreState == STATE.STAND)
-            // playerRb.AddForce(new Vector3(0, 16.6f, 0) * 5.0f, ForceMode.VelocityChange);
-            playerRb.AddForce(new Vector3(0, 1.6f, 0) * 5.0f, ForceMode.VelocityChange);
+            if (ePreState == STATE.STAND)
+             playerRb.AddForce(new Vector3(0, 2.6f, 0) * 5.0f, ForceMode.VelocityChange);
+            else  playerRb.AddForce(new Vector3(0, 1.6f, 0) * 5.0f, ForceMode.VelocityChange);
             isDoubleJump = false;
             isDoubleJumping = true;
         }
@@ -161,10 +165,18 @@ public class Player : MonoBehaviour {
             else jump.Action(1.6f, 5.0f);     //점프력,점프스피드
 
             isDoubleJump = true;
+            StartCoroutine(JumpingStart());
         }
     }
-    
-   
+    //이단점프 코루틴
+    IEnumerator JumpingStart()
+    {
+        yield return new WaitForSeconds(0.5f);          //0.2초안에 두번눌러야 달리기h
+        isDoubleJump = false;
+
+
+    }
+
 
     //기본적인 움직임 상태값
     private void SetMove()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
@@ -179,6 +191,7 @@ public class Player : MonoBehaviour {
         else
         {
             eState = STATE.STAND;
+           
         }
   
     }
@@ -187,6 +200,7 @@ public class Player : MonoBehaviour {
     {
         eSpecialState = SPECIAL_STATE.NONE;
         isKeyNone = false;
+        isJumpNone = false;
     }
 
     //애니메이션 해제용 이벤트
@@ -199,6 +213,7 @@ public class Player : MonoBehaviour {
                 playerAni.Play("EllenIdleLandFast");
                 eSpecialState = SPECIAL_STATE.DOUBLEJUMPLANDING;
                 isKeyNone = true;
+                isJumpNone = true;
             }
             
             isDoubleJumping = false;
@@ -296,8 +311,11 @@ public class Player : MonoBehaviour {
     {
         if(Input.GetMouseButtonDown(0))
         {
+            ePreState = eState;
+            eState = STATE.ATTACK;
             playerAni.SetTrigger("ShortAttack");
             isKeyNone = true;
+            isJumpNone = true;
         }
     }
     
