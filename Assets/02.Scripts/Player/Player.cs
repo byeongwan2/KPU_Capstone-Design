@@ -319,54 +319,56 @@ public class Player : MonoBehaviour {
         
     }
 
-    private Queue<int> AttackComboQue = new Queue<int>(); 
+   
+    //단순 총알발사
+    private void ShotBullet()
+    {
+        bulletShot.Work();
+    }
+
+    //공격전용 큐 나중에바뀔여지있음 아직사용 x
+    private Queue<int> AttackComboQue = new Queue<int>();
     private void BasicAttackCombo()
     {
-       
-        AttackComboQue.Dequeue();
-        if (AttackComboQue.Count < 1)
+        counter--;
+        if (counter < 1)
         {
             BasicAttackExit();
         }
-        
-
-
     }
+
 
     //마우스로 인한 상태변경
     private void MouseManual()                  //마우스로 콤보 공격 가능
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (AttackComboQue.Count >= 4) { return; }
+            if (eState == STATE.ATTACK && playerAni.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
+            {
+                BasicAttackExit(); Debug.Log("버그초기화");
+            }
+            if (clickNumber >= 4)  return; 
 
- 
-            AttackComboQue.Enqueue(1); 
-             
-            playerAni.SetInteger("ShortAttackCombo", AttackComboQue.Count);
+            clickNumber++;
+            playerAni.SetInteger("ShortAttackCombo", clickNumber);      //클릭한만큼 애니메이션클립넘김
+            counter++;
 
-
-            if (AttackComboQue.Count >= 2) return;
-
-
-
-            ePreState = eState;
-            eState = STATE.ATTACK;
-            playerAni.SetTrigger("ShortAttack");
-            isKeyNone = true;
-            isJumpNone = true;
-
-            Check.AllFreeze(playerRb);
+            if (clickNumber == 1)
+            {
+                ePreState = eState;
+                eState = STATE.ATTACK;
+                playerAni.SetTrigger("ShortAttack");
+                isKeyNone = true;           //공격중 키입력,점프,위치,회전값 전부 멈춤
+                isJumpNone = true;
+                Check.AllFreeze(playerRb);
+            }
         }
 
     }
-    private int comboCount = 0;
+
     private int clickNumber = 0;
-    //단순 총알발사
-    private void ShotBullet()
-    {
-        bulletShot.Work();
-    }
+    private int counter = 0;
+ 
 
     private void BasicAttackExit()
     {
@@ -374,9 +376,9 @@ public class Player : MonoBehaviour {
         Check.ResetFreeze(playerRb);
 
         ResetState();
-        AttackComboQue.Clear();
-        comboCount = 0;
+        //AttackComboQue.Clear();
         clickNumber = 0;
+        counter = 0;
     }
 }
  

@@ -279,7 +279,7 @@ ModelImporter:
       has scale animation that will be discarded.\n\t'Ellen_Left_LowerLeg' has scale
       animation that will be discarded.\n\t'Ellen_Right_UpperLeg' has scale animation
       that will be discarded.\n\t'Ellen_Right_LowerLeg' has scale animation that will
-      be discarded.\nEvent BasicAttackExit has a time (1.070122) outside the clip's
+      be discarded.\nEvent BasicAttackExit has a time (1.083333) outside the clip's
       valid range (0.000000..1.050000). It will never be fired"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
