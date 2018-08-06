@@ -18,8 +18,6 @@ public class Shot : Behaviour
         bulletSpeed = _bulletSpeed;
 
         bullet = Resources.Load("Prefabs/" + _link) as GameObject;
-        //Debug.Log(bullet);
-        Debug.Log(prefabSystem);
         prefabSystem.CreatePrefab(TYPE.BULLET,bullet, _maxCount);
 
 

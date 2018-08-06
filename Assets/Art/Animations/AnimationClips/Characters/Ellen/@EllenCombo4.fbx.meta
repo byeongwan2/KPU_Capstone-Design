@@ -279,14 +279,15 @@ ModelImporter:
       has scale animation that will be discarded.\n\t'Ellen_Left_LowerLeg' has scale
       animation that will be discarded.\n\t'Ellen_Right_UpperLeg' has scale animation
       that will be discarded.\n\t'Ellen_Right_LowerLeg' has scale animation that will
-      be discarded.\n"
+      be discarded.\nEvent BasicAttackExit has a time (1.070122) outside the clip's
+      valid range (0.000000..1.050000). It will never be fired"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 3
     animationRotationError: 0.5
-    animationPositionError: 0.5
+    animationPositionError: 0
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
@@ -305,10 +306,10 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
@@ -316,15 +317,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.26449007
-        functionName: MeleeAttackStart
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.41482964
-        functionName: MeleeAttackEnd
+      - time: 1
+        functionName: BasicAttackExit
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

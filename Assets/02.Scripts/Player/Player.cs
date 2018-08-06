@@ -135,6 +135,7 @@ public class Player : MonoBehaviour {
         eState = STATE.STAND;
         eSpecialState = SPECIAL_STATE.NONE;
         isKeyNone = false;
+        isJumpNone = false;
     }
 
     //이전상태로 리셋
@@ -193,6 +194,7 @@ public class Player : MonoBehaviour {
     private void SetMove()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
     {
         if (eState == STATE.JUMP) return;
+        if (eState == STATE.ATTACK) return;
    
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
@@ -317,22 +319,64 @@ public class Player : MonoBehaviour {
         
     }
 
-
-    private void MouseManual()
+    private Queue<int> AttackComboQue = new Queue<int>(); 
+    private void BasicAttackCombo()
     {
-        if(Input.GetMouseButtonDown(0))
+       
+        AttackComboQue.Dequeue();
+        if (AttackComboQue.Count < 1)
         {
+            BasicAttackExit();
+        }
+        
+
+
+    }
+
+    //마우스로 인한 상태변경
+    private void MouseManual()                  //마우스로 콤보 공격 가능
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (AttackComboQue.Count >= 4) { return; }
+
+ 
+            AttackComboQue.Enqueue(1); 
+             
+            playerAni.SetInteger("ShortAttackCombo", AttackComboQue.Count);
+
+
+            if (AttackComboQue.Count >= 2) return;
+
+
+
             ePreState = eState;
             eState = STATE.ATTACK;
             playerAni.SetTrigger("ShortAttack");
             isKeyNone = true;
             isJumpNone = true;
+
+            Check.AllFreeze(playerRb);
         }
+
     }
-    
+    private int comboCount = 0;
+    private int clickNumber = 0;
+    //단순 총알발사
     private void ShotBullet()
     {
         bulletShot.Work();
+    }
+
+    private void BasicAttackExit()
+    {
+        playerAni.SetInteger("ShortAttackCombo", 0);
+        Check.ResetFreeze(playerRb);
+
+        ResetState();
+        AttackComboQue.Clear();
+        comboCount = 0;
+        clickNumber = 0;
     }
 }
  

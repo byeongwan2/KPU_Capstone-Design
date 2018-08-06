@@ -12,7 +12,6 @@ public abstract class Behaviour : MonoBehaviour {
     {
         this_transForm = GetComponent<Transform>();
         prefabSystem = GameObject.Find("GameSystem").GetComponent<PrefabSystem>();
-        Debug.Log(prefabSystem);
     }
 
     public abstract void Work();

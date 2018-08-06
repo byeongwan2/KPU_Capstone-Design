@@ -14,4 +14,14 @@ public class Check  {
         return Vector3.Distance(_a.transform.position, _b.transform.position);
     }
    
+    public static void AllFreeze(Rigidbody _rb)
+    {
+        _rb.constraints = RigidbodyConstraints.FreezeAll ;
+    }
+
+    public static void ResetFreeze(Rigidbody _rb)
+    {
+        _rb.constraints = RigidbodyConstraints.None;
+        _rb.constraints = RigidbodyConstraints.FreezeRotation;
+    }
 }
