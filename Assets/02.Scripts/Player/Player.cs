@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
     private Jump jump;
     private Move move;
     private Throw bombThrow;
+    private Shot bulletShot;
     public float rotSpeed = 250.0f; //회전 속도
 
     [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
@@ -23,9 +24,10 @@ public class Player : MonoBehaviour {
     private WAY eWay = WAY.FORWARD;
 
     [SerializeField]
-    private float bombPower;
+    private float bombPower = 15.0f;
 
-    private int MAXPLAYERBOMB = 10;
+    private int MAXPLAYERBOMBCOUNT = 10;
+    private int MAXPLAYERBULLETCOUNT = 40;
 
     //절대 바뀌지않는 초기화//컴포넌트관련내용만
 
@@ -43,8 +45,10 @@ public class Player : MonoBehaviour {
         move = GetComponent<Move>();
 
         bombThrow = GetComponent<Throw>();
-        bombThrow.Init("PlayerBomb", MAXPLAYERBOMB);
-        bombPower = 15.0f;
+        bombThrow.Init("PlayerBomb", MAXPLAYERBOMBCOUNT, bombPower);
+
+        bulletShot = GetComponent<Shot>();
+        bulletShot.Init("Bullet", MAXPLAYERBULLETCOUNT, 1000.0f);
 
     }
     private bool isKeyNone = false;
@@ -102,7 +106,7 @@ public class Player : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            bombThrow.Work(bombPower);          
+            bombThrow.Work();          
         }
 
         if(Input.GetKeyDown(KeyCode.B))
@@ -325,5 +329,9 @@ public class Player : MonoBehaviour {
         }
     }
     
+    private void ShotBullet()
+    {
+        bulletShot.Work();
+    }
 }
  
