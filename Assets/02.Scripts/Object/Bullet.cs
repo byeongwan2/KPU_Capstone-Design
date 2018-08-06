@@ -26,7 +26,7 @@ public class Bullet : MonoBehaviour {
         rb = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐
     }
 	void Start () {
-        rb.position = launchPos;
+        transform.position = launchPos;
         transform.Rotate(launchRot.eulerAngles);
         rb.AddForce(transform.forward * speed);
     }

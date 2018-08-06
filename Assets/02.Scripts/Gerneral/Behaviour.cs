@@ -6,12 +6,13 @@ public abstract class Behaviour : MonoBehaviour {
 
     protected Transform this_transForm;
 
-    protected PrefabSystem system;
+    protected PrefabSystem prefabSystem;
 
     protected void Init()
     {
         this_transForm = GetComponent<Transform>();
-        system = GameObject.Find("GameSystem").GetComponent<PrefabSystem>();
+        prefabSystem = GameObject.Find("GameSystem").GetComponent<PrefabSystem>();
+        Debug.Log(prefabSystem);
     }
 
     public abstract void Work();

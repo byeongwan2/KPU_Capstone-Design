@@ -43,12 +43,13 @@ public class Player : MonoBehaviour {
         isDoubleJump = false;
 
         move = GetComponent<Move>();
+        bulletShot = GetComponent<Shot>();
+        bulletShot.Init("Bullet", MAXPLAYERBULLETCOUNT, 1000.0f);
 
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", MAXPLAYERBOMBCOUNT, bombPower);
 
-        bulletShot = GetComponent<Shot>();
-        bulletShot.Init("Bullet", MAXPLAYERBULLETCOUNT, 1000.0f);
+
 
     }
     private bool isKeyNone = false;
