@@ -328,57 +328,70 @@ public class Player : MonoBehaviour {
 
     //공격전용 큐 나중에바뀔여지있음 아직사용 x
     private Queue<int> AttackComboQue = new Queue<int>();
+    private int combo = 0;
+    private int comboClear = 0;
     private void BasicAttackCombo()
     {
-        counter--;
-        if (counter < 1)
+        Debug.Log("dq");
+        while(comboClear > 0) { comboClear--; AttackComboQue.Dequeue();Debug.Log("clear"); }
+        AttackComboQue.Dequeue();
+        if (AttackComboQue.Count <= 0)
         {
             BasicAttackExit();
         }
+        else combo++;
     }
 
 
+    private int comboCount = 0;
     //마우스로 인한 상태변경
     private void MouseManual()                  //마우스로 콤보 공격 가능
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (eState == STATE.ATTACK && playerAni.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
-            {
-                BasicAttackExit(); Debug.Log("버그초기화");
-            }
-            if (clickNumber >= 4)  return; 
 
-            clickNumber++;
-            playerAni.SetInteger("ShortAttackCombo", clickNumber);      //클릭한만큼 애니메이션클립넘김
-            counter++;
-
-            if (clickNumber == 1)
-            {
-                ePreState = eState;
-                eState = STATE.ATTACK;
-                playerAni.SetTrigger("ShortAttack");
-                isKeyNone = true;           //공격중 키입력,점프,위치,회전값 전부 멈춤
-                isJumpNone = true;
-                Check.AllFreeze(playerRb);
-            }
+            if (comboCount >= 4)  return;
+            while(combo > 0) { combo--; AttackComboQue.Enqueue(1); comboClear++; Debug.Log("leak"); }
+            comboCount++;
+            Debug.Log("enq");
+            AttackComboQue.Enqueue(1);
+            playerAni.SetInteger("ShortAttackCombo", comboCount);
+            StartCoroutine(BasicAttackClear());
         }
 
     }
 
-    private int clickNumber = 0;
-    private int counter = 0;
+    private void BasicAttackStart()
+    {
+        Debug.Log("start");
+        ePreState = eState;
+        eState = STATE.ATTACK;
+        isKeyNone = true;           //공격중 키입력,점프,위치,회전값 전부 멈춤
+        isJumpNone = true;
+        Check.AllFreeze(playerRb);
+        combo = 0;
+        comboClear = 0;
+    }
  
 
     private void BasicAttackExit()
     {
-        playerAni.SetInteger("ShortAttackCombo", 0);
+        Debug.Log("exit");
         Check.ResetFreeze(playerRb);
-
+        comboCount = 0;
+        playerAni.SetInteger("ShortAttackCombo", 0);
         ResetState();
-        //AttackComboQue.Clear();
-        clickNumber = 0;
-        counter = 0;
+        AttackComboQue.Clear();
     }
+    IEnumerator BasicAttackClear()          //버그수정용 코루틴
+    {
+        Debug.Log("d");
+        yield return new WaitForSeconds(1.0f);         
+        Debug.Log(AttackComboQue.Count);
+        if (eState == STATE.ATTACK && playerAni.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle")) { BasicAttackExit(); Debug.Log("ddd"); }
+ 
+    }
+
+
 }
  
