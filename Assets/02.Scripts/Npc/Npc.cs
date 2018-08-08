@@ -17,6 +17,7 @@ public class Npc : MonoBehaviour {
         npcTr = GetComponent<Transform>();
         StartCoroutine(PlayerPosition());
         isTalk = false;
+        EventManager.Instance.AddListener(EVENT_TYPE.NPC_CHAT_START, OnEvent_PlayerChatStart);
     }
 
 // Update is called once per frame
@@ -41,7 +42,12 @@ public class Npc : MonoBehaviour {
         if (isTalk == false) return;
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            Debug.Log("안녕하세요?");
+
         }
+    }
+
+    private void OnEvent_PlayerChatStart(EVENT_TYPE _eventType,Component _conponent, object _param )
+    {
+        Debug.Log("안녕하세요?");
     }
 }

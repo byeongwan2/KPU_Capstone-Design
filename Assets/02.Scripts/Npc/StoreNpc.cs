@@ -8,6 +8,8 @@ public class StoreNpc : Npc {
 	void Start () {
         
         base.Init();
+
+      
 	}
 	
 	// Update is called once per frame

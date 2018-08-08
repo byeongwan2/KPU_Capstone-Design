@@ -231,6 +231,7 @@ public class Player : MonoBehaviour {
             
             isDoubleJumping = false;
             eState = ePreState;
+            ManagerTest();
         }
     }
 
@@ -385,13 +386,15 @@ public class Player : MonoBehaviour {
     }
     IEnumerator BasicAttackClear()          //버그수정용 코루틴
     {
-        Debug.Log("d");
         yield return new WaitForSeconds(1.0f);         
         Debug.Log(AttackComboQue.Count);
-        if (eState == STATE.ATTACK && playerAni.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle")) { BasicAttackExit(); Debug.Log("ddd"); }
+        if (eState == STATE.ATTACK && playerAni.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle")) { BasicAttackExit(); }
  
     }
 
-
+    void ManagerTest()
+    {
+        EventManager.Instance.PostNotification(EVENT_TYPE.NPC_CHAT_START, this);
+    }
 }
  
