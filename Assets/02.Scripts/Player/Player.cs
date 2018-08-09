@@ -367,11 +367,12 @@ public class Player : MonoBehaviour {
 
             if (comboCount >= 4)  return;
             while(combo > 0) { combo--; AttackComboQue.Enqueue(1); comboClear++; Debug.Log("leak"); }
+            if(comboCount != 0) Invoke("BasicAttackClear", 0.6f);
             comboCount++;
             Debug.Log("enq");
             AttackComboQue.Enqueue(1);
             playerAni.SetInteger("ShortAttackCombo", comboCount);
-            Invoke("BasicAttackClear", 1.0f);
+    
         }
 
     }
@@ -394,6 +395,7 @@ public class Player : MonoBehaviour {
         Debug.Log("exit");
         Check.ResetFreeze(playerRb);
         comboCount = 0;
+        combo = 0; 
         playerAni.SetInteger("ShortAttackCombo", 0);
         ResetState();
         AttackComboQue.Clear();
