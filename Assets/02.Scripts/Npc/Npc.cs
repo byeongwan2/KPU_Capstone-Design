@@ -48,6 +48,6 @@ public class Npc : MonoBehaviour {
 
     private void OnEvent_PlayerChatStart(EVENT_TYPE _eventType,Component _conponent, object _param )
     {
-        Debug.Log("안녕하세요?");
+        
     }
 }

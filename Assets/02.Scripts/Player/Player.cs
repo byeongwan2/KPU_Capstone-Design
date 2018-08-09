@@ -112,8 +112,9 @@ public class Player : MonoBehaviour {
 
         if(Input.GetKeyDown(KeyCode.B))
         {
-            playerAni.SetTrigger("Attack");
+            playerAni.SetTrigger("LongAttack");
             isKeyNone = true;
+            isJumpNone = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -329,7 +330,7 @@ public class Player : MonoBehaviour {
 
     //공격전용 큐 나중에바뀔여지있음 아직사용 x
     private Queue<int> AttackComboQue = new Queue<int>();
-    private int combo = 0;
+    public int combo = 0;
     private int comboClear = 0;
     private void BasicAttackCombo()
     {
@@ -344,7 +345,7 @@ public class Player : MonoBehaviour {
     }
 
 
-    private int comboCount = 0;
+    public int comboCount = 0;
     //마우스로 인한 상태변경
     private void MouseManual()                  //마우스로 콤보 공격 가능
     {
@@ -357,7 +358,7 @@ public class Player : MonoBehaviour {
             Debug.Log("enq");
             AttackComboQue.Enqueue(1);
             playerAni.SetInteger("ShortAttackCombo", comboCount);
-            StartCoroutine(BasicAttackClear());
+            Invoke("BasicAttackClear", 1.0f);
         }
 
     }
@@ -384,9 +385,8 @@ public class Player : MonoBehaviour {
         ResetState();
         AttackComboQue.Clear();
     }
-    IEnumerator BasicAttackClear()          //버그수정용 코루틴
-    {
-        yield return new WaitForSeconds(1.0f);         
+    void BasicAttackClear()          //버그수정용 코루틴
+    {      
         Debug.Log(AttackComboQue.Count);
         if (eState == STATE.ATTACK && playerAni.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle")) { BasicAttackExit(); }
  
