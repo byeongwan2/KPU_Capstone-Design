@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum SPECIAL_STATE {  NONE,TURNONSPOT , DOUBLEJUMPLANDING}
+enum SPECIAL_STATE {  NONE,TURNONSPOT , DOUBLEJUMPLANDING, DANCE}
 
 public class Player : MonoBehaviour {
 
@@ -129,6 +129,7 @@ public class Player : MonoBehaviour {
             eSpecialState = SPECIAL_STATE.TURNONSPOT;
         }
 
+        SetFun();
     }
 
     private void WayManual()
@@ -242,8 +243,7 @@ public class Player : MonoBehaviour {
                 eSpecialState = SPECIAL_STATE.DOUBLEJUMPLANDING;
                 isKeyNone = true;
                 isJumpNone = true;
-            }
-            
+            }    
             isDoubleJumping = false;
             eState = ePreState;
             ManagerTest();
@@ -413,6 +413,20 @@ public class Player : MonoBehaviour {
         EventManager.Instance.PostNotification(EVENT_TYPE.NPC_CHAT_START, this);
     }
 
+    private void SetFun()
+    {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            if (eSpecialState == SPECIAL_STATE.DANCE)
+            {
+                ResetState();
+                return;
+            }
+            playerAni.SetTrigger("Dance");
+            eSpecialState = SPECIAL_STATE.DANCE;
+        }
+    }
     
+
 }
  
