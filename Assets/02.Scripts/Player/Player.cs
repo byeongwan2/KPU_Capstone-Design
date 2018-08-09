@@ -29,6 +29,7 @@ public class Player : MonoBehaviour {
     private int MAXPLAYERBOMBCOUNT = 10;
     private int MAXPLAYERBULLETCOUNT = 40;
 
+
     //절대 바뀌지않는 초기화//컴포넌트관련내용만
 
     void Start()
@@ -50,7 +51,7 @@ public class Player : MonoBehaviour {
         bombThrow.Init("PlayerBomb", MAXPLAYERBOMBCOUNT, bombPower);
 
 
-
+   
     }
     private bool isKeyNone = false;
     private float r = 0.0f;
@@ -205,14 +206,14 @@ public class Player : MonoBehaviour {
 
 
     //기본적인 움직임 상태값
-    private void SetMove()       //상태만 바꾸는곳 메뉴얼이라는함수는 상태만 바꿈
+    private void SetMove()       //움직이는 상태변경
     {
         if (eState == STATE.JUMP) return;
         if (eState == STATE.ATTACK) return;
    
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-            if (eState == STATE.RUN) return;
+           // if (eState == STATE.RUN) return;
             eState = STATE.WALK;
         }
         else
@@ -411,5 +412,7 @@ public class Player : MonoBehaviour {
     {
         EventManager.Instance.PostNotification(EVENT_TYPE.NPC_CHAT_START, this);
     }
+
+    
 }
  
