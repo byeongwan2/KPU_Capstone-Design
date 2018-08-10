@@ -6,19 +6,21 @@ public class Shot : Behaviour
 {
 
     private GameObject bullet;
-    float bulletSpeed;
+
 
     [SerializeField]
     private GameObject startPosition;
  
 
-    public void Init(string _link, int _maxCount, float _bulletSpeed = 1000.0f)
+    public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage )
     {
         base.Init();
-        bulletSpeed = _bulletSpeed;
-
         bullet = Resources.Load("Prefabs/" + _link) as GameObject;
+        bullet.GetComponent<Bullet>().StatSetting();
+        bullet.GetComponent<Bullet>().DamageSetting(_damage);
         prefabSystem.CreatePrefab(TYPE.BULLET,bullet, _maxCount);
+
+
     }
 
     public override void Work()
@@ -27,6 +29,8 @@ public class Shot : Behaviour
         
         bullet.SetLaunchPos(startPosition.transform.position);     //출발하는장소
         bullet.SetLaunchRot(this_transForm.localRotation);
-        bullet.SetActiveSetting();
+        bullet.SetActiveLaunch();
     }
+
+    
 }

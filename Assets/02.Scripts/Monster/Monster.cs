@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class Monster : MoveObject
 {
     void Start()
     {
-        
+        hp = 100;
     }
 
     void OnTriggerEnter(Collider _obj)

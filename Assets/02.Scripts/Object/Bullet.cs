@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
+public class Bullet : AttackObject {
+
     private Vector3 launchPos;
     public void SetLaunchPos(Vector3 _launchPos)
     {
@@ -33,7 +34,7 @@ public class Bullet : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void SetActiveSetting()          //총알이 켜지면서 초기화
+    public void SetActiveLaunch()          //총알이 켜지면서 초기화
     {
         transform.position = launchPos;
         transform.Rotate(launchRot.eulerAngles);
@@ -42,9 +43,29 @@ public class Bullet : MonoBehaviour {
         Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
     }
     float speed = 100.0f;
-    void Update()
+    [SerializeField]
+    int damage = 0;
+    public int Damage
+    {
+        get{ return damage; }
+    }
+    void FixedUpdate()
     {
         if (gameObject.activeSelf == false) return;
         transform.localPosition += transform.forward * speed * Time.deltaTime;
+    }
+
+    public override void StatSetting()
+    {
+        
+    }
+
+    public void DamageSetting(int _damage)
+    {
+        damage = _damage;
+    }
+    public void SpeedSetting(float _speed)
+    {
+        speed = _speed;
     }
 }

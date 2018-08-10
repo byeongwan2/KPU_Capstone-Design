@@ -4,7 +4,8 @@ using UnityEngine;
 
 enum SPECIAL_STATE {  NONE,TURNONSPOT , DOUBLEJUMPLANDING, DANCE}
 
-public partial class Player : MonoBehaviour {
+public partial class Player : MoveObject
+{
 
     private Transform playerTr;
     private Rigidbody playerRb;
@@ -30,7 +31,7 @@ public partial class Player : MonoBehaviour {
     private int MAXPLAYERBOMBCOUNT = 10;
     private int MAXPLAYERBULLETCOUNT = 40;
 
-
+    private int shotDamage = 10;
     //절대 바뀌지않는 초기화//컴포넌트관련내용만
 
     void Start()
@@ -46,12 +47,14 @@ public partial class Player : MonoBehaviour {
 
         move = GetComponent<Move>();
         bulletShot = GetComponent<Shot>();
-        bulletShot.Init("Bullet", MAXPLAYERBULLETCOUNT, 1000.0f);
+        bulletShot.Init("Bullet", MAXPLAYERBULLETCOUNT, 100.0f, shotDamage);
 
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", MAXPLAYERBOMBCOUNT, bombPower);
 
         shortAttack = GetComponent<ShortAttack>();
+
+        hp = 100;
     }
     private bool isKeyNone = false;
     private float r = 0.0f;
@@ -85,7 +88,7 @@ public partial class Player : MonoBehaviour {
     {
         PlayerManual();
         KeyboardManual();//입력        
-        SetMove();//움직임
+        SetMoveState();//움직임
         Running();//달리기
         MouseManual();//마우스
 
@@ -195,7 +198,7 @@ public partial class Player : MonoBehaviour {
 
 
     //기본적인 움직임 상태값
-    private void SetMove()       //움직이는 상태변경
+    private void SetMoveState()       //움직이는 상태변경
     {
         if (eState == STATE.JUMP) return;
         if (eState == STATE.ATTACK) return;
@@ -236,6 +239,9 @@ public partial class Player : MonoBehaviour {
     {
         switch (eState)
         {
+            case STATE.HIT:
+                playerAni.SetBool("isHit", true);
+                break;
             case STATE.JUMP:
                 playerAni.SetBool("IsJump",true);
                 break;

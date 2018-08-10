@@ -46,7 +46,7 @@ public class Npc : MonoBehaviour {
         }
     }
 
-    private void OnEvent_PlayerChatStart(EVENT_TYPE _eventType,Component _conponent, object _param )
+    private void OnEvent_PlayerChatStart(EVENT_TYPE _eventType,Component _conponent, object _param )        //이벤트 매니저
     {
         
     }

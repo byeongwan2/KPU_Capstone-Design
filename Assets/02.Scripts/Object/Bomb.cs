@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bomb : MonoBehaviour {
+public class Bomb : AttackObject {
     private Vector3 launchPos;
     public void SetLaunchPos(Vector3 _launchPos)                //폭탄이 생성되는 위치
     {
@@ -26,5 +26,8 @@ public class Bomb : MonoBehaviour {
         this_rigidbody.AddForce(power * transform.forward);
     }
 
-  
+    public override void StatSetting()
+    {
+
+    }
 }
