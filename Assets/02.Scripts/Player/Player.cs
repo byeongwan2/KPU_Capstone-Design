@@ -4,7 +4,7 @@ using UnityEngine;
 
 enum SPECIAL_STATE {  NONE,TURNONSPOT , DOUBLEJUMPLANDING, DANCE}
 
-public class Player : MonoBehaviour {
+public partial class Player : MonoBehaviour {
 
     private Transform playerTr;
     private Rigidbody playerRb;
@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
     private Move move;
     private Throw bombThrow;
     private Shot bulletShot;
+    private ShortAttack shortAttack;
     public float rotSpeed = 250.0f; //회전 속도
 
     [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
@@ -50,8 +51,7 @@ public class Player : MonoBehaviour {
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", MAXPLAYERBOMBCOUNT, bombPower);
 
-
-   
+        shortAttack = GetComponent<ShortAttack>();
     }
     private bool isKeyNone = false;
     private float r = 0.0f;
@@ -136,11 +136,11 @@ public class Player : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            playerTr.Rotate(new Vector3(0, 90.0f, 0));
+            playerTr.Rotate(new Vector3(0, 90.0f , 0));
         }
         else if(Input.GetKeyDown(KeyCode.A))
         {
-            playerTr.Rotate(new Vector3(0, 270.0f, 0));
+            playerTr.Rotate(new Vector3(0, 270.0f , 0));
         }
     }
 
@@ -324,88 +324,26 @@ public class Player : MonoBehaviour {
         //isRun = false;
     }
 
-
-
-    //아이템습득
-    void OnTriggerEnter(Collider _obj)
-    {
-        if(_obj.tag == "Item"){
-            _obj.gameObject.SetActive(false);       // 필드에서 아이템흡수
-        }
-        
-    }
-
-   
-    //단순 총알발사
-    private void ShotBullet()
-    {
-        bulletShot.Work();
-    }
-
-    //공격전용 큐 나중에바뀔여지있음 아직사용 x
-    private Queue<int> AttackComboQue = new Queue<int>();
-    public int combo = 0;
-    private int comboClear = 0;
-    private void BasicAttackCombo()
-    {
-        Debug.Log("dq");
-        while(comboClear > 0) { comboClear--; AttackComboQue.Dequeue();Debug.Log("clear"); }
-        AttackComboQue.Dequeue();
-        if (AttackComboQue.Count <= 0)
-        {
-            BasicAttackExit();
-        }
-        else combo++;
-    }
-
-
-    public int comboCount = 0;
+    private int comboCount = 0;
     //마우스로 인한 상태변경
     private void MouseManual()                  //마우스로 콤보 공격 가능
     {
         if (Input.GetMouseButtonDown(0))
         {
-
-            if (comboCount >= 4)  return;
-            while(combo > 0) { combo--; AttackComboQue.Enqueue(1); comboClear++; Debug.Log("leak"); }
-            if(comboCount != 0) Invoke("BasicAttackClear", 0.6f);
             comboCount++;
-            Debug.Log("enq");
-            AttackComboQue.Enqueue(1);
             playerAni.SetInteger("ShortAttackCombo", comboCount);
-    
+            isKeyNone = true;
+            isJumpNone = true;
+            Check.AllFreeze(playerRb);
         }
-
     }
-
-    private void BasicAttackStart()
+    private void ShartAttackExit()
     {
-        Debug.Log("start");
-        ePreState = eState;
-        eState = STATE.ATTACK;
-        isKeyNone = true;           //공격중 키입력,점프,위치,회전값 전부 멈춤
-        isJumpNone = true;
-        Check.AllFreeze(playerRb);
-        combo = 0;
-        comboClear = 0;
-    }
- 
-
-    private void BasicAttackExit()
-    {
-        Debug.Log("exit");
-        Check.ResetFreeze(playerRb);
         comboCount = 0;
-        combo = 0; 
         playerAni.SetInteger("ShortAttackCombo", 0);
-        ResetState();
-        AttackComboQue.Clear();
-    }
-    void BasicAttackClear()          //버그수정용 코루틴
-    {      
-        Debug.Log(AttackComboQue.Count);
-        if (eState == STATE.ATTACK && playerAni.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle")) { BasicAttackExit(); }
- 
+        isKeyNone = false;
+        isJumpNone = false;
+        Check.ResetFreeze(playerRb);        //이 한줄이면 원래대로 만들어줌 ( 플레이어 한해서)
     }
 
     void ManagerTest()

@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour {
+public class Monster : MonoBehaviour
+{
+    void Start()
+    {
+        
+    }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    void OnTriggerEnter(Collider _obj)
+    {
+        if(_obj.tag == "Bullet")
+        {
+            _obj.gameObject.SetActive(false);
+            Debug.Log("총알이 적과부딪힘");
+        }
+    }
 }

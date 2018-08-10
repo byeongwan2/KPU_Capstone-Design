@@ -19,8 +19,6 @@ public class Shot : Behaviour
 
         bullet = Resources.Load("Prefabs/" + _link) as GameObject;
         prefabSystem.CreatePrefab(TYPE.BULLET,bullet, _maxCount);
-
-
     }
 
     public override void Work()
