@@ -39,7 +39,7 @@ public class Bullet : MonoBehaviour {
         transform.Rotate(launchRot.eulerAngles);
 
        // rb.AddForce(transform.forward * speed);
-        Invoke("LifeOff", 2.0f);
+        Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
     }
     float speed = 100.0f;
     void Update()
