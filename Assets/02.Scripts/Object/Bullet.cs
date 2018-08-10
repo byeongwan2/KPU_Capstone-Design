@@ -12,21 +12,39 @@ public class Bullet : MonoBehaviour {
     private Quaternion launchRot;
     public void SetLaunchRot(Quaternion _launchRot)
     {
-        Debug.Log(_launchRot);
         launchRot = _launchRot;
     }
 
-    float speed = 1000.0f;
+    
     // Use this for initialization
 
 
     Rigidbody rb;
 
-	void Start () {
+	void Awake ()
+    {
         rb = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐
-        transform.position = launchPos;
-        transform.Rotate(launchRot.eulerAngles);
-        rb.AddForce(transform.forward * speed);
     }
 
+    void LifeOff()
+    {
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.Euler(Vector4.zero);
+        gameObject.SetActive(false);
+    }
+
+    public void SetActiveSetting()          //총알이 켜지면서 초기화
+    {
+        transform.position = launchPos;
+        transform.Rotate(launchRot.eulerAngles);
+
+       // rb.AddForce(transform.forward * speed);
+        Invoke("LifeOff", 2.0f);
+    }
+    float speed = 100.0f;
+    void Update()
+    {
+        if (gameObject.activeSelf == false) return;
+        transform.localPosition += transform.forward * speed * Time.deltaTime;
+    }
 }

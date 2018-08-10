@@ -224,14 +224,7 @@ public partial class Player : MonoBehaviour {
         }
   
     }
-    //착지후 다시움직일수있음
-    private void LandingDoubleJumpExit()         //착지가 끝나면 자동으로 호출 
-    {
-        eSpecialState = SPECIAL_STATE.NONE;
-        isKeyNone = false;
-        isJumpNone = false;
-    }
-
+   
     //애니메이션 해제용 이벤트
     private void OnCollisionEnter(Collision col)
     {
