@@ -84,8 +84,7 @@ public partial class Player : MonoBehaviour {
     void Update()
     {
         PlayerManual();
-        KeyboardManual();//입력
-        WayManual();//방향
+        KeyboardManual();//입력        
         SetMove();//움직임
         Running();//달리기
         MouseManual();//마우스
@@ -131,18 +130,7 @@ public partial class Player : MonoBehaviour {
 
         SetFun();
     }
-
-    private void WayManual()
-    {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            playerTr.Rotate(new Vector3(0, 90.0f , 0));
-        }
-        else if(Input.GetKeyDown(KeyCode.A))
-        {
-            playerTr.Rotate(new Vector3(0, 270.0f , 0));
-        }
-    }
+    
 
     //상태리셋
    private void ResetState()
