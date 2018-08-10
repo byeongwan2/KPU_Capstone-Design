@@ -18,12 +18,24 @@ public class Bomb : AttackObject {
     Rigidbody this_rigidbody;
     void Start () {
         this_rigidbody = GetComponent<Rigidbody>();
-       
+        SetActiveLaunch();
+        this_rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
+
     }
 	
         
 	void FixedUpdate () {                           //폭탄 그자체가 날라가는 코드를 기입하면댐
-        this_rigidbody.AddForce(power * transform.forward);
+       // this_rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
+    }
+
+    public void SetActiveLaunch()          //폭탄이 켜지면서 초기화
+    {
+        Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
+    }
+
+    void LifeOff()
+    {
+        gameObject.SetActive(false);
     }
 
     public override void StatSetting()

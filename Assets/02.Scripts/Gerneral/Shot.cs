@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class Shot : Behaviour
 {
-
     private GameObject bullet;
-
-
-    [SerializeField]
-    private GameObject startPosition;
+    
  
 
     public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage )

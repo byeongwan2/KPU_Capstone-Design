@@ -31,6 +31,7 @@ public partial class Player : MoveObject
     private int MAXPLAYERBOMBCOUNT = 10;
     private int MAXPLAYERBULLETCOUNT = 40;
 
+    [SerializeField]
     private int shotDamage = 10;
     //절대 바뀌지않는 초기화//컴포넌트관련내용만
 
@@ -110,7 +111,7 @@ public partial class Player : MoveObject
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            bombThrow.Work();          
+            playerAni.SetTrigger("IsThrow");  
         }
 
         if(Input.GetKeyDown(KeyCode.B))

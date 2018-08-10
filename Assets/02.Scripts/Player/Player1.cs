@@ -19,4 +19,10 @@ public partial class Player : MoveObject        //애니메이션 이벤트로�
     {
         bulletShot.Work();
     }
+
+    //단순 폭탄던지기
+    private void ThrowBomb()
+    {
+        bombThrow.Work();
+    }
 }

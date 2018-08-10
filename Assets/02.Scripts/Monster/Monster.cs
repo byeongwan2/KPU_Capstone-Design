@@ -15,6 +15,7 @@ public class Monster : MoveObject
         {
             _obj.gameObject.SetActive(false);
             Debug.Log("총알이 적과부딪힘");
+            Debug.Log(hp);
         }
     }
 }
