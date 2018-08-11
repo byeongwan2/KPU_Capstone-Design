@@ -85,13 +85,16 @@ public partial class Player : MoveObject
     private readonly int hashV = Animator.StringToHash("v");
     private readonly int hashH = Animator.StringToHash("h");
     private readonly int hashJ = Animator.StringToHash("airborne");
+    private readonly int hashGun = Animator.StringToHash("IsGun");
+
     void Update()
     {
         PlayerManual();
-        KeyboardManual();//입력        
-        SetMoveState();//움직임
-        Running();//달리기
-        MouseManual();//마우스
+        KeyboardManual();       //입력        
+        SetMoveState();         //움직임
+        Running();              //달리기
+        MouseManual();          //마우스
+        ChangeGunMode();         //모드 변경
 
         LogicAnimation();//애니메이션 웬만하면 제일마지막
 
@@ -352,7 +355,26 @@ public partial class Player : MoveObject
             eSpecialState = SPECIAL_STATE.DANCE;
         }
     }
-    
+
+    private bool isGun = false;
+    //Gun Mode 변경
+    private void ChangeGunMode()
+    {
+        if(Input.GetKeyDown(KeyCode.F1))
+        {
+           if(isGun == false)
+            {
+                isGun = true;
+                playerAni.SetBool(hashGun, true);
+            }
+           else
+            {
+                isGun = false;
+                playerAni.SetBool(hashGun, false);
+            }
+             
+        }
+    }
 
 }
  
