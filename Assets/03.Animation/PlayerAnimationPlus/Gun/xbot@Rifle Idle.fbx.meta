@@ -182,7 +182,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Rifle Idle
       takeName: mixamo.com
-      firstFrame: 0
+      firstFrame: 150
       lastFrame: 514
       wrapMode: 0
       orientationOffsetY: 0

@@ -6,7 +6,6 @@ enum SPECIAL_STATE {  NONE,TURNONSPOT , DOUBLEJUMPLANDING, DANCE}
 
 public partial class Player : MoveObject
 {
-
     private Transform playerTr;
     private Rigidbody playerRb;
     private Animator playerAni;
@@ -34,7 +33,8 @@ public partial class Player : MoveObject
     [SerializeField]
     private int shotDamage = 10;
     //절대 바뀌지않는 초기화//컴포넌트관련내용만
-
+    [SerializeField]
+    private RuntimeAnimatorController normal_Animator;          //툴에서 초기화
     void Start()
     {
         eState = STATE.STAND;
@@ -360,21 +360,25 @@ public partial class Player : MoveObject
     //Gun Mode 변경
     private void ChangeGunMode()
     {
-        if(Input.GetKeyDown(KeyCode.F1))
+        if (Input.GetKeyDown(KeyCode.F1))
         {
            if(isGun == false)
             {
                 isGun = true;
                 playerAni.SetBool(hashGun, true);
+               // playerAni.SetLayerWeight(1, 1);
+               // playerAni.SetLayerWeight(0, 0);
             }
            else
             {
                 isGun = false;
                 playerAni.SetBool(hashGun, false);
+               // playerAni.SetLayerWeight(1, 0);
+                //playerAni.SetLayerWeight(0, 1);
             }
              
         }
     }
-
+   
 }
  

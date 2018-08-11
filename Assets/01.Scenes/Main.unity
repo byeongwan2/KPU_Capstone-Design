@@ -530,6 +530,26 @@ Prefab:
       propertyPath: startPosition
       value: 
       objectReference: {fileID: 1940001988}
+    - target: {fileID: 114167908775743568, guid: 099c4edbcd14ffe4ca2d7cdb5e754206,
+        type: 2}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 9100000, guid: 7e0e23376048f4146b90602ddfe37251, type: 2}
+    - target: {fileID: 114167908775743568, guid: 099c4edbcd14ffe4ca2d7cdb5e754206,
+        type: 2}
+      propertyPath: normal_Animator
+      value: 
+      objectReference: {fileID: 9100000, guid: c5b28430b40f6e84e88a2fdee2fef6f6, type: 2}
+    - target: {fileID: 114167908775743568, guid: 099c4edbcd14ffe4ca2d7cdb5e754206,
+        type: 2}
+      propertyPath: gun_Animator
+      value: 
+      objectReference: {fileID: 9100000, guid: 7e0e23376048f4146b90602ddfe37251, type: 2}
+    - target: {fileID: 95942717948671176, guid: 099c4edbcd14ffe4ca2d7cdb5e754206,
+        type: 2}
+      propertyPath: m_CullingMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 099c4edbcd14ffe4ca2d7cdb5e754206, type: 2}
   m_IsPrefabParent: 0

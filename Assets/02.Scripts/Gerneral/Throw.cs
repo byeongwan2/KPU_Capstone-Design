@@ -22,6 +22,7 @@ public class Throw : Behaviour {
         var bomb = prefabSystem.ActivePrefab(TYPE.BOMB).GetComponent<Bomb>();           //게임오브젝트가 리턴되므로 이부분 수정해야함 // SetActive(true) 상태로 리턴
         bomb.SetPower(bombPower);
         bomb.SetLaunchPos(startPosition.transform.position);     //출발하는장소
+        bomb.SetActiveLaunch();
        // bomb.SetVelocity          //폭탄을 던질때마다 던지는놈의 속성을 대입만해주면댐
     }
 

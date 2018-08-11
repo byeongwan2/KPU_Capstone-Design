@@ -16,26 +16,28 @@ public class Bomb : AttackObject {
     public void SetVelocity(Vector3 _velocity)  { velocity = _velocity; }
 
     Rigidbody this_rigidbody;
-    void Start () {
-        this_rigidbody = GetComponent<Rigidbody>();
-        SetActiveLaunch();
-        this_rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
-
+    void Awake()
+    {
+        this_rigidbody = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐
+    }
+    void LifeOff()
+    {
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.Euler(Vector4.zero);
+        gameObject.SetActive(false);
     }
 	
         
 	void FixedUpdate () {                           //폭탄 그자체가 날라가는 코드를 기입하면댐
-       // this_rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
+        if(gameObject.activeSelf == false) return;
+        // this_rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
     }
 
     public void SetActiveLaunch()          //폭탄이 켜지면서 초기화
     {
+        transform.position = launchPos;
+        this_rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
         Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
-    }
-
-    void LifeOff()
-    {
-        gameObject.SetActive(false);
     }
 
     public override void StatSetting()
