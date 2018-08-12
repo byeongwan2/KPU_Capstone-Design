@@ -6,7 +6,8 @@ public class Monster : MoveObject
 {
     void Start()
     {
-        hp = 100;
+        base.Setting();
+        hp.SettingHp(100);
     }
 
     void OnTriggerEnter(Collider _obj)
@@ -15,7 +16,7 @@ public class Monster : MoveObject
         {
             _obj.gameObject.SetActive(false);
             Debug.Log("총알이 적과부딪힘");
-            Debug.Log(hp);
+            Debug.Log(hp.getHp());
         }
     }
 }

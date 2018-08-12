@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class MoveObject : MonoBehaviour {
     [SerializeField]
-    protected int hp ;
+    protected HP hp ;
 
-    public void SetHp(int _hp)
+    public HP GetHp()
     {
-        hp += _hp;
+        return hp;
+    }
+
+    protected void Setting()
+    {
+        hp = new HP();
     }
 }

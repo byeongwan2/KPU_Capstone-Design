@@ -37,6 +37,8 @@ public partial class Player : MoveObject
     private RuntimeAnimatorController normal_Animator;          //툴에서 초기화
     void Start()
     {
+        base.Setting();
+
         eState = STATE.STAND;
         ePreState = STATE.STAND;
         eWay = WAY.FORWARD;
@@ -55,7 +57,7 @@ public partial class Player : MoveObject
 
         shortAttack = GetComponent<ShortAttack>();
 
-        hp = 100;
+        hp.SettingHp(100);
     }
     private bool isKeyNone = false;
     private float r = 0.0f;
