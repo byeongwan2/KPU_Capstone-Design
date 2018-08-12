@@ -3,20 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : AttackObject {
-
-    private Vector3 launchPos;
-    public void SetLaunchPos(Vector3 _launchPos)
-    {
-        launchPos = _launchPos;
-    }
-
-    private Quaternion launchRot;
-    public void SetLaunchRot(Quaternion _launchRot)
-    {
-        launchRot = _launchRot;
-    }
-
-    
     // Use this for initialization
 
 

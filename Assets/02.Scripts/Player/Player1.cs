@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class Player : MoveObject        //애니메이션 이벤트로만 발동되는 콜백함수모음 클래스
+public partial class Player : MoveObject        //애니메이션 이벤트로만 발동되는 콜백함수모음 클래스   //내가호출하고싶어도 안하는함수모음
 {           
 
     //착지후 다시움직일수있음

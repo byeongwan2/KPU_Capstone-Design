@@ -34,7 +34,7 @@ public class Move : MonoBehaviour {
         moveSpeed = _moveSpeed;
     }
 
-    public void Init()
+    public void SetZero()
     {
         Vertical = 0.0f;
         Horizontal = 0.0f;

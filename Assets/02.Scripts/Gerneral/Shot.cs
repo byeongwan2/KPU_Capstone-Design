@@ -8,7 +8,7 @@ public class Shot : Behaviour
     
  
 
-    public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage )
+    public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage )//총알이름//총알오브젝트풀수//총알스피드//총알데미지
     {
         base.Init();
         bullet = Resources.Load("Prefabs/" + _link) as GameObject;

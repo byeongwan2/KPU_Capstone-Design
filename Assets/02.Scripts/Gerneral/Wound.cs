@@ -13,7 +13,7 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
         if(_obj.tag == "Bullet")
         {
             int damage = _obj.gameObject.GetComponent<Bullet>().Damage;
-            this_gameObject.GetHp().MinusHp(10);
+            this_gameObject.hp.MinusHp(10);         //임시
         }
     }
 }

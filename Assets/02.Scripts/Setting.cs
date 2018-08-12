@@ -11,7 +11,7 @@ public class Setting  : MonoBehaviour{
         mainCamera = GameObject.Find("Main Camera").GetComponent<SmoothFollow>();
     }
 
-    void Update()
+    void Update()           //화면 좌우 전환 속도 대괄호키
     {
         if (Input.GetKeyDown(KeyCode.LeftBracket))
         {

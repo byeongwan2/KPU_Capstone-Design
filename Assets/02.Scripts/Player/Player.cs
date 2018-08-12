@@ -27,11 +27,11 @@ public partial class Player : MoveObject
     [SerializeField]
     private float bombPower = 15.0f;
 
-    private int MAXPLAYERBOMBCOUNT = 10;
-    private int MAXPLAYERBULLETCOUNT = 40;
+    private readonly int MAXPLAYERBOMBCOUNT = 10;
+    private readonly int MAXPLAYERBULLETCOUNT = 40;
 
     [SerializeField]
-    private int shotDamage = 10;
+    private int shotDamage = 10;            //무기의 데미지는 다를꺼기때문에 배열혹은 열거형으로 전환할가능성 ↑
     //절대 바뀌지않는 초기화//컴포넌트관련내용만
     [SerializeField]
     private RuntimeAnimatorController normal_Animator;          //툴에서 초기화
@@ -74,7 +74,7 @@ public partial class Player : MoveObject
        
         if(isKeyNone)           //어디서든지 움직임을 중단시킬수있는 변수
         {
-            move.Init();
+            move.SetZero();
             return;
         }
         move.Horizontal = Input.GetAxis("Horizontal");
@@ -111,6 +111,7 @@ public partial class Player : MoveObject
     //키보드 입력
     private void KeyboardManual()
     {
+        if (isKeyNone) return;
         if (Input.GetKeyDown(KeyCode.Space)) {   FuncJump(); }
       
 
@@ -295,26 +296,6 @@ public partial class Player : MoveObject
         {
             eState = STATE.WALK;
         }
-    }
-
-    //구르기
-    private void Dumbling()
-    {
-        if (Input.GetKey(KeyCode.W)) //&& isRun == true)       //두번누르면 여기로들어옴
-        {
-            //isRun = false;
-            // eState = STATE.RUN;
-        }
-        else if (Input.GetKeyUp(KeyCode.W) && eState != STATE.RUN)
-        {
-            // isRun = true;
-            //StartCoroutine(RunningStart());
-        }
-    }
-    IEnumerator RunningStart()
-    {
-        yield return new WaitForSeconds(0.2f);          //0.2초안에 두번눌러야 달리기h
-        //isRun = false;
     }
 
     private int comboCount = 0;
