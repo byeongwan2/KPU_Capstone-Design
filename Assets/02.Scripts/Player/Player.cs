@@ -60,17 +60,12 @@ public partial class Player : MoveObject
         hp.SettingHp(100);
     }
     private bool isKeyNone = false;
-    private float r = 0.0f;
-    private float ry = 0.0f;
+    private float r = 0.0f;    
     private void PlayerManual()
     {
-        r = Input.GetAxis("Mouse X");
-
-        // ry = Input.GetAxis("Mouse Y"); //완벽하지 않아서 주석처리
-
+        r = Input.GetAxis("Mouse X");       
         playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
-
-       //  playerTr.Rotate(Vector3.forward * rotSpeed * Time.deltaTime * ry); // Z축을 기준으로 rotSpeed 만큼 회전
+       
        
         if(isKeyNone)           //어디서든지 움직임을 중단시킬수있는 변수
         {
