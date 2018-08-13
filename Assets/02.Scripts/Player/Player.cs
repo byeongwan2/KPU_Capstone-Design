@@ -14,6 +14,7 @@ public partial class Player : MoveObject
     private Throw bombThrow;
     private Shot bulletShot;
     private ShortAttack shortAttack;
+    private GameObject canvas, aim;    
     public float rotSpeed = 250.0f; //회전 속도
 
     [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
@@ -38,6 +39,7 @@ public partial class Player : MoveObject
     void Start()
     {
         base.Setting();
+        
 
         eState = STATE.STAND;
         ePreState = STATE.STAND;
@@ -342,14 +344,14 @@ public partial class Player : MoveObject
         {
            if(isGun == false)
             {
-                isGun = true;
+                isGun = true;                
                 playerAni.SetBool(hashGun, true);
                // playerAni.SetLayerWeight(1, 1);
                // playerAni.SetLayerWeight(0, 0);
             }
            else
             {
-                isGun = false;
+                isGun = false;                
                 playerAni.SetBool(hashGun, false);
                // playerAni.SetLayerWeight(1, 0);
                 //playerAni.SetLayerWeight(0, 1);
