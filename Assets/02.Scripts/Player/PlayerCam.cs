@@ -21,14 +21,13 @@ public class PlayerCam : MonoBehaviour{
 	void LateUpdate () {
 
         //카메라 위치 계산
-        var camPos = playerTr.position - (playerTr.forward * distance) + (playerTr.up * height);
+         var camPos = playerTr.position - (playerTr.forward * distance) + (playerTr.up * height);
 
         //이동 속도 계산
-        tr.position = Vector3.Slerp(tr.position, camPos, Time.deltaTime * moveSpeed);        
+         tr.position = Vector3.Slerp(tr.position, camPos, Time.deltaTime * moveSpeed);        
 
         //카메라가 Player의 머리를 기준
-        tr.LookAt(playerTr.position + (playerTr.up * playerOffset));
-        
+         tr.LookAt(playerTr.position + (playerTr.up * playerOffset));
 
-	}
+    }
 }
