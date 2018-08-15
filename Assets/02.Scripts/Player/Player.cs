@@ -82,20 +82,29 @@ public partial class Player : MoveObject
 
     void Update()
     {
-        PlayerManual();
-        KeyboardManual();       //입력        
-        SetMoveState();         //움직임
-        Running();              //달리기
-        MouseManual();          //마우스
-        ChangeGunMode();         //모드 변경
+        RotCamera();
+       // PlayerManual();
+        //KeyboardManual();       //입력        
+       // SetMoveState();         //움직임
+       // Running();              //달리기
+       // MouseManual();          //마우스
+        //ChangeGunMode();         //모드 변경
+
 
         LogicAnimation();//애니메이션 웬만하면 제일마지막
 
         //해시에 이동 계수 전달
       
-       playerAni.SetFloat(hashV, move.Vertical);
-        playerAni.SetFloat(hashH, move.Horizontal);
-        playerAni.SetFloat(hashJ, jump.airborneSpeed);
+      // playerAni.SetFloat(hashV, move.Vertical);
+       // playerAni.SetFloat(hashH, move.Horizontal);
+       // playerAni.SetFloat(hashJ, jump.airborneSpeed);
+    }
+
+    private void RotCamera()
+    {
+        var mousePos = Input.mousePosition;
+        
+        playerTr.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.z, rotateDegree);
     }
 
     private bool isDoubleJump = false;
@@ -299,7 +308,7 @@ public partial class Player : MoveObject
             playerAni.SetInteger("ShortAttackCombo", comboCount);
             isKeyNone = true;
             isJumpNone = true;
-            Check.AllFreeze(playerRb);
+            //Check.AllFreeze(playerRb);
         }
     }
     private void ShartAttackExit()
@@ -308,7 +317,7 @@ public partial class Player : MoveObject
         playerAni.SetInteger("ShortAttackCombo", 0);
         isKeyNone = false;
         isJumpNone = false;
-        Check.ResetFreeze(playerRb);        //이 한줄이면 원래대로 만들어줌 ( 플레이어 한해서)
+        //Check.ResetFreeze(playerRb);        //이 한줄이면 원래대로 만들어줌 ( 플레이어 한해서)
     }
 
     void ManagerTest()
