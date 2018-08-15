@@ -14,8 +14,7 @@ public partial class Player : MoveObject
     private Throw bombThrow;
     private Shot bulletShot;
     private ShortAttack shortAttack;
-    private GameObject canvas, aim;    
-    public float rotSpeed = 250.0f; //회전 속도
+    private GameObject canvas, aim;        
 
     [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
     private STATE eState = STATE.STAND;
@@ -61,14 +60,9 @@ public partial class Player : MoveObject
 
         hp.SettingHp(100);
     }
-    private bool isKeyNone = false;
-    private float r = 0.0f;    
+    private bool isKeyNone = false;    
     private void PlayerManual()
-    {
-        r = Input.GetAxis("Mouse X");       
-        playerTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime * r); // Y축을 기준으로 rotSpeed 만큼 회전
-       
-       
+    {                      
         if(isKeyNone)           //어디서든지 움직임을 중단시킬수있는 변수
         {
             move.SetZero();

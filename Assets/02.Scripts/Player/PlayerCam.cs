@@ -5,10 +5,9 @@ using UnityEngine;
 public class PlayerCam : MonoBehaviour{
 
     public Transform playerTr;              //Player Transform 컴포넌트    
-    public float moveSpeed = 15.0f;         //카메라 이동 속도   
-    public float rotateSpeed = 10.0f;       //카메라 회전 속도
-    public float distance = 10.0f;           //카메라와 주인공과의 거리
-    public float height = 1.0f;             //카메라 높이
+    public float moveSpeed = 15.0f;         //카메라 이동 속도       
+    public float distance = 2.0f;           //카메라와 주인공과의 거리
+    public float height = 20.0f;             //카메라 높이
     public float playerOffset = 1.0f;       //Player 좌표의 오프셋
     
     private Transform tr;   //카메라 Transfrom 컴포넌트
@@ -25,10 +24,7 @@ public class PlayerCam : MonoBehaviour{
         var camPos = playerTr.position - (playerTr.forward * distance) + (playerTr.up * height);
 
         //이동 속도 계산
-        tr.position = Vector3.Slerp(tr.position, camPos, Time.deltaTime * moveSpeed);
-
-        //회전 속도 계산
-        tr.rotation = Quaternion.Slerp(tr.rotation, playerTr.rotation, Time.deltaTime * rotateSpeed);
+        tr.position = Vector3.Slerp(tr.position, camPos, Time.deltaTime * moveSpeed);        
 
         //카메라가 Player의 머리를 기준
         tr.LookAt(playerTr.position + (playerTr.up * playerOffset));
