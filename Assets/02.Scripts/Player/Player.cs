@@ -104,17 +104,17 @@ public partial class Player : MoveObject
     {
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
         Vector3 pos = transform.position; //게임 오브젝트 좌표 저장
+        
+        mpos.z = mpos.y;
+        
+        Vector3 aim = Camera.main.ScreenToWorldPoint(mpos);
+        
+        float dx = aim.x - pos.x;
+        float dz = aim.z - pos.z;
 
-        mpos.z = pos.z - Camera.main.transform.position.z;
+        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
 
-        Vector3 target = Camera.main.ScreenToWorldPoint(mpos);
-
-        float dz = target.z - pos.z;
-        float dx = target.x - pos.x;
-
-        float rotateDegree = Mathf.Atan2(dz, dx) * Mathf.Rad2Deg;
-
-        playerTr.rotation = Quaternion.Euler(0f, rotateDegree, 0f);
+        playerTr.rotation = Quaternion.Euler(0.0f, rotateDegree, 0.0f);
 
     }
 
