@@ -22,6 +22,7 @@ public class Check  {
     public static void ResetFreeze(Rigidbody _rb)
     {
         _rb.constraints = RigidbodyConstraints.None;
-        _rb.constraints = RigidbodyConstraints.FreezeRotation;
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX;
+        _rb.constraints = RigidbodyConstraints.FreezeRotationY;
     }
 }

@@ -85,9 +85,9 @@ public partial class Player : MoveObject
         RotCamera();
        // PlayerManual();
         //KeyboardManual();       //입력        
-       // SetMoveState();         //움직임
-       // Running();              //달리기
-       // MouseManual();          //마우스
+        //SetMoveState();         //움직임
+        //Running();              //달리기
+        //MouseManual();          //마우스
         //ChangeGunMode();         //모드 변경
 
 
@@ -95,26 +95,28 @@ public partial class Player : MoveObject
 
         //해시에 이동 계수 전달
       
-      // playerAni.SetFloat(hashV, move.Vertical);
-       // playerAni.SetFloat(hashH, move.Horizontal);
-       // playerAni.SetFloat(hashJ, jump.airborneSpeed);
+       playerAni.SetFloat(hashV, move.Vertical);
+        playerAni.SetFloat(hashH, move.Horizontal);
+        playerAni.SetFloat(hashJ, jump.airborneSpeed);
     }
 
     private void RotCamera()
     {
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
-        Vector3 pos = transform.position; //게임 오브젝트 좌표 저장
-        
+        Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
+       
         mpos.z = mpos.y;
         
         Vector3 aim = Camera.main.ScreenToWorldPoint(mpos);
         
+        
+
         float dx = aim.x - pos.x;
         float dz = aim.z - pos.z;
 
         float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
 
-        playerTr.rotation = Quaternion.Euler(0.0f, rotateDegree, 0.0f);
+        playerTr.rotation = Quaternion.Euler(0.0f, rotateDegree,0.0f);
 
     }
 
@@ -319,7 +321,7 @@ public partial class Player : MoveObject
             playerAni.SetInteger("ShortAttackCombo", comboCount);
             isKeyNone = true;
             isJumpNone = true;
-            //Check.AllFreeze(playerRb);
+            Check.AllFreeze(playerRb);
         }
     }
     private void ShartAttackExit()
@@ -328,7 +330,7 @@ public partial class Player : MoveObject
         playerAni.SetInteger("ShortAttackCombo", 0);
         isKeyNone = false;
         isJumpNone = false;
-        //Check.ResetFreeze(playerRb);        //이 한줄이면 원래대로 만들어줌 ( 플레이어 한해서)
+        Check.ResetFreeze(playerRb);        //이 한줄이면 원래대로 만들어줌 ( 플레이어 한해서)
     }
 
     void ManagerTest()
