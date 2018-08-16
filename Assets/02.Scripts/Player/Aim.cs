@@ -12,6 +12,10 @@ public class Aim : MonoBehaviour {
 	}
 		
 	void Update () {
-        tr.position = Input.mousePosition;
+      //  tr.position = Input.mousePosition;
 	}
+    public void Debugg(Vector3 vec)
+    {
+        tr.position = vec;
+    }
 }

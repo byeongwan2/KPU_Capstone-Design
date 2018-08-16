@@ -70,7 +70,6 @@ public partial class Player : MoveObject
         }
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
-
     }
   
    
@@ -83,7 +82,7 @@ public partial class Player : MoveObject
     void Update()
     {
         RotCamera();
-       // PlayerManual();
+       //PlayerManual();
         //KeyboardManual();       //입력        
         //SetMoveState();         //움직임
         //Running();              //달리기
@@ -99,20 +98,23 @@ public partial class Player : MoveObject
         playerAni.SetFloat(hashH, move.Horizontal);
         playerAni.SetFloat(hashJ, jump.airborneSpeed);
     }
+    public Camera _camera;
 
+    public Vector3 aim1;
     private void RotCamera()
     {
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
         Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
-       
         mpos.z = mpos.y;
-        
-        Vector3 aim = Camera.main.ScreenToWorldPoint(mpos);
-        
-        
 
-        float dx = aim.x - pos.x;
-        float dz = aim.z - pos.z;
+
+        aim1 = Camera.main.ScreenToWorldPoint(mpos);
+        Debug.Log(aim1);
+        aim1.x -= pos.x;
+        aim1.z -= pos.z;
+       
+        float dx = aim1.x - pos.x ;
+        float dz = aim1.z - pos.z ;
 
         float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
 
