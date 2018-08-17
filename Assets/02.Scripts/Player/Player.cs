@@ -208,7 +208,7 @@ public partial class Player : MoveObject
     //이단점프 코루틴
     IEnumerator JumpingStart()
     {
-        yield return new WaitForSeconds(0.5f);          //0.2초안에 두번눌러야 달리기h
+        yield return new WaitForSeconds(0.5f);          
         isDoubleJump = false;
 
 
@@ -322,7 +322,7 @@ public partial class Player : MoveObject
             Check.AllFreeze(playerRb);
         }
     }
-    private void ShartAttackExit()
+    private void ShartAttackExit()          //아이들애니메이션에서 호출
     {
         comboCount = 0;
         playerAni.SetInteger("ShortAttackCombo", 0);

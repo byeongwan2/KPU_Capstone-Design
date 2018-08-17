@@ -27,7 +27,7 @@ public class Npc : MonoBehaviour {
 
     IEnumerator PlayerPosition()
     {
-        float dis = Check.Distance(system.Player.transform, npcTr);
+        float dis = Check.Distance(system.pPlayer.transform, npcTr);
         if (dis < 4.0f) isTalk = true;
         else isTalk = false;
 

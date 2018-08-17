@@ -19,7 +19,7 @@ public class Item_Field : MonoBehaviour
     {
         if (isGain == false) return;
 
-        Vector3 vec = system.Player.transform.position - transform.position;            // 정확히 복붙한 5줄 수정좀해야함
+        Vector3 vec = system.pPlayer.transform.position - transform.position;            // 정확히 복붙한 5줄 수정좀해야함
         Quaternion q = Quaternion.LookRotation(vec);
         transform.rotation = Quaternion.Slerp(transform.rotation, q, 3.0f * Time.deltaTime);
         transform.Translate(new Vector3(0, 0, 0.6f) * 8.0f * Time.deltaTime);
@@ -29,7 +29,7 @@ public class Item_Field : MonoBehaviour
 
     private IEnumerator MovePosition()
     {
-        var dis = Check.Distance(system.Player.transform, this.transform);
+        var dis = Check.Distance(system.pPlayer.transform, this.transform);
 
         if (dis < 7.0f)
         {
