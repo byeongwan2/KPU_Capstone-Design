@@ -100,21 +100,21 @@ public partial class Player : MoveObject
     }
     public Camera _camera;
 
-    public Vector3 aim1;
     private void RotCamera()
     {
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
+
         Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
-        mpos.z = mpos.y;
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
 
-        aim1 = Camera.main.ScreenToWorldPoint(mpos);
+        Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
 
-        float dx = aim1.x - pos.x ;
-        float dz = aim1.z - pos.z ;
+        float dx = aim1.x - pos.x;
+        float dz = aim1.z - pos.z;
 
-        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
+        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;
 
-        playerTr.rotation = Quaternion.Euler(0.0f, rotateDegree,0.0f);
+        playerTr.rotation = Quaternion.Euler(0.0f, rotateDegree, 0.0f);
 
     }
 
