@@ -6,12 +6,13 @@ using UnityEngine.AI;
 public class MoveAgent : MonoBehaviour {
 
     public List<Transform> wayPoints;
-    public int nextIdx;
+    public int nextIdx = 0;
 
     private NavMeshAgent agent;
 
-    private readonly float patrolSpeed = 1.5f;
-    private readonly float traceSpeed = 4.0f;
+    private float m_patrolSpeed;
+    private float m_traceSpeed;
+
     private bool patrolling =true ;
     public bool pPatrolling
     {
@@ -21,7 +22,7 @@ public class MoveAgent : MonoBehaviour {
             patrolling = value;
             if (patrolling)
             {
-                agent.speed = patrolSpeed;
+                agent.speed = m_patrolSpeed;
                 MoveWayPoint();
             }
             
@@ -35,9 +36,28 @@ public class MoveAgent : MonoBehaviour {
         set
         {
             traceTarget = value;
-            agent.speed = traceSpeed;
+            agent.speed = m_traceSpeed;
             TraceTarget(traceTarget);
         }
+    }
+
+    public void DataInput(float _patrolSpeed,float _traceSpeed)
+    {
+        m_patrolSpeed = _patrolSpeed;
+        m_traceSpeed = _traceSpeed;
+    }
+
+    public void Init()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        agent.autoBraking = false;
+        agent.speed = m_patrolSpeed;
+        var group = GameObject.Find("WayPointGroup");
+        group.GetComponentsInChildren<Transform>(wayPoints);
+        wayPoints.RemoveAt(0);
+
+        MoveWayPoint();
+
     }
 
     void TraceTarget(Vector3 pos)
@@ -47,7 +67,7 @@ public class MoveAgent : MonoBehaviour {
         agent.isStopped = false;
     }
 
-    public void Stop()
+    public void Stop()              
     {
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
@@ -56,14 +76,7 @@ public class MoveAgent : MonoBehaviour {
 
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.autoBraking = false;
-        agent.speed = patrolSpeed;
-        var group = GameObject.Find("WayPointGroup");
-        group.GetComponentsInChildren<Transform>(wayPoints);
-        wayPoints.RemoveAt(0);
-
-        MoveWayPoint();
+        
     }
 
     void MoveWayPoint()
@@ -83,6 +96,6 @@ public class MoveAgent : MonoBehaviour {
         }
     }
 
-    public void StopNavi() {agent.isStopped = true;}        //네비를 끄는거와 정찰을 끄는건다름
+    public void StopNavi() {agent.isStopped = true;}        //네비를 끄는거와 정찰을 끄는건다름        //잠깐 네비종료
     public void StartNavi() { agent.isStopped = false; }
 }
