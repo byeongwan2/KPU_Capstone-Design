@@ -33,7 +33,7 @@ public class Jump : MonoBehaviour {
 
     private void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Ground")
+        if (col.gameObject.tag.Equals(col.gameObject.name))
         {
             isJumping = false;
             

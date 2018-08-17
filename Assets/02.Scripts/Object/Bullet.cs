@@ -28,7 +28,7 @@ public class Bullet : AttackObject {
        // rb.AddForce(transform.forward * speed);
         Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
     }
-    float speed = 100.0f;
+    float speed = 10.0f;
     [SerializeField]
     int damage = 0;
     public int Damage

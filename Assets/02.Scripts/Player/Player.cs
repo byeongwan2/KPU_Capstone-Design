@@ -82,12 +82,12 @@ public partial class Player : MoveObject
     void Update()
     {
         RotCamera();
-       //PlayerManual();
-        //KeyboardManual();       //입력        
-        //SetMoveState();         //움직임
-        //Running();              //달리기
-        //MouseManual();          //마우스
-        //ChangeGunMode();         //모드 변경
+       PlayerManual();
+        KeyboardManual();       //입력        
+        SetMoveState();         //움직임
+        Running();              //달리기
+        MouseManual();          //마우스
+        ChangeGunMode();         //모드 변경
 
 
         LogicAnimation();//애니메이션 웬만하면 제일마지막
@@ -107,12 +107,8 @@ public partial class Player : MoveObject
         Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
         mpos.z = mpos.y;
 
-
         aim1 = Camera.main.ScreenToWorldPoint(mpos);
-        Debug.Log(aim1);
-        aim1.x -= pos.x;
-        aim1.z -= pos.z;
-       
+
         float dx = aim1.x - pos.x ;
         float dz = aim1.z - pos.z ;
 
