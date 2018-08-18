@@ -16,7 +16,8 @@ public class Move : MonoBehaviour {
         Vertical = 0.0f;
         Horizontal = 0.0f;
         tr = GetComponent<Transform>(); //tr에 주인공 Transform 할당
-	}
+        moveSpeed = 0.0f;
+    }
 	
 	
 	void FixedUpdate ()
@@ -28,7 +29,7 @@ public class Move : MonoBehaviour {
         
     }
 
-    private float moveSpeed = 0.0f;         
+    [SerializeField] private float moveSpeed = 0.0f;         
     public void SetMoveSpeed(float _moveSpeed)
     {
         moveSpeed = _moveSpeed;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum SPECIAL_STATE {  NONE,TURNONSPOT , DOUBLEJUMPLANDING, DANCE}
 
 public partial class Player : MoveObject
 {

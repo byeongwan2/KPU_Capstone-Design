@@ -21,8 +21,14 @@ public class Check  {
 
     public static void ResetFreeze(Rigidbody _rb)
     {
+        if (_rb == null) return;
         _rb.constraints = RigidbodyConstraints.None;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX;
         _rb.constraints = RigidbodyConstraints.FreezeRotationY;
     }
+}
+
+static class Define
+{
+    public const int MOUSE_RIGHT_BUTTON = 1;
 }

@@ -1,20 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+enum SPECIAL_STATE { NONE, TURNONSPOT, DOUBLEJUMPLANDING, DANCE, AIM }
 
 public class Player2 : MoveObject {
 
     private Transform playerTr;
     private Animator playerAni;
     private Move move;
+    [SerializeField]
     private STATE eState ;
+    private SPECIAL_STATE eSpecialState;
 	void Start () {
         playerTr = GetComponent<Transform>();
         move = GetComponent<Move>();
         playerAni = GetComponent<Animator>();
         eState = STATE.STAND;
+        eSpecialState = SPECIAL_STATE.NONE;
 
-        
+
+
     }
 	
 	// Update is called once per frame
@@ -22,9 +27,12 @@ public class Player2 : MoveObject {
         LookMousePoint();
         KeyBoardManual();
         MovePlayer();
+        Running();
+        TakeAim();
 
         Logic();
         Render();
+        SpecialAnimation();
     }
 
     private void LookMousePoint()           //김병완이 구현한 마우스바라보기
@@ -69,10 +77,11 @@ public class Player2 : MoveObject {
         switch (eState)
         {
             case STATE.RUN:
-                move.SetMoveSpeed(2.0f);
+                move.SetMoveSpeed(4.0f);
                 break;
             case STATE.WALK:
-                move.SetMoveSpeed(4.0f);
+
+                move.SetMoveSpeed(2.0f);
                 break;
         }
     }
@@ -83,10 +92,12 @@ public class Player2 : MoveObject {
         {
             case STATE.RUN:
                 playerAni.SetBool("IsRun", true);
+                playerAni.SetBool("IsWalk", false);
                 break;
             case STATE.WALK:
                 playerAni.SetBool("IsWalk", true);
-            break;
+                playerAni.SetBool("IsRun", false);
+                break;
 
             case STATE.STAND:
                 playerAni.SetBool("IsRun", false);
@@ -95,4 +106,44 @@ public class Player2 : MoveObject {
         }
     }
 
+
+    //달리기
+    private void Running()          //달리기는 쉬프트
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && eState == STATE.WALK)
+        {
+            eState = STATE.RUN;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift) && eState == STATE.RUN)
+        {
+            eState = STATE.WALK;
+        }
+    }
+
+
+    //조준
+    private void TakeAim()
+    {
+        if (Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
+        {
+            eSpecialState = SPECIAL_STATE.AIM;
+        }
+        else if(Input.GetMouseButtonUp(Define.MOUSE_RIGHT_BUTTON))
+        {
+            eSpecialState = SPECIAL_STATE.NONE;
+        }
+    }
+
+    //특별한 애니메이션
+    private void SpecialAnimation()
+    {
+        if(eSpecialState == SPECIAL_STATE.AIM)
+        {
+            playerAni.SetBool("IsAim", true);
+        }
+        else
+        {
+            playerAni.SetBool("IsAim", false);
+        }
+    }
 }
