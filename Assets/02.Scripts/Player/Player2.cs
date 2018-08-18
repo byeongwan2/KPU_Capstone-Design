@@ -10,6 +10,7 @@ public class Player2 : MoveObject {
     private Move move;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
+    private STATE ePreState;
     private SPECIAL_STATE eSpecialState;
 
     private bool isRollDelay;
@@ -19,10 +20,13 @@ public class Player2 : MoveObject {
         move = GetComponent<Move>();
         playerAni = GetComponent<Animator>();
         eState = STATE.STAND;
+        ePreState = STATE.STAND;
         eSpecialState = SPECIAL_STATE.NONE;
 
         isRollDelay = false;
         isSpecialState = false;
+       
+
     }
 
     // Update is called once per frame
@@ -42,6 +46,7 @@ public class Player2 : MoveObject {
     //김병완이 구현한 마우스바라보기
     private void LookMousePoint()           
     {
+        if (eState == STATE.ROLL) return;
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
 
         Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
@@ -67,9 +72,9 @@ public class Player2 : MoveObject {
 
     private void KeyBoardManual()       //키보드입력시 상태변경
     {
-        if(Input.GetKey(KeyCode.W))
+        if (eState == STATE.ROLL) return;
+        if (Input.GetKey(KeyCode.W))
         {
-            if (eState == STATE.ROLL ) return;
             eState = STATE.WALK;
 
         }
@@ -162,20 +167,21 @@ public class Player2 : MoveObject {
     {
         if(Input.GetKeyUp(KeyCode.W))
         {
+            if (isSpecialState) return;
             isRollDelay = true;
-            Invoke("RollingExit", 0.5f);
+            Invoke("RollingCancel", 0.5f);
         }
         else if(Input.GetKeyDown(KeyCode.W) && isRollDelay == true)
         {
-            Debug.Log("aa");
             playerAni.SetTrigger("IsRoll");
             isSpecialState = true;
             isRollDelay = false;
+            ePreState = eState;
+            eState = STATE.ROLL;
+            Invoke("RollingReset", 2.0f);
         }
     }
-
-    private void RollingExit()
-    {
-        isRollDelay = false;
-    }
+    private void RollingExit(){ eState = STATE.WALK ; }
+    private void RollingCancel() {  isRollDelay = false; }
+    private void RollingReset() { isSpecialState = false; }
 }
