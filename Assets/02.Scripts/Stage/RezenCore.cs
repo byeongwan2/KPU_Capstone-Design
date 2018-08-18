@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class RezenCore : MonoBehaviour {
 
-	
+	void Start()
+    {
+        GameObject monster = GameObject.FindGameObjectWithTag("Enemy");
+
+    }
 }

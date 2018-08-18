@@ -28,7 +28,7 @@ public class Check  {
     }
 }
 
-static class Define
+static class Define         //c# 은 #define 없다는군;;
 {
     public const int MOUSE_RIGHT_BUTTON = 1;
 }

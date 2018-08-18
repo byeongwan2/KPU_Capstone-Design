@@ -3,7 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum TYPE { BOMB, BULLET ,MONSTER }
-public  class PrefabSystem : MonoBehaviour {                //프리팹시스템에서 모든 오브젝트풀을 관리하니까 나중에 분리할필요가있음
+public class PrefabSystem : MonoBehaviour {                //프리팹시스템에서 모든 오브젝트풀을 관리하니까 나중에 분리할필요가있음
+    public static PrefabSystem instance = null;
+    void Awake()
+    {
+        if (instance == null) instance = this;
+        else if (instance != this) { Destroy(this.gameObject); Debug.Log("매니저중복추적"); }
+        DontDestroyOnLoad(this);
+    }
     enum WHO { PLAYER }
     private List<GameObject> bombPool = new List<GameObject>();         //폭탄을 미리생성
     private List<GameObject> bulletPool = new List<GameObject>();
@@ -12,6 +19,8 @@ public  class PrefabSystem : MonoBehaviour {                //프리팹시스템
     {
         SelectPoolType(_type,_gameObject,_count);
     }
+
+
    
     public GameObject ActivePrefab(TYPE _type)
     {
@@ -21,7 +30,7 @@ public  class PrefabSystem : MonoBehaviour {                //프리팹시스템
         return null;
     }
 
-    private GameObject ChoicePool<T>(T _pool) where T : List<GameObject>
+    private GameObject ChoicePool<T>(T _pool) where T : List<GameObject>            //수많은풀을 if문으로 하지않고 일반화
     {
         foreach( var obj in _pool)
         {
