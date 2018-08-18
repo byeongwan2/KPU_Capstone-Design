@@ -325,7 +325,7 @@ public partial class Player : MoveObject
     private void ShartAttackExit()          //아이들애니메이션에서 호출
     {
         comboCount = 0;
-        playerAni.SetInteger("ShortAttackCombo", 0);
+        //playerAni.SetInteger("ShortAttackCombo", 0);
         isKeyNone = false;
         isJumpNone = false;
         Check.ResetFreeze(playerRb);        //이 한줄이면 원래대로 만들어줌 ( 플레이어 한해서)
