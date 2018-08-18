@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class RezenCore : MonoBehaviour {
 
-	void Start()
+    public void Init(int _monsterNumber = 20)
     {
         GameObject monster = GameObject.FindGameObjectWithTag("Enemy");
-
+        PrefabSystem.instance.CreatePrefab(TYPE.MONSTER, monster, _monsterNumber);
     }
 }

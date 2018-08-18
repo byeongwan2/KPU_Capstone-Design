@@ -9,7 +9,7 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     {
         if (instance == null) instance = this;
         else if (instance != this) { Destroy(this.gameObject); Debug.Log("매니저중복추적"); }
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this.gameObject);
     }
     enum WHO { PLAYER }
     private List<GameObject> bombPool = new List<GameObject>();         //폭탄을 미리생성

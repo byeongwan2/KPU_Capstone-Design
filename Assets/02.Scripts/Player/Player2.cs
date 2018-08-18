@@ -9,8 +9,11 @@ public class Player2 : MoveObject {
     private Animator playerAni;
     private Move move;
     [SerializeField]
-    private STATE eState ;
+    private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private SPECIAL_STATE eSpecialState;
+
+    private bool isRollDelay;
+    private bool isSpecialState = false;
 	void Start () {
         playerTr = GetComponent<Transform>();
         move = GetComponent<Move>();
@@ -18,24 +21,26 @@ public class Player2 : MoveObject {
         eState = STATE.STAND;
         eSpecialState = SPECIAL_STATE.NONE;
 
-
-
+        isRollDelay = false;
+        isSpecialState = false;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         LookMousePoint();
         KeyBoardManual();
         MovePlayer();
         Running();
         TakeAim();
+        Rolling();
 
         Logic();
         Render();
         SpecialAnimation();
     }
 
-    private void LookMousePoint()           //김병완이 구현한 마우스바라보기
+    //김병완이 구현한 마우스바라보기
+    private void LookMousePoint()           
     {
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
 
@@ -53,7 +58,8 @@ public class Player2 : MoveObject {
 
     }
 
-    private void MovePlayer()           //이동값설정
+    //이동값설정
+    private void MovePlayer()           
     {
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
@@ -63,6 +69,7 @@ public class Player2 : MoveObject {
     {
         if(Input.GetKey(KeyCode.W))
         {
+            if (eState == STATE.ROLL ) return;
             eState = STATE.WALK;
 
         }
@@ -71,8 +78,8 @@ public class Player2 : MoveObject {
             eState = STATE.STAND;
         }
     }
-
-    private void Logic()            //클래식 방식으로 이름을 짜봄     논리
+    //클래식 방식으로 이름을 짜봄     논리
+    private void Logic()           
     {
         switch (eState)
         {
@@ -86,10 +93,13 @@ public class Player2 : MoveObject {
         }
     }
 
-    private void Render()                //애니메이션
+    //애니메이션
+    private void Render()                
     {
-        switch(eState)
+        //if (isSpecialState) return;
+        switch (eState)
         {
+          
             case STATE.RUN:
                 playerAni.SetBool("IsRun", true);
                 playerAni.SetBool("IsWalk", false);
@@ -145,5 +155,27 @@ public class Player2 : MoveObject {
         {
             playerAni.SetBool("IsAim", false);
         }
+    }
+
+    //구르기
+    private void Rolling()
+    {
+        if(Input.GetKeyUp(KeyCode.W))
+        {
+            isRollDelay = true;
+            Invoke("RollingExit", 0.5f);
+        }
+        else if(Input.GetKeyDown(KeyCode.W) && isRollDelay == true)
+        {
+            Debug.Log("aa");
+            playerAni.SetTrigger("IsRoll");
+            isSpecialState = true;
+            isRollDelay = false;
+        }
+    }
+
+    private void RollingExit()
+    {
+        isRollDelay = false;
     }
 }
