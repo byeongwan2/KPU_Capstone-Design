@@ -33,6 +33,7 @@ public class Player2 : MoveObject {
     void Update () {
         LookMousePoint();
         KeyBoardManual();
+        MouseManual();
         MovePlayer();
         Running();
         TakeAim();
@@ -184,4 +185,18 @@ public class Player2 : MoveObject {
     private void RollingExit(){ eState = STATE.WALK ; }
     private void RollingCancel() {  isRollDelay = false; }
     private void RollingReset() { isSpecialState = false; }
+
+
+    //기본공격
+    private void MouseManual()
+    {
+        if (Input.GetMouseButtonDown(Define.MOUSE_LEFT_BUTTON))
+        {
+            playerAni.Play("Attack");
+        }
+    }
+    private void AttackBasicExit()
+    {
+
+    }
 }
