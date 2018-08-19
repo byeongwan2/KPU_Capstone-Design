@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+enum ENEMY_STATE {NONE,PATROL,TRACE }
+
 public class Monster : MoveObject
 {
     GameSystem system;
@@ -13,7 +15,7 @@ public class Monster : MoveObject
 
     [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
     private STATE eState = STATE.STAND;
-
+    private ENEMY_STATE eEnemy_State = ENEMY_STATE.NONE;
     [SerializeField]
     private readonly float patrolSpeed = 1.5f;
     [SerializeField]
@@ -26,11 +28,13 @@ public class Monster : MoveObject
 
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
 
+        eEnemy_State = ENEMY_STATE.PATROL ;
         eState = STATE.STAND;
         monsterAni = GetComponent<Animator>();
         moveAgent = GetComponent<MoveAgent>();
         moveAgent.Init();
         moveAgent.DataInput(patrolSpeed, traceSpeed);
+        moveAgent.pPatrolling = true;
         StartCoroutine(CheckPlayerDistance());
         m_dis = 5.0f;
     }
@@ -53,7 +57,7 @@ public class Monster : MoveObject
 
     void LogicState()
     {
-        if(moveAgent.pPatrolling == true)
+        if(eEnemy_State == ENEMY_STATE.PATROL)
         {
             if(eState != STATE.WALK)StartCoroutine(SpecialIdle());
             eState = STATE.WALK;
@@ -83,23 +87,23 @@ public class Monster : MoveObject
 
     private IEnumerator CheckPlayerDistance()
     {
-        float distance = Check.Distance(system.pPlayer.transform, this.transform);
-        if(distance < 10.0f)
+        float distance = Check.Distance(system.pPlayer2.transform, this.transform);
+        if(distance < 2.0f)
         {
-            moveAgent.pPatrolling = false;
-            moveAgent.pTraceTarget = system.pPlayer.transform.position;
+            moveAgent.pTraceTarget = system.pPlayer2.transform.position;
             eState = STATE.RUN;
+            eEnemy_State = ENEMY_STATE.TRACE;
+            moveAgent.StopNavi();
         }
-        else if(distance < 5.0f)
+        else if(distance < 1.0f)
         {
-            moveAgent.pPatrolling = false;
             eState = STATE.ATTACK;
         }
         else
         {
-            moveAgent.pPatrolling = true;
+            
         }
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(6.0f);
         StartCoroutine(CheckPlayerDistance());
     }
 
@@ -109,7 +113,6 @@ public class Monster : MoveObject
         if (moveAgent.pPatrolling == false) yield return null;
         eState = STATE.STAND;
         monsterAni.SetTrigger("IsSpecialIdle");
-        moveAgent.pPatrolling = false;
         moveAgent.StopNavi();
         yield return new WaitForSeconds(5.0f);
         ResetState();
@@ -118,7 +121,6 @@ public class Monster : MoveObject
     void ResetState()
     {
         eState = STATE.WALK;
-        moveAgent.pPatrolling = true;
         moveAgent.StartNavi();
         StartCoroutine(SpecialIdle());
     }

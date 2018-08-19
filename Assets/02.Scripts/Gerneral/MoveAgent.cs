@@ -13,6 +13,7 @@ public class MoveAgent : MonoBehaviour {
     private float m_patrolSpeed;
     private float m_traceSpeed;
 
+    [SerializeField]
     private bool patrolling =true ;
     public bool pPatrolling
     {
@@ -22,6 +23,7 @@ public class MoveAgent : MonoBehaviour {
             patrolling = value;
             if (patrolling)
             {
+
                 agent.speed = m_patrolSpeed;
                 MoveWayPoint();
             }
@@ -57,7 +59,8 @@ public class MoveAgent : MonoBehaviour {
         wayPoints.RemoveAt(0);
 
         MoveWayPoint();
-
+        StartNavi();
+        this.pPatrolling = true;
     }
 
     void TraceTarget(Vector3 pos)
