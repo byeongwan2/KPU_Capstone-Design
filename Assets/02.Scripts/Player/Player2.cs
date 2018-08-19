@@ -44,7 +44,7 @@ public class Player2 : MoveObject {
         SpecialAnimation();
     }
 
-    //김병완이 구현한 마우스바라보기
+    //김병완;;;;이 구현한 마우스바라보기
     private void LookMousePoint()           
     {
         if (eState == STATE.ROLL) return;

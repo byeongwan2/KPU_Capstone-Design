@@ -6,8 +6,8 @@ public class PlayerCam : MonoBehaviour{
 
     public Transform playerTr;              //Player Transform 컴포넌트    
     public float moveSpeed = 15.0f;         //카메라 이동 속도       
-    public float distance = 7.0f;           //카메라와 주인공과의 거리
-    public float height = 5.0f;             //카메라 높이
+    public float distance = 15.0f;           //카메라와 주인공과의 거리
+    public float height = 25.0f;             //카메라 높이
     public float playerOffset = 1.0f;       //Player 좌표의 오프셋
     
     private Transform tr;   //카메라 Transfrom 컴포넌트
