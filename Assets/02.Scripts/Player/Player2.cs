@@ -41,7 +41,6 @@ public class Player2 : MoveObject {
 
         Logic();
         Render();
-        BlendAnimation();
         SpecialAnimation();
     }
 
@@ -75,10 +74,10 @@ public class Player2 : MoveObject {
     private void KeyBoardManual()       //키보드입력시 상태변경
     {
         if (eState == STATE.ROLL) return;
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.W))
         {
             eState = STATE.WALK;
-            
+
         }
         else
         {
@@ -164,18 +163,10 @@ public class Player2 : MoveObject {
         }
     }
 
-    //애니메이터 컨트롤러 해시값 추출    
-    private readonly int hashAngle = Animator.StringToHash("Angle");
-    private readonly int hashX = Animator.StringToHash("X");
-    private readonly int hashZ = Animator.StringToHash("Z");
-    
     //블랜드 애니메이션
     private void BlendAnimation()
     {
-        //해시에 이동 계수 전달
-        playerAni.SetFloat(hashAngle, playerTr.rotation.y);
-        playerAni.SetFloat(hashX, move.Horizontal);
-        playerAni.SetFloat(hashZ, move.Vertical);
+
     }
 
     //구르기
