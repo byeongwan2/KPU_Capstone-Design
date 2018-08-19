@@ -163,6 +163,12 @@ public class Player2 : MoveObject {
         }
     }
 
+    //블랜드 애니메이션
+    private void BlendAnimation()
+    {
+
+    }
+
     //구르기
     private void Rolling()
     {
