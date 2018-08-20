@@ -28,6 +28,10 @@ public class Robot : Enemy {
     {
         Logic();
         Render();
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            enemyAni.SetTrigger("Throw");
+        }
     }
 
     void Render()

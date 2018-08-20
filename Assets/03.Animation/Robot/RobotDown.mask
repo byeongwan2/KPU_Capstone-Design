@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: RobotDown
+  m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature
+    m_Weight: 1
+  - m_Path: Armature/Hips
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Neck
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Neck/Head
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L/FirstProximal.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L/FirstProximal.L/FirstMiddle.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L/FirstProximal.L/FirstMiddle.L/FirstDistal.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L/SecondProximal.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L/SecondProximal.L/SecondMiddle.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L/SecondProximal.L/SecondMiddle.L/SecondDistal.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L/ThumbProximal.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L/ThumbProximal.L/ThumbMiddle.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.L/UpperArm.l/LowerArm.L/Hand.L/ThumbProximal.L/ThumbMiddle.L/ThumbDistal.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R/FirstProximal.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R/FirstProximal.R/FirstMiddle.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R/FirstProximal.R/FirstMiddle.R/FirstDistal.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R/SecondProximal.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R/SecondProximal.R/SecondMiddle.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R/SecondProximal.R/SecondMiddle.R/SecondDistal.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R/ThumbProximal.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R/ThumbProximal.R/ThumbMiddle.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/Spine/Chest/Shoulder.R/UpperArm.r/LowerArm.R/Hand.R/ThumbProximal.R/ThumbMiddle.R/ThumbDistal.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/UpperLeg.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/UpperLeg.L/LowerLeg.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/UpperLeg.L/LowerLeg.L/Foot.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/UpperLeg.L/LowerLeg.L/Foot.L/Toe.L
+    m_Weight: 1
+  - m_Path: Armature/Hips/UpperLeg.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/UpperLeg.R/LowerLeg.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/UpperLeg.R/LowerLeg.R/Foot.R
+    m_Weight: 1
+  - m_Path: Armature/Hips/UpperLeg.R/LowerLeg.R/Foot.R/Toe.R
+    m_Weight: 1
+  - m_Path: CyberSoldier
+    m_Weight: 1
