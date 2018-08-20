@@ -40,11 +40,12 @@ public class Player2 : MoveObject {
         Rolling();
 
         Logic();
+        BlendAnimation();
         Render();
         SpecialAnimation();
     }
 
-    //김병완;;;;이 구현한 마우스바라보기
+    //마우스 바라보기
     private void LookMousePoint()           
     {
         if (eState == STATE.ROLL) return;
@@ -69,15 +70,12 @@ public class Player2 : MoveObject {
     {
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
-    }
-
-    private void KeyBoardManual()       //키보드입력시 상태변경
+    }    private void KeyBoardManual()       //키보드입력시 상태변경
     {
         if (eState == STATE.ROLL) return;
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             eState = STATE.WALK;
-
         }
         else
         {
@@ -163,10 +161,17 @@ public class Player2 : MoveObject {
         }
     }
 
+    //애니메이터 컨트롤러 해시값 추출    
+    private readonly int hashAngle = Animator.StringToHash("Angle");
+    private readonly int hashX = Animator.StringToHash("X");
+    private readonly int hashZ = Animator.StringToHash("Z");
     //블랜드 애니메이션
     private void BlendAnimation()
     {
-
+        //해시에 이동 계수 전달
+        playerAni.SetFloat(hashAngle, playerTr.rotation.y);
+        playerAni.SetFloat(hashX, move.Horizontal);
+        playerAni.SetFloat(hashZ, move.Vertical);
     }
 
     //구르기
