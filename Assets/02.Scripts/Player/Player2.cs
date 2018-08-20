@@ -60,9 +60,7 @@ public class Player2 : MoveObject {
         float dz = aim1.z - pos.z;
 
         float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;
-
         playerTr.rotation = Quaternion.Euler(0.0f, rotateDegree, 0.0f);
-
     }
 
     //이동값설정
@@ -70,7 +68,8 @@ public class Player2 : MoveObject {
     {
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
-    }    private void KeyBoardManual()       //키보드입력시 상태변경
+    }
+    private void KeyBoardManual()       //키보드입력시 상태변경
     {
         if (eState == STATE.ROLL) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))

@@ -41,4 +41,7 @@ public class Move : MonoBehaviour {
         Horizontal = 0.0f;
         moveSpeed = 0.0f;
     }
+
+
+    //무브컴포넌트에서 적도 네비없이 이동할수있는 기능이 있어야함
 }

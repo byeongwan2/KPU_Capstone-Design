@@ -4,12 +4,10 @@ using UnityEngine;
 
 enum ENEMY_STATE {NONE,PATROL,TRACE }
 
-public partial class Monster : MoveObject
+public partial class Monster : Enemy
 {
-    GameSystem system;
 
     Shot bulletShot;
-    Animator monsterAni;
     MoveAgent moveAgent;
     [SerializeField]
     private float m_dis;
@@ -32,11 +30,11 @@ public partial class Monster : MoveObject
         base.Setting();
         hp.SettingHp(100);
 
-        system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
+        base.Init();
 
         eEnemy_State = ENEMY_STATE.PATROL ;
         eState = STATE.STAND;
-        monsterAni = GetComponent<Animator>();
+        
         moveAgent = GetComponent<MoveAgent>();
         moveAgent.Init();
         moveAgent.DataInput(patrolSpeed, traceSpeed);
@@ -85,27 +83,27 @@ public partial class Monster : MoveObject
         {
             case STATE.DIE:
 
-                monsterAni.SetTrigger("Die");
-                monsterAni.SetInteger(hashDieIdx, Random.Range(0, 6));
+                enemyAni.SetTrigger("Die");
+                enemyAni.SetInteger(hashDieIdx, Random.Range(0, 6));
             break;
 
             case STATE.ATTACK:
-                monsterAni.SetBool("IsAttack", true);
-                monsterAni.SetBool("IsRun", false);
+                enemyAni.SetBool("IsAttack", true);
+                enemyAni.SetBool("IsRun", false);
                 break;
             case STATE.RUN:
-                monsterAni.SetBool("IsRun", true);
-                monsterAni.SetBool("IsMove", false);
-                monsterAni.SetBool("IsAttack", false);
+                enemyAni.SetBool("IsRun", true);
+                enemyAni.SetBool("IsMove", false);
+                enemyAni.SetBool("IsAttack", false);
                 break;
             case STATE.WALK:
-                monsterAni.SetBool("IsMove", true);
-                monsterAni.SetBool("IsRun", false);
+                enemyAni.SetBool("IsMove", true);
+                enemyAni.SetBool("IsRun", false);
                 break;
             case STATE.STAND:
-                monsterAni.SetBool("IsAttack", false);
-                monsterAni.SetBool("IsMove", false);
-                monsterAni.SetBool("IsRun", false);
+                enemyAni.SetBool("IsAttack", false);
+                enemyAni.SetBool("IsMove", false);
+                enemyAni.SetBool("IsRun", false);
                 break;
         }
     }
@@ -113,7 +111,6 @@ public partial class Monster : MoveObject
     private IEnumerator CheckPlayerDistance()
     {
         float distance = Check.Distance(obj.transform, this.transform);
-        Debug.Log(distance);
         if(distance < 10.0f && distance >= 5.0f)
         {
             moveAgent.pTraceTarget = obj.transform.position;
@@ -143,7 +140,7 @@ public partial class Monster : MoveObject
         if (eEnemy_State == ENEMY_STATE.PATROL)
         {
             moveAgent.Stop();
-            monsterAni.SetTrigger("IsSpecialIdle");
+            enemyAni.SetTrigger("IsSpecialIdle");
             eState = STATE.STAND;
             eEnemy_State = ENEMY_STATE.NONE;
         }

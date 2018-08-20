@@ -13,7 +13,11 @@ public class Check  {
     {
         return Vector3.Distance(_a.transform.position, _b.transform.position);
     }
-   
+    public static float Distance(Vector3 _a, Vector3 _b)
+    {
+        return Vector3.Distance(_a, _b);
+    }
+
     public static void AllFreeze(Rigidbody _rb)
     {
         _rb.constraints = RigidbodyConstraints.FreezeAll ;
