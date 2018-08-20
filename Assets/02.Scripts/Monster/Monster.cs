@@ -23,6 +23,10 @@ public partial class Monster : MoveObject
     [SerializeField]
     private readonly float traceSpeed = 2.5f;
 
+
+    private readonly int hashDie = Animator.StringToHash("Die");
+    private readonly int hashDieIdx = Animator.StringToHash("DieIdx");
+
     void Start()
     {
         base.Setting();
@@ -58,7 +62,10 @@ public partial class Monster : MoveObject
         {
             _obj.gameObject.SetActive(false);
             Debug.Log("총알이 적과부딪힘");
-            Debug.Log(hp.getHp());
+            if(hp.getHp() <= 0)
+            {
+                eState = STATE.DIE;
+            }
         }
     }
     
@@ -76,6 +83,12 @@ public partial class Monster : MoveObject
     {
         switch(eState)
         {
+            case STATE.DIE:
+
+                monsterAni.SetTrigger("Die");
+                monsterAni.SetInteger(hashDieIdx, Random.Range(0, 6));
+            break;
+
             case STATE.ATTACK:
                 monsterAni.SetBool("IsAttack", true);
                 monsterAni.SetBool("IsRun", false);
@@ -83,6 +96,7 @@ public partial class Monster : MoveObject
             case STATE.RUN:
                 monsterAni.SetBool("IsRun", true);
                 monsterAni.SetBool("IsMove", false);
+                monsterAni.SetBool("IsAttack", false);
                 break;
             case STATE.WALK:
                 monsterAni.SetBool("IsMove", true);
@@ -111,6 +125,13 @@ public partial class Monster : MoveObject
             eState = STATE.ATTACK;
             eEnemy_State = ENEMY_STATE.TRACE;
             moveAgent.Stop();
+        }
+        else
+        {
+            if(eState == STATE.ATTACK || eEnemy_State == ENEMY_STATE.TRACE)
+            {
+                eEnemy_State = ENEMY_STATE.PATROL;
+            }
         }
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(CheckPlayerDistance());
