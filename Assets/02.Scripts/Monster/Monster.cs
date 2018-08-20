@@ -103,15 +103,16 @@ public class Monster : MoveObject
         {
             
         }
-        yield return new WaitForSeconds(6.0f);
+        yield return new WaitForSeconds(1.0f);
         StartCoroutine(CheckPlayerDistance());
     }
 
     IEnumerator SpecialIdle()
     {
-        yield return new WaitForSeconds(6.0f);
-        if (moveAgent.pPatrolling == false) yield return null;
+        yield return new WaitForSeconds(5.0f);
+        if (eEnemy_State != ENEMY_STATE.PATROL) yield return null;
         eState = STATE.STAND;
+        eEnemy_State = ENEMY_STATE.NONE;
         monsterAni.SetTrigger("IsSpecialIdle");
         moveAgent.StopNavi();
         yield return new WaitForSeconds(5.0f);
