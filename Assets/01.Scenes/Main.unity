@@ -745,6 +745,7 @@ MonoBehaviour:
   hp: {fileID: 0}
   m_dis: 0
   eState: 0
+  eEnemy_State: 0
   obj: {fileID: 116877271}
 --- !u!114 &380278967
 MonoBehaviour:
@@ -795,6 +796,18 @@ MonoBehaviour:
   - {fileID: 0}
   nextIdx: 0
   patrolling: 1
+--- !u!114 &380278970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 380278964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 726a85f4234e2124c97fab1ad235be68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPosition: {fileID: 2088147627}
 --- !u!1 &480540204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2700,6 +2713,10 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1706790489 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400000, guid: 03cd26eddfc134a6dbc4d40f15965660, type: 3}
+  m_PrefabInternal: {fileID: 634439287}
 --- !u!1 &1713038868
 GameObject:
   m_ObjectHideFlags: 0
@@ -3074,6 +3091,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6320b88d0f5ebc44e9fc02a834532549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2088147627
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2088147628}
+  m_Layer: 0
+  m_Name: firePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2088147628
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2088147627}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.152, y: 0.057, z: 0.925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1706790489}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2122442779 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400030, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}

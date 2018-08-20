@@ -4,10 +4,11 @@ using UnityEngine;
 
 enum ENEMY_STATE {NONE,PATROL,TRACE }
 
-public class Monster : MoveObject
+public partial class Monster : MoveObject
 {
     GameSystem system;
 
+    Shot bulletShot;
     Animator monsterAni;
     MoveAgent moveAgent;
     [SerializeField]
@@ -36,6 +37,11 @@ public class Monster : MoveObject
         moveAgent.Init();
         moveAgent.DataInput(patrolSpeed, traceSpeed);
         moveAgent.pPatrolling = true;
+
+        bulletShot = GetComponent<Shot>();
+        bulletShot.Init("Bullet", 8, 100.0f, 2);
+
+
         StartCoroutine(CheckPlayerDistance());
         m_dis = 5.0f;
         StartCoroutine(SpecialIdle());
@@ -93,13 +99,14 @@ public class Monster : MoveObject
     private IEnumerator CheckPlayerDistance()
     {
         float distance = Check.Distance(obj.transform, this.transform);
-        if(distance < 4.0f && distance >= 3.0f)
+        Debug.Log(distance);
+        if(distance < 10.0f && distance >= 5.0f)
         {
             moveAgent.pTraceTarget = obj.transform.position;
             eState = STATE.RUN;
             eEnemy_State = ENEMY_STATE.TRACE;
         }
-        else if(distance < 3.0f)
+        else if(distance < 5.0f)
         {
             eState = STATE.ATTACK;
             eEnemy_State = ENEMY_STATE.TRACE;
@@ -123,5 +130,5 @@ public class Monster : MoveObject
         if (eEnemy_State == ENEMY_STATE.NONE)  eEnemy_State = ENEMY_STATE.PATROL; 
         StartCoroutine(SpecialIdle());
     }
-
+    
 }
