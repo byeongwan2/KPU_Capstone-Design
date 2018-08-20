@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Robot : Enemy {
-
+    private MoveAgent agent;
     private Transform tr;
-    private Around around;
     private STATE eState = STATE.STAND;
     private Move move;
+
+    private readonly string str = "RobotWayPoint";
 	void Start()
     {
         //hp
@@ -18,14 +19,13 @@ public class Robot : Enemy {
         eState = STATE.STAND;
         tr = GetComponent<Transform>();
         move = GetComponent<Move>();
-        around = GetComponent<Around>();
-
+        agent = GetComponent<MoveAgent>();
+        agent.Init(str, 2.0f, 3.0f);
         move.SetMoveSpeed(4.0f);
     }
 
     void Update()
     {
-        Direction();
         Logic();
         Render();
     }
@@ -46,12 +46,8 @@ public class Robot : Enemy {
 
     private void Logic()
     {
-        if (around.IsArounding())   eState = STATE.WALK; 
+        if (agent.pPatrolling)   eState = STATE.WALK; 
     }
 
-    private void Direction()        //차후 일반화 시킬필요가있음 기초든 컴포넌트든
-    {
-       tr.rotation = Quaternion.Euler(0.0f, around.GetDirection(tr.position), 0.0f);
-    }
    
 }

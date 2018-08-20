@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Around : MonoBehaviour {               //특정 포인트들을 왓다리 갓다리
 
+
     public List<Transform> wayPoints;
 
     private Transform tr;
@@ -15,7 +16,7 @@ public class Around : MonoBehaviour {               //특정 포인트들을 왓
     {
         tr = GetComponent<Transform>();
         arounding = true;
-        AroundAction();
+       // AroundAction();
         StartCoroutine(DestinationCheck());
     }
 
@@ -30,7 +31,7 @@ public class Around : MonoBehaviour {               //특정 포인트들을 왓
         yield return new WaitForSeconds(1.0f);
         if(1.0f >Check.Distance(tr.position, destination) && arounding == true)
         {
-            AroundAction();
+            //AroundAction();
         }
         StartCoroutine(DestinationCheck());
     }

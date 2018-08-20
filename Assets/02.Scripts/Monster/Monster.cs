@@ -25,6 +25,7 @@ public partial class Monster : Enemy
     private readonly int hashDie = Animator.StringToHash("Die");
     private readonly int hashDieIdx = Animator.StringToHash("DieIdx");
 
+    private readonly string str = "WayPointGroup";
     void Start()
     {
         base.Setting();
@@ -36,8 +37,7 @@ public partial class Monster : Enemy
         eState = STATE.STAND;
         
         moveAgent = GetComponent<MoveAgent>();
-        moveAgent.Init();
-        moveAgent.DataInput(patrolSpeed, traceSpeed);
+        moveAgent.Init(str, patrolSpeed,traceSpeed);
         moveAgent.pPatrolling = true;
 
         bulletShot = GetComponent<Shot>();

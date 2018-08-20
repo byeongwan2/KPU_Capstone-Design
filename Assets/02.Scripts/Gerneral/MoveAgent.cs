@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class MoveAgent : MonoBehaviour {
 
     public List<Transform> wayPoints;
-    public int nextIdx = 0;
 
     private NavMeshAgent agent;
 
@@ -25,12 +24,11 @@ public class MoveAgent : MonoBehaviour {
             {
 
                 agent.speed = m_patrolSpeed;
-                MoveWayPoint();
+                MoveWayPoint(Random.Range(0, wayPoints.Count));
             }
             
         }
     }
-
     private Vector3 traceTarget;
     public Vector3 pTraceTarget
     {
@@ -43,22 +41,18 @@ public class MoveAgent : MonoBehaviour {
         }
     }
 
-    public void DataInput(float _patrolSpeed,float _traceSpeed)
-    {
-        m_patrolSpeed = _patrolSpeed;
-        m_traceSpeed = _traceSpeed;
-    }
-
-    public void Init()
+    public void Init(string _str,float _patrolSpeed, float _traceSpeed)
     {
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
         agent.speed = m_patrolSpeed;
-        var group = GameObject.Find("WayPointGroup");
+        var group = GameObject.Find(_str);
         group.GetComponentsInChildren<Transform>(wayPoints);
         wayPoints.RemoveAt(0);
 
-        MoveWayPoint();
+        m_patrolSpeed = _patrolSpeed;
+        m_traceSpeed = _traceSpeed;
+        MoveWayPoint(0);
         this.pPatrolling = true;
     }
 
@@ -76,15 +70,10 @@ public class MoveAgent : MonoBehaviour {
         patrolling = false;
     }
 
-    void Start()
-    {
-        
-    }
-
-    void MoveWayPoint()
+    void MoveWayPoint(int _nextIdx)
     {
         if (agent.isPathStale) return;
-        agent.destination = wayPoints[nextIdx].position;
+        agent.destination = wayPoints[_nextIdx].position;
         agent.isStopped = false;
     }
 
@@ -93,8 +82,8 @@ public class MoveAgent : MonoBehaviour {
         if (patrolling == false) return;
         if(agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <=0.5f)
         {
-            nextIdx = ++nextIdx % wayPoints.Count;
-            MoveWayPoint();
+            int nextIdx =  Random.Range(0,wayPoints.Count);
+            MoveWayPoint(nextIdx);
         }
     }
 }
