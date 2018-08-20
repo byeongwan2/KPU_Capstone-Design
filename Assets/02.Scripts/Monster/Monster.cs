@@ -15,6 +15,7 @@ public class Monster : MoveObject
 
     [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
     private STATE eState = STATE.STAND;
+    [SerializeField]
     private ENEMY_STATE eEnemy_State = ENEMY_STATE.NONE;
     [SerializeField]
     private readonly float patrolSpeed = 1.5f;
@@ -37,6 +38,7 @@ public class Monster : MoveObject
         moveAgent.pPatrolling = true;
         StartCoroutine(CheckPlayerDistance());
         m_dis = 5.0f;
+        StartCoroutine(SpecialIdle());
     }
 
     void Update()
@@ -59,9 +61,8 @@ public class Monster : MoveObject
     {
         if(eEnemy_State == ENEMY_STATE.PATROL)
         {
-            if(eState != STATE.WALK)StartCoroutine(SpecialIdle());
             eState = STATE.WALK;
-           
+            moveAgent.pPatrolling = true;
         }
     }
 
@@ -70,38 +71,39 @@ public class Monster : MoveObject
         switch(eState)
         {
             case STATE.ATTACK:
-
+                monsterAni.SetBool("IsAttack", true);
+                monsterAni.SetBool("IsRun", false);
                 break;
             case STATE.RUN:
                 monsterAni.SetBool("IsRun", true);
+                monsterAni.SetBool("IsMove", false);
                 break;
             case STATE.WALK:
                 monsterAni.SetBool("IsMove", true);
+                monsterAni.SetBool("IsRun", false);
                 break;
             case STATE.STAND:
+                monsterAni.SetBool("IsAttack", false);
                 monsterAni.SetBool("IsMove", false);
                 monsterAni.SetBool("IsRun", false);
                 break;
         }
     }
-
+    public GameObject obj;
     private IEnumerator CheckPlayerDistance()
     {
-        float distance = Check.Distance(system.pPlayer2.transform, this.transform);
-        if(distance < 2.0f)
+        float distance = Check.Distance(obj.transform, this.transform);
+        if(distance < 4.0f && distance >= 3.0f)
         {
-            moveAgent.pTraceTarget = system.pPlayer2.transform.position;
+            moveAgent.pTraceTarget = obj.transform.position;
             eState = STATE.RUN;
             eEnemy_State = ENEMY_STATE.TRACE;
-            moveAgent.StopNavi();
         }
-        else if(distance < 1.0f)
+        else if(distance < 3.0f)
         {
             eState = STATE.ATTACK;
-        }
-        else
-        {
-            
+            eEnemy_State = ENEMY_STATE.TRACE;
+            moveAgent.Stop();
         }
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(CheckPlayerDistance());
@@ -110,19 +112,16 @@ public class Monster : MoveObject
     IEnumerator SpecialIdle()
     {
         yield return new WaitForSeconds(5.0f);
-        if (eEnemy_State != ENEMY_STATE.PATROL) yield return null;
-        eState = STATE.STAND;
-        eEnemy_State = ENEMY_STATE.NONE;
-        monsterAni.SetTrigger("IsSpecialIdle");
-        moveAgent.StopNavi();
-        yield return new WaitForSeconds(5.0f);
-        ResetState();
-    }
-
-    void ResetState()
-    {
-        eState = STATE.WALK;
-        moveAgent.StartNavi();
+        if (eEnemy_State == ENEMY_STATE.PATROL)
+        {
+            moveAgent.Stop();
+            monsterAni.SetTrigger("IsSpecialIdle");
+            eState = STATE.STAND;
+            eEnemy_State = ENEMY_STATE.NONE;
+        }
+        yield return new WaitForSeconds(3.0f);
+        if (eEnemy_State == ENEMY_STATE.NONE)  eEnemy_State = ENEMY_STATE.PATROL; 
         StartCoroutine(SpecialIdle());
     }
+
 }

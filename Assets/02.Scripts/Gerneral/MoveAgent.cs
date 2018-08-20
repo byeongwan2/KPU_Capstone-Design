@@ -59,7 +59,6 @@ public class MoveAgent : MonoBehaviour {
         wayPoints.RemoveAt(0);
 
         MoveWayPoint();
-        StartNavi();
         this.pPatrolling = true;
     }
 
@@ -98,7 +97,4 @@ public class MoveAgent : MonoBehaviour {
             MoveWayPoint();
         }
     }
-
-    public void StopNavi() {agent.isStopped = true;}        //네비를 끄는거와 정찰을 끄는건다름        //잠깐 네비종료
-    public void StartNavi() { agent.isStopped = false; }
 }
