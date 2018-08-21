@@ -6,7 +6,7 @@ public class Move : MonoBehaviour {
 
     public float Vertical { get; set; }     //상하 이동방향
     public float Horizontal { get; set; }   //좌우 이동방향
-    //김병완 ㅋ.ㅋ
+    
     //주인공 Transform 컴포넌트 변수
     private Transform tr;
 
@@ -15,7 +15,7 @@ public class Move : MonoBehaviour {
 	void Start () {
         Vertical = 0.0f;
         Horizontal = 0.0f;
-        tr = GetComponent<Transform>(); //tr에 주인공 Transform 할당
+        tr = GetComponent<Transform>(); 
         moveSpeed = 0.0f;
     }
 	

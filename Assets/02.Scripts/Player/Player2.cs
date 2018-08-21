@@ -13,7 +13,7 @@ public class Player2 : MoveObject {
     private STATE ePreState;
     private SPECIAL_STATE eSpecialState;
 
-    private bool isRollDelay;
+    private bool isRollDelay;    
     private bool isSpecialState = false;
 	void Start () {
         playerTr = GetComponent<Transform>();
@@ -48,7 +48,7 @@ public class Player2 : MoveObject {
     //마우스 바라보기
     private void LookMousePoint()           
     {
-        if (eState == STATE.ROLL) return;
+        if (eState == STATE.ROLL || eState == STATE.RUN) return;
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
 
         Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
@@ -59,8 +59,8 @@ public class Player2 : MoveObject {
         float dx = aim1.x - pos.x;
         float dz = aim1.z - pos.z;
 
-        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;
-        playerTr.rotation = Quaternion.Euler(0.0f, rotateDegree, 0.0f);
+        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
+        playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
     }
 
     //이동값설정
@@ -73,16 +73,17 @@ public class Player2 : MoveObject {
     private void KeyBoardManual()       //키보드입력시 상태변경
     {
         if (eState == STATE.ROLL) return;
+        
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             eState = STATE.WALK;
-        }
+        }        
         else
         {
             eState = STATE.STAND;
         }
     }
-    //클래식 방식으로 이름을 짜봄     논리
+    //클래식 방식으로 이름을 짜봄 논리
     private void Logic()           
     {
         switch (eState)
@@ -120,17 +121,31 @@ public class Player2 : MoveObject {
         }
     }
 
-
+    private float velocity = 0.0f; //가속도        
     //달리기
     private void Running()          //달리기는 쉬프트
     {
+        
         if (Input.GetKey(KeyCode.LeftShift) && eState == STATE.WALK)
         {
             eState = STATE.RUN;
+            velocity = velocity + Time.deltaTime;
+            playerAni.SetFloat(hashVelocity, velocity);
+
+            if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -60.0f, 0.0f), Time.deltaTime * 10.0f);
+            else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 60.0f, 0.0f), Time.deltaTime * 10.0f);
+            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -145.0f, 0.0f), Time.deltaTime * 10.0f);
+            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 145.0f, 0.0f), Time.deltaTime * 10.0f);
+            else if(Input.GetKey(KeyCode.W)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 1.0f, 0.0f), Time.deltaTime*10.0f);
+            else if(Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -100.0f, 0.0f), Time.deltaTime * 10.0f);
+            else if(Input.GetKey(KeyCode.S)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 180.0f, 0.0f), Time.deltaTime * 10.0f);
+            else if(Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 100.0f, 0.0f), Time.deltaTime * 10.0f);
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift) && eState == STATE.RUN)
         {
             eState = STATE.WALK;
+            velocity = 0.0f;
+            playerAni.SetFloat(hashVelocity, velocity);
         }
     }
 
@@ -163,6 +178,7 @@ public class Player2 : MoveObject {
 
     //애니메이터 컨트롤러 해시값 추출    
     private readonly int hashAngle = Animator.StringToHash("Angle");
+    private readonly int hashVelocity = Animator.StringToHash("Velocity");
     private readonly int hashX = Animator.StringToHash("X");
     private readonly int hashZ = Animator.StringToHash("Z");
     //블랜드 애니메이션
@@ -210,4 +226,7 @@ public class Player2 : MoveObject {
     {
 
     }
+
+
+    
 }
