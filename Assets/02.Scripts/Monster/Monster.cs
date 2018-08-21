@@ -5,10 +5,7 @@ using UnityEngine;
 
 public partial class Monster : Enemy
 {
-    [SerializeField]
-    ENEMY_STATE eEnemy_State = ENEMY_STATE.NONE;
-    [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
-     STATE eState = STATE.STAND;
+
     Shot bulletShot;
 
     [SerializeField]
@@ -39,26 +36,15 @@ public partial class Monster : Enemy
         bulletShot.Init("Bullet", 8, 100.0f, 2);
 
         StartCoroutine(SpecialIdle());
+
+        SettingPlayerDistance(10.0f, 5.0f);
     }
 
     void Update()
     {
         LogicState();
-        LogicAnimation();
+        Render();
     }
-    void OnTriggerEnter(Collider _obj)
-    {
-        if(_obj.tag == "Bullet")
-        {
-            _obj.gameObject.SetActive(false);
-            Debug.Log("총알이 적과부딪힘");
-            if(hp.getHp() <= 0)
-            {
-                eState = STATE.DIE;
-            }
-        }
-    }
-    
 
     void LogicState()
     {
@@ -69,8 +55,9 @@ public partial class Monster : Enemy
         }
     }
 
-    void LogicAnimation()
+    void Render()
     {
+
         switch(eState)
         {
             case STATE.DIE:
@@ -99,8 +86,7 @@ public partial class Monster : Enemy
                 break;
         }
     }
-    public GameObject obj;
-    private IEnumerator CheckPlayerDistance()
+    public override void CheckPlayerDistance()
     {
         float distance = Check.Distance(obj.transform, this.transform);
         if(distance < 10.0f && distance >= 5.0f)
@@ -122,8 +108,6 @@ public partial class Monster : Enemy
                 eEnemy_State = ENEMY_STATE.PATROL;
             }
         }
-        yield return new WaitForSeconds(1.0f);
-        StartCoroutine(CheckPlayerDistance());
     }
 
     IEnumerator SpecialIdle()

@@ -69,6 +69,7 @@ public class Player2 : MoveObject {
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
     }
+
     private void KeyBoardManual()       //키보드입력시 상태변경
     {
         if (eState == STATE.ROLL) return;
@@ -202,7 +203,7 @@ public class Player2 : MoveObject {
     {
         if (Input.GetMouseButtonDown(Define.MOUSE_LEFT_BUTTON))
         {
-            playerAni.Play("Attack");
+            //playerAni.Play("Attack");
         }
     }
     private void AttackBasicExit()

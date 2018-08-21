@@ -10,7 +10,9 @@ public abstract class Enemy : MoveObject {
     protected Animator enemyAni;
     protected MoveAgent moveAgent;
 
-
+    protected STATE eState = STATE.STAND;
+    [SerializeField]
+    protected ENEMY_STATE eEnemy_State = ENEMY_STATE.NONE;
     protected void Init()        //하위에서 호출해야함       //그리고 웬만하면 모든 멤버변수를 여기서 초기화해야함
     {
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
@@ -29,20 +31,20 @@ public abstract class Enemy : MoveObject {
         StartCoroutine(CheckPlayerInterface());
     }
 
-    public virtual void CheckPlayerDistance()
+    public virtual void CheckPlayerDistance()           //원할경우 파생클래스에서 변경가능
     {
         float distance = Check.Distance(system.pPlayer2.transform, this.transform);
         if (distance < detectf && distance >= tracef)
         {
             moveAgent.pTraceTarget = obj.transform.position;
 
-           // eState = STATE.RUN;
-           // eEnemy_State = ENEMY_STATE.TRACE;
+            eState = STATE.RUN;
+            eEnemy_State = ENEMY_STATE.TRACE;
         }
         else if (distance < tracef)
         {
-           // eState = STATE.ATTACK;
-           // eEnemy_State = ENEMY_STATE.TRACE;
+            eState = STATE.ATTACK;
+            eEnemy_State = ENEMY_STATE.TRACE;
             moveAgent.Stop();
         }
     }
@@ -55,5 +57,27 @@ public abstract class Enemy : MoveObject {
         tracef = _trace;
     }
 
-   
+    void OnTriggerEnter(Collider _obj)
+    {
+        if (_obj.tag == "Bullet")
+        {
+            _obj.gameObject.SetActive(false);
+            Debug.Log("총알이 적과부딪힘");
+            if (hp.getHp() <= 0)
+            {
+                eState = STATE.DIE;
+            }
+        }
+    }
+
+    protected void BaseRender()
+    {
+        switch(eState)
+        {
+            case STATE.ATTACK:
+
+                break;
+
+        }
+    }
 }
