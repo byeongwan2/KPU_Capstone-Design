@@ -73,7 +73,6 @@ public class Player2 : MoveObject {
     private void KeyBoardManual()       //키보드입력시 상태변경
     {
         if (eState == STATE.ROLL) return;
-        
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             eState = STATE.WALK;
@@ -141,11 +140,12 @@ public class Player2 : MoveObject {
             else if(Input.GetKey(KeyCode.S)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 180.0f, 0.0f), Time.deltaTime * 10.0f);
             else if(Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 100.0f, 0.0f), Time.deltaTime * 10.0f);
         }
-        else if (Input.GetKeyUp(KeyCode.LeftShift) && eState == STATE.RUN)
-        {
-            eState = STATE.WALK;
+
+        else if (Input.GetKeyUp(KeyCode.LeftShift) && velocity >=0.1f)
+        {   
             velocity = 0.0f;
             playerAni.SetFloat(hashVelocity, velocity);
+            eState = STATE.WALK;
         }
     }
 
