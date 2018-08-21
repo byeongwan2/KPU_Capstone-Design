@@ -2,20 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum ENEMY_STATE {NONE,PATROL,TRACE }
 
 public partial class Monster : Enemy
 {
-
-    Shot bulletShot;
-    MoveAgent moveAgent;
     [SerializeField]
-    private float m_dis;
-
+    ENEMY_STATE eEnemy_State = ENEMY_STATE.NONE;
     [SerializeField]                    //밖에서 쳐다보기위해 노출만시킴 
-    private STATE eState = STATE.STAND;
-    [SerializeField]
-    private ENEMY_STATE eEnemy_State = ENEMY_STATE.NONE;
+     STATE eState = STATE.STAND;
+    Shot bulletShot;
+
     [SerializeField]
     private readonly float patrolSpeed = 1.5f;
     [SerializeField]
@@ -43,9 +38,6 @@ public partial class Monster : Enemy
         bulletShot = GetComponent<Shot>();
         bulletShot.Init("Bullet", 8, 100.0f, 2);
 
-
-        StartCoroutine(CheckPlayerDistance());
-        m_dis = 5.0f;
         StartCoroutine(SpecialIdle());
     }
 

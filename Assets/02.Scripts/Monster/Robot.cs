@@ -28,10 +28,7 @@ public class Robot : Enemy {
     {
         Logic();
         Render();
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-            enemyAni.SetTrigger("Throw");
-        }
+     
     }
 
     void Render()
@@ -51,7 +48,10 @@ public class Robot : Enemy {
     private void Logic()
     {
         if (agent.pPatrolling)   eState = STATE.WALK; 
+
+
     }
 
+    
    
 }
