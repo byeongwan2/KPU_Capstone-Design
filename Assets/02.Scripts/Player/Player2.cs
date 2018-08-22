@@ -15,7 +15,12 @@ public class Player2 : MoveObject {
 
     private bool isRollDelay;    
     private bool isSpecialState = false;
+
+    private bool isMouse;
+
+    private State m_state = null;               //상태에 따른클래스를 갖게끔
 	void Start () {
+        instance = this;
         playerTr = GetComponent<Transform>();
         move = GetComponent<Move>();
         playerAni = GetComponent<Animator>();
@@ -26,7 +31,10 @@ public class Player2 : MoveObject {
         isRollDelay = false;
         isSpecialState = false;
 
-        instance = this;
+        isMouse = false;            //true일때 마우스가 멈춤 false때 작동함 디폴트 false
+
+        m_state = new Stand();
+        m_state.PlayAnimation(playerAni);
     }
 
     // Update is called once per frame
@@ -49,7 +57,7 @@ public class Player2 : MoveObject {
     //마우스 바라보기
     private void LookMousePoint()           
     {
-        if (eState == STATE.ROLL || eState == STATE.RUN) return;
+        if ( isMouse) return;
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
 
         Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
@@ -76,11 +84,20 @@ public class Player2 : MoveObject {
         if (eState == STATE.ROLL) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-            eState = STATE.WALK;
-        }        
+            if (eState != STATE.WALK)
+            {
+                eState = STATE.WALK;
+                m_state = new Walk();
+                m_state.PlayAnimation(playerAni);
+            }
+        }
         else
         {
-            eState = STATE.STAND;
+            if (eState != STATE.STAND)
+            {
+                m_state = new Stand();
+                m_state.PlayAnimation(playerAni);
+            }
         }
     }
     //클래식 방식으로 이름을 짜봄 논리
@@ -99,24 +116,20 @@ public class Player2 : MoveObject {
     }
 
     //애니메이션
-    private void Render()                
+    private void Render()                   //이제 이런거필요없음     
     {
-        //if (isSpecialState) return;
         switch (eState)
         {
           
             case STATE.RUN:
-                playerAni.SetBool("IsRun", true);
-                playerAni.SetBool("IsWalk", false);
+               
                 break;
             case STATE.WALK:
-                playerAni.SetBool("IsWalk", true);
-                playerAni.SetBool("IsRun", false);
+              
                 break;
 
             case STATE.STAND:
-                playerAni.SetBool("IsRun", false);
-                playerAni.SetBool("IsWalk", false);
+               
                 break;
         }
     }
@@ -127,7 +140,13 @@ public class Player2 : MoveObject {
     {    
         if (Input.GetKey(KeyCode.LeftShift) && eState == STATE.WALK)
         {
+            if (eState != STATE.RUN)
+            {
+                m_state = new Run();
+                m_state.PlayAnimation(playerAni);
+            }
             eState = STATE.RUN;
+            
             velocity = velocity + Time.deltaTime;
             playerAni.SetFloat(hashVelocity, velocity);
 
@@ -139,14 +158,21 @@ public class Player2 : MoveObject {
             else if (Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -100.0f, 0.0f), Time.deltaTime * 10.0f);
             else if (Input.GetKey(KeyCode.S)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 180.0f, 0.0f), Time.deltaTime * 10.0f);
             else if (Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 100.0f, 0.0f), Time.deltaTime * 10.0f);
-            
+            isMouse = true;
         }
 
         else if (Input.GetKeyUp(KeyCode.LeftShift) && velocity >=0.1f)
         {   
             velocity = 0.0f;
             playerAni.SetFloat(hashVelocity, velocity);
+            if (eState != STATE.WALK)
+            {
+                m_state = new Walk();
+                m_state.PlayAnimation(playerAni);
+                eState = STATE.WALK;
+            }
             eState = STATE.WALK;
+            isMouse = false;
         }
     }
 
@@ -228,7 +254,7 @@ public class Player2 : MoveObject {
 
     }
 
-    public static Player2 instance;
+    public static Player2 instance;     //조심해서 써야함
     private void Dance()
     {
         if (Input.GetKeyDown(KeyCode.F1)) { playerAni.SetInteger("Dance", 1); eSpecialState = SPECIAL_STATE.DANCE; }

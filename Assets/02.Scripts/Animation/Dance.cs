@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dance : StateMachineBehaviour {
+public class Dance : StateMachineBehaviour {    //애니메이션 폴더안에있는 스크립트는 이벤트중심이라 신중히 작성할것//스테이트머신비헤이비어
 
-    void OnStateEnter()
+    void OnStateEnter()                 
     {
         Player2.instance.GetPlayerAni().SetInteger("Dance", 0);
     }
