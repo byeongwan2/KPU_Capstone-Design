@@ -7,6 +7,7 @@ public partial class Monster : Enemy
 {
 
     Shot bulletShot;
+    MoveAgent moveAgent;
 
     [SerializeField]
     private readonly float patrolSpeed = 1.5f;
@@ -35,9 +36,9 @@ public partial class Monster : Enemy
         bulletShot = GetComponent<Shot>();
         bulletShot.Init("Bullet", 8, 100.0f, 2);
 
-        StartCoroutine(SpecialIdle());
+        StartCoroutine(SpecialIdle());          //걷다가 쉬었다가기
 
-        SettingPlayerDistance(10.0f, 5.0f);
+        SettingPlayerDistance(10.0f, 5.0f);     //플레이어를 발견해서 추적하게되는 거리 10 총을쏠 거리 5
     }
 
     void Update()
@@ -86,7 +87,7 @@ public partial class Monster : Enemy
                 break;
         }
     }
-    public override void CheckPlayerDistance()
+    public void CheckPlayerDistance()
     {
         float distance = Check.Distance(obj.transform, this.transform);
         if(distance < 10.0f && distance >= 5.0f)
@@ -103,7 +104,7 @@ public partial class Monster : Enemy
         }
         else
         {
-            if(eState == STATE.ATTACK || eEnemy_State == ENEMY_STATE.TRACE)
+            if(eEnemy_State == ENEMY_STATE.TRACE)
             {
                 eEnemy_State = ENEMY_STATE.PATROL;
             }

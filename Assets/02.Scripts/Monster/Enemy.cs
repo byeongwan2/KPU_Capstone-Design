@@ -8,7 +8,6 @@ public abstract class Enemy : MoveObject {
 
     GameSystem system;
     protected Animator enemyAni;
-    protected MoveAgent moveAgent;
 
     protected STATE eState = STATE.STAND;
     [SerializeField]
@@ -19,36 +18,15 @@ public abstract class Enemy : MoveObject {
         enemyAni = GetComponent<Animator>();
 
         StartCoroutine(CheckPlayerInterface());
-        obj = GameObject.Find("Player2");
+        obj = system.pPlayer2.gameObject;
     }
 
     public delegate ENEMY_STATE GetTraceState( ENEMY_STATE _Enemy_State );
     public GameObject obj;
     private IEnumerator CheckPlayerInterface()
     {
-        CheckPlayerDistance();
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(CheckPlayerInterface());
-    }
-
-    public virtual void CheckPlayerDistance()           //원할경우 파생클래스에서 변경가능
-    {
-        float distance = Check.Distance(system.pPlayer2.transform, this.transform);
-        if (distance < detectf && distance >= tracef)
-        {
-            return;
-            moveAgent.pTraceTarget = obj.transform.position;
-
-            eState = STATE.RUN;
-            eEnemy_State = ENEMY_STATE.TRACE;
-        }
-        else if (distance < tracef)
-        {
-            return;
-            eState = STATE.ATTACK;
-            eEnemy_State = ENEMY_STATE.TRACE;
-            moveAgent.Stop();
-        }
     }
 
     float detectf = 0.0f;

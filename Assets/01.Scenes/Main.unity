@@ -727,10 +727,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPosition: {fileID: 1513044017}
---- !u!4 &282727766 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 427246, guid: 7aa6f6434be94e44583bd055d3a42eee, type: 2}
-  m_PrefabInternal: {fileID: 831693701}
 --- !u!1 &380278964 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
@@ -822,6 +818,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPosition: {fileID: 2088147627}
+--- !u!4 &380278972 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
+  m_PrefabInternal: {fileID: 836323090}
 --- !u!1 &480540204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2802,7 +2802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2cdab4df5ea1cd42a289fa81e251edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTr: {fileID: 282727766}
+  playerTr: {fileID: 380278972}
   moveSpeed: 15
   distance: 10
   height: 20

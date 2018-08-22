@@ -100,6 +100,7 @@ public class Player2 : MoveObject {
     {
         isMouse = false;
          eState = ePreState;
+        if (eState == STATE.JUMP) eState = STATE.STAND;     //버그방지
     }
 
     private void KeyBoardManual()       //키보드입력시 상태변경
@@ -108,9 +109,7 @@ public class Player2 : MoveObject {
         if (eState == STATE.JUMP) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-
-                eState = STATE.WALK;
-
+            eState = STATE.WALK;
         }
         else
         {
@@ -175,8 +174,8 @@ public class Player2 : MoveObject {
             else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -145.0f, 0.0f), Time.deltaTime * 10.0f);
             else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 145.0f, 0.0f), Time.deltaTime * 10.0f);
             else if (Input.GetKey(KeyCode.W)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 1.0f, 0.0f), Time.deltaTime * 10.0f);
-            else if (Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -100.0f, 0.0f), Time.deltaTime * 10.0f);
             else if (Input.GetKey(KeyCode.S)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 180.0f, 0.0f), Time.deltaTime * 10.0f);
+            else if (Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -100.0f, 0.0f), Time.deltaTime * 10.0f);
             else if (Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 100.0f, 0.0f), Time.deltaTime * 10.0f);
             isMouse = true;
         }
@@ -260,6 +259,7 @@ public class Player2 : MoveObject {
     {
         if (Input.GetMouseButtonDown(Define.MOUSE_LEFT_BUTTON))
         {
+            if (eState == STATE.JUMP) return;
             playerAni.Play("Attack");
             bulletShot.Work();
         }
