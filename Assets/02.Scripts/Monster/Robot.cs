@@ -40,7 +40,7 @@ public class Robot : Enemy {
         switch (eState)
         {
             case STATE.WALK:
-                return;
+                enemyAni.SetBool("IsAttack", true);
                 enemyAni.SetBool("IsMove", true);
                 break;
 

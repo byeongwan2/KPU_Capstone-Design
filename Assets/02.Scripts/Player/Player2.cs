@@ -123,12 +123,9 @@ public class Player2 : MoveObject {
     private float velocity = 0.0f; //가속도        
     //달리기
     private void Running()          //달리기는 쉬프트
-    {
-        
+    {    
         if (Input.GetKey(KeyCode.LeftShift) && eState == STATE.WALK)
         {
- 
-
             eState = STATE.RUN;
             velocity = velocity + Time.deltaTime;
             playerAni.SetFloat(hashVelocity, velocity);
