@@ -14,7 +14,6 @@ public class Stand : State
 
     public override void PlayAnimation(Animator _animator)
     {
-        _animator.SetBool("IsRun", false);
-        _animator.SetBool("IsWalk", false);
+      
     }
 }

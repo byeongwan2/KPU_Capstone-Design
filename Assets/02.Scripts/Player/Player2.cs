@@ -8,6 +8,7 @@ public class Player2 : MoveObject {
     private Transform playerTr;
     private Animator playerAni; public Animator GetPlayerAni()  { return playerAni; }
     private Move move;
+    private Shot bulletShot;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
@@ -17,13 +18,19 @@ public class Player2 : MoveObject {
     private bool isSpecialState = false;
 
     private bool isMouse;
-
+    private readonly int MAXPLAYERBOMBCOUNT = 10;
+    private readonly int MAXPLAYERBULLETCOUNT = 40;
+    [SerializeField]
+    private int shotDamage = 10;            //무기의 데미지는 다를꺼기때문에 배열혹은 열거형으로 전환할가능성 ↑
     private State m_state = null;               //상태에 따른클래스를 갖게끔
 	void Start () {
         instance = this;
         playerTr = GetComponent<Transform>();
         move = GetComponent<Move>();
         playerAni = GetComponent<Animator>();
+        bulletShot = GetComponent<Shot>();
+        bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage);
+
         eState = STATE.STAND;
         ePreState = STATE.STAND;
         eSpecialState = SPECIAL_STATE.NONE;
@@ -33,8 +40,8 @@ public class Player2 : MoveObject {
 
         isMouse = false;            //true일때 마우스가 멈춤 false때 작동함 디폴트 false
 
-        m_state = new Stand();
-        m_state.PlayAnimation(playerAni);
+       // m_state = new Stand();
+       // m_state.PlayAnimation(playerAni);
     }
 
     // Update is called once per frame
@@ -232,6 +239,7 @@ public class Player2 : MoveObject {
         if (Input.GetMouseButtonDown(Define.MOUSE_LEFT_BUTTON))
         {
             playerAni.Play("Attack");
+            bulletShot.Work();
         }
     }
     private void AttackBasicExit()

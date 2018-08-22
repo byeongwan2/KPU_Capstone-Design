@@ -11,6 +11,7 @@ public class Shot : Behaviour
         GameObject bullet = Resources.Load("Prefabs/" + _link) as GameObject;
         bullet.GetComponent<Bullet>().StatSetting();
         bullet.GetComponent<Bullet>().DamageSetting(_damage);
+        bullet.GetComponent<Bullet>().SpeedSetting(_bulletSpeed);
         PrefabSystem.instance.CreatePrefab(TYPE.BULLET,bullet, _maxCount);
 
 
