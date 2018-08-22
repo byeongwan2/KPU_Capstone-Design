@@ -54,6 +54,7 @@ public class Player2 : MoveObject {
         Running();
         TakeAim();
         Rolling();
+        Jumping();
 
         Logic();
         BlendAnimation();
@@ -85,10 +86,26 @@ public class Player2 : MoveObject {
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
     }
+    private void Jumping()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if(ePreState != STATE.JUMP)ePreState = eState;
+            eState = STATE.JUMP;
+            playerAni.SetTrigger("Jump");
+            isMouse = true;
+        }
+    }
+    private void Event_JumpingExit()
+    {
+        isMouse = false;
+         eState = ePreState;
+    }
 
     private void KeyBoardManual()       //키보드입력시 상태변경
     {
         if (eState == STATE.ROLL) return;
+        if (eState == STATE.JUMP) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
 
@@ -99,6 +116,8 @@ public class Player2 : MoveObject {
         {
             eState = STATE.STAND;
         }
+       
+
     }
     //클래식 방식으로 이름을 짜봄 논리
     private void Logic()           
@@ -121,6 +140,9 @@ public class Player2 : MoveObject {
         //if (isSpecialState) return;
         switch (eState)
         {
+            case STATE.JUMP:
+
+                break;
           
             case STATE.RUN:
                 playerAni.SetBool("IsRun", true);
