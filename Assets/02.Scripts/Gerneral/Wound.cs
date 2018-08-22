@@ -10,7 +10,7 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
     }
 	void OnTriggerEnter(Collider _obj)
     {
-        if(_obj.tag == "Bullet")
+        if (_obj.tag == "Bullet")
         {
             int damage = _obj.gameObject.GetComponent<Bullet>().Damage;
             this_gameObject.hp.MinusHp(10);         //임시

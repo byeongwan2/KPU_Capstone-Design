@@ -36,6 +36,7 @@ public abstract class Enemy : MoveObject {
         float distance = Check.Distance(system.pPlayer2.transform, this.transform);
         if (distance < detectf && distance >= tracef)
         {
+            return;
             moveAgent.pTraceTarget = obj.transform.position;
 
             eState = STATE.RUN;
@@ -43,6 +44,7 @@ public abstract class Enemy : MoveObject {
         }
         else if (distance < tracef)
         {
+            return;
             eState = STATE.ATTACK;
             eEnemy_State = ENEMY_STATE.TRACE;
             moveAgent.Stop();
@@ -59,6 +61,7 @@ public abstract class Enemy : MoveObject {
 
     void OnTriggerEnter(Collider _obj)
     {
+        /*
         if (_obj.tag == "Bullet")
         {
             _obj.gameObject.SetActive(false);
@@ -68,6 +71,7 @@ public abstract class Enemy : MoveObject {
                 eState = STATE.DIE;
             }
         }
+        */
     }
 
     protected void BaseRender()

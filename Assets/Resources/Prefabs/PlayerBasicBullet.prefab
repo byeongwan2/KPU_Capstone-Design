@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4000012716797116}
   - component: {fileID: 54508270036923786}
-  - component: {fileID: 135691696726515526}
   - component: {fileID: 114258845311541416}
+  - component: {fileID: 136371878548484316}
   m_Layer: 0
   m_Name: PlayerBasicBullet
   m_TagString: Bullet
@@ -67,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011023395326}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.0087492, y: -2.0770199e-17, z: 9.354066}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000014073500310}
@@ -129,18 +129,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 20
   damage: 10
---- !u!135 &135691696726515526
-SphereCollider:
+--- !u!136 &136371878548484316
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011023395326}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.05
+  m_Height: 0.8
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0.4}
 --- !u!137 &137000013923254932
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
