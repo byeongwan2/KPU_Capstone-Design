@@ -18,9 +18,11 @@ public class GameSystem : MonoBehaviour {           //어떤오브젝트에서 �
     public Player2 pPlayer2 { get { return player2; } }
     void Awake()
     {
+
         player = GameObject.Find("Player").GetComponent<Player>();
         player2 = GameObject.Find("Player2").GetComponent<Player2>();
     }
+
 
 
 }

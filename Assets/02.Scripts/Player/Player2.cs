@@ -6,7 +6,7 @@ enum SPECIAL_STATE { NONE, TURNONSPOT, DOUBLEJUMPLANDING, DANCE, AIM }
 public class Player2 : MoveObject {
 
     private Transform playerTr;
-    private Animator playerAni;
+    private Animator playerAni; public Animator GetPlayerAni()  { return playerAni; }
     private Move move;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
@@ -25,12 +25,13 @@ public class Player2 : MoveObject {
 
         isRollDelay = false;
         isSpecialState = false;
-       
 
+        instance = this;
     }
 
     // Update is called once per frame
     void Update () {
+        Dance();
         LookMousePoint();
         KeyBoardManual();
         MouseManual();
@@ -227,6 +228,12 @@ public class Player2 : MoveObject {
 
     }
 
-
+    public static Player2 instance;
+    private void Dance()
+    {
+        if (Input.GetKeyDown(KeyCode.F1)) { playerAni.SetInteger("Dance", 1); eSpecialState = SPECIAL_STATE.DANCE; }
+        if (Input.GetKeyDown(KeyCode.F2)){ playerAni.SetInteger("Dance", 2); eSpecialState = SPECIAL_STATE.DANCE; }
+        if (Input.GetKeyDown(KeyCode.F3)) { playerAni.SetInteger("Dance", 3); eSpecialState = SPECIAL_STATE.DANCE; }
+    }
     
 }
