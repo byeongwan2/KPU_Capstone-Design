@@ -84,20 +84,13 @@ public class Player2 : MoveObject {
         if (eState == STATE.ROLL) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-            if (eState != STATE.WALK)
-            {
+
                 eState = STATE.WALK;
-                m_state = new Walk();
-                m_state.PlayAnimation(playerAni);
-            }
+
         }
         else
         {
-            if (eState != STATE.STAND)
-            {
-                m_state = new Stand();
-                m_state.PlayAnimation(playerAni);
-            }
+            eState = STATE.STAND;
         }
     }
     //클래식 방식으로 이름을 짜봄 논리
@@ -116,20 +109,24 @@ public class Player2 : MoveObject {
     }
 
     //애니메이션
-    private void Render()                   //이제 이런거필요없음     
+    private void Render()                
     {
+        //if (isSpecialState) return;
         switch (eState)
         {
           
             case STATE.RUN:
-               
+                playerAni.SetBool("IsRun", true);
+                playerAni.SetBool("IsWalk", false);
                 break;
             case STATE.WALK:
-              
+                playerAni.SetBool("IsWalk", true);
+                playerAni.SetBool("IsRun", false);
                 break;
 
             case STATE.STAND:
-               
+                playerAni.SetBool("IsRun", false);
+                playerAni.SetBool("IsWalk", false);
                 break;
         }
     }
@@ -140,13 +137,7 @@ public class Player2 : MoveObject {
     {    
         if (Input.GetKey(KeyCode.LeftShift) && eState == STATE.WALK)
         {
-            if (eState != STATE.RUN)
-            {
-                m_state = new Run();
-                m_state.PlayAnimation(playerAni);
-            }
             eState = STATE.RUN;
-            
             velocity = velocity + Time.deltaTime;
             playerAni.SetFloat(hashVelocity, velocity);
 
@@ -165,12 +156,6 @@ public class Player2 : MoveObject {
         {   
             velocity = 0.0f;
             playerAni.SetFloat(hashVelocity, velocity);
-            if (eState != STATE.WALK)
-            {
-                m_state = new Walk();
-                m_state.PlayAnimation(playerAni);
-                eState = STATE.WALK;
-            }
             eState = STATE.WALK;
             isMouse = false;
         }
