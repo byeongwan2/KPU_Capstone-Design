@@ -231,7 +231,7 @@ public class Player2 : MoveObject {
     {
         if (Input.GetMouseButtonDown(Define.MOUSE_LEFT_BUTTON))
         {
-            //playerAni.Play("Attack");
+            playerAni.Play("Attack");
         }
     }
     private void AttackBasicExit()
