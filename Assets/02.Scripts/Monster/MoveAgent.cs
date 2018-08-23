@@ -45,7 +45,7 @@ public class MoveAgent : MonoBehaviour {
     {
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
-        agent.speed = m_patrolSpeed;
+        agent.speed = _patrolSpeed;
         var group = GameObject.Find(_str);
         group.GetComponentsInChildren<Transform>(wayPoints);
         wayPoints.RemoveAt(0);
@@ -61,6 +61,7 @@ public class MoveAgent : MonoBehaviour {
         if (agent.isPathStale) return;
         agent.destination = pos;
         agent.isStopped = false;
+        Debug.Log("xx");
     }
 
     public void Stop()              
@@ -85,5 +86,11 @@ public class MoveAgent : MonoBehaviour {
             int nextIdx =  Random.Range(0,wayPoints.Count);
             MoveWayPoint(nextIdx);
         }
+    }
+
+    public Vector3 temp_Debug_Dest()        //디버깅용 임시 함수 나중에 삭제
+    {
+
+        return agent.destination;
     }
 }

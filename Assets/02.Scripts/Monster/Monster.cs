@@ -5,7 +5,6 @@ using UnityEngine;
 
 public partial class Monster : Enemy
 {
-
     Shot bulletShot;
     MoveAgent moveAgent;
 
@@ -38,7 +37,8 @@ public partial class Monster : Enemy
 
         StartCoroutine(SpecialIdle());          //걷다가 쉬었다가기
 
-        SettingPlayerDistance(10.0f, 5.0f);     //플레이어를 발견해서 추적하게되는 거리 10 총을쏠 거리 5
+        StartCoroutine(CheckPlayerDistance());
+
     }
 
     void Update()
@@ -87,12 +87,12 @@ public partial class Monster : Enemy
                 break;
         }
     }
-    public void CheckPlayerDistance()
+    IEnumerator CheckPlayerDistance()
     {
-        float distance = Check.Distance(obj.transform, this.transform);
+        float distance = Check.Distance(system.pPlayer2.transform, this.transform);
         if(distance < 10.0f && distance >= 5.0f)
         {
-            moveAgent.pTraceTarget = obj.transform.position;
+            moveAgent.pTraceTarget = system.pPlayer2.transform.position;
             eState = STATE.RUN;
             eEnemy_State = ENEMY_STATE.TRACE;
         }
@@ -109,6 +109,8 @@ public partial class Monster : Enemy
                 eEnemy_State = ENEMY_STATE.PATROL;
             }
         }
+        yield return new WaitForSeconds(1.0f);
+        StartCoroutine(CheckPlayerDistance());
     }
 
     IEnumerator SpecialIdle()

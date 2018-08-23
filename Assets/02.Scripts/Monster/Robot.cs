@@ -17,8 +17,6 @@ public class Robot : Enemy {
         base.Init();
         base.Setting();
 
-        SettingPlayerDistance(10.0f, 5.0f);
-
         eState = STATE.STAND;
         tr = GetComponent<Transform>();
         move = GetComponent<Move>();

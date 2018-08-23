@@ -6,7 +6,7 @@ public enum ENEMY_STATE { NONE, PATROL, TRACE }
 
 public abstract class Enemy : MoveObject {
 
-    GameSystem system;
+    protected GameSystem system;
     protected Animator enemyAni;
 
     protected STATE eState = STATE.STAND;
@@ -16,41 +16,9 @@ public abstract class Enemy : MoveObject {
     {
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
         enemyAni = GetComponent<Animator>();
-
-        StartCoroutine(CheckPlayerInterface());
-        obj = system.pPlayer2.gameObject;
     }
 
     public delegate ENEMY_STATE GetTraceState( ENEMY_STATE _Enemy_State );
-    public GameObject obj;
-    private IEnumerator CheckPlayerInterface()
-    {
-        yield return new WaitForSeconds(1.0f);
-        StartCoroutine(CheckPlayerInterface());
-    }
-
-    float detectf = 0.0f;
-    float tracef = 0.0f;
-    protected void SettingPlayerDistance(float _detect = 10.0f, float _trace = 5.0f)
-    {
-        detectf = _detect;
-        tracef = _trace;
-    }
-
-    void OnTriggerEnter(Collider _obj)
-    {
-        /*
-        if (_obj.tag == "Bullet")
-        {
-            _obj.gameObject.SetActive(false);
-            Debug.Log("총알이 적과부딪힘");
-            if (hp.getHp() <= 0)
-            {
-                eState = STATE.DIE;
-            }
-        }
-        */
-    }
 
     protected void BaseRender()
     {
@@ -62,4 +30,5 @@ public abstract class Enemy : MoveObject {
 
         }
     }
+
 }

@@ -11,5 +11,21 @@ public class MyGizmos : MonoBehaviour
     {
         Gizmos.color = _color;
         Gizmos.DrawSphere(transform.position, _radius);
+        if(vec != Vector3.zero) Gizmos.DrawSphere(vec, _radius);
+    }
+
+    MoveAgent agent = null;
+    void Start()
+    {
+        if (GetComponent<Enemy>() == null) return;      //이 기즈모가 적에붙어있는게 아니라면 하지말것 왜냐면 디버깅용이니까
+        agent = GetComponent<MoveAgent>();
+        Debug.Log("dd");
+    }
+
+    Vector3 vec = Vector3.zero;
+    void Update()
+    {
+        if (agent == null) return;
+        vec = agent.temp_Debug_Dest();
     }
 }

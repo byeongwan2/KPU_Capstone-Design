@@ -757,7 +757,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: {fileID: 0}
   eEnemy_State: 0
-  obj: {fileID: 116877271}
 --- !u!114 &380278967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,7 +786,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: -0.083
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &380278969
@@ -818,6 +817,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPosition: {fileID: 2088147627}
+--- !u!114 &380278971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 380278964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee274ecc516a4142ba9190a8a76ff8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _color: {r: 0, g: 1, b: 0.14685631, a: 1}
+  _radius: 0.2
 --- !u!4 &380278972 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
@@ -1416,7 +1428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee274ecc516a4142ba9190a8a76ff8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _color: {r: 0.8962264, g: 0.012682426, b: 0.012682426, a: 1}
+  _color: {r: 0.8980392, g: 0.068917334, b: 0.011764714, a: 1}
   _radius: 0.6
 --- !u!1 &714859453
 GameObject:
@@ -2995,7 +3007,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: {fileID: 0}
   eEnemy_State: 0
-  obj: {fileID: 0}
 --- !u!114 &1420105291
 MonoBehaviour:
   m_ObjectHideFlags: 0
