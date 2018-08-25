@@ -204,7 +204,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.36011904
-        functionName: ThrowBomb
+        functionName: Event_ThrowBomb
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

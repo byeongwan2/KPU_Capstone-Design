@@ -5,7 +5,8 @@ using UnityEngine;
 public class Bomb : AttackObject {
     [SerializeField]
     float power = 0.0f;
-   
+    GameObject expEffect;
+
     public void SetPower(float _power){ power = _power; }
     private Vector3 velocity;
     public void SetVelocity(Vector3 _velocity)  { velocity = _velocity; }
@@ -14,12 +15,17 @@ public class Bomb : AttackObject {
     void Awake()
     {
         this_rigidbody = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐
+        expEffect = Resources.Load("Prefabs/BombEffect") as GameObject;
+        expEffect = Instantiate(expEffect);
+        expEffect.SetActive(false);
     }
-    void LifeOff()
+
+        void LifeOff()
     {
+        StartCoroutine(ExplosionEffect());
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.Euler(Vector4.zero);
-        gameObject.SetActive(false);
+       // gameObject.SetActive(false);          //코루틴은 현재 작동되고있는 모노비헤이비어의 영향을받기때문에 끄면 작동안댐
     }
 	
         
@@ -39,5 +45,15 @@ public class Bomb : AttackObject {
     public override void StatSetting()
     {
 
+    }
+
+    IEnumerator ExplosionEffect()
+    {
+        expEffect.SetActive(true);
+        expEffect.transform.rotation = Quaternion.identity;
+        expEffect.transform.position = transform.position;
+        yield return new WaitForSeconds(0.8f);
+        expEffect.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

@@ -9,6 +9,7 @@ public class Player2 : MoveObject {
     private Animator playerAni; public Animator GetPlayerAni()  { return playerAni; }
     private Move move;
     private Shot bulletShot;
+    private Throw bombThrow;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
@@ -35,6 +36,9 @@ public class Player2 : MoveObject {
         playerAni = GetComponent<Animator>();
         bulletShot = GetComponent<Shot>();
         bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage);
+
+        bombThrow = GetComponent<Throw>();
+        bombThrow.Init("PlayerBomb", 10, 15.0f);
 
         eState = STATE.STAND;
         ePreState = STATE.STAND;
@@ -270,15 +274,14 @@ public class Player2 : MoveObject {
     //기본공격
     private void MouseManual()
     {
+        if (eState == STATE.JUMP) return;
         if (Input.GetMouseButtonDown(Define.MOUSE_LEFT_BUTTON))
         {
-            if (eState == STATE.JUMP) return;
             playerAni.SetTrigger("Attack");
             bulletShot.Work();
         }
         else if(Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
         {
-            if (eState == STATE.JUMP) return;
             playerAni.SetTrigger("Throw");
         }
     }
@@ -302,5 +305,10 @@ public class Player2 : MoveObject {
         {
             playerAni.SetTrigger("Reload");
         }
+    }
+
+    private void Event_ThrowBomb()
+    {
+        bombThrow.Work();
     }
 }

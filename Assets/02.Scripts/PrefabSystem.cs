@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum TYPE { BOMB, BULLET ,MONSTER }
 public class PrefabSystem : MonoBehaviour {                //프리팹시스템에서 모든 오브젝트풀을 관리하니까 나중에 분리할필요가있음
-    public static PrefabSystem instance = null;
+    public static PrefabSystem instance = null;             //제네릭클래스로 바꿔야함
     void Awake()
     {
         if (instance == null) instance = this;
@@ -17,9 +17,15 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     private List<GameObject> monsterPool = new List<GameObject>();
     public void CreatePrefab(TYPE _type,GameObject _gameObject , int _count)       //여러가지 폭탄을 생성할수 잇게끔
     {
-        SelectPoolType(_type,_gameObject,_count);
+        if (_type == TYPE.BOMB)SelectPoolType(bombPool, _gameObject, _count);    
+        else if (_type == TYPE.BULLET) SelectPoolType(bulletPool, _gameObject, _count);
+        else if (_type == TYPE.MONSTER) SelectPoolType(monsterPool, _gameObject, _count);
     }
 
+    public void SpecialPrefab ()
+    {
+
+    }
 
    
     public GameObject ActivePrefab(TYPE _type)
@@ -44,20 +50,15 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     }
 
 
-    private void SelectPoolType(TYPE _type,GameObject _gameObject, int _count )
+    private void SelectPoolType<T>(T _pool,GameObject _gameObject, int _count ) where T : List<GameObject>
     {
         for (int i = 0; i < _count; i++)
         {
             var obj = Instantiate<GameObject>(_gameObject, this.transform);
             obj.SetActive(false);
-            if (_type == TYPE.BOMB)
-            {
-                bombPool.Add(obj);
-            }
-            else if (_type == TYPE.BULLET)
-            {
-                bulletPool.Add(obj);
-            }
+
+            _pool.Add(obj);
+            
         }
     }
 }
