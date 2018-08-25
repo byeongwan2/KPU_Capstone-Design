@@ -61,7 +61,6 @@ public class MoveAgent : MonoBehaviour {
         if (agent.isPathStale) return;
         agent.destination = pos;
         agent.isStopped = false;
-        Debug.Log("xx");
     }
 
     public void Stop()              

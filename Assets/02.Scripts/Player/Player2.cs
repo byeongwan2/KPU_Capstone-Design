@@ -116,6 +116,7 @@ public class Player2 : MoveObject {
     {
         if (eState == STATE.ROLL) return;
         if (isJumpDelay == true) return;
+        if (isRun == true) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             eState = STATE.WALK;
@@ -171,11 +172,11 @@ public class Player2 : MoveObject {
     private float velocity = 0.0f; //가속도        
     //달리기
     private void Running()          //달리기는 쉬프트
-    {    
+    {
         if (Input.GetKey(KeyCode.LeftShift) && eState == STATE.WALK)
         {
             eState = STATE.RUN;
-            velocity = velocity + Time.deltaTime;
+            velocity = velocity + Time.deltaTime; //  * 10.0f;  //10.0f 를 곱하지않으면 밑에 else if 로 들어가지않아서 Run이해제안댐 일단원본
             playerAni.SetFloat(hashVelocity, velocity);
 
             if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -60.0f, 0.0f), Time.deltaTime * 10.0f);
@@ -190,8 +191,8 @@ public class Player2 : MoveObject {
             isMouse = true;
         }
 
-        else if (Input.GetKeyUp(KeyCode.LeftShift) && velocity >=0.1f)
-        {   
+        else  if (Input.GetKeyUp(KeyCode.LeftShift) && velocity >=0.1f)
+        {
             velocity = 0.0f;
             playerAni.SetFloat(hashVelocity, velocity);
             eState = STATE.WALK;
@@ -208,7 +209,7 @@ public class Player2 : MoveObject {
         {
             eSpecialState = SPECIAL_STATE.AIM;
         }
-        else if(Input.GetMouseButtonUp(Define.MOUSE_RIGHT_BUTTON))
+        else if(Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
         {
             eSpecialState = SPECIAL_STATE.NONE;
         }

@@ -19,7 +19,6 @@ public class MyGizmos : MonoBehaviour
     {
         if (GetComponent<Enemy>() == null) return;      //이 기즈모가 적에붙어있는게 아니라면 하지말것 왜냐면 디버깅용이니까
         agent = GetComponent<MoveAgent>();
-        Debug.Log("dd");
     }
 
     Vector3 vec = Vector3.zero;
