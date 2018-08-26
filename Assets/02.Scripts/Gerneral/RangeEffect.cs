@@ -1,19 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RangeEffect : MonoBehaviour
 {
-    LineRenderer m_line;
-
-    void Start()
+    public LineRenderer m_line;
+    public void Init()
     {
         m_line = GetComponent<LineRenderer>();
         m_line.SetVertexCount(10);
         m_line.useWorldSpace = false;
         RangeMaker();
+        m_line.enabled = false;
     }
-    void RangeMaker()
+
+    public void RangeMaker()
     {
         float x, y,z = 0.0f;
         float angle = 20.0f;
@@ -28,4 +30,22 @@ public class RangeEffect : MonoBehaviour
         }
     }
 
+    void OnRangeLook()
+    {
+        m_line.enabled = true;
+    }
+    void OffRangeLook()
+    {
+        m_line.enabled = false;
+    }
+
+    public void RangeLookExit()
+    {
+        OffRangeLook();
+    }
+
+    public void RangeLook(float _dangerTime)
+    {
+        Invoke("OnRangeLook", _dangerTime);
+    }
 }

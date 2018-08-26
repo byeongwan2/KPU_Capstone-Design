@@ -12,20 +12,24 @@ public class Bomb : AttackObject {
     public void SetVelocity(Vector3 _velocity)  { velocity = _velocity; }
 
     Rigidbody this_rigidbody;
+    RangeEffect rangeEffect;
+
     void Awake()
     {
         this_rigidbody = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐
         expEffect = Resources.Load("Prefabs/BombEffect") as GameObject;
         expEffect = Instantiate(expEffect);
         expEffect.SetActive(false);
+        rangeEffect = GetComponent<RangeEffect>();
+        rangeEffect.Init();
     }
 
-        void LifeOff()
+    void LifeOff()
     {
         StartCoroutine(ExplosionEffect());
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.Euler(Vector4.zero);
-       // gameObject.SetActive(false);          //코루틴은 현재 작동되고있는 모노비헤이비어의 영향을받기때문에 끄면 작동안댐
+        rangeEffect.RangeLookExit();
     }
 	
         
@@ -39,6 +43,7 @@ public class Bomb : AttackObject {
         transform.position = launchPos;
         transform.rotation = launchRot;
         this_rigidbody.AddForce(transform.forward * 15.0f, ForceMode.VelocityChange);       //포물선수정필요
+        rangeEffect.RangeLook(3.0f);
         Invoke("LifeOff", 5.0f);        //2초뒤 폭탄삭제
     }
 
