@@ -274,13 +274,15 @@ public class Player2 : MoveObject {
     private void RollingCancel() {  isRollDelay = false; }
     private void RollingReset() { isSpecialState = false; }
 
-
+    bool attackDelay = false;
     //기본공격
     private void MouseManual()
     {
         if (eState == STATE.JUMP) return;
-        if (Input.GetMouseButtonDown(Define.MOUSE_LEFT_BUTTON))
+        if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackDelay == false)
         {
+            attackDelay = true;
+            StartCoroutine(AttackBasicExit());
             playerAni.SetTrigger("Attack");
             bulletShot.Work();
         }
@@ -289,9 +291,10 @@ public class Player2 : MoveObject {
             playerAni.SetTrigger("Throw");
         }
     }
-    private void AttackBasicExit()
+    private IEnumerator AttackBasicExit()
     {
-
+        yield return new WaitForSeconds(0.15f);
+        attackDelay = false;
     }
 
     public static Player2 instance;     //조심해서 써야함
