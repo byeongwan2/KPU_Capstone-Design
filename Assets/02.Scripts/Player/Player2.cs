@@ -60,7 +60,6 @@ public class Player2 : MoveObject {
         LookMousePoint();
         MouseManual();
         Running();
-        TakeAim();
         Rolling();
         Jumping();
         Reloading();
@@ -209,20 +208,7 @@ public class Player2 : MoveObject {
         }
     }
 
-
-    //조준
-    private void TakeAim()
-    {
-        if (Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
-        {
-            eSpecialState = SPECIAL_STATE.AIM;
-        }
-        else if(Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
-        {
             eSpecialState = SPECIAL_STATE.NONE;
-        }
-    }
-
     //특별한 애니메이션
     private void SpecialAnimation()
     {
@@ -289,6 +275,7 @@ public class Player2 : MoveObject {
         else if(Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
         {
             playerAni.SetTrigger("Throw");
+            isMouse = true;
         }
     }
     private IEnumerator AttackBasicExit()
@@ -317,5 +304,10 @@ public class Player2 : MoveObject {
     private void Event_ThrowBomb()
     {
         bombThrow.Work();
+    }
+
+    private void Event_MouseClear()
+    {
+        isMouse = false;
     }
 }
