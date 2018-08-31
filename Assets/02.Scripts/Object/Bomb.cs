@@ -20,7 +20,7 @@ public class Bomb : AttackObject {
         expEffect = Resources.Load("Prefabs/BombEffect") as GameObject;
         expEffect = Instantiate(expEffect);
         expEffect.SetActive(false);
-        rangeEffect = GetComponent<RangeEffect>();
+        rangeEffect = GetComponentInChildren<RangeEffect>();
         rangeEffect.Init();
     }
 
