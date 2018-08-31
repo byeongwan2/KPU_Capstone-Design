@@ -260,18 +260,19 @@ public class Player2 : MoveObject {
     private void RollingCancel() {  isRollDelay = false; }
     private void RollingReset() { isSpecialState = false; }
 
-    int bulletCount = 30;
+    int bulletCount = 20;
     bool attackCoolTime = false;
     //기본공격
     private void MouseManual()
     {
         if (eState == STATE.JUMP) return;
+        if (isAttackStop) return;
         if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackCoolTime == false)
         {
             if (bulletCount == 0) {
                 playerAni.SetTrigger("Reload");
                 isAttackStop = true;
-                Debug.Log(bulletCount);
+                bulletCount = 20;
                 return;
             }
             bulletCount--;
@@ -320,7 +321,6 @@ public class Player2 : MoveObject {
     }
     private void Event_ReloadExit()
     {
-        bulletCount = 20;
         isAttackStop = false;
     }
 }
