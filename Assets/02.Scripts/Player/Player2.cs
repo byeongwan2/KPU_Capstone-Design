@@ -24,10 +24,10 @@ public class Player2 : MoveObject {
     private int shotDamage = 10;            //무기의 데미지는 다를꺼기때문에 배열혹은 열거형으로 전환할가능성 ↑
     //private State m_state = null;               //상태에 따른클래스를 갖게끔
     private bool isMouse;
-
+  
 
     private bool isJumpDelay;    
-    private bool isAttackDelay;
+    private bool isAttackStop;
     private bool isRun;
 	void Start () {
         instance = this;
@@ -50,8 +50,9 @@ public class Player2 : MoveObject {
         // m_state = new Stand();
         // m_state.PlayAnimation(playerAni);
         isJumpDelay = false;
-        isAttackDelay = false;
+        isAttackStop = false;
         isRun = false;
+        bulletCount = 20;
     }
 
     // Update is called once per frame
@@ -208,7 +209,6 @@ public class Player2 : MoveObject {
         }
     }
 
-            eSpecialState = SPECIAL_STATE.NONE;
     //특별한 애니메이션
     private void SpecialAnimation()
     {
@@ -260,14 +260,22 @@ public class Player2 : MoveObject {
     private void RollingCancel() {  isRollDelay = false; }
     private void RollingReset() { isSpecialState = false; }
 
-    bool attackDelay = false;
+    int bulletCount = 30;
+    bool attackCoolTime = false;
     //기본공격
     private void MouseManual()
     {
         if (eState == STATE.JUMP) return;
-        if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackDelay == false)
+        if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackCoolTime == false)
         {
-            attackDelay = true;
+            if (bulletCount == 0) {
+                playerAni.SetTrigger("Reload");
+                isAttackStop = true;
+                Debug.Log(bulletCount);
+                return;
+            }
+            bulletCount--;
+            attackCoolTime = true;
             StartCoroutine(AttackBasicExit());
             playerAni.SetTrigger("Attack");
             bulletShot.Work();
@@ -281,7 +289,7 @@ public class Player2 : MoveObject {
     private IEnumerator AttackBasicExit()
     {
         yield return new WaitForSeconds(0.15f);
-        attackDelay = false;
+        attackCoolTime = false;
     }
 
     public static Player2 instance;     //조심해서 써야함
@@ -291,10 +299,10 @@ public class Player2 : MoveObject {
         if (Input.GetKeyDown(KeyCode.F2)){ playerAni.SetInteger("Dance", 2); eSpecialState = SPECIAL_STATE.DANCE; }
         if (Input.GetKeyDown(KeyCode.F3)) { playerAni.SetInteger("Dance", 3); eSpecialState = SPECIAL_STATE.DANCE; }
     }
-    
 
     private void Reloading()
     {
+        if (isAttackStop) return;
         if(Input.GetKeyDown(KeyCode.R))
         {
             playerAni.SetTrigger("Reload");
@@ -306,8 +314,13 @@ public class Player2 : MoveObject {
         bombThrow.Work();
     }
 
-    private void Event_MouseClear()
+    private void Event_MouseExit()
     {
         isMouse = false;
+    }
+    private void Event_ReloadExit()
+    {
+        bulletCount = 20;
+        isAttackStop = false;
     }
 }
