@@ -7,12 +7,14 @@ public class TempDebug : MonoBehaviour {
     Text playerState;
     void Start()
     {
+
+        return;
         player = GameObject.Find("Player2").GetComponent<Player2>();
         playerState = GetComponent<Text>();
     }
 
     void Update()
     {
-        playerState.text = player.TempStateReturn();
+       // playerState.text = player.TempStateReturn();
     }
 }

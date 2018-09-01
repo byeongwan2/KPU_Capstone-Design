@@ -26,5 +26,10 @@ public class Shot : Behaviour
         bullet.SetActiveLaunch();
     }
 
-    
+    private void Targeting()
+    {
+        
+
+
+    }
 }

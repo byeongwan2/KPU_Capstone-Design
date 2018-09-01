@@ -260,7 +260,7 @@ public class Player2 : MoveObject {
     private void RollingCancel() {  isRollDelay = false; }
     private void RollingReset() { isSpecialState = false; }
 
-    int bulletCount = 20;
+    int bulletCount = 20;           //총알
     bool attackCoolTime = false;
     //기본공격
     private void MouseManual()

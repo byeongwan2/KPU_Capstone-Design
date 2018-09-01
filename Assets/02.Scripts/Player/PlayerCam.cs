@@ -12,14 +12,13 @@ public class PlayerCam : MonoBehaviour{
     
     private Transform tr;   //카메라 Transfrom 컴포넌트
 
-    void Start () {        
+    void Start () {
         tr = GetComponent<Transform>();                
 	}
 	
 	
     //주인공이 이동한 후 카메라가 움직여야하기 떄문에 LateUpdate를 쓴다
 	void LateUpdate () {
-
         tr.position = playerTr.position - 1 * (Vector3.forward * distance) + (Vector3.up * height);
         tr.LookAt(playerTr);
         /*
