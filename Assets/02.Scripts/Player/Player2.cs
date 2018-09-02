@@ -24,7 +24,7 @@ public class Player2 : MoveObject {
     private int shotDamage = 10;            //무기의 데미지는 다를꺼기때문에 배열혹은 열거형으로 전환할가능성 ↑
     //private State m_state = null;               //상태에 따른클래스를 갖게끔
     private bool isMouse;
-  
+    private bool isMove;
 
     private bool isJumpDelay;    
     private bool isAttackStop;
@@ -44,7 +44,7 @@ public class Player2 : MoveObject {
         ePreState = STATE.STAND;
         eSpecialState = SPECIAL_STATE.NONE;
         isMouse = false;
-
+        isMove = false;
         isRollDelay = false;
         isSpecialState = false;
         // m_state = new Stand();
@@ -94,6 +94,7 @@ public class Player2 : MoveObject {
     //이동값설정
     private void MovePlayer()           
     {
+        if (isMove) return;
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
     }
@@ -243,20 +244,21 @@ public class Player2 : MoveObject {
         {
             if (isSpecialState) return;
             isRollDelay = true;
-            Invoke("RollingCancel", 0.5f);
+            Invoke("RollingCancel", 0.3f);
         }
         else if(Input.GetKeyDown(KeyCode.W) && isRollDelay == true)
         {
+            isMove = true;
             playerAni.SetTrigger("IsRoll");
             isSpecialState = true;
             isRollDelay = false;
             ePreState = eState;
             eState = STATE.ROLL;
             isMouse = true;
-            Invoke("RollingReset", 2.0f);
+            Invoke("RollingReset", 1.0f);
         }
     }
-    private void RollingExit(){ eState = STATE.WALK ; isMouse = false; }
+    private void Event_RollingExit(){ eState = STATE.WALK ; isMouse = false; isMove = false; }
     private void RollingCancel() {  isRollDelay = false; }
     private void RollingReset() { isSpecialState = false; }
 
@@ -285,6 +287,7 @@ public class Player2 : MoveObject {
         {
             playerAni.SetTrigger("Throw");
             isMouse = true;
+            isAttackStop = true;
         }
     }
     private IEnumerator AttackBasicExit()
@@ -318,6 +321,7 @@ public class Player2 : MoveObject {
     private void Event_MouseExit()
     {
         isMouse = false;
+        isAttackStop = false;
     }
     private void Event_ReloadExit()
     {
