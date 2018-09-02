@@ -611,6 +611,23 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 245045679}
   m_Mesh: {fileID: 4300004, guid: b701be3094f3ba54bb698f800bdb7d4b, type: 3}
+--- !u!1 &245440712 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1617757310907434, guid: b9d48cb75b0add94e95386344f29874f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1716069986}
+--- !u!114 &245440713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 245440712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a67f413d01832a648a9fe157f37365ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 0
 --- !u!1 &276336893
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,7 +730,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dcfd6c8fe82d574398ff1750f282b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: {fileID: 0}
   eEnemy_State: 0
 --- !u!114 &380278967
 MonoBehaviour:
@@ -788,6 +804,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _color: {r: 0, g: 1, b: 0.14685631, a: 1}
   _radius: 0.2
+--- !u!114 &380278972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 380278964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a67f413d01832a648a9fe157f37365ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 0
+--- !u!4 &380278973 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
+  m_PrefabInternal: {fileID: 836323090}
 --- !u!1 &480540204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,11 +1730,6 @@ MonoBehaviour:
   showGUI: 1
   offsetX: 0
   offsetY: 0
---- !u!4 &824402757 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4410006152350606, guid: b9d48cb75b0add94e95386344f29874f,
-    type: 2}
-  m_PrefabInternal: {fileID: 1716069986}
 --- !u!1001 &836323090
 Prefab:
   m_ObjectHideFlags: 0
@@ -2838,7 +2865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2cdab4df5ea1cd42a289fa81e251edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTr: {fileID: 824402757}
+  playerTr: {fileID: 380278973}
   moveSpeed: 15
   distance: 10
   height: 20
@@ -3029,7 +3056,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3fd26c26d8af846916f0a49c1b85ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: {fileID: 0}
   eEnemy_State: 0
 --- !u!114 &1420105291
 MonoBehaviour:
@@ -3080,6 +3106,18 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &1420105295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1420105287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a67f413d01832a648a9fe157f37365ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 0
 --- !u!1 &1434216832
 GameObject:
   m_ObjectHideFlags: 0
@@ -3391,6 +3429,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3791e35c8aecef046ae196e5afa87446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1863929736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1863929732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a67f413d01832a648a9fe157f37365ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 0
 --- !u!1 &1874369844
 GameObject:
   m_ObjectHideFlags: 0

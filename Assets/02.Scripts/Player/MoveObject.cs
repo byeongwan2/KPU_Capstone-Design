@@ -2,12 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveObject : MonoBehaviour {
-    [SerializeField]
-    public HP hp ;                      //움직이는건 다 hp가 있을꺼라고 생각 따로 컴포넌트로 해도되지만 그러면 public어차피쓰는거
+public class MoveObject : MonoBehaviour
+{
+    protected STATE eState = STATE.STAND;
 
-    protected void Setting()
+    [SerializeField]
+    protected int hp;
+    public void Init(int _initHp)      //초기화
     {
-        hp = new HP();
+        hp = _initHp;
+    }
+
+    public void MinusHp(int _minusHp)
+    {
+        hp -= _minusHp;
+        Debug.Log(hp);
+        if (hp <= 0)
+        {
+            Death();
+        }
+
+    }
+    public void PlusHp(int _plusHp)
+    {
+        hp += _plusHp;
+    }
+
+    public int getHp()
+    {
+        return hp;
+    }
+
+    public void Death()
+    {
+        eState = STATE.DIE;
     }
 }

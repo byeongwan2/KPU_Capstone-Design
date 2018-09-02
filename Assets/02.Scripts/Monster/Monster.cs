@@ -18,10 +18,10 @@ public partial class Monster : Enemy
     private readonly int hashDieIdx = Animator.StringToHash("DieIdx");
 
     private readonly string str = "WayPointGroup";
+    bool isDie;
     void Start()
     {
-        base.Setting();
-        hp.SettingHp(100);
+        hp = 100;
 
         base.Init();
 
@@ -38,6 +38,7 @@ public partial class Monster : Enemy
         StartCoroutine(SpecialIdle());          //걷다가 쉬었다가기
 
         StartCoroutine(CheckPlayerDistance());
+        isDie = false;
 
     }
 
@@ -49,10 +50,11 @@ public partial class Monster : Enemy
 
     void LogicState()
     {
+        if (isDie) return;
         if(eEnemy_State == ENEMY_STATE.PATROL)
         {
             eState = STATE.WALK;
-            moveAgent.pPatrolling = true;
+            if(moveAgent.pPatrolling == false) moveAgent.pPatrolling = true;
         }
     }
 
@@ -62,9 +64,10 @@ public partial class Monster : Enemy
         switch(eState)
         {
             case STATE.DIE:
-
+                if (isDie) return;
                 enemyAni.SetTrigger("Die");
                 enemyAni.SetInteger(hashDieIdx, Random.Range(0, 6));
+                isDie = true;
             break;
 
             case STATE.ATTACK:
@@ -110,12 +113,14 @@ public partial class Monster : Enemy
             }
         }
         yield return new WaitForSeconds(1.0f);
+        if (isDie) yield return null;
         StartCoroutine(CheckPlayerDistance());
     }
 
     IEnumerator SpecialIdle()
     {
         yield return new WaitForSeconds(5.0f);
+        if (isDie) yield return null;
         if (eEnemy_State == ENEMY_STATE.PATROL)
         {
             moveAgent.Stop();
@@ -124,6 +129,7 @@ public partial class Monster : Enemy
             eEnemy_State = ENEMY_STATE.NONE;
         }
         yield return new WaitForSeconds(3.0f);
+        if (isDie) yield return null;
         if (eEnemy_State == ENEMY_STATE.NONE)  eEnemy_State = ENEMY_STATE.PATROL; 
         StartCoroutine(SpecialIdle());
     }

@@ -258,7 +258,12 @@ public class Player2 : MoveObject {
             Invoke("RollingReset", 1.0f);
         }
     }
-    private void Event_RollingExit(){ eState = STATE.WALK ; isMouse = false; isMove = false; }
+    private void Event_RollingExit()
+    {
+        eState = STATE.WALK ;
+        isMouse = false;
+        isMove = false;
+    }
     private void RollingCancel() {  isRollDelay = false; }
     private void RollingReset() { isSpecialState = false; }
 

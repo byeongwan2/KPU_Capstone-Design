@@ -15,7 +15,6 @@ public class Robot : Enemy {
         //hp
 
         base.Init();
-        base.Setting();
 
         eState = STATE.STAND;
         tr = GetComponent<Transform>();

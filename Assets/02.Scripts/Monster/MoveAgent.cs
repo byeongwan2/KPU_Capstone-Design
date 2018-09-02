@@ -53,7 +53,7 @@ public class MoveAgent : MonoBehaviour {
         m_patrolSpeed = _patrolSpeed;
         m_traceSpeed = _traceSpeed;
         MoveWayPoint(0);
-        this.pPatrolling = true;
+        this.pPatrolling = false;
     }
 
     void TraceTarget(Vector3 pos)

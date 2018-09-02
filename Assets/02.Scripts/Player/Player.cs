@@ -36,7 +36,6 @@ public partial class Player : MoveObject
     private RuntimeAnimatorController normal_Animator;          //툴에서 초기화
     void Start()
     {
-        base.Setting();
         
 
         eState = STATE.STAND;
@@ -56,8 +55,6 @@ public partial class Player : MoveObject
         bombThrow.Init("PlayerBomb", MAXPLAYERBOMBCOUNT, bombPower);
 
         shortAttack = GetComponent<ShortAttack>();
-
-        hp.SettingHp(100);
     }
     private bool isKeyNone = false;    
     private void PlayerManual()

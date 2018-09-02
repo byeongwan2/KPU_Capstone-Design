@@ -9,7 +9,6 @@ public abstract class Enemy : MoveObject {
     protected GameSystem system;
     protected Animator enemyAni;
 
-    protected STATE eState = STATE.STAND;
     [SerializeField]
     protected ENEMY_STATE eEnemy_State = ENEMY_STATE.NONE;
     protected void Init()        //하위에서 호출해야함       //그리고 웬만하면 모든 멤버변수를 여기서 초기화해야함
@@ -20,15 +19,6 @@ public abstract class Enemy : MoveObject {
 
     public delegate ENEMY_STATE GetTraceState( ENEMY_STATE _Enemy_State );
 
-    protected void BaseRender()
-    {
-        switch(eState)
-        {
-            case STATE.ATTACK:
-
-                break;
-
-        }
-    }
-
+ 
+ 
 }
