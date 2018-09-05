@@ -230,9 +230,8 @@ public class Player2 : MoveObject {
     private readonly int hashZ = Animator.StringToHash("Z");
     //블랜드 애니메이션
     private void BlendAnimation()
-    {
-        //해시에 이동 계수 전달
-        playerAni.SetFloat(hashAngle, playerTr.rotation.y);
+    {        
+        playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);      
         playerAni.SetFloat(hashX, move.Horizontal);
         playerAni.SetFloat(hashZ, move.Vertical);
     }

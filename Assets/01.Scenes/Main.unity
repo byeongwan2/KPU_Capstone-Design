@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -627,7 +627,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67f413d01832a648a9fe157f37365ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
+--- !u!4 &245440721 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4410006152350606, guid: b9d48cb75b0add94e95386344f29874f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1716069986}
 --- !u!1 &276336893
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,6 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dcfd6c8fe82d574398ff1750f282b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 0
   eEnemy_State: 0
 --- !u!114 &380278967
 MonoBehaviour:
@@ -815,11 +820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67f413d01832a648a9fe157f37365ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
---- !u!4 &380278973 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 400032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
-  m_PrefabInternal: {fileID: 836323090}
 --- !u!1 &480540204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2865,7 +2865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2cdab4df5ea1cd42a289fa81e251edc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTr: {fileID: 380278973}
+  playerTr: {fileID: 245440721}
   moveSpeed: 15
   distance: 10
   height: 20
@@ -3056,6 +3056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3fd26c26d8af846916f0a49c1b85ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 0
   eEnemy_State: 0
 --- !u!114 &1420105291
 MonoBehaviour:
@@ -3117,7 +3118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67f413d01832a648a9fe157f37365ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
 --- !u!1 &1434216832
 GameObject:
   m_ObjectHideFlags: 0
@@ -3440,7 +3440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67f413d01832a648a9fe157f37365ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
 --- !u!1 &1874369844
 GameObject:
   m_ObjectHideFlags: 0
