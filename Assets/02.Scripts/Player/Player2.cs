@@ -357,4 +357,6 @@ public class Player2 : MoveObject {
     {
         isAttackStop = false;
     }
+
+    
 }
