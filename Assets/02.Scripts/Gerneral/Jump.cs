@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Jump : MonoBehaviour {
 
-
+    [SerializeField]
     private bool isJumping = false;    
     private float gravity = 25.0f;     //중력
     private float gravityProportion = 0.03f;
@@ -12,7 +12,6 @@ public class Jump : MonoBehaviour {
 
 
     private Rigidbody this_rigidbody;
-   
 
     void Start()
     {          
@@ -20,7 +19,6 @@ public class Jump : MonoBehaviour {
         this_rigidbody = GetComponent<Rigidbody>();
         airborneSpeed = -10.0f;
         isJumping = false;
-
     }
 
     void Update ()
@@ -33,7 +31,7 @@ public class Jump : MonoBehaviour {
 
     private void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag.Equals(col.gameObject.name))
+        if (col.gameObject.tag.Equals("Ground"))
         {
             isJumping = false;
             

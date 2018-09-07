@@ -105,8 +105,8 @@ GameObject:
   - component: {fileID: 114265083097693976}
   - component: {fileID: 114017811394308886}
   - component: {fileID: 114428056607542306}
-  - component: {fileID: 114319426640497086}
-  - component: {fileID: 114576204524099370}
+  - component: {fileID: 114736646357579832}
+  - component: {fileID: 114074885952853422}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -327,7 +327,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!95 &95507981665230838
 Animator:
@@ -377,6 +377,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPosition: {fileID: 1678693466384076}
+--- !u!114 &114074885952853422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1617757310907434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba6ea33bf0e62f45aa06d8f9e1e5b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isJumping: 0
+  airborneSpeed: 0
 --- !u!114 &114265083097693976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -389,38 +402,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0
---- !u!114 &114319426640497086
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1617757310907434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 185
-    i1: 212
-    i2: 140
-    i3: 183
-    i4: 91
-    i5: 10
-    i6: 221
-    i7: 148
-    i8: 233
-    i9: 83
-    i10: 134
-    i11: 52
-    i12: 79
-    i13: 41
-    i14: 135
-    i15: 79
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114428056607542306
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -444,10 +425,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928eff3e28344284c959eecccfeeb1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: {fileID: 0}
+  hp: 0
   eState: 0
   shotDamage: 10
---- !u!114 &114576204524099370
+--- !u!114 &114736646357579832
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -455,7 +436,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1617757310907434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0978a76a245adc24d9fe57f064378aa6, type: 3}
+  m_Script: {fileID: 11500000, guid: a67f413d01832a648a9fe157f37365ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!136 &136748652076959574

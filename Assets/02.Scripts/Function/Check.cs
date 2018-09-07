@@ -30,6 +30,8 @@ public class Check  {
         _rb.constraints = RigidbodyConstraints.FreezeRotationX;
         _rb.constraints = RigidbodyConstraints.FreezeRotationY;
     }
+
+    
 }
 
 static class Define         //c# 은 #define 없다는군;;

@@ -23,7 +23,8 @@ public class Bullet : AttackObject {
     public void SetActiveLaunch()          //총알이 켜지면서 초기화
     {
         transform.position = launchPos;
-         transform.Rotate(launchRot.eulerAngles);
+          transform.Rotate(launchRot.eulerAngles);
+
 
         Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
     }

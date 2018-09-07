@@ -10,12 +10,15 @@ public class Player2 : MoveObject {
     private Move move;
     private Shot bulletShot;
     private Throw bombThrow;
+    private Jump jump;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
     private SPECIAL_STATE eSpecialState;
 
-    private bool isRollDelay;    
+
+    private CapsuleCollider playerCol;
+    private bool isRoll;    
     private bool isSpecialState = false;
 
     private readonly int MAXPLAYERBOMBCOUNT = 10;
@@ -26,7 +29,7 @@ public class Player2 : MoveObject {
     private bool isMouse;
     private bool isMove;
 
-    private bool isJumpDelay;    
+    private bool isJumpDelay;    public bool IsJump() { return isJumpDelay; }
     private bool isAttackStop;
     private bool isRun;
 	void Start () {
@@ -40,12 +43,14 @@ public class Player2 : MoveObject {
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", 10, 15.0f);
 
+        jump = GetComponent<Jump>();
+        playerCol = GetComponent<CapsuleCollider>();
         eState = STATE.STAND;
         ePreState = STATE.STAND;
         eSpecialState = SPECIAL_STATE.NONE;
         isMouse = false;
         isMove = false;
-        isRollDelay = false;
+        isRoll = false;
         isSpecialState = false;
         // m_state = new Stand();
         // m_state.PlayAnimation(playerAni);
@@ -107,6 +112,8 @@ public class Player2 : MoveObject {
             playerAni.SetTrigger("Jump");
             isJumpDelay = true;
             isMouse = true;
+           // jump.Action(0.8f, 5.0f);
+
         }
     }
     private void Event_JumpingExit()
@@ -116,6 +123,7 @@ public class Player2 : MoveObject {
         if (isJumpDelay == true) eState = STATE.STAND;     //버그방지
         isJumpDelay = false;
     }
+
 
     private void KeyBoardManual()       //키보드입력시 상태변경
     {
@@ -136,6 +144,7 @@ public class Player2 : MoveObject {
     //클래식 방식으로 이름을 짜봄 논리
     private void Logic()           
     {
+        if (isMove) return;
         switch (eState)
         {
             case STATE.RUN:
@@ -236,21 +245,37 @@ public class Player2 : MoveObject {
         playerAni.SetFloat(hashZ, move.Vertical);
     }
 
-    //구르기
+    //진짜구르기
     private void Rolling()
     {
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            if (isRoll) return;
+            isRoll = true;
+            playerAni.SetTrigger("IsRoll");
+            isMouse = true;
+            isMove = true;
+            ePreState = eState;
+            eState = STATE.ROLL;
+        }
+    }
+
+    //구르기
+    private void TestRolling()
+    {
+        return;
         if(Input.GetKeyUp(KeyCode.W))
         {
             if (isSpecialState) return;
-            isRollDelay = true;
+            isRoll = true;
             Invoke("RollingCancel", 0.3f);
         }
-        else if(Input.GetKeyDown(KeyCode.W) && isRollDelay == true)
+        else if(Input.GetKeyDown(KeyCode.W) && isRoll == true)
         {
             isMove = true;
             playerAni.SetTrigger("IsRoll");
             isSpecialState = true;
-            isRollDelay = false;
+            isRoll = false;
             ePreState = eState;
             eState = STATE.ROLL;
             isMouse = true;
@@ -262,8 +287,9 @@ public class Player2 : MoveObject {
         eState = STATE.WALK ;
         isMouse = false;
         isMove = false;
+        isRoll = false;
     }
-    private void RollingCancel() {  isRollDelay = false; }
+    private void RollingCancel() { isRoll = false; }
     private void RollingReset() { isSpecialState = false; }
 
     int bulletCount = 20;           //총알

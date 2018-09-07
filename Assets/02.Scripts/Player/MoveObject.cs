@@ -16,7 +16,7 @@ public class MoveObject : MonoBehaviour
     public void MinusHp(int _minusHp)
     {
         hp -= _minusHp;
-        Debug.Log(hp);
+        Debug.Log("플레이어 체력 "  + hp);
         if (hp <= 0)
         {
             Death();
@@ -25,6 +25,7 @@ public class MoveObject : MonoBehaviour
     }
     public void PlusHp(int _plusHp)
     {
+        Debug.Log("플레이어 체력 " + hp);
         hp += _plusHp;
     }
 
