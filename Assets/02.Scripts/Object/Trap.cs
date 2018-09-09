@@ -18,13 +18,14 @@ public class Trap : MonoBehaviour {
             if (system.pPlayer2.IsJump() == true) return;
             isRun = true;
             system.pPlayer2.MinusHp(10);
+            system.pPlayer2.WoundEffect();
             StartCoroutine(CoolTime());
         }
     }
 
    IEnumerator CoolTime()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.5f);
         isRun = false;
     }
 }

@@ -389,9 +389,9 @@ public class Player2 : MoveObject {
             this_renderer[1].material.color = Color.white;
             this_renderer[2].material.color = Color.white;
             yield return new WaitForSeconds(0.1f);
-            if (woundEffect == false) { Debug.Log("ss"); yield break; }
+            if (woundEffect == false) yield break; 
         }
-;
+
     }
 
     bool woundEffect = false;

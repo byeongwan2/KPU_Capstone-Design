@@ -233,7 +233,7 @@ public partial class Player : MoveObject
     //애니메이션 해제용 이벤트
     private void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Ground" && eState == STATE.JUMP)
+        if (col.gameObject.CompareTag("Ground") && eState == STATE.JUMP)
         {
             if (isDoubleJumping)
             {          //더블점프끄나면 착지
