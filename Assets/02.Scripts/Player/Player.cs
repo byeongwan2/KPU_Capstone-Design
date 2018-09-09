@@ -37,7 +37,7 @@ public partial class Player : MoveObject
     void Start()
     {
         
-
+       
         eState = STATE.STAND;
         ePreState = STATE.STAND;
         eWay = WAY.FORWARD;

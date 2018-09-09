@@ -8,8 +8,8 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: M_Soldier_A_Head
   m_Shader: {fileID: 4800000, guid: b109fe30baa6ae24593d0da3972e0bb6, type: 3}
-  m_ShaderKeywords: _METALLICGLOSSMAP _NORMALMAP
-  m_LightmapFlags: 5
+  m_ShaderKeywords: _ALPHATEST_ON _EMISSION _METALLICGLOSSMAP _NORMALMAP
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
@@ -84,29 +84,33 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _Cutoff: 0.5
+    - _Cutoff: 0.9
     - _DamageFX: 0
     - _DetailNormalMapScale: 1
     - _DiffuseFactor: 1.69
     - _DstBlend: 0
     - _EmissionFactor: 2
     - _EmissiveFactor: 1
+    - _GlossMapScale: 1
     - _Glossiness: 0.9
+    - _GlossyReflections: 1
     - _Metallic: 1
     - _MetalnessFactor: 0
-    - _Mode: 0
+    - _Mode: 1
     - _OcclusionStrength: 1
     - _Outline: 0
     - _Parallax: 0.02
+    - _SmoothnessTextureChannel: 0
     - _Specular: 1
     - _SpecularColorized: 0.826
     - _SpecularFactor: 1
+    - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _UVWorldScale: 1
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _Color1: {r: 0.42409173, g: 0.57760227, b: 0.7794118, a: 1}
     - _Color2: {r: 0.33823532, g: 0.677188, b: 1, a: 1}
     - _DamageColor: {r: 1, g: 1, b: 1, a: 1}

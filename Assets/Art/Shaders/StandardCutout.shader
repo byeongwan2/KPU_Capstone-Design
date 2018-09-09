@@ -1,4 +1,5 @@
-﻿ // Upgrade NOTE: upgraded instancing buffer 'Props' to new syntax.
+﻿
+
 
 Shader "Custom/StandardCutout" {
 	Properties {
@@ -81,7 +82,7 @@ Shader "Custom/StandardCutout" {
 			o.Normal = UnpackScaleNormal (tex2D (_Normal, normalUVs), _NormalSacle);
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
-			//o.Alpha = c.a * fade * IN.color.a;
+			o.Alpha = c.a * fade * IN.color.a;
 			o.Emission = _AmbientColor;
 			clip(c.a - (1-IN.color.a));
 

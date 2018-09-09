@@ -6,13 +6,13 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Green
+  m_Name: Player2
   m_Shader: {fileID: 4800000, guid: b109fe30baa6ae24593d0da3972e0bb6, type: 3}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _CUTOUT_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -43,7 +43,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 2f5a147c8e798ed45ac7ac5e13006a16, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -69,6 +69,7 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Cutout: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _EmissionFactor: 1
@@ -88,10 +89,9 @@ Material:
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
-    - _AmbientColor: {r: 0.36945868, g: 0.6698113, b: 0.3254272, a: 1}
-    - _Color: {r: 0, g: 1, b: 0.07469654, a: 1}
+    - _AmbientColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MaskedColorA: {r: 1, g: 0, b: 0, a: 1}
     - _MaskedColorB: {r: 0, g: 1, b: 0, a: 1}
     - _MaskedColorC: {r: 0, g: 0, b: 1, a: 1}
-    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

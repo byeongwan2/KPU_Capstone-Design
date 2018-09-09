@@ -113,14 +113,14 @@ public partial class Monster : Enemy
             }
         }
         yield return new WaitForSeconds(1.0f);
-        if (isDie) yield return null;
+        if (isDie) yield break;
         StartCoroutine(CheckPlayerDistance());
     }
 
     IEnumerator SpecialIdle()
     {
         yield return new WaitForSeconds(5.0f);
-        if (isDie) yield return null;
+        if (isDie) yield break;
         if (eEnemy_State == ENEMY_STATE.PATROL)
         {
             moveAgent.Stop();
@@ -129,7 +129,7 @@ public partial class Monster : Enemy
             eEnemy_State = ENEMY_STATE.NONE;
         }
         yield return new WaitForSeconds(3.0f);
-        if (isDie) yield return null;
+        if (isDie)yield break;
         if (eEnemy_State == ENEMY_STATE.NONE)  eEnemy_State = ENEMY_STATE.PATROL; 
         StartCoroutine(SpecialIdle());
     }

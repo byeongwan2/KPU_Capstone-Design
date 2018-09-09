@@ -38,4 +38,5 @@ public class MoveObject : MonoBehaviour
     {
         eState = STATE.DIE;
     }
+    public virtual void WoundEffect() {  }
 }

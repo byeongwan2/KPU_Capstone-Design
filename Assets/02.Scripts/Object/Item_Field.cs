@@ -34,7 +34,7 @@ public class Item_Field : MonoBehaviour
         if (dis < 7.0f)
         {
             isGain = true;
-            yield return null;
+            yield break;
         }
         else isGain = false;
 

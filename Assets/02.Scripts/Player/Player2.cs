@@ -58,6 +58,7 @@ public class Player2 : MoveObject {
         isAttackStop = false;
         isRun = false;
         bulletCount = 20;
+        Start2();
     }
 
     // Update is called once per frame
@@ -358,5 +359,45 @@ public class Player2 : MoveObject {
         isAttackStop = false;
     }
 
-    
+    //깜빡임
+    SkinnedMeshRenderer[] this_renderer;
+    void Start2()
+    {
+        this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+        Debug.Log(this_renderer[0]);
+        Debug.Log(this_renderer[1]);
+        Debug.Log(this_renderer[2]);
+        Debug.Log(this_renderer[3]);
+    }
+    public override void WoundEffect()
+    {
+        woundEffect = true;
+        StartCoroutine(RedEffect());
+        Invoke("WoundEffectExit", 1.5f);
+
+    }
+
+    IEnumerator RedEffect()
+    {
+        while (true)
+        {
+            this_renderer[0].material.color = Color.red;
+            this_renderer[1].material.color = Color.red;
+            this_renderer[2].material.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            this_renderer[0].material.color = Color.white;
+            this_renderer[1].material.color = Color.white;
+            this_renderer[2].material.color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+            if (woundEffect == false) { Debug.Log("ss"); yield break; }
+        }
+;
+    }
+
+    bool woundEffect = false;
+    void WoundEffectExit()
+    {
+        woundEffect = false;
+    }
+
 }
