@@ -17,4 +17,9 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
             this_gameObject.WoundEffect();
         }
     }
+
+    public void ExplosionDamage(int _damage)
+    {
+        this_gameObject.MinusHp(_damage);
+    }
 }

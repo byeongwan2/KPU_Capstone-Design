@@ -22,6 +22,8 @@ public class Bomb : AttackObject {
         expEffect.SetActive(false);
         rangeEffect = GetComponentInChildren<RangeEffect>();
         rangeEffect.Init();
+
+       list = PrefabSystem.instance.ActiveMonsterList();
     }
 
     void LifeOff()
@@ -42,8 +44,9 @@ public class Bomb : AttackObject {
     {
         transform.position = launchPos;
         transform.rotation = launchRot;
-        this_rigidbody.AddForce(transform.up * 2.0f + transform.forward* 10.0f, ForceMode.VelocityChange);       //포물선수정필요
+        this_rigidbody.AddForce(transform.up * 12.0f /*+ transform.forward* 10.0f*/, ForceMode.VelocityChange);       //포물선수정필요
         rangeEffect.RangeLook(3.0f);
+
         Invoke("LifeOff", 5.0f);        //2초뒤 폭탄삭제
     }
 
@@ -55,10 +58,24 @@ public class Bomb : AttackObject {
     IEnumerator ExplosionEffect()
     {
         expEffect.SetActive(true);
+        ExplosionAttack();
         expEffect.transform.rotation = Quaternion.identity;
         expEffect.transform.position = transform.position;
         yield return new WaitForSeconds(0.8f);
         expEffect.SetActive(false);
         gameObject.SetActive(false);
+    }
+    List<GameObject> list;
+    void ExplosionAttack()
+    {
+        foreach( var enemy in list)
+        {
+            if (enemy.activeSelf == false) continue;
+            if( 2.4f > Check.Distance(enemy.transform, this.transform))
+            {
+                Debug.Log(Check.Distance(enemy.transform, this.transform));
+                enemy.GetComponent<Wound>().ExplosionDamage(10);
+            }
+        }
     }
 }

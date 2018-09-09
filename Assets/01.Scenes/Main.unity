@@ -366,7 +366,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 118494850}
-  - component: {fileID: 118494851}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -387,17 +386,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &118494851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 118494849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d753b2f85d32ef6409e9332e0a9197ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &123822973
 Prefab:
   m_ObjectHideFlags: 0
@@ -1393,6 +1381,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: cf3910b7639e12447827e45f63f60201, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cf3910b7639e12447827e45f63f60201, type: 3}
   m_IsPrefabParent: 0
@@ -1806,6 +1798,10 @@ Prefab:
     - target: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
       propertyPath: m_Name
       value: Monster
+      objectReference: {fileID: 0}
+    - target: {fileID: 100032, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a1172801cc64d474bb0e48c03b543a5a, type: 3}
@@ -3927,6 +3923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2135204883}
   - component: {fileID: 2135204882}
+  - component: {fileID: 2135204884}
   m_Layer: 0
   m_Name: Stage01
   m_TagString: Untagged
@@ -3958,3 +3955,14 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2135204884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2135204881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d753b2f85d32ef6409e9332e0a9197ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

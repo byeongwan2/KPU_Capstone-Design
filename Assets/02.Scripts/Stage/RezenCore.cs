@@ -9,4 +9,11 @@ public class RezenCore : MonoBehaviour {
         GameObject monster = GameObject.FindGameObjectWithTag("Enemy");
         PrefabSystem.instance.CreatePrefab(TYPE.MONSTER, monster, _monsterNumber);
     }
+
+    public void Work()
+    {
+        var monster = PrefabSystem.instance.ActivePrefab(TYPE.MONSTER).GetComponent<Monster>();           //게임오브젝트가 리턴되므로 이부분 수정해야함 // SetActive(true) 상태로 리턴
+        
+        
+    }
 }

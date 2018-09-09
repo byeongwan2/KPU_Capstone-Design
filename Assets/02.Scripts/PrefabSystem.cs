@@ -61,4 +61,9 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
             
         }
     }
+
+    public List<GameObject> ActiveMonsterList()
+    {
+        return monsterPool;
+    }
 }

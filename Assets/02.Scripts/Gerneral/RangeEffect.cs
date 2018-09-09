@@ -7,6 +7,7 @@ public class RangeEffect : MonoBehaviour
 {
     Transform parentTr;
     public LineRenderer m_line;
+    public LineRenderer test;
     public void Init()
     {
         m_line = GetComponent<LineRenderer>();
@@ -15,6 +16,10 @@ public class RangeEffect : MonoBehaviour
         RangeMaker();
         m_line.enabled = false;
         parentTr = GetComponentInParent<Transform>();
+
+        //라인렌더러 설정
+      
+       
     }
 
     public void RangeMaker()
@@ -34,6 +39,7 @@ public class RangeEffect : MonoBehaviour
 
     void OnRangeLook()
     {
+       
         m_line.enabled = true;
         if (parentTr.rotation.x < -88.0f && parentTr.rotation.x > -92.0f 
             && parentTr.rotation.x > 88.0f && parentTr.rotation.x < 92.0f)
@@ -55,5 +61,10 @@ public class RangeEffect : MonoBehaviour
     public void RangeLook(float _dangerTime)
     {
         Invoke("OnRangeLook", _dangerTime);
+    }
+
+    void TestLine()
+    {
+
     }
 }
