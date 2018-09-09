@@ -24,8 +24,6 @@ public class Bullet : AttackObject {
     {
         transform.position = launchPos;
           transform.Rotate(launchRot.eulerAngles);
-
-
         Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
     }
     [SerializeField]
