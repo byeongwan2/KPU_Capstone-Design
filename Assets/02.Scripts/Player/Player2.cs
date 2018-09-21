@@ -86,13 +86,13 @@ public class Player2 : MoveObject {
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
 
         Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
-        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
-
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y );
+       
         Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
-
+       
         float dx = aim1.x - pos.x;
         float dz = aim1.z - pos.z;
-
+ 
         float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
         playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
     }

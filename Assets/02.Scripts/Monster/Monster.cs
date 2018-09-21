@@ -95,6 +95,7 @@ public partial class Monster : Enemy
         float distance = Check.Distance(system.pPlayer2.transform, this.transform);
         if(distance < 10.0f && distance >= 5.0f)
         {
+            StopCoroutine(SpecialIdle());
             moveAgent.pTraceTarget = system.pPlayer2.transform.position;
             eState = STATE.RUN;
             eEnemy_State = ENEMY_STATE.TRACE;
@@ -110,6 +111,7 @@ public partial class Monster : Enemy
             if(eEnemy_State == ENEMY_STATE.TRACE)
             {
                 eEnemy_State = ENEMY_STATE.PATROL;
+                StartCoroutine(SpecialIdle());
             }
         }
         yield return new WaitForSeconds(1.0f);
