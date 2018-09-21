@@ -44,8 +44,8 @@ public class Bomb : AttackObject {
     {
         transform.position = launchPos;
         transform.rotation = launchRot;
-        this_rigidbody.AddForce(transform.up * 12.0f /*+ transform.forward* 10.0f*/, ForceMode.VelocityChange);       //포물선수정필요
-        rangeEffect.RangeLook(3.0f);
+        this_rigidbody.AddForce(transform.up  + transform.forward* 10.0f, ForceMode.VelocityChange);       //포물선수정필요
+        rangeEffect.RangeLook(3.5f);
 
         Invoke("LifeOff", 5.0f);        //2초뒤 폭탄삭제
     }
