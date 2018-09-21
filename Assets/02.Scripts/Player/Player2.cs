@@ -58,7 +58,7 @@ public class Player2 : MoveObject {
         isAttackStop = false;
         isRun = false;
         bulletCount = 20;
-        Start2();
+        this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
     // Update is called once per frame
@@ -361,14 +361,7 @@ public class Player2 : MoveObject {
 
     //깜빡임
     SkinnedMeshRenderer[] this_renderer;
-    void Start2()
-    {
-        this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-        Debug.Log(this_renderer[0]);
-        Debug.Log(this_renderer[1]);
-        Debug.Log(this_renderer[2]);
-        Debug.Log(this_renderer[3]);
-    }
+
     public override void WoundEffect()
     {
         woundEffect = true;

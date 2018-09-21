@@ -19,11 +19,19 @@ public class Bullet : AttackObject {
         transform.rotation = Quaternion.Euler(Vector4.zero);
         gameObject.SetActive(false);
     }
-
+    Vector3 destination;
     public void SetActiveLaunch()          //총알이 켜지면서 초기화
     {
         transform.position = launchPos;
-          transform.Rotate(launchRot.eulerAngles);
+
+        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
+
+        Vector3 pos = transform.position; //게임 오브젝트 좌표 저장
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
+
+        destination = Camera.main.ScreenToWorldPoint(mpos2);
+
+        transform.LookAt(destination);
         Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
     }
     [SerializeField]
