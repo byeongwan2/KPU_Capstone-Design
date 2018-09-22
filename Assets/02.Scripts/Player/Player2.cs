@@ -28,8 +28,9 @@ public class Player2 : MoveObject {
     //private State m_state = null;               //상태에 따른클래스를 갖게끔
     private bool isMouse;
     private bool isMove;
-
-    private bool isJumpDelay;    public bool IsJump() { return isJumpDelay; }
+    private bool isJumpHit;         //점프할때 피격이 가능한지 false이면 가능
+    public bool IsJumpHit() { return isJumpHit; }
+    private bool isJumpDelay;   //점프중인지 단순확인 
     private bool isAttackStop;
     private bool isRun;
 	void Start () {
@@ -55,6 +56,7 @@ public class Player2 : MoveObject {
         // m_state = new Stand();
         // m_state.PlayAnimation(playerAni);
         isJumpDelay = false;
+        isJumpHit = false;
         isAttackStop = false;
         isRun = false;
         bulletCount = 20;
@@ -84,9 +86,11 @@ public class Player2 : MoveObject {
     {
         if (isMouse) return;
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
+      
+  
+       Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y,Camera.main.transform.position.y );
 
-        Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
-        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y );
        
         Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
        
@@ -112,6 +116,7 @@ public class Player2 : MoveObject {
             eState = STATE.JUMP;
             playerAni.SetTrigger("Jump");
             isJumpDelay = true;
+            isJumpHit = true;
             isMouse = true;
            // jump.Action(0.8f, 5.0f);
 
@@ -123,6 +128,11 @@ public class Player2 : MoveObject {
         eState = ePreState;
         if (isJumpDelay == true) eState = STATE.STAND;     //버그방지
         isJumpDelay = false;
+    }
+
+    private void Event_HitJumping()
+    {
+        isJumpHit = false;
     }
 
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Trap : MonoBehaviour {
     private GameSystem system;
-    bool isRun = false;
+    bool isRun = false;     //작동하는지 달리기아님
     void Start()
     {
         isRun = false;
@@ -15,7 +15,7 @@ public class Trap : MonoBehaviour {
         if (isRun) return;
         if (_col.gameObject.tag.Equals("Player"))
         {
-            if (system.pPlayer2.IsJump() == true) return;
+            if (system.pPlayer2.IsJumpHit() == true) return;
             isRun = true;
             system.pPlayer2.MinusHp(10);
             system.pPlayer2.WoundEffect();
