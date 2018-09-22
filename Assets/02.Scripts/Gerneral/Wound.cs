@@ -12,12 +12,12 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
 	void OnTriggerEnter(Collider _obj)
     {
         if (_obj.CompareTag("Bullet"))
-        {
-            //  int damage = _obj.gameObject.GetComponent<Bullet>().Damage;
+        { 
+            ////  int damage = _obj.gameObject.GetComponent<Bullet>().Damage;
             this_gameObject.MinusHp(10);         //임시
             this_gameObject.WoundEffect();
             _obj.gameObject.SetActive(false);
-        }
+        } 
     }
 
     public void ExplosionDamage(int _damage)
