@@ -15,6 +15,7 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     private List<GameObject> bombPool = new List<GameObject>();         //폭탄을 미리생성
     private List<GameObject> bulletPool = new List<GameObject>();
     private List<GameObject> monsterPool = new List<GameObject>();
+
     public void CreatePrefab(TYPE _type,GameObject _gameObject , int _count)       //여러가지 폭탄을 생성할수 잇게끔
     {
         if (_type == TYPE.BOMB)SelectPoolType(bombPool, _gameObject, _count);    

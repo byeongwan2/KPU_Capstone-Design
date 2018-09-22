@@ -11,6 +11,7 @@ public class Player2 : MoveObject {
     private Shot bulletShot;
     private Throw bombThrow;
     private Jump jump;
+    private Dash dash;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
@@ -33,6 +34,7 @@ public class Player2 : MoveObject {
     private bool isJumpDelay;   //점프중인지 단순확인 
     private bool isAttackStop;
     private bool isRun;
+    private bool isDash;
 	void Start () {
         instance = this;
         playerTr = GetComponent<Transform>();
@@ -45,6 +47,8 @@ public class Player2 : MoveObject {
         bombThrow.Init("PlayerBomb", 10, 15.0f);
 
         jump = GetComponent<Jump>();
+        dash = GetComponent<Dash>();
+
         playerCol = GetComponent<CapsuleCollider>();
         eState = STATE.STAND;
         ePreState = STATE.STAND;
@@ -59,6 +63,7 @@ public class Player2 : MoveObject {
         isJumpHit = false;
         isAttackStop = false;
         isRun = false;
+        isDash = false;
         bulletCount = 20;
         this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
@@ -73,6 +78,7 @@ public class Player2 : MoveObject {
         Jumping();
         Reloading();
 
+        Move_Dash();
         MovePlayer();
         KeyBoardManual();
         Logic();
@@ -104,12 +110,14 @@ public class Player2 : MoveObject {
     //이동값설정
     private void MovePlayer()           
     {
+        if (isDash) return;
         if (isMove) return;
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
     }
     private void Jumping()
     {
+        if (isDash) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if(ePreState != STATE.JUMP)ePreState = eState;
@@ -138,7 +146,8 @@ public class Player2 : MoveObject {
 
     private void KeyBoardManual()       //키보드입력시 상태변경
     {
-        if (eState == STATE.ROLL) return;
+        if (isDash) return;
+        if (eState == STATE.ROLL ) return;
         if (isJumpDelay == true) return;
         if (isRun == true) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
@@ -155,6 +164,7 @@ public class Player2 : MoveObject {
     //클래식 방식으로 이름을 짜봄 논리
     private void Logic()           
     {
+        if (isDash) return;
         if (isMove) return;
         switch (eState)
         {
@@ -177,7 +187,10 @@ public class Player2 : MoveObject {
             case STATE.JUMP:
 
                 break;
-          
+            case STATE.DASH:
+                playerAni.SetBool("Dash", true);
+               
+                break;
             case STATE.RUN:
                 playerAni.SetBool("IsRun", true);
                 playerAni.SetBool("IsWalk", false);
@@ -186,11 +199,13 @@ public class Player2 : MoveObject {
             case STATE.WALK:
                 playerAni.SetBool("IsWalk", true);
                 playerAni.SetBool("IsRun", false);
+                playerAni.SetBool("Dash", false);
                 break;
 
             case STATE.STAND:
                 playerAni.SetBool("IsRun", false);
                 playerAni.SetBool("IsWalk", false);
+                playerAni.SetBool("Dash", false);
                 break;
         }
     }
@@ -198,6 +213,7 @@ public class Player2 : MoveObject {
     private float velocity = 0.0f; //가속도   
     private void Velocity()        //가속도, 캐릭터 회전 적용 함수 
     {
+        if (isDash) return;
         velocity += Time.deltaTime; //  * 10.0f;  //10.0f 를 곱하지않으면 밑에 else if 로 들어가지않아서 Run이해제안댐 일단원본
         playerAni.SetFloat(hashVelocity, velocity);
 
@@ -213,6 +229,7 @@ public class Player2 : MoveObject {
     //달리기
     private void Running()          //달리기는 쉬프트
     {
+        if (isDash) return;
         if (Input.GetKey(KeyCode.LeftShift) && eState == STATE.WALK)
         {
             eState = STATE.RUN;            
@@ -308,6 +325,7 @@ public class Player2 : MoveObject {
     //기본공격
     private void MouseManual()
     {
+        if (isDash) return;
         if (eState == STATE.JUMP) return;
         if (isAttackStop) return;
         if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackCoolTime == false)
@@ -347,6 +365,7 @@ public class Player2 : MoveObject {
 
     private void Reloading()
     {
+        if (isDash) return;
         if (isAttackStop) return;
         if(Input.GetKeyDown(KeyCode.R))
         {
@@ -403,4 +422,27 @@ public class Player2 : MoveObject {
         woundEffect = false;
     }
 
+
+    void Move_Dash()
+    {
+        if (Input.GetKey(KeyCode.C))
+        {
+            isDash = true;
+            eState = STATE.DASH;
+            Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
+
+
+            Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
+            Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
+
+
+            Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
+            dash.Dash_Destination(aim1,20.0f);
+        }
+        else if(Input.GetKeyUp(KeyCode.C))
+        {
+            eState = STATE.STAND;
+            isDash = false;
+        }
+    }
 }

@@ -13,10 +13,14 @@ public class Bullet : AttackObject {
         rb = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐
     }
 
-    private void LifeOff()
+    void OnDisable()
     {
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.Euler(Vector4.zero);
+    }
+
+    private void LifeOff()
+    {
         gameObject.SetActive(false);
     }
     Vector3 destination;
