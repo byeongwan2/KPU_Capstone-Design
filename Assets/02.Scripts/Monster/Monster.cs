@@ -144,16 +144,13 @@ public partial class Monster : Enemy
 
     void UpdateRotateTarget()
     {
-        if (eEnemy_State != ENEMY_STATE.TRACE) return;
-        float dx = system.pPlayer2.transform.position.x - transform.position.x;
-        float dz = system.pPlayer2.transform.position.z - transform.position.z;
-
-        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 5.0f);
-
-        if(rotateDegree > 5.0f)
+        if (eEnemy_State == ENEMY_STATE.TRACE || eEnemy_State == ENEMY_STATE.ATTACK)
         {
-            Debug.Log("cc");
+            float dx = system.pPlayer2.transform.position.x - transform.position.x;
+            float dz = system.pPlayer2.transform.position.z - transform.position.z;
+
+            float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 5.0f);
         }
     }
 }
