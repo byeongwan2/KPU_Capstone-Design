@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ENEMY_STATE { NONE, PATROL, TRACE }
+public enum ENEMY_STATE { NONE, PATROL, TRACE ,ATTACK ,RETRACE}
 
 public abstract class Enemy : MoveObject {
 

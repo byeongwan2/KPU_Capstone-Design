@@ -23,14 +23,14 @@ public class Bullet : AttackObject {
     public void SetActiveLaunch()          //총알이 켜지면서 초기화
     {
         transform.position = launchPos;
-       // transform.Rotate(launchRot.eulerAngles);
-        
+        transform.Rotate(launchRot.eulerAngles);
+        /*
         Vector3 mpos2 = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.y);
         Debug.Log(mpos2);
         destination = Camera.main.ScreenToWorldPoint(mpos2);
         Debug.Log(destination);
        // destination.y = transform.position.y;
-        transform.LookAt(destination);
+        transform.LookAt(destination);*/
         Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
     }
     [SerializeField]

@@ -46,6 +46,7 @@ public partial class Monster : Enemy
     {
         LogicState();
         Render();
+        UpdateRotateTarget();
     }
 
     void LogicState()
@@ -90,29 +91,36 @@ public partial class Monster : Enemy
                 break;
         }
     }
+
+    void TracePlayer()
+    {
+        moveAgent.pTraceTarget = system.pPlayer2.transform.position;
+        eState = STATE.RUN;
+        eEnemy_State = ENEMY_STATE.TRACE;
+    }
+
     IEnumerator CheckPlayerDistance()
     {
         float distance = Check.Distance(system.pPlayer2.transform, this.transform);
-        if(distance < 10.0f && distance >= 5.0f)
+        if(distance < 10.0f && distance >= 5.0f )
         {
-            moveAgent.pTraceTarget = system.pPlayer2.transform.position;
-            eState = STATE.RUN;
-            eEnemy_State = ENEMY_STATE.TRACE;
+            TracePlayer();
         }
         else if(distance < 5.0f)
         {
             eState = STATE.ATTACK;
-            eEnemy_State = ENEMY_STATE.TRACE;
             moveAgent.Stop();
+            eEnemy_State = ENEMY_STATE.ATTACK;
+           
         }
         else
         {
-            if(eEnemy_State == ENEMY_STATE.TRACE)
+            if(eEnemy_State == ENEMY_STATE.ATTACK)
             {
                 eEnemy_State = ENEMY_STATE.PATROL;
             }
         }
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         if (isDie) yield break;
         StartCoroutine(CheckPlayerDistance());
     }
@@ -133,5 +141,19 @@ public partial class Monster : Enemy
         if (eEnemy_State == ENEMY_STATE.NONE)  eEnemy_State = ENEMY_STATE.PATROL; 
         StartCoroutine(SpecialIdle());
     }
-    
+
+    void UpdateRotateTarget()
+    {
+        if (eEnemy_State != ENEMY_STATE.TRACE) return;
+        float dx = system.pPlayer2.transform.position.x - transform.position.x;
+        float dz = system.pPlayer2.transform.position.z - transform.position.z;
+
+        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 5.0f);
+
+        if(rotateDegree > 5.0f)
+        {
+            Debug.Log("cc");
+        }
+    }
 }
