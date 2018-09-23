@@ -17,12 +17,12 @@ public partial class Player : MoveObject        //애니메이션 이벤트로�
     //단순 총알발사
     private void ShotBullet()
     {
-        bulletShot.Work();
+        //bulletShot.Work();
     }
 
     //단순 폭탄던지기
     private void ThrowBomb()
     {
-        bombThrow.Work();
+        //bombThrow.Work();
     }
 }

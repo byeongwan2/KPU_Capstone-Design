@@ -49,7 +49,7 @@ public partial class Player : MoveObject
 
         move = GetComponent<Move>();
         bulletShot = GetComponent<Shot>();
-        bulletShot.Init("Bullet", MAXPLAYERBULLETCOUNT, 100.0f, shotDamage);
+        //bulletShot.Init("Bullet", MAXPLAYERBULLETCOUNT, 100.0f, shotDamage);
 
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", MAXPLAYERBOMBCOUNT, bombPower);
