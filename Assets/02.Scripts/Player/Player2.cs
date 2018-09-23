@@ -87,21 +87,23 @@ public class Player2 : MoveObject {
         SpecialAnimation();
     }
 
+    Vector3 Get_WorldPoint()
+    {
+        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
+
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
+
+        return Camera.main.ScreenToWorldPoint(mpos2);
+    }
     //마우스 바라보기
     private void LookMousePoint()           
     {
         if (isMouse) return;
-        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
-      
-  
-       Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
-        Vector3 mpos2 = new Vector3(mpos.x, mpos.y,Camera.main.transform.position.y );
 
-       
-        Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
-       
-        float dx = aim1.x - pos.x;
-        float dz = aim1.z - pos.z;
+        Vector3 aim1 = Get_WorldPoint();
+
+        float dx = aim1.x - transform.position.x;
+        float dz = aim1.z - transform.position.z;
  
         float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
         playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
@@ -422,22 +424,15 @@ public class Player2 : MoveObject {
         woundEffect = false;
     }
 
-
     void Move_Dash()
     {
         if (Input.GetKey(KeyCode.C))
         {
             isDash = true;
             eState = STATE.DASH;
-            Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
 
-
-            Vector3 pos = playerTr.position; //게임 오브젝트 좌표 저장
-            Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
-
-
-            Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
-            dash.Dash_Destination(aim1,20.0f);
+             Vector3 aim1 = Get_WorldPoint();
+            dash.Dash_Destination(aim1,8.0f);
         }
         else if(Input.GetKeyUp(KeyCode.C))
         {
