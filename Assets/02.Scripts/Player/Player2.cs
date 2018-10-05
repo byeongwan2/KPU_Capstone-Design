@@ -41,8 +41,8 @@ public class Player2 : MoveObject {
         move = GetComponent<Move>();
         playerAni = GetComponent<Animator>();
         bulletShot = GetComponent<Shot>();
-        bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage,TYPE.BULLET);
-        bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT, 0, shotDamage,TYPE.ADVANCEBULLET);
+        bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage);
+
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", 10, 15.0f);
 
@@ -66,13 +66,10 @@ public class Player2 : MoveObject {
         isDash = false;
         bulletCount = 20;
         this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-
-        attackMode = 0;
     }
 
     // Update is called once per frame
     void Update () {
-        Change_AttackMode();
         Dancing();
         LookMousePoint();
         MouseManual();
@@ -345,7 +342,7 @@ public class Player2 : MoveObject {
             attackCoolTime = true;
             StartCoroutine(AttackBasicExit());
             playerAni.SetTrigger("Attack");
-            Attack_Mode();
+            bulletShot.Work();
         }
         else if(Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
         {
@@ -380,7 +377,7 @@ public class Player2 : MoveObject {
 
     private void Event_ThrowBomb()
     {
-        bombThrow.Work(TYPE.BOMB);
+        bombThrow.Work();
     }
 
     private void Event_MouseExit()
@@ -435,28 +432,12 @@ public class Player2 : MoveObject {
             eState = STATE.DASH;
 
              Vector3 aim1 = Get_WorldPoint();
-            dash.Dash_Destination(aim1,40.0f);
+            dash.Dash_Destination(aim1,8.0f);
         }
         else if(Input.GetKeyUp(KeyCode.C))
         {
             eState = STATE.STAND;
             isDash = false;
         }
-    }
-    int attackMode = 0;
-    void Attack_Mode()
-    {
-        if (attackMode == 0)
-            bulletShot.Work(TYPE.BULLET);
-        else if (attackMode == 1)
-            bulletShot.Work(TYPE.ADVANCEBULLET);
-    }
-
-    void Change_AttackMode()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            attackMode = 0;
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            attackMode = 1;
     }
 }

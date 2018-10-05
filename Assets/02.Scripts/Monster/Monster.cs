@@ -33,7 +33,7 @@ public partial class Monster : Enemy
         moveAgent.pPatrolling = true;
 
         bulletShot = GetComponent<Shot>();
-        bulletShot.Init("Bullet", 8, 100.0f, 2,TYPE.BULLET);
+        bulletShot.Init("Bullet", 8, 100.0f, 2);
 
         StartCoroutine(SpecialIdle());          //걷다가 쉬었다가기
 
