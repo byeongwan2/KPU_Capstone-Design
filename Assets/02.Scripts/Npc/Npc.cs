@@ -20,10 +20,6 @@ public class Npc : MonoBehaviour {
         EventManager.Instance.AddListener(EVENT_TYPE.NPC_CHAT_START, OnEvent_PlayerChatStart);
     }
 
-// Update is called once per frame
-    void Update () {
-        
-    }
 
     IEnumerator PlayerPosition()
     {

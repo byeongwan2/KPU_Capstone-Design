@@ -9,13 +9,14 @@ public class PlayerCam : MonoBehaviour{
     public float distance = 15.0f;           //카메라와 주인공과의 거리
     public float height = 25.0f;             //카메라 높이
     public float playerOffset = 1.0f;       //Player 좌표의 오프셋
+
     
     private Transform tr;   //카메라 Transfrom 컴포넌트
 
     void Start () {
-        tr = GetComponent<Transform>();                
+        tr = GetComponent<Transform>();
+       
 	}
-	
 	
     //주인공이 이동한 후 카메라가 움직여야하기 떄문에 LateUpdate를 쓴다
 	void LateUpdate () {

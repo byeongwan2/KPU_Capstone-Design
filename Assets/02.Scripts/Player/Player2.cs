@@ -35,6 +35,7 @@ public class Player2 : MoveObject {
     private bool isAttackStop;
     private bool isRun;
     private bool isDash;
+    Camera mainCamera;
 	void Start () {
         instance = this;
         playerTr = GetComponent<Transform>();
@@ -66,8 +67,10 @@ public class Player2 : MoveObject {
         isDash = false;
         bulletCount = 20;
         this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+        mainCamera = Camera.main;
+        Debug.Log(virtualCamera);
     }
-
+    public Camera virtualCamera;
     // Update is called once per frame
     void Update () {
         Dancing();
@@ -91,22 +94,40 @@ public class Player2 : MoveObject {
     {
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
 
-        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, virtualCamera.transform.position.y);
 
-        return Camera.main.ScreenToWorldPoint(mpos2);
+        return virtualCamera.ScreenToWorldPoint(mpos2);
     }
+   
     //마우스 바라보기
-    private void LookMousePoint()           
-    {
+    private void LookMousePoint()
+    { 
+        
         if (isMouse) return;
 
         Vector3 aim1 = Get_WorldPoint();
-
         float dx = aim1.x - transform.position.x;
         float dz = aim1.z - transform.position.z;
- 
-        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
+
+        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;
         playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
+
+     
+     
+     /*
+        Ray ray = virtualCamera.ScreenPointToRay(Input.mousePosition);
+        Plane grandPlane = new Plane(Vector3.up, Vector3.zero);
+        float rayDistance;
+
+    
+        if (grandPlane.Raycast(ray, out rayDistance))
+        {
+            Vector3 point = ray.GetPoint(rayDistance);
+            Debug.DrawLine(ray.origin, point, Color.red);
+            Vector3 heightCorrectedPoint = new Vector3(point.x, transform.position.y, point.z);
+            transform.LookAt(heightCorrectedPoint);
+        }
+        */
     }
 
     //이동값설정
