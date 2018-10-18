@@ -92,9 +92,8 @@ public class Player2 : MoveObject {
 
     Vector3 Get_WorldPoint()
     {
-        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장
-
-        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
+        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y , Camera.main.transform.position.y * Mathf.Cos(27f * Mathf.Deg2Rad));
 
         return Camera.main.ScreenToWorldPoint(mpos2);
     }

@@ -12,8 +12,7 @@ public class Shot : Behaviour
         bullet.GetComponent<Bullet>().StatSetting();
         bullet.GetComponent<Bullet>().DamageSetting(_damage);
         bullet.GetComponent<Bullet>().SpeedSetting(_bulletSpeed);
-        PrefabSystem.instance.CreatePrefab(_type, bullet, _maxCount);      //오브젝트풀
-
+        PrefabSystem.instance.CreatePrefab(_type, bullet, _maxCount);      //오브젝트풀           
     }
 
     public override void Work(TYPE _type)
@@ -26,9 +25,7 @@ public class Shot : Behaviour
     }
 
     private void Targeting()
-    {
-        
-
+    {        
 
     }
 }
