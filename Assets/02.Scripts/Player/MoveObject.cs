@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum Object_Id
+{
+    NONE,PLAYER,MONSTER
+}
 public class MoveObject : MonoBehaviour
 {
     protected STATE eState = STATE.STAND;
-
+    Object_Id m_id;
+    public Object_Id Get_Id()
+    {
+        return m_id;
+    }
     [SerializeField]
     protected int hp;
     public void Init(int _initHp)      //초기화
@@ -37,6 +44,12 @@ public class MoveObject : MonoBehaviour
     public void Death()
     {
         eState = STATE.DIE;
+    }
+
+    public bool Compare_This(Object_Id _id)
+    {
+        if (m_id == _id) return true;
+        else return false;
     }
     public virtual void WoundEffect() {  }
 }

@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : AttackObject {
-    // Use this for initialization
-    //public Transform crosshairs;
-
-    Rigidbody rb;
     
+    Rigidbody rb;
+    Object_Id fire_ObjectId;
 
 	void Awake ()
     {       
         rb = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐    
+        fire_ObjectId = Object_Id.NONE;
+    }
+
+    public void Check_BulletId(Object_Id _id)
+    {
+        fire_ObjectId = _id;
     }
 
     void OnDisable()

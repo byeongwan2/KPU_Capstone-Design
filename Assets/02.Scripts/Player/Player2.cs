@@ -64,7 +64,7 @@ public class Player2 : MoveObject {
         isAttackStop = false;
         isRun = false;
         isDash = false;
-        bulletCount = 20;
+        bulletCount = 35;       //현재 35발쏘고 장전
         this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
 
         attackMode = 0;
@@ -400,7 +400,6 @@ public class Player2 : MoveObject {
         woundEffect = true;
         StartCoroutine(RedEffect());
         Invoke("WoundEffectExit", 1.5f);
-
     }
 
     IEnumerator RedEffect()
