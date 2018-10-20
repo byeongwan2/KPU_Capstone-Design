@@ -17,4 +17,5 @@ public abstract class AttackObject : MonoBehaviour {
     {
         launchRot = _launchRot;
     }
+    public abstract void SetActiveLaunch();
 }
