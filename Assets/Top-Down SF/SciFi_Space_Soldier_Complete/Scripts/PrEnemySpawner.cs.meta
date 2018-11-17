@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 31f7cb59b028c3b42a6fc2e386a611de
+timeCreated: 1490054609
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - Enemy: {instanceID: 0}
+  - EnemyPatrolRoute: {instanceID: 0}
+  - SpawnPosition: {instanceID: 0}
+  - AreaMesh: {fileID: 4300000, guid: 6f7b5c6dee4c0594d947f1537906d39e, type: 3}
+  - IconMesh: {fileID: 4300000, guid: ab2c76e462d33c445acb73ae605f269a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

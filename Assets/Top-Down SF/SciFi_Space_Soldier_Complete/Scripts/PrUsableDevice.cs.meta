@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f59a60261c331344bbc802bac5352eda
+timeCreated: 1490145164
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - AffectedTarget: {instanceID: 0}
+  - User: {instanceID: 0}
+  - MeshSelector: {instanceID: 0}
+  - UseBar: {instanceID: 0}
+  - InteractIcon: {fileID: 4300000, guid: d4c50555be97eaa43b31fe0bbcac6364, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

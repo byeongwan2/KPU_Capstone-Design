@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: fe2d0ab0a646a5841b99ac069b3f2915
+timeCreated: 1489854794
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - waypointMesh: {fileID: 4300000, guid: 47e9f3c826e2a7d40928007286aed59e, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
