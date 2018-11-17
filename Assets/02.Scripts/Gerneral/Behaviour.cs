@@ -12,5 +12,5 @@ public abstract class Behaviour : MonoBehaviour {
         this_transForm = GetComponent<Transform>();
     }
 
-    public abstract void Work<T>(TYPE _type) where T : AttackObject;
+    public abstract void Work(TYPE _type);
 }

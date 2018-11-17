@@ -22,8 +22,7 @@ GameObject:
   - component: {fileID: 33544434514897574}
   - component: {fileID: 23511174367531872}
   - component: {fileID: 135637640157806858}
-  - component: {fileID: 114625398439252284}
-  - component: {fileID: 54113239526918922}
+  - component: {fileID: 114216159569588616}
   m_Layer: 0
   m_Name: PlayerAdvanceBullet
   m_TagString: Bullet
@@ -86,22 +85,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1111984900768588}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54113239526918922
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1111984900768588}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &114625398439252284
+--- !u!114 &114216159569588616
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -109,11 +93,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1111984900768588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa1b37e2506248f42ba350e4b2ed4564, type: 3}
+  m_Script: {fileID: 11500000, guid: 217f09d00e5638445b1152e804fcaa19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  damage: 10
+  speed: 10
+  damage: 0
 --- !u!135 &135637640157806858
 SphereCollider:
   m_ObjectHideFlags: 1

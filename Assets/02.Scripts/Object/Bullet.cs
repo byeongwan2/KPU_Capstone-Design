@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Bullet : AttackObject {
     
-    protected Rigidbody rb;
-    protected Object_Id fire_ObjectId;
+    Rigidbody rb;
+    Object_Id fire_ObjectId;
 
-	protected void Init ()
+	void Awake ()
     {       
         rb = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐    
         fire_ObjectId = Object_Id.NONE;
@@ -29,7 +29,7 @@ public class Bullet : AttackObject {
     }
     Vector3 destination; 
     
-    public override void SetActiveLaunch()          //총알이 켜지면서 초기화
+    public void SetActiveLaunch()          //총알이 켜지면서 초기화
     {
         transform.position = launchPos;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -58,7 +58,7 @@ public class Bullet : AttackObject {
     }
 
     [SerializeField]
-    protected float speed = 10.0f;
+    float speed = 10.0f;
     [SerializeField]
     int damage = 0;
     public int Damage
@@ -68,7 +68,6 @@ public class Bullet : AttackObject {
     void FixedUpdate()
     {
         if (gameObject.activeSelf == false) return;
-        
         transform.localPosition += transform.forward * speed * Time.deltaTime;
     }
 

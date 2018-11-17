@@ -379,7 +379,7 @@ public class Player2 : MoveObject {
 
     private void Event_ThrowBomb()
     {
-        bombThrow.Work<Bomb>(TYPE.BOMB);
+        bombThrow.Work(TYPE.BOMB);
     }
 
     private void Event_MouseExit()
@@ -445,9 +445,9 @@ public class Player2 : MoveObject {
     void Attack_Mode()
     {
         if (attackMode == 0)
-            bulletShot.Work<Bullet>(TYPE.BULLET);
+            bulletShot.Work(TYPE.BULLET);
         else if (attackMode == 1)
-            bulletShot.Work<Advance_Bullet>(TYPE.ADVANCEBULLET);
+            bulletShot.Work(TYPE.ADVANCEBULLET);
     }
 
     void Change_AttackMode()

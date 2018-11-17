@@ -30,9 +30,8 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     }
 
    
-    public GameObject ActivePrefab(TYPE _type) 
+    public GameObject ActivePrefab(TYPE _type)
     {
-        
         if (_type == TYPE.BOMB) return ChoicePool(bombPool);
         else if (_type == TYPE.BULLET) return ChoicePool(bulletPool);
         else if (_type == TYPE.MONSTER) return ChoicePool(monsterPool);
