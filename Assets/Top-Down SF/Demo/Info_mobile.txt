@@ -1,1 +1,0 @@
-For mobile version is recommended bake Lightmaps, Occlusion Culling and change the materials to mobile, for example - Mobile/Specular
