@@ -1,0 +1,150 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: M_SciFi_Alien_Soldier_A_3
+  m_Shader: {fileID: 4800000, guid: 4a578b00a3da76644ae6d91f7c8062f4, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 1f2c409346e559441ad7b975082710a0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ColorMask:
+        m_Texture: {fileID: 2800000, guid: 1a77f28ca48d1c24f9860215b5296dc5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Distort:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 2800000, guid: 29503f0e5ee5d0344a10f67594d089c6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 511e08d995353644f833b18f45d6b41a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Masks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 6bac9992f4f155844a3dc0b3033867d9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicSmooth:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PackedMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkinTone:
+        m_Texture: {fileID: 2800000, guid: 7dc06b60daffdba428b1c5d0ea723376, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TemperatureMask:
+        m_Texture: {fileID: 2800000, guid: 661811ea92622194ca8fd3fad893bd74, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Angle: 0
+    - _BumpAmt: 10
+    - _BumpScale: 1
+    - _BurningMix: 0
+    - _Cutoff: 0.5
+    - _DamageFX: 0
+    - _DetailNormalMapScale: 1
+    - _DistortFactor: 1
+    - _DistortSpeed: -0.5
+    - _DstBlend: 0
+    - _EmissionFactor: 3
+    - _Factor: 1
+    - _FrozenMix: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 1
+    - _GlossyReflections: 1
+    - _InvFade: 1
+    - _Metallic: 1
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Opacity: 1
+    - _Parallax: 0.02
+    - _SkinMux: 0.73
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _Speed: 1
+    - _Speed2: 0.1
+    - _SrcBlend: 1
+    - _TemperatureVFXScale: 4
+    - _Tile: 1
+    - _UVSec: 0
+    - _UVWorldScale: 1
+    - _ZWrite: 1
+    - _glowFrequency: 1
+    - _glowMax: 1
+    - _glowMin: 0
+    - _marchDistance: 0.5
+    - _numSteps: 4
+    m_Colors:
+    - _AreaColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BurningColor: {r: 0.8, g: 0.29999998, b: 0.09999997, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 0}
+    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FrozenColor: {r: 0.5, g: 0.6, b: 0.7, a: 1}
+    - _LineColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _MaskedColorA: {r: 0.6955017, g: 0.86717874, b: 0.9852941, a: 1}
+    - _MaskedColorB: {r: 0.42187497, g: 0.8176801, b: 0.9191176, a: 1}
+    - _MaskedColorC: {r: 1, g: 1, b: 1, a: 1}
+    - _SecondLayerColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _UVScale: {r: 1, g: 1, b: 1, a: 1}
