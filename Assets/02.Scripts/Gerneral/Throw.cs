@@ -16,8 +16,8 @@ public class Throw : Behaviour {
         bomb = Resources.Load("Prefabs/" + _link) as GameObject;
         PrefabSystem.instance.CreatePrefab(TYPE.BOMB,bomb, _maxCount);
     }
-    
-    public override void Work<T>(TYPE _type)
+
+    public override void Work(TYPE _type)
     {
         var bomb = PrefabSystem.instance.ActivePrefab(TYPE.BOMB).GetComponent<Bomb>();           //게임오브젝트가 리턴되므로 이부분 수정해야함 // SetActive(true) 상태로 리턴
         bomb.SetPower(bombPower);

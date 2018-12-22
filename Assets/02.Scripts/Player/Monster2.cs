@@ -7,6 +7,6 @@ public partial class Monster : Enemy
     //단순 총알발사
     private void ShotBullet()
     {
-        bulletShot.Work<Bullet>(TYPE.BULLET);
+        bulletShot.Work(TYPE.BULLET);
     }
 }

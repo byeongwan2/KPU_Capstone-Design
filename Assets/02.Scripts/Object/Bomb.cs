@@ -40,7 +40,7 @@ public class Bomb : AttackObject {
         // this_rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
     }
 
-    public override void SetActiveLaunch()          //폭탄이 켜지면서 초기화
+    public void SetActiveLaunch()          //폭탄이 켜지면서 초기화
     {
         transform.position = launchPos;
         transform.rotation = launchRot;
