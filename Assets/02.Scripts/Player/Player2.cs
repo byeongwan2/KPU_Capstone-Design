@@ -1,21 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-enum SPECIAL_STATE { NONE, TURNONSPOT, DOUBLEJUMPLANDING, DANCE, AIM }
+enum SUB_STATE { NONE, TURNONSPOT, DOUBLEJUMPLANDING, DANCE, AIM }
 
-public class Player2 : MoveObject {
-
+public class Player2 : MoveObject
+{
     private Transform playerTr;
-    private Animator playerAni; public Animator GetPlayerAni()  { return playerAni; }
-    private Move move;
+    private Animator playerAni; public Animator GetPlayerAni() { return playerAni; }
     private Shot bulletShot;
     private Throw bombThrow;
     private Jump jump;
     private Dash dash;
+    private Move move;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
-    private SPECIAL_STATE eSpecialState;
+    private SUB_STATE eSubState;
 
 
     private CapsuleCollider playerCol;
@@ -35,30 +35,32 @@ public class Player2 : MoveObject {
     private bool isAttackStop;
     private bool isRun;
     private bool isDash;
-	void Start () {
+	void Start ()
+    {
         instance = this;
         playerTr = GetComponent<Transform>();
-        move = GetComponent<Move>();
         playerAni = GetComponent<Animator>();
+        move = GetComponent<Move>();
+
         bulletShot = GetComponent<Shot>();
         bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage,TYPE.BULLET);
         bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT, 0, shotDamage,TYPE.ADVANCEBULLET);
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", 10, 15.0f);
-
         jump = GetComponent<Jump>();
         dash = GetComponent<Dash>();
 
         playerCol = GetComponent<CapsuleCollider>();
+        //현재상태 // 이전상태 // 서브상태
         eState = STATE.STAND;
         ePreState = STATE.STAND;
-        eSpecialState = SPECIAL_STATE.NONE;
+        eSubState = SUB_STATE.NONE;
+
+        //is변수는 false일때 사용가능 true일떄 사용불가
         isMouse = false;
         isMove = false;
         isRoll = false;
         isSpecialState = false;
-        // m_state = new Stand();
-        // m_state.PlayAnimation(playerAni);
         isJumpDelay = false;
         isJumpHit = false;
         isAttackStop = false;
@@ -72,10 +74,9 @@ public class Player2 : MoveObject {
 
     // Update is called once per frame
     void Update () {
-        Change_AttackMode();
-        Dancing();
-        LookMousePoint();
-        MouseManual();
+        
+        Look_MousePoint();
+        Attack();
         Running();
         Rolling();
         Jumping();
@@ -85,29 +86,22 @@ public class Player2 : MoveObject {
         MovePlayer();
         KeyBoardManual();
         Logic();
+
+        Change_Gun();
+        Dancing();
         BlendAnimation();
         Render();
         SpecialAnimation();
     }
 
-    Vector3 Get_WorldPoint()
-    {
-        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
-  
-        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
-        return Camera.main.ScreenToWorldPoint(mpos2);
-    }
     //마우스 바라보기
-    private void LookMousePoint()           
+    private void Look_MousePoint()           
     {
         if (isMouse) return;
-
-        Vector3 aim1 = Get_WorldPoint();
-
-        float dx = aim1.x - transform.position.x;
-        float dz = aim1.z - transform.position.z;
- 
-        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
+        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
+        Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
+        float rotateDegree = Mathf.Atan2(aim1.x - transform.position.x, aim1.z - transform.position.z) * Mathf.Rad2Deg;        
         playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
     }
 
@@ -254,7 +248,7 @@ public class Player2 : MoveObject {
     //특별한 애니메이션
     private void SpecialAnimation()
     {
-        if(eSpecialState == SPECIAL_STATE.AIM)
+        if(eSubState == SUB_STATE.AIM)
         {
             playerAni.SetBool("IsAim", true);
         }
@@ -327,7 +321,7 @@ public class Player2 : MoveObject {
     int bulletCount = 20;           //총알
     bool attackCoolTime = false;
     //기본공격
-    private void MouseManual()
+    private void Attack()
     {
         if (isDash) return;
         if (eState == STATE.JUMP) return;
@@ -344,7 +338,7 @@ public class Player2 : MoveObject {
             attackCoolTime = true;
             StartCoroutine(AttackBasicExit());
             playerAni.SetTrigger("Attack");
-            Attack_Mode();
+            Attack_Gun();
         }
         else if(Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
         {
@@ -362,9 +356,9 @@ public class Player2 : MoveObject {
     public static Player2 instance;     //조심해서 써야함
     private void Dancing()
     {
-        if (Input.GetKeyDown(KeyCode.F1)) { playerAni.SetInteger("Dance", 1); eSpecialState = SPECIAL_STATE.DANCE; }
-        if (Input.GetKeyDown(KeyCode.F2)){ playerAni.SetInteger("Dance", 2); eSpecialState = SPECIAL_STATE.DANCE; }
-        if (Input.GetKeyDown(KeyCode.F3)) { playerAni.SetInteger("Dance", 3); eSpecialState = SPECIAL_STATE.DANCE; }
+        if (Input.GetKeyDown(KeyCode.F1)) { playerAni.SetInteger("Dance", 1); eSubState = SUB_STATE.DANCE; }
+        if (Input.GetKeyDown(KeyCode.F2)){ playerAni.SetInteger("Dance", 2); eSubState = SUB_STATE.DANCE; }
+        if (Input.GetKeyDown(KeyCode.F3)) { playerAni.SetInteger("Dance", 3); eSubState = SUB_STATE.DANCE; }
     }
 
     private void Reloading()
@@ -431,8 +425,7 @@ public class Player2 : MoveObject {
         {
             isDash = true;
             eState = STATE.DASH;
-
-             Vector3 aim1 = Get_WorldPoint();
+            Vector3 aim1 = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.y));
             dash.Dash_Destination(aim1,40.0f);
         }
         else if(Input.GetKeyUp(KeyCode.C))
@@ -442,7 +435,7 @@ public class Player2 : MoveObject {
         }
     }
     int attackMode = 0;
-    void Attack_Mode()
+    void Attack_Gun()
     {
         if (attackMode == 0)
             bulletShot.Work(TYPE.BULLET);
@@ -450,7 +443,7 @@ public class Player2 : MoveObject {
             bulletShot.Work(TYPE.ADVANCEBULLET);
     }
 
-    void Change_AttackMode()
+    void Change_Gun()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
             attackMode = 0;
