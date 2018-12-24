@@ -18,7 +18,7 @@ public class Trap : MonoBehaviour {
             if (system.pPlayer2.IsJumpHit() == true) return;
             isRun = true;
             system.pPlayer2.MinusHp(10);
-            system.pPlayer2.WoundEffect();
+            system.pPlayer2.Wound_Effect();
             StartCoroutine(CoolTime());
         }
     }
