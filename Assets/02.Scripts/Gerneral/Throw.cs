@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Throw : Behaviour {
-
+public class Throw : Behaviour
+{
+    [SerializeField]
+    protected GameObject startPosition;
     private GameObject bomb;
 
     float bombPower;
@@ -27,7 +29,7 @@ public class Throw : Behaviour {
     }
 
 
-    public void SetBombPower(float _bombPower)
+    public void Set_BombPower(float _bombPower)
     {
         bombPower = _bombPower;
     }

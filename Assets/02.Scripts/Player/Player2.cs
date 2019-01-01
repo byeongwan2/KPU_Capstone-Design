@@ -169,10 +169,10 @@ public partial class Player2 : MoveObject
         switch (eState)
         {
             case STATE.RUN:
-                move.SetMoveSpeed(4.0f);
+                move.Set_MoveSpeed(4.0f);
                 break;
             case STATE.WALK:
-                move.SetMoveSpeed(2.0f);
+                move.Set_MoveSpeed(2.0f);
                 break;
         }
     }
@@ -186,9 +186,6 @@ public partial class Player2 : MoveObject
     {
         switch (eState)
         {
-            case STATE.JUMP:
-
-                break;
             case STATE.DASH:
                 playerAni.SetBool("Dash", true);
                

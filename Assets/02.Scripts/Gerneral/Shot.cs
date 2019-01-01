@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Shot : Behaviour
 {
-
-    public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage,TYPE _type )//총알이름//총알오브젝트풀수//총알스피드//총알데미지
+    [SerializeField]
+    protected GameObject startPosition;
+    //총알이름//총알오브젝트풀수//총알스피드//총알데미지
+    public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage,TYPE _type )
     {
         GameObject bullet = Resources.Load("Prefabs/" + _link) as GameObject;      
         bullet.GetComponent<Bullet>().StatSetting();
@@ -24,8 +26,4 @@ public class Shot : Behaviour
 
     }
     
-    private void Targeting()
-    {        
-
-    }
 }

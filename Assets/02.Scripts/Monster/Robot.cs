@@ -21,7 +21,7 @@ public class Robot : Enemy {
         move = GetComponent<Move>();
         agent = GetComponent<MoveAgent>();
         agent.Init(str, 2.0f, 3.0f);
-        move.SetMoveSpeed(4.0f);
+        move.Set_MoveSpeed(4.0f);
     }
 
     void Update()

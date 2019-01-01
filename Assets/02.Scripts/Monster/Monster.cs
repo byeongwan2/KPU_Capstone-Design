@@ -6,7 +6,6 @@ using UnityEngine;
 public partial class Monster : Enemy
 {
     Shot bulletShot;
-    MoveAgent moveAgent;
 
     [SerializeField]
     private readonly float patrolSpeed = 1.5f;
@@ -17,7 +16,6 @@ public partial class Monster : Enemy
     private readonly int hashDie = Animator.StringToHash("Die");
     private readonly int hashDieIdx = Animator.StringToHash("DieIdx");
 
-    private readonly string str = "WayPointGroup";
     bool isDie;
     void Start()
     {
@@ -28,10 +26,6 @@ public partial class Monster : Enemy
         eEnemy_State = ENEMY_STATE.PATROL ;
         eState = STATE.STAND;
         
-        moveAgent = GetComponent<MoveAgent>();
-        moveAgent.Init(str, patrolSpeed,traceSpeed);
-        moveAgent.pPatrolling = true;
-
         bulletShot = GetComponent<Shot>();
         bulletShot.Init("Bullet", 8, 100.0f, 2,TYPE.BULLET);
 
@@ -55,7 +49,6 @@ public partial class Monster : Enemy
         if(eEnemy_State == ENEMY_STATE.PATROL)
         {
             eState = STATE.WALK;
-            if(moveAgent.pPatrolling == false) moveAgent.pPatrolling = true;
         }
     }
 
@@ -94,7 +87,6 @@ public partial class Monster : Enemy
 
     void TracePlayer()
     {
-        moveAgent.pTraceTarget = system.pPlayer2.transform.position;
         eState = STATE.RUN;
         eEnemy_State = ENEMY_STATE.TRACE;
     }
@@ -109,7 +101,6 @@ public partial class Monster : Enemy
         else if(distance < 5.0f)
         {
             eState = STATE.ATTACK;
-            moveAgent.Stop();
             eEnemy_State = ENEMY_STATE.ATTACK;
            
         }
@@ -131,7 +122,6 @@ public partial class Monster : Enemy
         if (isDie) yield break;
         if (eEnemy_State == ENEMY_STATE.PATROL)
         {
-            moveAgent.Stop();
             enemyAni.SetTrigger("IsSpecialIdle");
             eState = STATE.STAND;
             eEnemy_State = ENEMY_STATE.NONE;

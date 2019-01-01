@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Jump : MonoBehaviour {
+public class Jump : Behaviour {
 
     [SerializeField]
     private bool isJumping = false;    
@@ -15,7 +15,6 @@ public class Jump : MonoBehaviour {
 
     void Start()
     {          
-
         this_rigidbody = GetComponent<Rigidbody>();
         airborneSpeed = -10.0f;
         isJumping = false;
@@ -48,5 +47,10 @@ public class Jump : MonoBehaviour {
         airborneSpeed = 15.0f;
         
         isJumping = true;
+    }
+
+    public override void Work(TYPE _type)
+    {
+
     }
 }
