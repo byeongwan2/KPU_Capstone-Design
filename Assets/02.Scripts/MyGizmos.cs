@@ -25,6 +25,5 @@ public class MyGizmos : MonoBehaviour
     void Update()
     {
         if (agent == null) return;
-        vec = agent.temp_Debug_Dest();
     }
 }

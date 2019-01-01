@@ -29,7 +29,6 @@ public partial class Player2 : MoveObject
     private CapsuleCollider playerCol;
     private bool isRoll;    
 
-    private readonly int MAXPLAYERBOMBCOUNT = 10;
     private readonly int MAXPLAYERBULLETCOUNT = 40;
     [SerializeField]
     private int shotDamage = 10;            
