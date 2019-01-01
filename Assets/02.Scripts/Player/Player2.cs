@@ -280,7 +280,8 @@ public partial class Player2 : MoveObject
         if (isAttackStop) return;
         if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackCoolTime == false)
         {
-            if (bulletCount == 0) {
+            if (bulletCount == 0)
+            {
                 playerAni.SetTrigger("Reload");
                 isReload = true;
                 bulletCount = 20;
@@ -288,7 +289,6 @@ public partial class Player2 : MoveObject
             }
             bulletCount--;
             attackCoolTime = true;
-            StartCoroutine(AttackCooltime());
             playerAni.SetTrigger("Attack");
             Attack_Gun();
         }
@@ -299,11 +299,7 @@ public partial class Player2 : MoveObject
             isAttackStop = true;
         }
     }
-    private IEnumerator AttackCooltime()
-    {
-        yield return new WaitForSeconds(0.15f);
-        attackCoolTime = false;
-    }
+   
 
     private void Dancing()
     {

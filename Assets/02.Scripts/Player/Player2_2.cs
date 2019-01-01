@@ -41,4 +41,9 @@ public partial class Player2
     {
         isJumpHit = false;
     }
+
+    private void Event_AttackExit()
+    {
+        attackCoolTime = false;
+    }
 }
