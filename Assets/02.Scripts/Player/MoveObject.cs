@@ -51,5 +51,5 @@ public class MoveObject : MonoBehaviour
         if (m_id == _id) return true;
         else return false;
     }
-    public virtual void WoundEffect() {  }
+    public virtual void Wound_Effect() {  }
 }

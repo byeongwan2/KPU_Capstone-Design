@@ -1,126 +1,135 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-enum SPECIAL_STATE { NONE, TURNONSPOT, DOUBLEJUMPLANDING, DANCE, AIM }
 
-public class Player2 : MoveObject {
+//함수는 동사_단어 혹은 동사 
+//코루틴함수는 동사단어  
+//이벤트함수는 Event_수식 혹은 Event_동사
 
+//단어 수식 명사 등등 
+
+//변수는 소문자시작 언더바없고 기본변수는 두단어이상 
+//클래스이름은 대문자시작 언더바없음
+
+
+
+public partial class Player2 : MoveObject
+{
     private Transform playerTr;
-    private Animator playerAni; public Animator GetPlayerAni()  { return playerAni; }
-    private Move move;
+    private Animator playerAni; public Animator GetPlayerAni() { return playerAni; }
     private Shot bulletShot;
     private Throw bombThrow;
     private Jump jump;
     private Dash dash;
+    private Move move;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
-    private SPECIAL_STATE eSpecialState;
-
 
     private CapsuleCollider playerCol;
     private bool isRoll;    
-    private bool isSpecialState = false;
 
-    private readonly int MAXPLAYERBOMBCOUNT = 10;
     private readonly int MAXPLAYERBULLETCOUNT = 40;
     [SerializeField]
-    private int shotDamage = 10;            //무기의 데미지는 다를꺼기때문에 배열혹은 열거형으로 전환할가능성 ↑
-    //private State m_state = null;               //상태에 따른클래스를 갖게끔
+    private int shotDamage = 10;            
+
     private bool isMouse;
-    private bool isMove;
     private bool isJumpHit;         //점프할때 피격이 가능한지 false이면 가능
     public bool IsJumpHit() { return isJumpHit; }
     private bool isJumpDelay;   //점프중인지 단순확인 
     private bool isAttackStop;
     private bool isRun;
     private bool isDash;
-	void Start () {
+
+    private bool isReload=false;
+    //상의 하의 유용할수 있는 변수
+    private bool isTop = false;
+    private bool isDown = false;
+    public static Player2 instance;     //조심해서 써야함
+    void Start ()
+    {
         instance = this;
         playerTr = GetComponent<Transform>();
-        move = GetComponent<Move>();
         playerAni = GetComponent<Animator>();
+        
+
         bulletShot = GetComponent<Shot>();
         bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage,TYPE.BULLET);
         bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT, 0, shotDamage,TYPE.ADVANCEBULLET);
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", 10, 15.0f);
-
         jump = GetComponent<Jump>();
         dash = GetComponent<Dash>();
+        move = GetComponent<Move>();
+        playerCol = GetComponent<CapsuleCollider>();        // 없어질 예정?
 
-        playerCol = GetComponent<CapsuleCollider>();
+        this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        //현재상태 // 이전상태 
         eState = STATE.STAND;
         ePreState = STATE.STAND;
-        eSpecialState = SPECIAL_STATE.NONE;
+
+        //is로 시작하는 bool변수는 false일때 해당변수를 안하고있다는뜻 isRoll 가 false라면 안굴고 있다는뜻
         isMouse = false;
-        isMove = false;
         isRoll = false;
-        isSpecialState = false;
-        // m_state = new Stand();
-        // m_state.PlayAnimation(playerAni);
         isJumpDelay = false;
         isJumpHit = false;
         isAttackStop = false;
         isRun = false;
         isDash = false;
         bulletCount = 35;       //현재 35발쏘고 장전
-        this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
 
         attackMode = 0;
+        isReload = false;
     }
 
     // Update is called once per frame
     void Update () {
-        Change_AttackMode();
-        Dancing();
-        LookMousePoint();
-        MouseManual();
-        Running();
+        
+        Look_MousePoint();
+        Attack();
+        //구르기
         Rolling();
+        //달리기
+        Run_Rotation();
+        Running();
+
+        //점프 현재보류상태
         Jumping();
+        //장전
         Reloading();
-
+        //대시
         Move_Dash();
-        MovePlayer();
-        KeyBoardManual();
+        Move_Update();
+        Input_Move();
         Logic();
-        BlendAnimation();
+
+        Change_Gun();
+        Dancing();
         Render();
-        SpecialAnimation();
     }
 
-    Vector3 Get_WorldPoint()
-    {
-        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
-  
-        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
-        return Camera.main.ScreenToWorldPoint(mpos2);
-    }
     //마우스 바라보기
-    private void LookMousePoint()           
+    private void Look_MousePoint()           
     {
         if (isMouse) return;
-
-        Vector3 aim1 = Get_WorldPoint();
-
-        float dx = aim1.x - transform.position.x;
-        float dz = aim1.z - transform.position.z;
- 
-        float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;        
+        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
+        Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
+        float rotateDegree = Mathf.Atan2(aim1.x - transform.position.x, aim1.z - transform.position.z) * Mathf.Rad2Deg;        
         playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
     }
 
     //이동값설정
-    private void MovePlayer()           
+    private void Move_Update()           
     {
         if (isDash) return;
-        if (isMove) return;
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
     }
     private void Jumping()
     {
+        return;
         if (isDash) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -134,21 +143,8 @@ public class Player2 : MoveObject {
 
         }
     }
-    private void Event_JumpingExit()
-    {
-        isMouse = false;
-        eState = ePreState;
-        if (isJumpDelay == true) eState = STATE.STAND;     //버그방지
-        isJumpDelay = false;
-    }
 
-    private void Event_HitJumping()
-    {
-        isJumpHit = false;
-    }
-
-
-    private void KeyBoardManual()       //키보드입력시 상태변경
+    private void Input_Move()       //키보드입력시 상태변경
     {
         if (isDash) return;
         if (eState == STATE.ROLL ) return;
@@ -165,32 +161,30 @@ public class Player2 : MoveObject {
        
 
     }
-    //클래식 방식으로 이름을 짜봄 논리
+    //do 혹은 update 역할
     private void Logic()           
     {
         if (isDash) return;
-        if (isMove) return;
         switch (eState)
         {
             case STATE.RUN:
-                move.SetMoveSpeed(4.0f);
+                move.Set_MoveSpeed(4.0f);
                 break;
             case STATE.WALK:
-
-                move.SetMoveSpeed(2.0f);
+                move.Set_MoveSpeed(2.0f);
                 break;
         }
     }
-
+    //애니메이터 컨트롤러 해시값 추출    
+    private readonly int hashAngle = Animator.StringToHash("Angle");
+    private readonly int hashVelocity = Animator.StringToHash("Velocity");
+    private readonly int hashX = Animator.StringToHash("X");
+    private readonly int hashZ = Animator.StringToHash("Z");
     //애니메이션
     private void Render()                
     {
-        //if (isSpecialState) return;
         switch (eState)
         {
-            case STATE.JUMP:
-
-                break;
             case STATE.DASH:
                 playerAni.SetBool("Dash", true);
                
@@ -198,7 +192,6 @@ public class Player2 : MoveObject {
             case STATE.RUN:
                 playerAni.SetBool("IsRun", true);
                 playerAni.SetBool("IsWalk", false);
-                Velocity();
                 break;
             case STATE.WALK:
                 playerAni.SetBool("IsWalk", true);
@@ -212,12 +205,16 @@ public class Player2 : MoveObject {
                 playerAni.SetBool("Dash", false);
                 break;
         }
+        playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);
+        playerAni.SetFloat(hashX, move.Horizontal);
+        playerAni.SetFloat(hashZ, move.Vertical);
     }
-
+    //달리기
     private float velocity = 0.0f; //가속도   
-    private void Velocity()        //가속도, 캐릭터 회전 적용 함수 
+    private void Run_Rotation()        //가속도, 캐릭터 회전 적용 함수 
     {
         if (isDash) return;
+        if (eState != STATE.RUN) return;
         velocity += Time.deltaTime; //  * 10.0f;  //10.0f 를 곱하지않으면 밑에 else if 로 들어가지않아서 Run이해제안댐 일단원본
         playerAni.SetFloat(hashVelocity, velocity);
 
@@ -240,42 +237,22 @@ public class Player2 : MoveObject {
             isRun = true;
             isMouse = true;
         }
-
-        else  if (Input.GetKeyUp(KeyCode.LeftShift) && velocity >=0.1f)
+        else if (Input.GetKeyUp(KeyCode.LeftShift) && velocity >0.0f)
         {
-            velocity = 0.0f;
             playerAni.SetFloat(hashVelocity, velocity);
             eState = STATE.WALK;
             isRun = false;
             isMouse = false;
         }
+        if (isRun == false)
+            if (velocity > 0.0f)
+            {
+                velocity -= Time.deltaTime;
+                if (velocity < 0.0f) velocity = 0.0f;
+            }
+          
     }
-
-    //특별한 애니메이션
-    private void SpecialAnimation()
-    {
-        if(eSpecialState == SPECIAL_STATE.AIM)
-        {
-            playerAni.SetBool("IsAim", true);
-        }
-        else
-        {
-            playerAni.SetBool("IsAim", false);
-        }
-    }
-
-    //애니메이터 컨트롤러 해시값 추출    
-    private readonly int hashAngle = Animator.StringToHash("Angle");
-    private readonly int hashVelocity = Animator.StringToHash("Velocity");
-    private readonly int hashX = Animator.StringToHash("X");
-    private readonly int hashZ = Animator.StringToHash("Z");
-    //블랜드 애니메이션
-    private void BlendAnimation()
-    {        
-        playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);      
-        playerAni.SetFloat(hashX, move.Horizontal);
-        playerAni.SetFloat(hashZ, move.Vertical);
-    }
+  
 
     //진짜구르기
     private void Rolling()
@@ -283,68 +260,36 @@ public class Player2 : MoveObject {
         if(Input.GetKeyDown(KeyCode.V))
         {
             if (isRoll) return;
-            isRoll = true;
             playerAni.SetTrigger("IsRoll");
             isMouse = true;
-            isMove = true;
+            isRoll = true;
             ePreState = eState;
             eState = STATE.ROLL;
         }
     }
-
-    //구르기
-    private void TestRolling()
-    {
-        return;
-        if(Input.GetKeyUp(KeyCode.W))
-        {
-            if (isSpecialState) return;
-            isRoll = true;
-            Invoke("RollingCancel", 0.3f);
-        }
-        else if(Input.GetKeyDown(KeyCode.W) && isRoll == true)
-        {
-            isMove = true;
-            playerAni.SetTrigger("IsRoll");
-            isSpecialState = true;
-            isRoll = false;
-            ePreState = eState;
-            eState = STATE.ROLL;
-            isMouse = true;
-            Invoke("RollingReset", 1.0f);
-        }
-    }
-    private void Event_RollingExit()
-    {
-        eState = STATE.WALK ;
-        isMouse = false;
-        isMove = false;
-        isRoll = false;
-    }
-    private void RollingCancel() { isRoll = false; }
-    private void RollingReset() { isSpecialState = false; }
 
     int bulletCount = 20;           //총알
     bool attackCoolTime = false;
     //기본공격
-    private void MouseManual()
+    private void Attack()
     {
         if (isDash) return;
         if (eState == STATE.JUMP) return;
+        if (isReload) return;
         if (isAttackStop) return;
         if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackCoolTime == false)
         {
-            if (bulletCount == 0) {
+            if (bulletCount == 0)
+            {
                 playerAni.SetTrigger("Reload");
-                isAttackStop = true;
+                isReload = true;
                 bulletCount = 20;
                 return;
             }
             bulletCount--;
             attackCoolTime = true;
-            StartCoroutine(AttackBasicExit());
             playerAni.SetTrigger("Attack");
-            Attack_Mode();
+            Attack_Gun();
         }
         else if(Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
         {
@@ -353,56 +298,37 @@ public class Player2 : MoveObject {
             isAttackStop = true;
         }
     }
-    private IEnumerator AttackBasicExit()
-    {
-        yield return new WaitForSeconds(0.15f);
-        attackCoolTime = false;
-    }
+   
 
-    public static Player2 instance;     //조심해서 써야함
     private void Dancing()
     {
-        if (Input.GetKeyDown(KeyCode.F1)) { playerAni.SetInteger("Dance", 1); eSpecialState = SPECIAL_STATE.DANCE; }
-        if (Input.GetKeyDown(KeyCode.F2)){ playerAni.SetInteger("Dance", 2); eSpecialState = SPECIAL_STATE.DANCE; }
-        if (Input.GetKeyDown(KeyCode.F3)) { playerAni.SetInteger("Dance", 3); eSpecialState = SPECIAL_STATE.DANCE; }
+        if (Input.GetKeyDown(KeyCode.F1)) { playerAni.SetInteger("Dance", 1);  }
+        if (Input.GetKeyDown(KeyCode.F2)){ playerAni.SetInteger("Dance", 2);  }
+        if (Input.GetKeyDown(KeyCode.F3)) { playerAni.SetInteger("Dance", 3);  }
     }
 
     private void Reloading()
     {
         if (isDash) return;
-        if (isAttackStop) return;
-        if(Input.GetKeyDown(KeyCode.R))
+        if (isReload) return;
+        if (Input.GetKeyDown(KeyCode.R))
         {
+            isReload = true;
             playerAni.SetTrigger("Reload");
         }
-    }
-
-    private void Event_ThrowBomb()
-    {
-        bombThrow.Work(TYPE.BOMB);
-    }
-
-    private void Event_MouseExit()
-    {
-        isMouse = false;
-        isAttackStop = false;
-    }
-    private void Event_ReloadExit()
-    {
-        isAttackStop = false;
     }
 
     //깜빡임
     SkinnedMeshRenderer[] this_renderer;
 
-    public override void WoundEffect()
+    public override void Wound_Effect()
     {
         woundEffect = true;
-        StartCoroutine(RedEffect());
+        StartCoroutine(ColEffect());
         Invoke("WoundEffectExit", 1.5f);
     }
 
-    IEnumerator RedEffect()
+    IEnumerator ColEffect()
     {
         while (true)
         {
@@ -431,8 +357,7 @@ public class Player2 : MoveObject {
         {
             isDash = true;
             eState = STATE.DASH;
-
-             Vector3 aim1 = Get_WorldPoint();
+            Vector3 aim1 = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.y));
             dash.Dash_Destination(aim1,40.0f);
         }
         else if(Input.GetKeyUp(KeyCode.C))
@@ -442,7 +367,7 @@ public class Player2 : MoveObject {
         }
     }
     int attackMode = 0;
-    void Attack_Mode()
+    void Attack_Gun()
     {
         if (attackMode == 0)
             bulletShot.Work(TYPE.BULLET);
@@ -450,7 +375,7 @@ public class Player2 : MoveObject {
             bulletShot.Work(TYPE.ADVANCEBULLET);
     }
 
-    void Change_AttackMode()
+    void Change_Gun()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
             attackMode = 0;

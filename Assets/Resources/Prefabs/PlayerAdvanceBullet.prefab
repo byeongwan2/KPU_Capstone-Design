@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 33544434514897574}
   - component: {fileID: 23511174367531872}
   - component: {fileID: 135637640157806858}
-  - component: {fileID: 114625398439252284}
   - component: {fileID: 54113239526918922}
+  - component: {fileID: 114486098769152658}
   m_Layer: 0
   m_Name: PlayerAdvanceBullet
   m_TagString: Bullet
@@ -101,7 +101,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114625398439252284
+--- !u!114 &114486098769152658
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1111984900768588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa1b37e2506248f42ba350e4b2ed4564, type: 3}
+  m_Script: {fileID: 11500000, guid: 217f09d00e5638445b1152e804fcaa19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
@@ -120,7 +120,7 @@ SphereCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1111984900768588}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f1499c3973881724782d5d49e14a1a41, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

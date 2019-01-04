@@ -87,9 +87,5 @@ public class MoveAgent : MonoBehaviour {
         }
     }
 
-    public Vector3 temp_Debug_Dest()        //디버깅용 임시 함수 나중에 삭제
-    {
-
-        return agent.destination;
-    }
+    
 }

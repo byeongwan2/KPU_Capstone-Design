@@ -5,11 +5,8 @@ using UnityEngine;
 public class Bomb : AttackObject {
     [SerializeField]
     float power = 0.0f;
-    GameObject expEffect;
 
     public void SetPower(float _power){ power = _power; }
-    private Vector3 velocity;
-    public void SetVelocity(Vector3 _velocity)  { velocity = _velocity; }
 
     Rigidbody this_rigidbody;
     RangeEffect rangeEffect;
@@ -17,18 +14,15 @@ public class Bomb : AttackObject {
     void Awake()
     {
         this_rigidbody = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐
-        expEffect = Resources.Load("Prefabs/BombEffect") as GameObject;
-        expEffect = Instantiate(expEffect);
-        expEffect.SetActive(false);
         rangeEffect = GetComponentInChildren<RangeEffect>();
         rangeEffect.Init();
 
-       list = PrefabSystem.instance.ActiveMonsterList();
+       list = PrefabSystem.instance.Active_MonsterList();
     }
 
     void LifeOff()
     {
-        StartCoroutine(ExplosionEffect());
+        ExplosionEffect();
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.Euler(Vector4.zero);
         rangeEffect.RangeLookExit();
@@ -55,18 +49,15 @@ public class Bomb : AttackObject {
 
     }
 
-    IEnumerator ExplosionEffect()
+    void ExplosionEffect()
     {
-        expEffect.SetActive(true);
+        EffectManager.Instance.Exercise_Effect(transform.position, 0.0f);
         ExplosionAttack();
-        expEffect.transform.rotation = Quaternion.identity;
-        expEffect.transform.position = transform.position;
-        yield return new WaitForSeconds(0.8f);
-        expEffect.SetActive(false);
         gameObject.SetActive(false);
     }
+
     List<GameObject> list;
-    void ExplosionAttack()
+    void ExplosionAttack()          //범위내 적 데미지가함
     {
         foreach( var enemy in list)
         {

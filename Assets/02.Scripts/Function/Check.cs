@@ -38,4 +38,5 @@ static class Define         //c# 은 #define 없다는군;;
 {
     public const int MOUSE_LEFT_BUTTON = 0;
     public const int MOUSE_RIGHT_BUTTON = 1;
+    public const float ADVANCE_BULLET_LIFE_TIME = 0.8f;
 }

@@ -6,7 +6,7 @@ public class Bullet : AttackObject {
 
     Rigidbody rb;
     Object_Id fire_ObjectId;
-
+    
     void Awake()
     {       
         rb = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐    
@@ -29,33 +29,37 @@ public class Bullet : AttackObject {
     }
     Vector3 destination; 
     
-    public void SetActiveLaunch()          //총알이 켜지면서 초기화
+    public void SetActiveLaunch(TYPE _type)          //총알이 켜지면서 초기화
     {
         transform.position = launchPos;
+       
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane groundPlane = new Plane(Vector3.up, Vector3.up * transform.position.y);
 
         float rayDistance;
 
-        if(groundPlane.Raycast(ray, out rayDistance))
+        if (groundPlane.Raycast(ray, out rayDistance))
         {
             Vector3 point = ray.GetPoint(rayDistance);
-            transform.LookAt(point);            
+            transform.LookAt(point);
         }
-
-        //transform.Rotate(launchRot.eulerAngles);              
-        /*
-        Vector3 mpos2 = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.y);
-        Debug.Log(mpos2);
-        destination = Camera.main.ScreenToWorldPoint(mpos2);
-
-        Debug.Log(destination);
-        destination.y = launchPos.y;
-        destination.z = destination.z * Mathf.Sqrt(3f);
-        transform.LookAt(destination);        
-        */
-        Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
+        if (_type == TYPE.BULLET)
+        {
+            Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
+        }
+        if(_type == TYPE.ADVANCEBULLET)
+        {
+            rb.AddForce(new Vector3(1, 0, 0) * 5.0f, ForceMode.Impulse);
+            Invoke("Explode_Bullet", 2.0f);
+        }
     }
+    
+    void Explode_Bullet()
+    {
+        EffectManager.Instance.Exercise_Effect(transform.position, 0.0f);
+        gameObject.SetActive(false);
+    }
+
 
     [SerializeField]
     float speed = 10.0f;
@@ -68,8 +72,9 @@ public class Bullet : AttackObject {
     void FixedUpdate()
     {
         if (gameObject.activeSelf == false) return;
-        
+   
         transform.localPosition += transform.forward * speed * Time.deltaTime;
+        
     }
 
     public override void StatSetting()

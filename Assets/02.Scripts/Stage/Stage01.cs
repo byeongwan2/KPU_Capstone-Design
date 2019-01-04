@@ -20,5 +20,8 @@ public class Stage01 : MonoBehaviour {
         rezenCore.Work();
     }
 	
-	
+	void Create_NodeMap()
+    {
+
+    }
 }
