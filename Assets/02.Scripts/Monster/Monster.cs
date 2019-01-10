@@ -27,7 +27,7 @@ public partial class Monster : Enemy
         eState = STATE.STAND;
         
         bulletShot = GetComponent<Shot>();
-        bulletShot.Init("Bullet", 8, 100.0f, 2,TYPE.BULLET);
+        //bulletShot.Init("Bullet", 8, 100.0f, 2,TYPE.BULLET);
 
         StartCoroutine(SpecialIdle());          //걷다가 쉬었다가기
 

@@ -27,7 +27,7 @@ public partial class Player2 : MoveObject
     private STATE ePreState;
 
     private CapsuleCollider playerCol;
-    private bool isRoll;    
+   
 
     private readonly int MAXPLAYERBULLETCOUNT = 40;
     [SerializeField]
@@ -40,6 +40,8 @@ public partial class Player2 : MoveObject
     private bool isAttackStop;
     private bool isRun;
     private bool isDash;
+    private bool isMove;
+    private bool isRoll;
 
     private bool isReload=false;
     //상의 하의 유용할수 있는 변수
@@ -77,6 +79,7 @@ public partial class Player2 : MoveObject
         isAttackStop = false;
         isRun = false;
         isDash = false;
+        isMove = false;
         bulletCount = 35;       //현재 35발쏘고 장전
 
         attackMode = 0;
@@ -147,15 +150,17 @@ public partial class Player2 : MoveObject
     private void Input_Move()       //키보드입력시 상태변경
     {
         if (isDash) return;
-        if (eState == STATE.ROLL ) return;
+        if (isRoll ) return;
         if (isJumpDelay == true) return;
         if (isRun == true) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             eState = STATE.WALK;
+            isMove = true;
         }
         else
         {
+            isMove = false;
             eState = STATE.STAND;
         }
        
@@ -260,6 +265,10 @@ public partial class Player2 : MoveObject
         if(Input.GetKeyDown(KeyCode.V))
         {
             if (isRoll) return;
+            if (isMove)
+            {
+
+            }
             playerAni.SetTrigger("IsRoll");
             isMouse = true;
             isRoll = true;

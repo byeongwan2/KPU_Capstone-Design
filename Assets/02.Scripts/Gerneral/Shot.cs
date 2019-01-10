@@ -19,7 +19,6 @@ public class Shot : Behaviour
     public override void Work(TYPE _type)
     {
         var bullet = PrefabSystem.instance.Active_Prefab(_type).GetComponent<Bullet>();           //게임오브젝트가 리턴되므로 이부분 수정해야함 // SetActive(true) 상태로 리턴
-
         bullet.SetLaunchPos(startPosition.transform.position);     //출발하는장소
         bullet.SetLaunchRot(transform.localRotation);
         bullet.SetActiveLaunch(_type);
