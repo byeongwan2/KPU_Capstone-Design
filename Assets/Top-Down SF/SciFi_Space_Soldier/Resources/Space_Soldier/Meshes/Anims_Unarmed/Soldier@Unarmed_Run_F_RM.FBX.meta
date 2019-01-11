@@ -1,9 +1,7 @@
 fileFormatVersion: 2
 guid: ae88b235b4f9b4342a00f04738206040
-timeCreated: 1483913824
-licenseType: Store
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Bip001
     100002: Bip001 Head
@@ -93,6 +91,7 @@ ModelImporter:
     400084: Weapon_R
     7400000: Unarmed_Run_F_RM
     9500000: //RootNode
+    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 0
@@ -111,18 +110,11 @@ ModelImporter:
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
       might lower retargeting quality:\n\t'Bip001 Spine1' is inbetween humanoid transforms
       and has rotation animation that will be discarded.\n"
-    animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftUpperArm
-      average position error 166.1 mm and maximum position error 173.4 mm at time
-      0:12 (54.5%) Frame 12\n\tLeftLowerArm average position error 166.1 mm and maximum
-      position error 173.5 mm at time 0:12 (54.5%) Frame 12\n\tLeftHand average position
-      error 166.1 mm and maximum position error 173.4 mm at time 0:12 (54.5%) Frame
-      12\n\tRightUpperArm average position error 166.4 mm and maximum position error
-      173.0 mm at time 0: 2 (9.1%) Frame 2\n\tRightLowerArm average position error
-      166.5 mm and maximum position error 173.0 mm at time 0: 2 (9.1%) Frame 2\n\tRightHand
-      average position error 166.4 mm and maximum position error 173.0 mm at time
-      0: 2 (9.1%) Frame 2\n"
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tRetargeting
+      quality is good. No significant differences with original animation were found.\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -300,6 +292,7 @@ ModelImporter:
     globalScale: 2.4
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
@@ -310,16 +303,23 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 0.024
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 1
   humanDescription:
@@ -876,7 +876,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: Bip001
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 1
     hasExtraRoot: 1
     skeletonHasParents: 0

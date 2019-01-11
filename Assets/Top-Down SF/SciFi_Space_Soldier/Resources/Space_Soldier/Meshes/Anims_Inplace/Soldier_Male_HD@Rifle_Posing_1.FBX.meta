@@ -1,9 +1,7 @@
 fileFormatVersion: 2
 guid: 3bc1a4b1c94cdce4391d7a6b3ef2fcec
-timeCreated: 1539550002
-licenseType: Store
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Bip001
     100002: Bip001 Head
@@ -95,6 +93,7 @@ ModelImporter:
     400086: Weapon_R
     7400000: Rifle_Posing_1
     9500000: //RootNode
+    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 0
@@ -111,16 +110,17 @@ ModelImporter:
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
       copied configuration does not match position in animation file:\n\t'Bip001 L
       Thigh' : position error = 57.532654 mm\n\t'Bip001 L Calf' : position error =
-      211.568634 mm\n\t'Bip001 L Foot' : position error = 185.655762 mm\n\t'Bip001
+      211.568588 mm\n\t'Bip001 L Foot' : position error = 185.655838 mm\n\t'Bip001
       L Toe0' : position error = 104.849449 mm\n\t'Bip001 R Thigh' : position error
-      = 57.532669 mm\n\t'Bip001 R Calf' : position error = 211.568588 mm\n\t'Bip001
-      R Foot' : position error = 185.655746 mm\n\t'Bip001 R Toe0' : position error
-      = 104.849419 mm\n"
+      = 57.532669 mm\n\t'Bip001 R Calf' : position error = 211.568542 mm\n\t'Bip001
+      R Foot' : position error = 185.655792 mm\n\t'Bip001 R Toe0' : position error
+      = 104.849442 mm\n"
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -163,6 +163,7 @@ ModelImporter:
     globalScale: 2.4
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -180,11 +181,16 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 0.024
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 1
   humanDescription:
@@ -733,7 +739,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: Bip001
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 0

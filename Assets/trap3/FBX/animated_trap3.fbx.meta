@@ -1,12 +1,33 @@
 fileFormatVersion: 2
 guid: 1e06cf33a720ef549b95f30c1316a41a
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
+    100000: //RootNode
+    100002: pinchos
+    100004: tap
+    100006: tramp3
+    400000: //RootNode
+    400002: pinchos
+    400004: tap
+    400006: tramp3
+    2300000: pinchos
+    2300002: tap
+    2300004: tramp3
+    3300000: pinchos
+    3300002: tap
+    3300004: tramp3
     4300000: pinchos
     4300002: tramp3
     4300004: tap
-  externalObjects: {}
+    7400000: Up Down
+    11100000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mat
+    second: {fileID: 2100000, guid: f8604e56d5370434a8135595f8906b70, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -68,6 +89,7 @@ ModelImporter:
     globalScale: 0.5
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
@@ -85,11 +107,16 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 0
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 4
     normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -104,7 +131,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
