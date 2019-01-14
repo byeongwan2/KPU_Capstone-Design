@@ -245,8 +245,10 @@ public partial class Player2 : MoveObject
     private void Run_Rotation()        //가속도, 캐릭터 회전 적용 함수 
     {
         if (isDash) return;
-        if (isAttackMode) return;
+        if (!isRun) return;
+        
         velocity += Time.deltaTime; //  * 10.0f;  //10.0f 를 곱하지않으면 밑에 else if 로 들어가지않아서 Run이해제안댐 일단원본
+        velocity = Check.Clamp(velocity, 1.0f);
         playerAni.SetFloat(hashVelocity, velocity);
 
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -60.0f, 0.0f), Time.deltaTime * 10.0f);
@@ -284,9 +286,9 @@ public partial class Player2 : MoveObject
     private void Attack()
     {
         if (isDash) return;
-        if (eState == STATE.JUMP) return;
         if (isReload) return;
         if (isAttackStop) return;
+        if (!isAttackMode) return;
         if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackCoolTime == false)
         {
             if (bulletCount == 0)

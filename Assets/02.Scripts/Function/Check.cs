@@ -31,7 +31,11 @@ public class Check  {
         _rb.constraints = RigidbodyConstraints.FreezeRotationY;
     }
 
-    
+    public static float Clamp(float _data, float _max)
+    {
+        if (_data >= _max) _data = _max;
+        return _data;
+    }
 }
 
 static class Define         //c# 은 #define 없다는군;;
