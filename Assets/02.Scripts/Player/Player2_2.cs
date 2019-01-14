@@ -28,6 +28,7 @@ public partial class Player2
         eState = STATE.WALK;
         isMouse = false;
         isRoll = false;
+        isKey = false;
     }
     private void Event_JumpingExit()
     {

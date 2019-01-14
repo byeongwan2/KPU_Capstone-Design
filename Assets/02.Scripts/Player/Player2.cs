@@ -33,8 +33,9 @@ public partial class Player2 : MoveObject
 
     private readonly int MAXPLAYERBULLETCOUNT = 40;
     [SerializeField]
-    private int shotDamage = 10;            
+    private int shotDamage = 10;
 
+    private bool isKey = false;
     private bool isMouse;
     private bool isJumpHit;         //점프할때 피격이 가능한지 false이면 가능
     public bool IsJumpHit() { return isJumpHit; }
@@ -50,6 +51,8 @@ public partial class Player2 : MoveObject
     private bool isTop = false;
     private bool isDown = false;
     public static Player2 instance;     //조심해서 써야함
+
+    private Particle particle;
     void Start ()
     {
         instance = this;
@@ -70,10 +73,12 @@ public partial class Player2 : MoveObject
         this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
 
         controller = GetComponent<Player2_Controller>();
+        particle = GetComponent<Particle>();
+        particle.Init("RollWaveEffect");
         //현재상태 // 이전상태 
         eState = STATE.STAND;
         ePreState = STATE.STAND;
-
+       
         //is로 시작하는 bool변수는 false일때 해당변수를 안하고있다는뜻 isRoll 가 false라면 안굴고 있다는뜻
         isMouse = false;            //true이면 마우스를 사용못한다는뜻
         isRoll = false;
@@ -120,7 +125,7 @@ public partial class Player2 : MoveObject
     //공격모드인지 확인
     private void Input_MouseRight()
     {
-        if (controller.Input_AttackMode())
+        if (controller.Is_Input_AttackMode())
         {
             isAttackMode = true;
             Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
@@ -132,10 +137,13 @@ public partial class Player2 : MoveObject
         else isAttackMode = false;
     }
 
+
+
     //이동값설정
     private void Move_Update()           
     {
         if (isDash) return;
+        if (isKey) return;
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
     }
@@ -158,7 +166,8 @@ public partial class Player2 : MoveObject
     private void Input_Move_Walk()
     {
         if (!isAttackMode) return;   //오른쪽마우스버튼(공격모드)일때가 아니면 걷지마
-        if (controller.Input_WASD())
+        if (isKey) return;
+        if (controller.Is_Input_WASD())
         {
             isMove = true;
             eState = STATE.WALK;
@@ -169,7 +178,8 @@ public partial class Player2 : MoveObject
         if (isAttackMode) return;
         if (isDash) return;     //대시중일떄 뛰지마
         if (isRoll ) return;    //구를떄 뛰지마
-        if (controller.Input_WASD())
+        if (isKey) return;
+        if (controller.Is_Input_WASD())
         {
             isMove = true;
             isRun = true;
@@ -246,7 +256,7 @@ public partial class Player2 : MoveObject
     {
         if (isDash) return;
         if (!isRun) return;
-        
+        if (isKey) return;
         velocity += Time.deltaTime; //  * 10.0f;  //10.0f 를 곱하지않으면 밑에 else if 로 들어가지않아서 Run이해제안댐 일단원본
         velocity = Check.Clamp(velocity, 1.0f);
         playerAni.SetFloat(hashVelocity, velocity);
@@ -268,15 +278,13 @@ public partial class Player2 : MoveObject
         if(Input.GetKeyDown(KeyCode.V))
         {
             if (isRoll) return;
-            if (isMove)
-            {
-
-            }
             playerAni.SetTrigger("IsRoll");
             isMouse = true;
             isRoll = true;
             ePreState = eState;
             eState = STATE.ROLL;
+            isKey = true;
+            particle.Work(TYPE.MONSTER);        //몬스터의미없음
         }
     }
 
@@ -365,6 +373,7 @@ public partial class Player2 : MoveObject
 
     void Move_Dash()
     {
+        if (isKey) return;
         if (Input.GetKey(KeyCode.C))
         {
             isDash = true;
@@ -389,9 +398,12 @@ public partial class Player2 : MoveObject
 
     void Change_Gun()
     {
+        if (isKey) return;
         if (Input.GetKeyDown(KeyCode.Alpha1))
             gunMode = 0;
         else if (Input.GetKeyDown(KeyCode.Alpha2))
             gunMode = 1;
+
     }
+
 }
