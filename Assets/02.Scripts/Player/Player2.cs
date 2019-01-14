@@ -15,6 +15,7 @@ using UnityEngine;
 
 public partial class Player2 : MoveObject
 {
+    private Rigidbody playerRb;
     private Transform playerTr;
     private Animator playerAni; public Animator GetPlayerAni() { return playerAni; }
     private Shot bulletShot;
@@ -35,15 +36,20 @@ public partial class Player2 : MoveObject
     [SerializeField]
     private int shotDamage = 10;
 
+    [SerializeField]
     private bool isKey = false;
+    [SerializeField]
     private bool isMouse;
     private bool isJumpHit;         //점프할때 피격이 가능한지 false이면 가능
     public bool IsJumpHit() { return isJumpHit; }
     private bool isJumpDelay;   //점프중인지 단순확인 
     private bool isAttackStop;
+    [SerializeField]
     private bool isRun;
     private bool isDash;
+    [SerializeField]
     private bool isMove;
+    [SerializeField]
     private bool isRoll;
     private bool isAttackMode = false;
     private bool isReload=false;
@@ -56,6 +62,7 @@ public partial class Player2 : MoveObject
     void Start ()
     {
         instance = this;
+        playerRb = GetComponent<Rigidbody>();
         playerTr = GetComponent<Transform>();
         playerAni = GetComponent<Animator>();
         
@@ -92,8 +99,9 @@ public partial class Player2 : MoveObject
 
         
         isReload = false;
+        constraints = playerRb.constraints;
     }
-
+    RigidbodyConstraints constraints;
     // Update is called once per frame
     void Update () {
 
@@ -244,12 +252,22 @@ public partial class Player2 : MoveObject
                 playerAni.SetBool("IsRun", false);
                 playerAni.SetBool("IsWalk", false);
                 playerAni.SetBool("Dash", false);
+
+                
                 break;
         }
-        playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);
+        //playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);       //이게뭐임?
         playerAni.SetFloat(hashX, move.Horizontal);
         playerAni.SetFloat(hashZ, move.Vertical);
+        if (eState == STATE.STAND)
+            playerRb.constraints = RigidbodyConstraints.FreezeRotation;
+        else
+        {
+            playerRb.constraints = constraints;
+        }
+
     }
+   
     //달리기
     private float velocity = 0.0f; //가속도   
     private void Run_Rotation()        //가속도, 캐릭터 회전 적용 함수 
@@ -270,12 +288,14 @@ public partial class Player2 : MoveObject
         else if (Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -100.0f, 0.0f), Time.deltaTime * 10.0f);
         else if (Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 100.0f, 0.0f), Time.deltaTime * 10.0f);
     }
-  
+    public enum EFFECT_TYPE { ROLL }
 
     //진짜구르기
     private void Rolling()
     {
-        if(Input.GetKeyDown(KeyCode.V))
+        if (isRoll)
+            Activate_Effect();
+        if (Input.GetKeyDown(KeyCode.V))
         {
             if (isRoll) return;
             playerAni.SetTrigger("IsRoll");
@@ -284,8 +304,13 @@ public partial class Player2 : MoveObject
             ePreState = eState;
             eState = STATE.ROLL;
             isKey = true;
-            particle.Work(TYPE.MONSTER);        //몬스터의미없음
+            particle.Activate(transform.position);
         }
+    }
+    //이펙트
+    private void Activate_Effect()
+    {
+
     }
 
     int bulletCount = 20;           //총알

@@ -25,7 +25,7 @@ public partial class Player2
 
     private void Event_RollingExit()
     {
-        eState = STATE.WALK;
+        eState = STATE.RUN;
         isMouse = false;
         isRoll = false;
         isKey = false;

@@ -23,18 +23,21 @@ public class Check  {
         _rb.constraints = RigidbodyConstraints.FreezeAll ;
     }
 
-    public static void ResetFreeze(Rigidbody _rb)
+    public static void ResetFreeze()
     {
-        if (_rb == null) return;
-        _rb.constraints = RigidbodyConstraints.None;
-        _rb.constraints = RigidbodyConstraints.FreezeRotationX;
-        _rb.constraints = RigidbodyConstraints.FreezeRotationY;
+       
     }
 
     public static float Clamp(float _data, float _max)
     {
         if (_data >= _max) _data = _max;
         return _data;
+    }
+
+    public static Vector3 Insert_Position_XZ(Vector3 _vec,float _y)
+    {
+        _vec.y = _y;
+        return _vec;
     }
 }
 
