@@ -26,6 +26,8 @@ public partial class Player2 : MoveObject
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
 
+    private Player2_Controller controller;
+
     private CapsuleCollider playerCol;
    
 
@@ -42,7 +44,7 @@ public partial class Player2 : MoveObject
     private bool isDash;
     private bool isMove;
     private bool isRoll;
-
+    private bool isAttackMode = false;
     private bool isReload=false;
     //상의 하의 유용할수 있는 변수
     private bool isTop = false;
@@ -67,12 +69,13 @@ public partial class Player2 : MoveObject
 
         this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
 
+        controller = GetComponent<Player2_Controller>();
         //현재상태 // 이전상태 
         eState = STATE.STAND;
         ePreState = STATE.STAND;
 
         //is로 시작하는 bool변수는 false일때 해당변수를 안하고있다는뜻 isRoll 가 false라면 안굴고 있다는뜻
-        isMouse = false;
+        isMouse = false;            //true이면 마우스를 사용못한다는뜻
         isRoll = false;
         isJumpDelay = false;
         isJumpHit = false;
@@ -82,20 +85,19 @@ public partial class Player2 : MoveObject
         isMove = false;
         bulletCount = 35;       //현재 35발쏘고 장전
 
-        attackMode = 0;
+        
         isReload = false;
     }
 
     // Update is called once per frame
     void Update () {
-        
-        Look_MousePoint();
+
+        Input_MouseRight();
         Attack();
         //구르기
         Rolling();
         //달리기
         Run_Rotation();
-        Running();
 
         //점프 현재보류상태
         Jumping();
@@ -104,7 +106,8 @@ public partial class Player2 : MoveObject
         //대시
         Move_Dash();
         Move_Update();
-        Input_Move();
+        Input_Move_Run();
+        Input_Move_Walk();
         Logic();
 
         Change_Gun();
@@ -113,14 +116,20 @@ public partial class Player2 : MoveObject
     }
 
     //마우스 바라보기
-    private void Look_MousePoint()           
+
+    //공격모드인지 확인
+    private void Input_MouseRight()
     {
-        if (isMouse) return;
-        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
-        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
-        Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
-        float rotateDegree = Mathf.Atan2(aim1.x - transform.position.x, aim1.z - transform.position.z) * Mathf.Rad2Deg;        
-        playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
+        if (controller.Input_AttackMode())
+        {
+            isAttackMode = true;
+            Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
+            Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
+            Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
+            float rotateDegree = Mathf.Atan2(aim1.x - transform.position.x, aim1.z - transform.position.z) * Mathf.Rad2Deg;
+            playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
+        }
+        else isAttackMode = false;
     }
 
     //이동값설정
@@ -146,22 +155,39 @@ public partial class Player2 : MoveObject
 
         }
     }
-
-    private void Input_Move()       //키보드입력시 상태변경
+    private void Input_Move_Walk()
     {
-        if (isDash) return;
-        if (isRoll ) return;
-        if (isJumpDelay == true) return;
-        if (isRun == true) return;
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        if (!isAttackMode) return;   //오른쪽마우스버튼(공격모드)일때가 아니면 걷지마
+        if (controller.Input_WASD())
         {
-            eState = STATE.WALK;
             isMove = true;
+            eState = STATE.WALK;
+        }
+    }
+    private void Input_Move_Run()       //키보드입력시 상태변경  기본 Run
+    {
+        if (isAttackMode) return;
+        if (isDash) return;     //대시중일떄 뛰지마
+        if (isRoll ) return;    //구를떄 뛰지마
+        if (controller.Input_WASD())
+        {
+            isMove = true;
+            isRun = true;
+            isMouse = true;
+            eState = STATE.RUN;
         }
         else
         {
+            isRun = false;
             isMove = false;
+            isMouse = false;
             eState = STATE.STAND;
+            playerAni.SetFloat(hashVelocity, velocity);
+            if (velocity > 0.0f)
+            {
+                velocity -= Time.deltaTime;
+                if (velocity < 0.0f) velocity = 0.0f;
+            }
         }
        
 
@@ -219,7 +245,7 @@ public partial class Player2 : MoveObject
     private void Run_Rotation()        //가속도, 캐릭터 회전 적용 함수 
     {
         if (isDash) return;
-        if (eState != STATE.RUN) return;
+        if (isAttackMode) return;
         velocity += Time.deltaTime; //  * 10.0f;  //10.0f 를 곱하지않으면 밑에 else if 로 들어가지않아서 Run이해제안댐 일단원본
         playerAni.SetFloat(hashVelocity, velocity);
 
@@ -231,31 +257,6 @@ public partial class Player2 : MoveObject
         else if (Input.GetKey(KeyCode.S)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 180.0f, 0.0f), Time.deltaTime * 10.0f);
         else if (Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -100.0f, 0.0f), Time.deltaTime * 10.0f);
         else if (Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 100.0f, 0.0f), Time.deltaTime * 10.0f);
-    }
-    //달리기
-    private void Running()          //달리기는 쉬프트
-    {
-        if (isDash) return;
-        if (Input.GetKey(KeyCode.LeftShift) && eState == STATE.WALK)
-        {
-            eState = STATE.RUN;            
-            isRun = true;
-            isMouse = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift) && velocity >0.0f)
-        {
-            playerAni.SetFloat(hashVelocity, velocity);
-            eState = STATE.WALK;
-            isRun = false;
-            isMouse = false;
-        }
-        if (isRun == false)
-            if (velocity > 0.0f)
-            {
-                velocity -= Time.deltaTime;
-                if (velocity < 0.0f) velocity = 0.0f;
-            }
-          
     }
   
 
@@ -300,7 +301,7 @@ public partial class Player2 : MoveObject
             playerAni.SetTrigger("Attack");
             Attack_Gun();
         }
-        else if(Input.GetMouseButtonDown(Define.MOUSE_RIGHT_BUTTON))
+        else if(Input.GetKeyDown(KeyCode.B))
         {
             playerAni.SetTrigger("Throw");
             isMouse = true;
@@ -375,20 +376,20 @@ public partial class Player2 : MoveObject
             isDash = false;
         }
     }
-    int attackMode = 0;
+    int gunMode = 0;
     void Attack_Gun()
     {
-        if (attackMode == 0)
+        if (gunMode == 0)
             bulletShot.Work(TYPE.BULLET);
-        else if (attackMode == 1)
+        else if (gunMode == 1)
             bulletShot.Work(TYPE.ADVANCEBULLET);
     }
 
     void Change_Gun()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
-            attackMode = 0;
+            gunMode = 0;
         else if (Input.GetKeyDown(KeyCode.Alpha2))
-            attackMode = 1;
+            gunMode = 1;
     }
 }

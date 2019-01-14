@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum STATE { STAND, JUMP, WALK, RUN , ATTACK,HIT,ROLL,DIE, DASH}
+public enum STATE { STAND, JUMP, WALK,SPRINT, RUN , ATTACK,HIT,ROLL,DIE, DASH}
 enum WAY { FORWARD, RIGHT, LEFT}
 
 
