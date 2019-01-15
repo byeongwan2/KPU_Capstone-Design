@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: M_SciFi_Alien_Soldier_A_1
-  m_Shader: {fileID: 4800000, guid: 24393f93ae0e95847bc1b7648291c89c, type: 3}
+  m_Shader: {fileID: 4800000, guid: 041be0f055cb57045a7819fbd43587bf, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

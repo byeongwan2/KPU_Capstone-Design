@@ -4,38 +4,40 @@ using System;
 using UnityEngine;
 
 
-
-public abstract class Node
+public abstract class Node : MonoBehaviour
 {
-    public abstract bool Invoke();
+    public virtual bool Run()
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class CompositeNode : Node
 {
-    public override bool Invoke()
+    public override bool Run()     
     {
         throw new NotImplementedException();
     }
 
-    public void AddChild(Node node)
+    public void AddChild(Node node) 
     {
         childrens.Push(node);
     }
 
-    public Stack<Node> GetChildrens()
+    public Stack<Node> GetChildrens()  
     {
         return childrens;
     }
-    private Stack<Node> childrens = new Stack<Node>();
+    private Stack<Node> childrens = new Stack<Node>();  
 }
 
 public class Selector : CompositeNode
 {
-    public override bool Invoke()
+    public override bool Run()
     {
         foreach (var node in GetChildrens())
         {
-            if (node.Invoke())
+            if (node.Run())
             {
                 return true;
             }
@@ -47,11 +49,11 @@ public class Selector : CompositeNode
 
 public class Sequence : CompositeNode
 {
-    public override bool Invoke()
+    public override bool Run()
     {
         foreach (var node in GetChildrens())
         {
-            if (!node.Invoke())
+            if (!node.Run())
             {
                 return false;
             }
@@ -60,29 +62,4 @@ public class Sequence : CompositeNode
     }
 }
 
-public class ActionA : Node
-{
-    public bool running = true;
 
-    public override bool Invoke()
-    {
-        if (running)
-        {
-            Debug.Log("ActionA True!");
-            running = false;
-            return true;
-        }
-        else
-        {
-            Debug.Log("ActionA False!");
-            running = true;
-            return false;
-        }
-    }
-}
-
-
-public abstract class BT_base : MonoBehaviour
-{
-    public abstract void Init();        
-}
