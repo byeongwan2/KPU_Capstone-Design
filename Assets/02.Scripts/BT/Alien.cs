@@ -28,12 +28,12 @@ public class Alien : MonoBehaviour
         
     }
     
-    public void Attack()
+    public void Attack()   
     {
         animator.SetBool(hashAttack, true);
     }
 
-    void Build_BT()
+    void Build_BT() // 행동트리 생성
     {
         Sequence root = new Sequence();
         Selector behaviour = new Selector();
@@ -42,7 +42,7 @@ public class Alien : MonoBehaviour
         root.AddChild(behaviour);
         behaviour.AddChild(Attack_Node);
 
-        bt = new BehaviorTree(root);
+        bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
     }
     
 }
