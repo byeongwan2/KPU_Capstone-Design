@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 
-public abstract class Node : MonoBehaviour
+public abstract class Node
 {
     public virtual bool Run()
     {
@@ -58,6 +58,21 @@ public class Sequence : CompositeNode
                 return false;
             }
         }
+        return true;
+    }
+}
+
+
+public class Leaf_Node : Node
+{
+    Action NodeFunc;
+    public Leaf_Node(Action action)
+    {
+        NodeFunc = action;
+    }    
+    public override bool Run()
+    {
+        NodeFunc();
         return true;
     }
 }
