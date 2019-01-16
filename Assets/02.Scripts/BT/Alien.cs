@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 
-public class Monster : MonoBehaviour
+public class Alien : MonoBehaviour
 {    
     Animator animator;
     BehaviorTree bt;
