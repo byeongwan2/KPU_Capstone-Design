@@ -21,14 +21,14 @@ public class CompositeNode : Node
 
     public void AddChild(Node node) 
     {
-        childrens.Push(node);
+        childrens.Enqueue(node);
     }
 
-    public Stack<Node> GetChildrens()  
+    public Queue<Node> GetChildrens()  
     {
         return childrens;
     }
-    private Stack<Node> childrens = new Stack<Node>();  
+    private Queue<Node> childrens = new Queue<Node>();  
 }
 
 public class Selector : CompositeNode
@@ -50,11 +50,13 @@ public class Selector : CompositeNode
 public class Sequence : CompositeNode
 {
     public override bool Run()
-    {
+    {        
         foreach (var node in GetChildrens())
         {
+            Debug.Log("node: "+ node);
             if (!node.Run())
             {
+                Debug.Log("node.Run(): " + node.Run());
                 return false;
             }
         }
@@ -69,11 +71,11 @@ public class Leaf_Node : Node
     public Leaf_Node(Func<bool> func)
     {
         NodeFunc = func;
-    }   
+    }
     public override bool Run()
-    {
+    {        
         NodeFunc();
-        throw new NotImplementedException();
+        return true;
     }
 }
 

@@ -10,7 +10,7 @@ public class Alien : MonoBehaviour
     BehaviorTree bt;
     public int vitality = 5;   // 체력
     private readonly int hashAttack = Animator.StringToHash("isAttack");
-    private readonly int hashDie = Animator.StringToHash("isDie");
+    private readonly int hashDeath = Animator.StringToHash("isDeath");
     
     private void Awake()
     {
@@ -19,9 +19,8 @@ public class Alien : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        Build_BT();
-        
+    {        
+        Build_BT();        
     }
 
     // Update is called once per frame
@@ -41,18 +40,20 @@ public class Alien : MonoBehaviour
     public bool isVitalityZero()    // 체력이 0이하인가?
     {
         if(vitality<=0)
-        {
+        {            
             return true;
         }
         else
-        {
+        {            
             return false;
         }
     }
 
-    public void Die() // Die 액션
+    public bool Die() // Die 액션
     {
-        animator.SetBool(hashDie, true);
+
+        animator.SetBool(hashDeath, true);        
+        return true;
     }                   
     
     public bool Attack()   
@@ -63,14 +64,20 @@ public class Alien : MonoBehaviour
 
     void Build_BT() // 행동트리 생성
     {
+        // 노드 생성
         Sequence root = new Sequence();
         Sequence Death = new Sequence();
         Selector behaviour = new Selector();
         Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
-        Leaf_Node Attack_Node = new Leaf_Node(Attack);
+        Leaf_Node Die_Node = new Leaf_Node(Die); 
+  //    Leaf_Node Attack_Node = new Leaf_Node(Attack);
 
-        root.AddChild(behaviour);
-        behaviour.AddChild(Attack_Node);
+        //노드 연결
+        root.AddChild(Death);
+//        root.AddChild(behaviour);
+        Death.AddChild(Die_Node);
+        Death.AddChild(isVitalityZero_Node);
+//        behaviour.AddChild(Attack_Node);
 
         bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
     }
