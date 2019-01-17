@@ -75,7 +75,7 @@ public class Leaf_Node : Node
     public override bool Run()
     {        
         NodeFunc();
-        return true;
+        //return false;  이미 NodeFunc()에서 리턴값 주는데 꼭 써야할까?
     }
 }
 

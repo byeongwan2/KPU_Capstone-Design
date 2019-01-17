@@ -75,8 +75,8 @@ public class Alien : MonoBehaviour
         //노드 연결
         root.AddChild(Death);
 //        root.AddChild(behaviour);
-        Death.AddChild(Die_Node);
         Death.AddChild(isVitalityZero_Node);
+        Death.AddChild(Die_Node);
 //        behaviour.AddChild(Attack_Node);
 
         bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
