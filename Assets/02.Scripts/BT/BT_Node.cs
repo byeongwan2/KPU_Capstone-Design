@@ -64,16 +64,16 @@ public class Sequence : CompositeNode
 
 
 public class Leaf_Node : Node
-{
-    Action NodeFunc;
-    public Leaf_Node(Action action)
+{    
+    Func<bool> NodeFunc;
+    public Leaf_Node(Func<bool> func)
     {
-        NodeFunc = action;
-    }    
+        NodeFunc = func;
+    }   
     public override bool Run()
     {
         NodeFunc();
-        return true;
+        throw new NotImplementedException();
     }
 }
 
