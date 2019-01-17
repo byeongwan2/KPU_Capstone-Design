@@ -52,11 +52,9 @@ public class Sequence : CompositeNode
     public override bool Run()
     {        
         foreach (var node in GetChildrens())
-        {
-            Debug.Log("node: "+ node);
+        {            
             if (!node.Run())
-            {
-                Debug.Log("node.Run(): " + node.Run());
+            {                
                 return false;
             }
         }
@@ -74,8 +72,14 @@ public class Leaf_Node : Node
     }
     public override bool Run()
     {        
-        NodeFunc();
-        //return false;  이미 NodeFunc()에서 리턴값 주는데 꼭 써야할까?
+        if(NodeFunc())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 
