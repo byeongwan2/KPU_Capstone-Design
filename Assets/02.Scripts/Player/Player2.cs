@@ -179,6 +179,8 @@ public partial class Player2 : MoveObject
         {
             isMove = true;
             eState = STATE.WALK;
+            isRun = false;
+            isMouse = false;
         }
     }
     private void Input_Move_Run()       //키보드입력시 상태변경  기본 Run
@@ -206,6 +208,7 @@ public partial class Player2 : MoveObject
                 velocity -= Time.deltaTime;
                 if (velocity < 0.0f) velocity = 0.0f;
             }
+            move.Set_Zero();
         }
        
 
@@ -269,6 +272,7 @@ public partial class Player2 : MoveObject
     }
    
     //달리기
+    [SerializeField]
     private float velocity = 0.0f; //가속도   
     private void Run_Rotation()        //가속도, 캐릭터 회전 적용 함수 
     {
