@@ -134,8 +134,10 @@ public partial class Player2 : MoveObject
     //공격모드인지 확인
     private void Input_MouseRight()
     {
+        if (isRoll) return;
         if (controller.Is_Input_AttackMode())
         {
+
             isAttackMode = true;
             Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
             Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
