@@ -37,12 +37,12 @@ public class Robot : Enemy {
         switch (eState)
         {
             case STATE.WALK:
-              //  enemyAni.SetBool("IsAttack", true);
-                enemyAni.SetBool("IsMove", true);
+                //  enemyAni.SetBool("IsAttack", true);
+                animator.SetBool("IsMove", true);
                 break;
 
             case STATE.STAND:
-                enemyAni.SetBool("IsMove", false);
+                animator.SetBool("IsMove", false);
                 break;
         }
     }
@@ -52,7 +52,7 @@ public class Robot : Enemy {
         switch(eMotionState)
         {
             case UP_BODY_STATE.SHOT:
-                enemyAni.SetBool("IsAttack",true);
+                animator.SetBool("IsAttack",true);
                 break;
             case UP_BODY_STATE.THROW:
 

@@ -156,6 +156,7 @@ public partial class Player2 : MoveObject
         move.Horizontal = Input.GetAxis("Horizontal");
         move.Vertical = Input.GetAxis("Vertical");
     }
+
     private void Jumping()
     {
         return;

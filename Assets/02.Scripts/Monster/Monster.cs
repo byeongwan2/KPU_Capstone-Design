@@ -59,28 +59,28 @@ public partial class Monster : Enemy
         {
             case STATE.DIE:
                 if (isDie) return;
-                enemyAni.SetTrigger("Die");
-                enemyAni.SetInteger(hashDieIdx, Random.Range(0, 6));
+                animator.SetTrigger("Die");
+                animator.SetInteger(hashDieIdx, Random.Range(0, 6));
                 isDie = true;
             break;
 
             case STATE.ATTACK:
-                enemyAni.SetBool("IsAttack", true);
-                enemyAni.SetBool("IsRun", false);
+                animator.SetBool("IsAttack", true);
+                animator.SetBool("IsRun", false);
                 break;
             case STATE.RUN:
-                enemyAni.SetBool("IsRun", true);
-                enemyAni.SetBool("IsMove", false);
-                enemyAni.SetBool("IsAttack", false);
+                animator.SetBool("IsRun", true);
+                animator.SetBool("IsMove", false);
+                animator.SetBool("IsAttack", false);
                 break;
             case STATE.WALK:
-                enemyAni.SetBool("IsMove", true);
-                enemyAni.SetBool("IsRun", false);
+                animator.SetBool("IsMove", true);
+                animator.SetBool("IsRun", false);
                 break;
             case STATE.STAND:
-                enemyAni.SetBool("IsAttack", false);
-                enemyAni.SetBool("IsMove", false);
-                enemyAni.SetBool("IsRun", false);
+                animator.SetBool("IsAttack", false);
+                animator.SetBool("IsMove", false);
+                animator.SetBool("IsRun", false);
                 break;
         }
     }
@@ -122,7 +122,7 @@ public partial class Monster : Enemy
         if (isDie) yield break;
         if (eEnemy_State == ENEMY_STATE.PATROL)
         {
-            enemyAni.SetTrigger("IsSpecialIdle");
+            animator.SetTrigger("IsSpecialIdle");
             eState = STATE.STAND;
             eEnemy_State = ENEMY_STATE.NONE;
         }
