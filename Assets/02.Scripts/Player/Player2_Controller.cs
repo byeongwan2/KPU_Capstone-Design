@@ -14,7 +14,12 @@ public class Player2_Controller : MonoBehaviour {
         return Input.GetMouseButton(Define.MOUSE_RIGHT_BUTTON);
     }
 
+    public float Get_f_Run_Sprint()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+            return 3.0f;
+        else return 1.0f;
+    }
 
-   
-    
+
 }

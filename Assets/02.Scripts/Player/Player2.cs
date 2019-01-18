@@ -125,6 +125,7 @@ public partial class Player2 : MoveObject
 
         Change_Gun();
         Dancing();
+        Update_Animation_Parameter();
         Render();
     }
 
@@ -202,12 +203,6 @@ public partial class Player2 : MoveObject
             isMove = false;
             isMouse = false;
             eState = STATE.STAND;
-            playerAni.SetFloat(hashVelocity, velocity);
-            if (velocity > 0.0f)
-            {
-                velocity -= Time.deltaTime;
-                if (velocity < 0.0f) velocity = 0.0f;
-            }
             move.Set_Zero();
         }
        
@@ -255,14 +250,13 @@ public partial class Player2 : MoveObject
                 playerAni.SetBool("IsRun", false);
                 playerAni.SetBool("IsWalk", false);
                 playerAni.SetBool("Dash", false);
-
                 
                 break;
         }
         //playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);       //이게뭐임?
         playerAni.SetFloat(hashX, move.Horizontal);
         playerAni.SetFloat(hashZ, move.Vertical);
-        if (eState == STATE.STAND)
+        if (eState == STATE.STAND && !isAttackMode)
             playerRb.constraints = RigidbodyConstraints.FreezeRotation;
         else
         {
@@ -279,9 +273,6 @@ public partial class Player2 : MoveObject
         if (isDash) return;
         if (!isRun) return;
         if (isKey) return;
-        velocity += Time.deltaTime; //  * 10.0f;  //10.0f 를 곱하지않으면 밑에 else if 로 들어가지않아서 Run이해제안댐 일단원본
-        velocity = Check.Clamp(velocity, 1.0f);
-        playerAni.SetFloat(hashVelocity, velocity);
 
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -60.0f, 0.0f), Time.deltaTime * 10.0f);
         else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 60.0f, 0.0f), Time.deltaTime * 10.0f);
@@ -293,6 +284,28 @@ public partial class Player2 : MoveObject
         else if (Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 100.0f, 0.0f), Time.deltaTime * 10.0f);
     }
     public enum EFFECT_TYPE { ROLL }
+
+    private void Update_Animation_Parameter()
+    {
+        float dest = controller.Get_f_Run_Sprint();
+        if (velocity < dest && isMove)
+        {
+            velocity += Time.deltaTime; //  * 10.0f; 
+
+            velocity = Check.Clamp(velocity, dest);
+            
+        }
+        else
+        {
+            if(velocity != dest)
+                velocity -= Time.deltaTime * 2.0f;
+            if (velocity < 0.0f) velocity = 0.0f;
+            
+        }
+        playerAni.SetFloat(hashVelocity, velocity);
+    }
+   
+
 
     //진짜구르기
     private void Rolling()
