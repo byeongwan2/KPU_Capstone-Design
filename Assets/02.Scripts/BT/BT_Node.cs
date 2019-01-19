@@ -65,25 +65,46 @@ public class Sequence : CompositeNode
     }
 }
 
-
-public class Leaf_Node : Node
+public class Leaf_Node: Node 
 {
-    public delegate bool func_delegate();
-    func_delegate m_func;
-    public Leaf_Node(func_delegate _func)
+    private Func<bool> m_func;
+    public Leaf_Node(Func< bool> _func)
     {
         m_func = _func;
+        
     }
+    
     public override bool Run()
     {
         if (m_func())
         {
-            Debug.Log("완료");
             return true;
         }
         else
         {
-            Debug.Log("실패");
+            return false;
+        }
+    }
+}
+
+public class Leaf_Node_Float : Node
+{
+    private Func<float,bool> m_func;
+    float data;
+    public Leaf_Node_Float(Func<float,bool> _func,float _data)
+    {
+        m_func = _func;
+        data = _data;
+    }
+
+    public override bool Run()
+    {
+        if (m_func(data))
+        {
+            return true;
+        }
+        else
+        {
             return false;
         }
     }

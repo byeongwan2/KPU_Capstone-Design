@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Alien : Enemy
 {
@@ -27,7 +28,7 @@ public class Alien : Enemy
     // Start is called before the first frame update
     void Start()
     {
-
+        hp = 100;
         wander = GetComponent<Wander>();
         attack = GetComponent<Attack>();
         trace = GetComponent<Trace>();
@@ -83,8 +84,10 @@ public class Alien : Enemy
     
     public bool Attack()   
     {
+        Debug.Log("cv");
         attack.Work();
         animator.SetBool(hashAttack, true);
+        eState = ENEMY_STATE.ATTACK;
         return true;
     }
     
@@ -96,21 +99,26 @@ public class Alien : Enemy
         Sequence Death = new Sequence();
         Selector behaviour = new Selector();
         Sequence trace_Sequence = new Sequence();
+        Sequence attack_Sequence = new Sequence();
        // Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
         //Leaf_Node Die_Node = new Leaf_Node(Die);
-        // Leaf_Node Attack_Node = new Leaf_Node(Attack);
+         Leaf_Node Attack_Node = new Leaf_Node(Attack);
         Leaf_Node Wander_Node = new Leaf_Node(Wander);
         Leaf_Node Trace_Node = new Leaf_Node(Trace);
-        Leaf_Node Trace_Condition_Node = new Leaf_Node(Trace_Condition);
+        Leaf_Node_Float Trace_Condition_Node = new Leaf_Node_Float(Distance_Condition,6.0f);
+        Leaf_Node_Float Attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 3.0f);
         //노드 연결
         root.AddChild(Death);
         root.AddChild(behaviour);
+       
         behaviour.AddChild(trace_Sequence);
+        attack_Sequence.AddChild(Attack_Condition_Node);
+        attack_Sequence.AddChild(Attack_Node);
+        trace_Sequence.AddChild(attack_Sequence);
         trace_Sequence.AddChild(Trace_Condition_Node);
         trace_Sequence.AddChild(Trace_Node);
         //Death.AddChild(isVitalityZero_Node);
         //Death.AddChild(Die_Node);
-        // behaviour.AddChild(Attack_Node);
 
         behaviour.AddChild(Wander_Node);
         bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
@@ -118,22 +126,22 @@ public class Alien : Enemy
 
     public bool Wander()
     {
-        Debug.Log("걷기시작");
         wander.Work();
         animator.SetBool("IsWalk", true);
         eState = ENEMY_STATE.WALK;
         return true;
     }
 
-    public bool Trace_Condition()
+    public bool Distance_Condition(float _dis) 
     {
-        if (trace.Condition())  return true; 
+        if (trace.Condition(_dis))  return true; 
         return false;
     }
 
+
     public bool Trace()
     {
-        Debug.Log("추적시작");
+        if (eState == ENEMY_STATE.ATTACK) return true;
         trace.Work();
         animator.SetBool("IsRun", true);
         eState = ENEMY_STATE.RUN;
@@ -152,4 +160,5 @@ public class Alien : Enemy
                 break;
         }
     }
+
 }

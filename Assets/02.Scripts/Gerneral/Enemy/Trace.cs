@@ -1,30 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Trace : MonoBehaviour
+public class Trace : Move_Monster
 {
     MoveObject target;
-
     public void Init_Target(MoveObject _target)
     {
         target = _target;
     }
 
-    public void Work()
+
+    public bool Work()
     {
-        //플레이어를 따라가는 코드를 작성
+        Debug.Log("bbb");
+        agent.destination = target.transform.position;
+        return true;
     }
 
-    public bool Condition()
+    public bool Condition(float _dis)
     {
-        if (2.0f >Check.Distance(target.transform.position,this.transform.position))
+        if (_dis > Check.Distance(target.transform.position,this.transform.position))
         {
-            Debug.Log("프레이어가 가까이 왔다");
+            if (_dis == 3.0f) Debug.Log("cc");
             return true;
 
         }
-        Debug.Log("플레이어 나랑멀다");
+        if (_dis == 3.0f) Debug.Log("tt");
         return false;
     }
 

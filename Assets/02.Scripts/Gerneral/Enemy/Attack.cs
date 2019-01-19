@@ -10,8 +10,9 @@ public class Attack : MonoBehaviour
         attackDamage = _attackDamage;
     }
     
-    public void Work()
+    public bool Work()
     {
-        Debug.Log("공격");
+        Debug.Log("pppp");
+        return true;
     }
 }

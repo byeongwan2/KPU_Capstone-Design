@@ -2,18 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class Wander : MonoBehaviour
+
+public class Wander : Move_Monster
 {
     int pointIndex = 0;
     public List<Transform> wayPoints;
 
-    private NavMeshAgent agent;
+    [SerializeField]
     bool check_Destination = false;
-    void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        agent.autoBraking = false;
-    }
 
     void Start()
     {
@@ -30,12 +26,13 @@ public class Wander : MonoBehaviour
 
     public RESULT Work()
     {
+        Debug.Log(check_Destination);
         if (check_Destination) return RESULT.RUNNING;
         check_Destination = false;
-        agent.destination = wayPoints[pointIndex].position;
         if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 0.5f && !check_Destination)
         {
             pointIndex = pointIndex == 0 ? 1 : 0;
+            agent.destination = wayPoints[pointIndex].position;
             check_Destination = true;
             Change_After_Time_Bool( 3.0f);
             return RESULT.SUCCESS;
