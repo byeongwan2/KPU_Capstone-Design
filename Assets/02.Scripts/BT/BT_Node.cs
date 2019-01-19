@@ -72,18 +72,17 @@ public class Leaf_Node : Node
     public Leaf_Node(func_delegate _func)
     {
         m_func = _func;
-        Debug.Log(m_func);
     }
     public override bool Run()
     {
         if (m_func())
         {
-            Debug.Log("vv");
+            Debug.Log("완료");
             return true;
         }
         else
         {
-            Debug.Log("yy");
+            Debug.Log("실패");
             return false;
         }
     }

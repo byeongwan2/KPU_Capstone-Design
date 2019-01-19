@@ -11,8 +11,10 @@ public class BehaviorTree
         root = node;
     }
 
-    public void Run()
+    public bool Run()
     {
-        root.Run();
+        if (root.Run()) return true;
+        return false;
+        
     }
 }

@@ -19,7 +19,8 @@ public class Particle : Behaviour
 
     public void Activate(Vector3 _vec)
     {
-        m_particleSystem.playbackSpeed = 2.0f;
+        Debug.Log(m_particleSystem.time);
+        m_particleSystem.playbackSpeed = 1.5f;
         m_particleSystem.transform.position = Check.Insert_Position_XZ(_vec, 0.2f);
         m_particleSystem.Play();
     }

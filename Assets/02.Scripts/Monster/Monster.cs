@@ -23,7 +23,7 @@ public partial class Monster : Enemy
 
         base.Init();
 
-        eEnemy_State = ENEMY_STATE.PATROL ;
+        eEnemy_State = ENEMY_STATE.WALK;
         eState = STATE.STAND;
         
         bulletShot = GetComponent<Shot>();
@@ -46,7 +46,7 @@ public partial class Monster : Enemy
     void LogicState()
     {
         if (isDie) return;
-        if(eEnemy_State == ENEMY_STATE.PATROL)
+        if(eEnemy_State == ENEMY_STATE.WALK)
         {
             eState = STATE.WALK;
         }
@@ -88,7 +88,7 @@ public partial class Monster : Enemy
     void TracePlayer()
     {
         eState = STATE.RUN;
-        eEnemy_State = ENEMY_STATE.TRACE;
+        eEnemy_State = ENEMY_STATE.RUN;
     }
 
     IEnumerator CheckPlayerDistance()
@@ -108,7 +108,7 @@ public partial class Monster : Enemy
         {
             if(eEnemy_State == ENEMY_STATE.ATTACK)
             {
-                eEnemy_State = ENEMY_STATE.PATROL;
+                eEnemy_State = ENEMY_STATE.WALK;
             }
         }
         yield return new WaitForSeconds(0.5f);
@@ -120,21 +120,21 @@ public partial class Monster : Enemy
     {
         yield return new WaitForSeconds(5.0f);
         if (isDie) yield break;
-        if (eEnemy_State == ENEMY_STATE.PATROL)
+        if (eEnemy_State == ENEMY_STATE.WALK)
         {
             animator.SetTrigger("IsSpecialIdle");
             eState = STATE.STAND;
-            eEnemy_State = ENEMY_STATE.NONE;
+            eEnemy_State = ENEMY_STATE.IDLE;
         }
         yield return new WaitForSeconds(3.0f);
         if (isDie)yield break;
-        if (eEnemy_State == ENEMY_STATE.NONE)  eEnemy_State = ENEMY_STATE.PATROL; 
+        if (eEnemy_State == ENEMY_STATE.IDLE)  eEnemy_State = ENEMY_STATE.WALK; 
         StartCoroutine(SpecialIdle());
     }
 
     void UpdateRotateTarget()
     {
-        if (eEnemy_State == ENEMY_STATE.TRACE || eEnemy_State == ENEMY_STATE.ATTACK)
+        if (eEnemy_State == ENEMY_STATE.RUN || eEnemy_State == ENEMY_STATE.ATTACK)
         {
             float dx = system.pPlayer2.transform.position.x - transform.position.x;
             float dz = system.pPlayer2.transform.position.z - transform.position.z;

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Alien : Enemy
 {
-    STATE eState;
+    ENEMY_STATE eState = ENEMY_STATE.IDLE;
     BehaviorTree bt;
     public int vitality = 5;   // 체력
     private readonly int hashAttack = Animator.StringToHash("isAttack");
@@ -32,9 +32,22 @@ public class Alien : Enemy
     // Update is called once per frame
     void Update()
     {
-        bt.Run();
+        if(!bt.Run())
+        {
+            Idle();
+        }
+        Render();
+    }
+    
+    void Idle()
+    {
+        eState = ENEMY_STATE.IDLE;
     }
 
+    void FixedUpdate()
+    {
+
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Bullet"))
@@ -66,13 +79,6 @@ public class Alien : Enemy
     {
         attack.Work();
         animator.SetBool(hashAttack, true);
-        return true;
-    }
-
-    public bool Trace()
-    {
-        trace.Work();
-        //달리기코드
         return true;
     }
     
@@ -107,7 +113,26 @@ public class Alien : Enemy
     {
         wander.Work();
         animator.SetBool("IsWalk", true);
+        eState = ENEMY_STATE.WALK;
         return true;
     }
-    
+
+    public bool Trace()
+    {
+        trace.Work();
+        animator.SetBool("IsRun", true);
+        eState = ENEMY_STATE.RUN;
+        return true;
+    }
+
+    void Render()
+    {
+        switch(eState)
+        {
+            case ENEMY_STATE.IDLE:
+                animator.SetBool("IsRun", false);
+                animator.SetBool("IsWalk", false);
+                break;
+        }
+    }
 }

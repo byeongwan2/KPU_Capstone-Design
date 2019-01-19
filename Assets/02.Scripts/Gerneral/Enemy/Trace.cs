@@ -11,17 +11,19 @@ public class Trace : MonoBehaviour
         target = _target;
     }
 
+    public void Work()
+    {
+        Condition();
+    }
+
     public void Condition()
     {
-        if (8.0f >Check.Distance(target.transform.position,this.transform.position))
+        if (1.0f >Check.Distance(target.transform.position,this.transform.position))
         {
             Debug.Log("프레이어가 가까이 왔다");
         }
     }
 
-    public void Work()
-    {
-        Condition();
-    }
+    
 
 }
