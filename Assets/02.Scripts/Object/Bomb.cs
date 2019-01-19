@@ -17,7 +17,7 @@ public class Bomb : AttackObject {
         rangeEffect = GetComponentInChildren<RangeEffect>();
         rangeEffect.Init();
 
-       list = PrefabSystem.instance.Active_MonsterList();
+       list = PrefabSystem.instance.Get_MonsterList();
     }
 
     void LifeOff()

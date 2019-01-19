@@ -15,7 +15,10 @@ public class Wander : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
     }
-
+    public void Init(float _speed)
+    {
+        agent.speed = _speed;
+    }
 
 
     public void Work()

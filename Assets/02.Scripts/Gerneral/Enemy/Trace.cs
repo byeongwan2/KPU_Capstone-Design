@@ -13,16 +13,21 @@ public class Trace : MonoBehaviour
 
     public void Work()
     {
-        Condition();
+        //플레이어를 따라가는 코드를 작성
     }
 
-    public void Condition()
+    public bool Condition()
     {
-        if (1.0f >Check.Distance(target.transform.position,this.transform.position))
+        if (2.0f >Check.Distance(target.transform.position,this.transform.position))
         {
             Debug.Log("프레이어가 가까이 왔다");
+            return true;
+
         }
+        Debug.Log("플레이어 나랑멀다");
+        return false;
     }
+
 
     
 

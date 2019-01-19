@@ -60,7 +60,7 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
         }
     }
 
-    public List<GameObject> Active_MonsterList()
+    public List<GameObject> Get_MonsterList()
     {
         return monsterPool;
     }

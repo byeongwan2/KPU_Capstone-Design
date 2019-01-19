@@ -56,7 +56,7 @@ public class Sequence : CompositeNode
         {            
             if (!node.Run())
             {
-                Debug.Log("Sequence");
+                Debug.Log(this.GetType());
                 return false;
             }
         }
