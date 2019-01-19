@@ -45,7 +45,7 @@ public class Alien : Enemy
         Render();
     }
     
-    void Idle()
+    void Idle()             //쓰지않음
     {
         eState = ENEMY_STATE.IDLE;
     }
@@ -94,7 +94,8 @@ public class Alien : Enemy
         // 노드 생성
         Sequence root = new Sequence();
         Sequence Death = new Sequence();
-        Sequence behaviour = new Sequence();
+        Selector behaviour = new Selector();
+        Sequence trace_Sequence = new Sequence();
        // Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
         //Leaf_Node Die_Node = new Leaf_Node(Die);
         // Leaf_Node Attack_Node = new Leaf_Node(Attack);
@@ -104,19 +105,20 @@ public class Alien : Enemy
         //노드 연결
         root.AddChild(Death);
         root.AddChild(behaviour);
+        behaviour.AddChild(trace_Sequence);
+        trace_Sequence.AddChild(Trace_Condition_Node);
+        trace_Sequence.AddChild(Trace_Node);
         //Death.AddChild(isVitalityZero_Node);
         //Death.AddChild(Die_Node);
         // behaviour.AddChild(Attack_Node);
 
         behaviour.AddChild(Wander_Node);
-        behaviour.AddChild(Trace_Condition_Node);
-        behaviour.AddChild(Trace_Node);
-        
         bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
     }
 
     public bool Wander()
     {
+        Debug.Log("걷기시작");
         wander.Work();
         animator.SetBool("IsWalk", true);
         eState = ENEMY_STATE.WALK;
@@ -131,6 +133,7 @@ public class Alien : Enemy
 
     public bool Trace()
     {
+        Debug.Log("추적시작");
         trace.Work();
         animator.SetBool("IsRun", true);
         eState = ENEMY_STATE.RUN;

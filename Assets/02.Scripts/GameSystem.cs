@@ -14,6 +14,6 @@ public class GameSystem : MonoBehaviour {           //어떤오브젝트에서 �
         player2 = GameObject.Find("Player2").GetComponent<Player2>();
     }
 
-
+  
 
 }

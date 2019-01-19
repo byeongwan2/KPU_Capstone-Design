@@ -8,26 +8,49 @@ public class Wander : MonoBehaviour
     public List<Transform> wayPoints;
 
     private NavMeshAgent agent;
-
-    // Start is called before the first frame update
-    void Start()
+    bool check_Destination = false;
+    void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
     }
-    public void Init(float _speed)
+
+    void Start()
+    {
+        
+    }
+
+    public void Init(float _speed)      //상태변경시 마다 한번들어옴
     {
         agent.speed = _speed;
+        agent.destination = wayPoints[pointIndex].position;
+        check_Destination = false;
     }
 
 
-    public void Work()
+    public RESULT Work()
     {
+        if (check_Destination) return RESULT.RUNNING;
+        check_Destination = false;
         agent.destination = wayPoints[pointIndex].position;
-        if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 0.5f)
+        if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 0.5f && !check_Destination)
         {
             pointIndex = pointIndex == 0 ? 1 : 0;
+            check_Destination = true;
+            Change_After_Time_Bool( 3.0f);
+            return RESULT.SUCCESS;
         }
+        return RESULT.FAIL;
     }
-    
+    public void Change_After_Time_Bool(float _time)
+    {
+        StartCoroutine(Reset_Bool(_time));
+       
+    }
+
+    IEnumerator Reset_Bool(float _time)
+    {
+        yield return new WaitForSeconds(_time);
+        check_Destination = false;
+    }
 }

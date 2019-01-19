@@ -15,6 +15,7 @@ public class Throw : Behaviour
         bombPower = _bombPower;
         bomb = Resources.Load("Prefabs/" + _link) as GameObject;
         PrefabSystem.instance.Create_Prefab(TYPE.BOMB,bomb, _maxCount);
+        
     }
 
     public override void Work(TYPE _type)

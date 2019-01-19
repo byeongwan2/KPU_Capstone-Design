@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-
+public enum RESULT { SUCCESS, FAIL, RUNNING }
 public abstract class Node
 {
+
     public virtual bool Run()
     {
         throw new NotImplementedException();
