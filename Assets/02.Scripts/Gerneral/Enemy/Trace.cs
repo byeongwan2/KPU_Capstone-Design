@@ -22,10 +22,11 @@ public class Trace : Move_Monster
     {
         if (_dis > Check.Distance(target.transform.position,this.transform.position))
         {
-            if(_dis == 3.0f)Debug.Log("bbbbqq");
+           
             return true;
 
         }
+        agent.isStopped = false;
         return false;
     }
 

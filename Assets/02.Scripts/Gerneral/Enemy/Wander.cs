@@ -13,7 +13,7 @@ public class Wander : Move_Monster
 
     void Start()
     {
-        
+     
     }
 
     public void Init(float _speed)      //상태변경시 마다 한번들어옴

@@ -103,7 +103,7 @@ public class Alien : Enemy
         Leaf_Node Wander_Node = new Leaf_Node(Wander);
         Leaf_Node Trace_Node = new Leaf_Node(Trace);
         Leaf_Node_Float Trace_Condition_Node = new Leaf_Node_Float(Distance_Condition,6.0f);
-        Leaf_Node_Float Attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 3.0f);
+        Leaf_Node_Float Attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
         //노드 연결
         root.AddChild(Death);
         root.AddChild(behaviour);
@@ -136,7 +136,6 @@ public class Alien : Enemy
         return false;
     }
 
-
     public bool Trace()
     {
         RESULT result = trace.Work();
@@ -145,8 +144,6 @@ public class Alien : Enemy
         eState = ENEMY_STATE.RUN;
         return true;
     }
-
-    
 
     void Render()
     {
@@ -157,5 +154,4 @@ public class Alien : Enemy
                 break;
         }
     }
-
 }
