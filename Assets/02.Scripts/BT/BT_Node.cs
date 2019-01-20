@@ -39,13 +39,11 @@ public class Selector : CompositeNode
         foreach (var node in GetChildrens())
         {
             if (node.Run())
-            {
-                Debug.Log("Selector");
+            {                
                 return true;
             }
         }
         return false;
-
     }
 }
 
@@ -57,7 +55,7 @@ public class Sequence : CompositeNode
         {            
             if (!node.Run())
             {
-                Debug.Log(this.GetType());
+                //Debug.Log(this.GetType());
                 return false;
             }
         }
@@ -70,8 +68,7 @@ public class Leaf_Node: Node
     private Func<bool> m_func;
     public Leaf_Node(Func< bool> _func)
     {
-        m_func = _func;
-        
+        m_func = _func;        
     }
     
     public override bool Run()

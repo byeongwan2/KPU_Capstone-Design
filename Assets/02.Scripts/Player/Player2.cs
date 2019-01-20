@@ -149,7 +149,6 @@ public partial class Player2 : MoveObject
     }
 
 
-
     //이동값설정
     private void Move_Update()           
     {
@@ -207,9 +206,7 @@ public partial class Player2 : MoveObject
             isMouse = false;
             eState = STATE.STAND;
             move.Set_Zero();
-        }
-       
-
+        }       
     }
     //do 혹은 update 역할
     private void Logic()           
@@ -230,14 +227,14 @@ public partial class Player2 : MoveObject
     private readonly int hashVelocity = Animator.StringToHash("Velocity");
     private readonly int hashX = Animator.StringToHash("X");
     private readonly int hashZ = Animator.StringToHash("Z");
+
     //애니메이션
     private void Render()                
     {
         switch (eState)
         {
             case STATE.DASH:
-                playerAni.SetBool("Dash", true);
-               
+                playerAni.SetBool("Dash", true);               
                 break;
             case STATE.RUN:
                 playerAni.SetBool("IsRun", true);

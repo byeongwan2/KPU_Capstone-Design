@@ -11,12 +11,15 @@ public class Alien : Enemy
     public int vitality = 5;   // 체력
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
+    private readonly int hashRoll = Animator.StringToHash("isRoll");
+
     /// <summary>
     /// /////////////////////////인공지능 
     /// </summary>
     Wander wander;
     Attack attack;
     Trace trace;
+    Roll roll;
     /// <summary>
     /// /////////////////////기능
     /// </summary>
@@ -32,6 +35,7 @@ public class Alien : Enemy
         wander = GetComponent<Wander>();
         attack = GetComponent<Attack>();
         trace = GetComponent<Trace>();
+        roll = GetComponent<Roll>();
         trace.Init_Target(system.pPlayer2);
         attack.Init_Target(system.pPlayer2);
         Build_BT();
@@ -44,7 +48,7 @@ public class Alien : Enemy
     void Update()
     {
         bt.Run();
-      
+        
         Render();
     }
     
@@ -97,27 +101,35 @@ public class Alien : Enemy
         Selector behaviour = new Selector();
         Sequence trace_Sequence = new Sequence();
         Sequence attack_Sequence = new Sequence();
+        Sequence rolling_Sequence = new Sequence();
        // Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
         //Leaf_Node Die_Node = new Leaf_Node(Die);
-         Leaf_Node Attack_Node = new Leaf_Node(Attack);
-        Leaf_Node Wander_Node = new Leaf_Node(Wander);
-        Leaf_Node Trace_Node = new Leaf_Node(Trace);
+        Leaf_Node attack_Node = new Leaf_Node(Attack);
+        Leaf_Node wander_Node = new Leaf_Node(Wander);
+        Leaf_Node trace_Node = new Leaf_Node(Trace);
+        Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
+        Leaf_Node rolling_Node = new Leaf_Node(Rolling);
         Leaf_Node_Float Trace_Condition_Node = new Leaf_Node_Float(Distance_Condition,6.0f);
         Leaf_Node_Float Attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
-        //노드 연결
-        root.AddChild(Death);
-        root.AddChild(behaviour);
 
+        //노드 연결
+        //root.AddChild(Death);
+        root.AddChild(behaviour);
+        behaviour.AddChild(rolling_Sequence);
+        rolling_Sequence.AddChild(isBulletComeToMe_Node);
+        rolling_Sequence.AddChild(rolling_Node);
+
+        /*
         behaviour.AddChild(attack_Sequence);
         behaviour.AddChild(trace_Sequence);
         attack_Sequence.AddChild(Attack_Condition_Node);
         attack_Sequence.AddChild(Attack_Node);
         trace_Sequence.AddChild(Trace_Condition_Node);
         trace_Sequence.AddChild(Trace_Node);
-        //Death.AddChild(isVitalityZero_Node);
-        //Death.AddChild(Die_Node);
-
+        Death.AddChild(isVitalityZero_Node);  
+        Death.AddChild(Die_Node);        
         behaviour.AddChild(Wander_Node);
+        */
         bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
     }
 
@@ -149,9 +161,21 @@ public class Alien : Enemy
     {
         switch(eState)
         {
-            case ENEMY_STATE.IDLE:
-               
+            case ENEMY_STATE.IDLE:               
                 break;
         }
+    }
+
+    public bool IsBulletComeToMe()
+    {
+        if (roll.IsBulletComeToMe()) return true;
+        return false;
+    }
+
+    public bool Rolling()
+    {
+        roll.Rolling();
+        animator.SetTrigger(hashRoll);
+        return true;
     }
 }

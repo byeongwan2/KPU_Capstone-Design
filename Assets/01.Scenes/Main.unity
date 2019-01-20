@@ -1356,6 +1356,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65480a92e8220b7438aaf5a2cf676e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &619214255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619214246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935c3eea2d4242e42be7df54b209907c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &634439287
 PrefabInstance:
   m_ObjectHideFlags: 0
