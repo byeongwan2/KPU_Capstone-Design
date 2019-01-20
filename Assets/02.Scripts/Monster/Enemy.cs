@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ENEMY_STATE { IDLE, WALK, RUN ,ATTACK ,RETRACE,ROLL}
+public enum ENEMY_STATE { IDLE, WALK, RUN ,ATTACK ,RETRACE,ROLL,LOOKAROUND}
 
 public abstract class Enemy : MoveObject
 {

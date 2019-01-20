@@ -39,8 +39,8 @@ public class Alien : Enemy
         trace.Init_Target(system.pPlayer2);
         attack.Init_Target(system.pPlayer2);
         
-        wander.Init(1.5f);      //배회할때 걷는 속도
-        trace.Init(2.5f);
+        wander.Init(1.0f);      //배회할때 걷는 속도
+        trace.Init(2.0f);
         animator.SetTrigger("isWalk");
         Build_BT();
     }
@@ -93,8 +93,7 @@ public class Alien : Enemy
         eEnemy_State = ENEMY_STATE.ATTACK;
         exit_Motion = true;
         return true;
-    }
-    
+    }  
 
     void Build_BT() // 행동트리 생성
     {
@@ -114,7 +113,6 @@ public class Alien : Enemy
         Leaf_Node trace_Node = new Leaf_Node(Trace);
         Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition,6.0f);
         Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
-
         //노드 연결
        // root.AddChild(death);
         root.AddChild(behaviour);
@@ -183,8 +181,17 @@ public class Alien : Enemy
         roll.Rolling();
         if (eEnemy_State != ENEMY_STATE.ROLL)
             animator.SetTrigger(hashRoll);
-        eEnemy_State = ENEMY_STATE.ROLL;        
+        eEnemy_State = ENEMY_STATE.ROLL;
+        exit_Motion = true;
         return true;
+    }
+
+    public void LookAround()
+    {
+        if(!Distance_Condition(6.0f)) return ;
+        if (eEnemy_State != ENEMY_STATE.LOOKAROUND)
+            animator.SetTrigger("isLookAround");
+        eEnemy_State = ENEMY_STATE.LOOKAROUND;
     }
 
     public void Exit_Motion()
