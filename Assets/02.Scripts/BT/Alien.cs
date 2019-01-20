@@ -33,6 +33,7 @@ public class Alien : Enemy
         attack = GetComponent<Attack>();
         trace = GetComponent<Trace>();
         trace.Init_Target(system.pPlayer2);
+        attack.Init_Target(system.pPlayer2);
         Build_BT();
 
         wander.Init(2.0f);      //배회할때 걷는 속도
@@ -74,7 +75,6 @@ public class Alien : Enemy
 
     public bool Die() // Die 액션
     {
-
         animator.SetTrigger(hashDeath);        
         return true;
     }                   
@@ -82,8 +82,8 @@ public class Alien : Enemy
     public bool Attack()   
     {
         attack.Work();
-        if( eState != ENEMY_STATE.ATTACK)
-            animator.SetTrigger(hashAttack);
+        if (eState != ENEMY_STATE.ATTACK)
+            animator.SetTrigger("IsAttack");        
         eState = ENEMY_STATE.ATTACK;
         return true;
     }
