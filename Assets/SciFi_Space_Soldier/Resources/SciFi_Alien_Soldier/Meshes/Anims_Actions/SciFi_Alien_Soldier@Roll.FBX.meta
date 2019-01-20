@@ -194,7 +194,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 1
-        functionName: Exit_Motion
+        functionName: LookAround
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

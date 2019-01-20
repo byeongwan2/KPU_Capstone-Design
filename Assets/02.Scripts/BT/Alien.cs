@@ -11,7 +11,7 @@ public class Alien : Enemy
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
     private readonly int hashRoll = Animator.StringToHash("isRoll");
-
+    NavMeshAgent agent;
     bool exit_Motion = false;
     /// <summary>
     /// /////////////////////////인공지능 
@@ -43,6 +43,8 @@ public class Alien : Enemy
         trace.Init(2.0f);
         animator.SetTrigger("isWalk");
         Build_BT();
+
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -182,16 +184,22 @@ public class Alien : Enemy
         if (eEnemy_State != ENEMY_STATE.ROLL)
             animator.SetTrigger(hashRoll);
         eEnemy_State = ENEMY_STATE.ROLL;
+        
         exit_Motion = true;
         return true;
     }
 
     public void LookAround()
     {
-        if(!Distance_Condition(6.0f)) return ;
+        if (Distance_Condition(6.0f))
+        {
+            exit_Motion = false;
+            return;
+        }
         if (eEnemy_State != ENEMY_STATE.LOOKAROUND)
             animator.SetTrigger("isLookAround");
         eEnemy_State = ENEMY_STATE.LOOKAROUND;
+        agent.isStopped = true;
     }
 
     public void Exit_Motion()
