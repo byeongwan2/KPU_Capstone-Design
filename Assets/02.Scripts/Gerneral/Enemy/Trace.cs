@@ -10,6 +10,10 @@ public class Trace : Move_Monster
     {
         target = _target;
     }
+    public void Init(float _speed)
+    {
+        agent.speed = _speed;
+    }
 
 
     public RESULT Work()

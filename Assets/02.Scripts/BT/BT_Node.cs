@@ -9,7 +9,8 @@ public abstract class Node
 
     public virtual bool Run()
     {
-        throw new NotImplementedException();
+        Debug.Log("vvqwev");
+        return true;
     }
 }
 
@@ -17,7 +18,8 @@ public class CompositeNode : Node
 {
     public override bool Run()     
     {
-        throw new NotImplementedException();
+        Debug.Log("vvweqwqqqqqwev");
+        return true;
     }
 
     public void AddChild(Node node) 
@@ -36,8 +38,10 @@ public class Selector : CompositeNode
 {
     public override bool Run()
     {
+        Debug.Log("cc");
         foreach (var node in GetChildrens())
         {
+            Debug.Log(node.GetType());
             if (node.Run())
             {                
                 return true;
@@ -50,7 +54,8 @@ public class Selector : CompositeNode
 public class Sequence : CompositeNode
 {
     public override bool Run()
-    {        
+    {
+        Debug.Log("cfffffffffc");
         foreach (var node in GetChildrens())
         {            
             if (!node.Run())

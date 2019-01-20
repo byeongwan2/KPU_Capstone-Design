@@ -6,13 +6,13 @@ using UnityEngine.AI;
 
 public class Alien : Enemy
 {
-    ENEMY_STATE eState = ENEMY_STATE.IDLE;
     BehaviorTree bt;
     public int vitality = 5;   // 체력
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
     private readonly int hashRoll = Animator.StringToHash("isRoll");
 
+    bool exit_Motion = false;
     /// <summary>
     /// /////////////////////////인공지능 
     /// </summary>
@@ -38,23 +38,25 @@ public class Alien : Enemy
         roll = GetComponent<Roll>();
         trace.Init_Target(system.pPlayer2);
         attack.Init_Target(system.pPlayer2);
-        Build_BT();
-
-        wander.Init(2.0f);      //배회할때 걷는 속도
+        
+        wander.Init(1.5f);      //배회할때 걷는 속도
+        trace.Init(2.5f);
         animator.SetTrigger("isWalk");
+        Build_BT();
     }
 
     // Update is called once per frame
     void Update()
     {
-        bt.Run();
+        if (exit_Motion) return;
+            bt.Run();
         
         Render();
     }
     
     void Idle()             //쓰지않음
     {
-        eState = ENEMY_STATE.IDLE;
+        eEnemy_State = ENEMY_STATE.IDLE;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -86,9 +88,10 @@ public class Alien : Enemy
     public bool Attack()   
     {
         attack.Work();
-        if (eState != ENEMY_STATE.ATTACK)
-            animator.SetTrigger("isAttack");        
-        eState = ENEMY_STATE.ATTACK;
+        if (eEnemy_State != ENEMY_STATE.ATTACK)
+            animator.SetTrigger("isAttack");
+        eEnemy_State = ENEMY_STATE.ATTACK;
+        exit_Motion = true;
         return true;
     }
     
@@ -97,13 +100,13 @@ public class Alien : Enemy
     {
         // 노드 생성
         Sequence root = new Sequence();
-        Sequence death = new Sequence();
+        //Sequence death = new Sequence();
         Selector behaviour = new Selector();
         Sequence rolling_Sequence = new Sequence();
         Sequence attack_Sequence = new Sequence();
         Sequence trace_Sequence = new Sequence();        
-        Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
-        Leaf_Node die_Node = new Leaf_Node(Die);
+        //Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
+        //Leaf_Node die_Node = new Leaf_Node(Die);
         Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
         Leaf_Node rolling_Node = new Leaf_Node(Rolling);
         Leaf_Node attack_Node = new Leaf_Node(Attack);
@@ -113,11 +116,11 @@ public class Alien : Enemy
         Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
 
         //노드 연결
-        root.AddChild(death);
+       // root.AddChild(death);
         root.AddChild(behaviour);
 
-        death.AddChild(isVitalityZero_Node);
-        death.AddChild(die_Node);
+        //death.AddChild(isVitalityZero_Node);
+       // death.AddChild(die_Node);
 
         behaviour.AddChild(rolling_Sequence);
         behaviour.AddChild(attack_Sequence);
@@ -139,9 +142,9 @@ public class Alien : Enemy
     public bool Wander()
     {
         RESULT result = wander.Work();
-        if (result == RESULT.SUCCESS)
+        if (eEnemy_State != ENEMY_STATE.WALK)
             animator.SetTrigger("isWalk");
-        eState = ENEMY_STATE.WALK;
+        eEnemy_State = ENEMY_STATE.WALK;
         return true;
     }
 
@@ -154,15 +157,15 @@ public class Alien : Enemy
     public bool Trace()
     {
         RESULT result = trace.Work();
-        if (eState != ENEMY_STATE.RUN)
+        if (eEnemy_State != ENEMY_STATE.RUN)
             animator.SetTrigger("isRun");
-        eState = ENEMY_STATE.RUN;
+        eEnemy_State = ENEMY_STATE.RUN;
         return true;
     }
 
     void Render()
     {
-        switch(eState)
+        switch(eEnemy_State)
         {
             case ENEMY_STATE.IDLE:               
                 break;
@@ -178,9 +181,14 @@ public class Alien : Enemy
     public bool Rolling()
     {
         roll.Rolling();
-        if (eState != ENEMY_STATE.ROLL)
+        if (eEnemy_State != ENEMY_STATE.ROLL)
             animator.SetTrigger(hashRoll);
-        eState = ENEMY_STATE.ROLL;        
+        eEnemy_State = ENEMY_STATE.ROLL;        
         return true;
+    }
+
+    public void Exit_Motion()
+    {
+        exit_Motion = false;
     }
 }

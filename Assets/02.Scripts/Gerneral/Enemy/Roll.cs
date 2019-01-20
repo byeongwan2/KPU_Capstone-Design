@@ -38,14 +38,4 @@ public class Roll : MonoBehaviour
     }
 
     
-    void Start()
-    {
-        
-    }
-
-    
-    void Update()
-    {
-        
-    }
 }
