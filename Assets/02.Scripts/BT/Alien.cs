@@ -36,6 +36,7 @@ public class Alien : Enemy
         Build_BT();
 
         wander.Init(2.0f);      //배회할때 걷는 속도
+        animator.SetTrigger("IsWalk");
     }
 
     // Update is called once per frame
@@ -51,10 +52,6 @@ public class Alien : Enemy
         eState = ENEMY_STATE.IDLE;
     }
 
-    void FixedUpdate()
-    {
-
-    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Bullet"))
@@ -78,15 +75,15 @@ public class Alien : Enemy
     public bool Die() // Die 액션
     {
 
-        animator.SetBool(hashDeath, true);        
+        animator.SetTrigger(hashDeath);        
         return true;
     }                   
     
     public bool Attack()   
     {
-        Debug.Log("cv");
         attack.Work();
-        animator.SetBool(hashAttack, true);
+        if( eState != ENEMY_STATE.ATTACK)
+            animator.SetTrigger(hashAttack);
         eState = ENEMY_STATE.ATTACK;
         return true;
     }
@@ -110,11 +107,11 @@ public class Alien : Enemy
         //노드 연결
         root.AddChild(Death);
         root.AddChild(behaviour);
-       
+
+        behaviour.AddChild(attack_Sequence);
         behaviour.AddChild(trace_Sequence);
         attack_Sequence.AddChild(Attack_Condition_Node);
         attack_Sequence.AddChild(Attack_Node);
-        trace_Sequence.AddChild(attack_Sequence);
         trace_Sequence.AddChild(Trace_Condition_Node);
         trace_Sequence.AddChild(Trace_Node);
         //Death.AddChild(isVitalityZero_Node);
@@ -126,8 +123,9 @@ public class Alien : Enemy
 
     public bool Wander()
     {
-        wander.Work();
-        animator.SetBool("IsWalk", true);
+        RESULT result = wander.Work();
+        if (result == RESULT.SUCCESS)
+            animator.SetTrigger("IsWalk");
         eState = ENEMY_STATE.WALK;
         return true;
     }
@@ -141,9 +139,9 @@ public class Alien : Enemy
 
     public bool Trace()
     {
-        if (eState == ENEMY_STATE.ATTACK) return true;
-        trace.Work();
-        animator.SetBool("IsRun", true);
+        RESULT result = trace.Work();
+        if (eState != ENEMY_STATE.RUN)
+            animator.SetTrigger("IsRun");
         eState = ENEMY_STATE.RUN;
         return true;
     }
@@ -155,8 +153,7 @@ public class Alien : Enemy
         switch(eState)
         {
             case ENEMY_STATE.IDLE:
-                animator.SetBool("IsRun", false);
-                animator.SetBool("IsWalk", false);
+               
                 break;
         }
     }

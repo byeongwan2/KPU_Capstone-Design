@@ -12,22 +12,19 @@ public class Trace : Move_Monster
     }
 
 
-    public bool Work()
+    public RESULT Work()
     {
-        Debug.Log("bbb");
         agent.destination = target.transform.position;
-        return true;
+        return RESULT.SUCCESS;
     }
 
     public bool Condition(float _dis)
     {
         if (_dis > Check.Distance(target.transform.position,this.transform.position))
         {
-            if (_dis == 3.0f) Debug.Log("cc");
             return true;
 
         }
-        if (_dis == 3.0f) Debug.Log("tt");
         return false;
     }
 
