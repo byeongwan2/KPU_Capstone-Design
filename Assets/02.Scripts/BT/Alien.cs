@@ -41,7 +41,7 @@ public class Alien : Enemy
         Build_BT();
 
         wander.Init(2.0f);      //배회할때 걷는 속도
-        animator.SetTrigger("IsWalk");
+        animator.SetTrigger("isWalk");
     }
 
     // Update is called once per frame
@@ -87,7 +87,7 @@ public class Alien : Enemy
     {
         attack.Work();
         if (eState != ENEMY_STATE.ATTACK)
-            animator.SetTrigger("IsAttack");        
+            animator.SetTrigger("isAttack");        
         eState = ENEMY_STATE.ATTACK;
         return true;
     }
@@ -97,39 +97,42 @@ public class Alien : Enemy
     {
         // 노드 생성
         Sequence root = new Sequence();
-        Sequence Death = new Sequence();
+        Sequence death = new Sequence();
         Selector behaviour = new Selector();
-        Sequence trace_Sequence = new Sequence();
-        Sequence attack_Sequence = new Sequence();
         Sequence rolling_Sequence = new Sequence();
-       // Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
-        //Leaf_Node Die_Node = new Leaf_Node(Die);
+        Sequence attack_Sequence = new Sequence();
+        Sequence trace_Sequence = new Sequence();        
+        Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
+        Leaf_Node die_Node = new Leaf_Node(Die);
+        Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
+        Leaf_Node rolling_Node = new Leaf_Node(Rolling);
         Leaf_Node attack_Node = new Leaf_Node(Attack);
         Leaf_Node wander_Node = new Leaf_Node(Wander);
         Leaf_Node trace_Node = new Leaf_Node(Trace);
-        Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
-        Leaf_Node rolling_Node = new Leaf_Node(Rolling);
-        Leaf_Node_Float Trace_Condition_Node = new Leaf_Node_Float(Distance_Condition,6.0f);
-        Leaf_Node_Float Attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
+        Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition,6.0f);
+        Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
 
         //노드 연결
-        //root.AddChild(Death);
+        root.AddChild(death);
         root.AddChild(behaviour);
-        behaviour.AddChild(rolling_Sequence);
-        rolling_Sequence.AddChild(isBulletComeToMe_Node);
-        rolling_Sequence.AddChild(rolling_Node);
 
-        /*
+        death.AddChild(isVitalityZero_Node);
+        death.AddChild(die_Node);
+
+        behaviour.AddChild(rolling_Sequence);
         behaviour.AddChild(attack_Sequence);
         behaviour.AddChild(trace_Sequence);
-        attack_Sequence.AddChild(Attack_Condition_Node);
-        attack_Sequence.AddChild(Attack_Node);
-        trace_Sequence.AddChild(Trace_Condition_Node);
-        trace_Sequence.AddChild(Trace_Node);
-        Death.AddChild(isVitalityZero_Node);  
-        Death.AddChild(Die_Node);        
-        behaviour.AddChild(Wander_Node);
-        */
+        behaviour.AddChild(wander_Node);
+
+        rolling_Sequence.AddChild(isBulletComeToMe_Node);
+        rolling_Sequence.AddChild(rolling_Node);
+        
+        attack_Sequence.AddChild(attack_Condition_Node);
+        attack_Sequence.AddChild(attack_Node);
+
+        trace_Sequence.AddChild(trace_Condition_Node);
+        trace_Sequence.AddChild(trace_Node);                        
+        
         bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
     }
 
@@ -137,7 +140,7 @@ public class Alien : Enemy
     {
         RESULT result = wander.Work();
         if (result == RESULT.SUCCESS)
-            animator.SetTrigger("IsWalk");
+            animator.SetTrigger("isWalk");
         eState = ENEMY_STATE.WALK;
         return true;
     }
@@ -152,7 +155,7 @@ public class Alien : Enemy
     {
         RESULT result = trace.Work();
         if (eState != ENEMY_STATE.RUN)
-            animator.SetTrigger("IsRun");
+            animator.SetTrigger("isRun");
         eState = ENEMY_STATE.RUN;
         return true;
     }
@@ -175,7 +178,9 @@ public class Alien : Enemy
     public bool Rolling()
     {
         roll.Rolling();
-        animator.SetTrigger(hashRoll);
+        if (eState != ENEMY_STATE.ROLL)
+            animator.SetTrigger(hashRoll);
+        eState = ENEMY_STATE.ROLL;        
         return true;
     }
 }
