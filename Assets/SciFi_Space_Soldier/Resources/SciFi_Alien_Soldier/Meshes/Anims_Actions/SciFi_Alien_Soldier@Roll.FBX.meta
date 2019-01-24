@@ -164,7 +164,7 @@ ModelImporter:
       curves: []
       events:
       - time: 1
-        functionName: Exit_Motion
+        functionName: Exit_LookAround
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

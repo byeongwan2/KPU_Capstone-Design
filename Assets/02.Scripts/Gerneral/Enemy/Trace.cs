@@ -32,7 +32,6 @@ public class Trace : MonoBehaviour
             return true;
 
         }
-        agent.isStopped = false;
         return false;
     }
 

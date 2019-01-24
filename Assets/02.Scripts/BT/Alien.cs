@@ -11,7 +11,7 @@ public class Alien : Enemy
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
     private readonly int hashRoll = Animator.StringToHash("isRoll");
-    bool isOther_State = false;
+    bool isOther_State_Change = false;
     /// /////////////////////////인공지능 
     Wander wander;
     Attack attack;
@@ -37,7 +37,7 @@ public class Alien : Enemy
         wander.Init(agent,1.0f);      //배회할때 걷는 속도
         trace.Init(agent,2.0f);
         attack.Init(agent, 10);
-        roll.Init(agent);
+        roll.Init(agent,2.0f);
         animator.SetTrigger("isWalk");
         Build_BT();
 
@@ -46,10 +46,10 @@ public class Alien : Enemy
     // Update is called once per frame
     void Update()
     {
-        if (!isOther_State)
+        if (!isOther_State_Change)
              bt.Run();
-        
-        
+
+        Debug.Log(agent.isStopped);
         Render();
     }
     
@@ -90,7 +90,7 @@ public class Alien : Enemy
         if (eEnemy_State != ENEMY_STATE.ATTACK)
             animator.SetTrigger("isAttack");
         eEnemy_State = ENEMY_STATE.ATTACK;
-        isOther_State = true;
+        isOther_State_Change = true;
         return true;
     }  
 
@@ -100,30 +100,45 @@ public class Alien : Enemy
         Sequence root = new Sequence();
         //Sequence death = new Sequence();
         Selector behaviour = new Selector();
-        Sequence rolling_Sequence = new Sequence();
+        
         Sequence attack_Sequence = new Sequence();
-        Sequence trace_Sequence = new Sequence();        
+        Sequence trace_Sequence = new Sequence();
+
+        Selector trace_lookAround_Selector = new Selector();
+        Sequence lookAround_Sequence = new Sequence();
+        Sequence rolling_Sequence = new Sequence();
         //Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
         //Leaf_Node die_Node = new Leaf_Node(Die);
         Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
+        Leaf_Node isDelayTime_Roll_Node = new Leaf_Node(IsNotRollingCoolTime);
         Leaf_Node rolling_Node = new Leaf_Node(Rolling);
         Leaf_Node attack_Node = new Leaf_Node(Attack);
         Leaf_Node wander_Node = new Leaf_Node(Wander);
         Leaf_Node trace_Node = new Leaf_Node(Trace);
+        Leaf_Node lookAround_Condition_Node = new Leaf_Node(LookAround_Condition);
         Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition,6.0f);
         Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
+        Leaf_Node_Float trace_Must_Condition_Node = new Leaf_Node_Float(Distance_Condition, 20.0f);
         //노드 연결
-       // root.AddChild(death);
+        // root.AddChild(death);
         root.AddChild(behaviour);
 
         //death.AddChild(isVitalityZero_Node);
-       // death.AddChild(die_Node);
+        // death.AddChild(die_Node);
+        behaviour.AddChild(trace_lookAround_Selector);
+        
 
-        behaviour.AddChild(rolling_Sequence);
         behaviour.AddChild(attack_Sequence);
         behaviour.AddChild(trace_Sequence);
         behaviour.AddChild(wander_Node);
 
+        trace_lookAround_Selector.AddChild(lookAround_Sequence);
+        trace_lookAround_Selector.AddChild(rolling_Sequence);
+
+        lookAround_Sequence.AddChild(lookAround_Condition_Node);
+        
+
+        rolling_Sequence.AddChild(isDelayTime_Roll_Node);
         rolling_Sequence.AddChild(isBulletComeToMe_Node);
         rolling_Sequence.AddChild(rolling_Node);
         
@@ -172,29 +187,50 @@ public class Alien : Enemy
     {
         return roll.IsBulletComeToMe() ?true : false;
     }
+    public bool IsNotRollingCoolTime()
+    {
+        return roll.IsNotRollingCoolTime() ? true : false;
+    }
 
     public bool Rolling()
     {
-        roll.Rolling();
+        roll.Rolling(); 
         if (eEnemy_State != ENEMY_STATE.ROLL)
             animator.SetTrigger(hashRoll);
         eEnemy_State = ENEMY_STATE.ROLL;
-        
-        isOther_State = true;
+        isOther_State_Change = true;
         return true;
     }
 
-    public void Exit_LookAround()                
+    bool LookAround_Condition()
     {
-        
-        if (eEnemy_State != ENEMY_STATE.LOOKAROUND)
-            animator.SetTrigger("isLookAround");
+        if (eEnemy_State != ENEMY_STATE.LOOKAROUND)    return false;
+        if (Distance_Condition(6.0f))
+        {
+            eEnemy_State = ENEMY_STATE.IDLE;
+            Exit_Motion();
+            return false;
+        }
+        return true;            //트루로 나갈때는 다른상태 실행을 금지
+    }
+
+    void Exit_LookAround()
+    {
         eEnemy_State = ENEMY_STATE.LOOKAROUND;
-        agent.isStopped = true;
+        isOther_State_Change = false;
+        if (Distance_Condition(6.0f)) return;
+
+        animator.SetTrigger("isLookAround");
+    }
+
+    void Exit_AnimationState_Reset()
+    {
+        eEnemy_State = ENEMY_STATE.IDLE;
     }
 
     public void Exit_Motion()       // Exit가 붙은함수는 전부 툴이실행해주는 콜백함수
     {
-        isOther_State = false;
+        isOther_State_Change = false;
+        agent.isStopped = false;
     }
 }

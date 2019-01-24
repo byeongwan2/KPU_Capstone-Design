@@ -39,7 +39,8 @@ public class Selector : CompositeNode
         foreach (var node in GetChildrens())
         {
             if (node.Run())
-            {                
+            {
+
                 return true;
             }
         }
@@ -52,13 +53,14 @@ public class Sequence : CompositeNode
     public override bool Run()
     {
         foreach (var node in GetChildrens())
-        {            
+        {
+
             if (!node.Run())
             {
-                //Debug.Log(this.GetType());
                 return false;
             }
         }
+        if (GetChildrens().Count == 0) return false;
         return true;
     }
 }
