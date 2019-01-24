@@ -17,9 +17,10 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     private List<GameObject> monsterPool = new List<GameObject>();
     private List<GameObject> advanceBulletPool = new List<GameObject>();
 
+    List<GameObject> activeBullet = new List<GameObject>();
     public List<GameObject> Get_BulletPool()
     {
-        List<GameObject> activeBullet = new List<GameObject>();
+        activeBullet.Clear();
         foreach(var a in bulletPool)
         {
             if(a.activeSelf == true)

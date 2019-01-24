@@ -11,7 +11,7 @@ public class Alien : Enemy
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
     private readonly int hashRoll = Animator.StringToHash("isRoll");
-    bool exit_Motion = false;
+    bool isOther_State = false;
     /// /////////////////////////인공지능 
     Wander wander;
     Attack attack;
@@ -46,8 +46,9 @@ public class Alien : Enemy
     // Update is called once per frame
     void Update()
     {
-        if (exit_Motion) return;
-            bt.Run();
+        if (!isOther_State)
+             bt.Run();
+        
         
         Render();
     }
@@ -89,7 +90,7 @@ public class Alien : Enemy
         if (eEnemy_State != ENEMY_STATE.ATTACK)
             animator.SetTrigger("isAttack");
         eEnemy_State = ENEMY_STATE.ATTACK;
-        exit_Motion = true;
+        isOther_State = true;
         return true;
     }  
 
@@ -179,17 +180,13 @@ public class Alien : Enemy
             animator.SetTrigger(hashRoll);
         eEnemy_State = ENEMY_STATE.ROLL;
         
-        exit_Motion = true;
+        isOther_State = true;
         return true;
     }
 
-    public void LookAround()
+    public void Exit_LookAround()                
     {
-        if (Distance_Condition(6.0f))
-        {
-            exit_Motion = false;
-            return;
-        }
+        
         if (eEnemy_State != ENEMY_STATE.LOOKAROUND)
             animator.SetTrigger("isLookAround");
         eEnemy_State = ENEMY_STATE.LOOKAROUND;
@@ -198,6 +195,6 @@ public class Alien : Enemy
 
     public void Exit_Motion()       // Exit가 붙은함수는 전부 툴이실행해주는 콜백함수
     {
-        exit_Motion = false;
+        isOther_State = false;
     }
 }

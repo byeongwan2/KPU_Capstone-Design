@@ -13,8 +13,6 @@ public class BehaviorTree
 
     public bool Run()
     {
-        if (root.Run()) return true;
-        return false;
-        
+        return root.Run() ? true :false;  
     }
 }

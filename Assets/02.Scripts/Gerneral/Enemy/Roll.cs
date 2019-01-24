@@ -25,7 +25,6 @@ public class Roll : MonoBehaviour
             if (distance <3.0f)
             {
                 bullet = obj;
-                Debug.Log("Bullet Comming!");
                 return true;
             }            
         }

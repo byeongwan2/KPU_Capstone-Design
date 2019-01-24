@@ -6,10 +6,9 @@ using UnityEngine;
 public enum RESULT { SUCCESS, FAIL, RUNNING }
 public abstract class Node
 {
-
+    protected const string debug_String = "실행중  ";
     public virtual bool Run()
     {
-        Debug.Log("vvqwev");
         return true;
     }
 }
@@ -18,7 +17,6 @@ public class CompositeNode : Node
 {
     public override bool Run()     
     {
-        Debug.Log("vvweqwqqqqqwev");
         return true;
     }
 
@@ -70,11 +68,12 @@ public class Leaf_Node: Node
     private Func<bool> m_func;
     public Leaf_Node(Func< bool> _func)
     {
-        m_func = _func;        
+        m_func = _func;
     }
     
     public override bool Run()
     {
+        Debug.Log(debug_String + m_func.Method);
         if (m_func())
         {
             return true;
@@ -98,6 +97,7 @@ public class Leaf_Node_Float : Node
 
     public override bool Run()
     {
+        Debug.Log(debug_String + m_func.Method);
         if (m_func(data))
         {
             return true;
