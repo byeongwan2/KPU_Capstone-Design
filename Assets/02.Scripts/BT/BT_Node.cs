@@ -38,10 +38,8 @@ public class Selector : CompositeNode
 {
     public override bool Run()
     {
-        Debug.Log("cc");
         foreach (var node in GetChildrens())
         {
-            Debug.Log(node.GetType());
             if (node.Run())
             {                
                 return true;
@@ -55,7 +53,6 @@ public class Sequence : CompositeNode
 {
     public override bool Run()
     {
-        Debug.Log("cfffffffffc");
         foreach (var node in GetChildrens())
         {            
             if (!node.Run())

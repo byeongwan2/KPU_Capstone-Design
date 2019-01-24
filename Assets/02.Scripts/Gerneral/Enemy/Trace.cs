@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
-public class Trace : Move_Monster
+public class Trace : MonoBehaviour
 {
+    NavMeshAgent agent;
     MoveObject target;
     public void Init_Target(MoveObject _target)
     {
         target = _target;
     }
-    public void Init(float _speed)
+    public void Init(NavMeshAgent _agent,float _speed)
     {
+        agent = _agent;
         agent.speed = _speed;
     }
 
@@ -26,7 +27,8 @@ public class Trace : Move_Monster
     {
         if (_dis > Check.Distance(target.transform.position,this.transform.position))
         {
-           
+            if (_dis == 6.0f) 
+            Debug.Log("sss");
             return true;
 
         }

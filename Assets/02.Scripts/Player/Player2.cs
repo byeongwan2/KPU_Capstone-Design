@@ -23,6 +23,7 @@ public partial class Player2 : MoveObject
     private Jump jump;
     private Dash dash;
     private Move move;
+    private Wound wound;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
@@ -77,11 +78,11 @@ public partial class Player2 : MoveObject
         move = GetComponent<Move>();
         playerCol = GetComponent<CapsuleCollider>();        // 없어질 예정?
 
-        this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-
         controller = GetComponent<Player2_Controller>();
         particle = GetComponent<Particle>();
         particle.Init("RollWaveEffect");
+
+        wound = GetComponent<Wound>();
         //현재상태 // 이전상태 
         eState = STATE.STAND;
         ePreState = STATE.STAND;
@@ -379,41 +380,20 @@ public partial class Player2 : MoveObject
             playerAni.SetTrigger("Reload");
         }
     }
-
-    //깜빡임
-    SkinnedMeshRenderer[] this_renderer;
-
-    public override void Wound_Effect()
+    
+    public void Wound_Effect()
     {
-        woundEffect = true;
-        StartCoroutine(ColEffect());
-        Invoke("WoundEffectExit", 1.5f);
+        wound.Wound_Effect();
     }
-
-    IEnumerator ColEffect()
+    void OnTriggerEnter(Collider _obj)
     {
-        while (true)
+        if (_obj.CompareTag("Bullet"))
         {
-            this_renderer[0].material.color = Color.red;
-            this_renderer[1].material.color = Color.red;
-            this_renderer[2].material.color = Color.red;
-            yield return new WaitForSeconds(0.1f);
-            this_renderer[0].material.color = Color.white;
-            this_renderer[1].material.color = Color.white;
-            this_renderer[2].material.color = Color.white;
-            yield return new WaitForSeconds(0.1f);
-            if (woundEffect == false) yield break; 
+            wound.TriggerEnter(_obj);
         }
-
     }
 
-    bool woundEffect = false;
-    void WoundEffectExit()
-    {
-        woundEffect = false;
-    }
-
-    void Move_Dash()
+        void Move_Dash()
     {
         if (isKey) return;
         if (Input.GetKey(KeyCode.C))

@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class Attack : Move_Monster
+public class Attack : MonoBehaviour
 {
+    NavMeshAgent agent;
     MoveObject target;
     private int attackDamage = 10;
     public void Init_Target(MoveObject _target)
     {
         target = _target;
     }
-    public void Init(int _attackDamage)
+    public void Init(NavMeshAgent _agent,int _attackDamage)
     {
+        agent = _agent;
         attackDamage = _attackDamage;
     }
     

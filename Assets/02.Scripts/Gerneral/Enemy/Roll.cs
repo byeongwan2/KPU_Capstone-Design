@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Roll : Move_Monster
-{    
+using UnityEngine.AI;
+public class Roll : MonoBehaviour
+{
+    NavMeshAgent agent;
     List<GameObject> activeBullet = new List<GameObject>();
     GameObject bullet;
+
+    public void Init(NavMeshAgent _agent)
+    {
+        agent = _agent;
+    }
+
     public bool IsBulletComeToMe()  // 총알이 나에게 오는가?
     {
         activeBullet = PrefabSystem.instance.Get_BulletPool();

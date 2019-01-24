@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
-public class Wander : Move_Monster
+public class Wander : MonoBehaviour
 {
     int pointIndex = 0;
     public List<Transform> wayPoints;
-
+    NavMeshAgent agent;
     [SerializeField]
     bool check_Destination = false;
 
@@ -16,8 +15,9 @@ public class Wander : Move_Monster
      
     }
 
-    public void Init(float _speed)      //상태변경시 마다 한번들어옴
+    public void Init(NavMeshAgent _agent ,float _speed)      //상태변경시 마다 한번들어옴
     {
+        agent = _agent;
         agent.speed = _speed;
         agent.destination = wayPoints[pointIndex].position;
         check_Destination = false;
@@ -26,7 +26,6 @@ public class Wander : Move_Monster
 
     public RESULT Work()
     {
-        Debug.Log(check_Destination);
         if (check_Destination) return RESULT.RUNNING;
         check_Destination = false;
         if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 0.5f && !check_Destination)

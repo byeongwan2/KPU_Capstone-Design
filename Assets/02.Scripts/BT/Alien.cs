@@ -11,18 +11,13 @@ public class Alien : Enemy
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
     private readonly int hashRoll = Animator.StringToHash("isRoll");
-    NavMeshAgent agent;
     bool exit_Motion = false;
-    /// <summary>
     /// /////////////////////////인공지능 
-    /// </summary>
     Wander wander;
     Attack attack;
     Trace trace;
     Roll roll;
-    /// <summary>
     /// /////////////////////기능
-    /// </summary>
     private void Awake()
     {
         base.Init();
@@ -39,12 +34,13 @@ public class Alien : Enemy
         trace.Init_Target(system.pPlayer2);
         attack.Init_Target(system.pPlayer2);
         
-        wander.Init(1.0f);      //배회할때 걷는 속도
-        trace.Init(2.0f);
+        wander.Init(agent,1.0f);      //배회할때 걷는 속도
+        trace.Init(agent,2.0f);
+        attack.Init(agent, 10);
+        roll.Init(agent);
         animator.SetTrigger("isWalk");
         Build_BT();
 
-        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -150,8 +146,7 @@ public class Alien : Enemy
 
     public bool Distance_Condition(float _dis) 
     {
-        if (trace.Condition(_dis))  return true; 
-        return false;
+        return trace.Condition(_dis) ? true : false; 
     }
 
     public bool Trace()
@@ -174,8 +169,7 @@ public class Alien : Enemy
 
     public bool IsBulletComeToMe()
     {
-        if (roll.IsBulletComeToMe()) return true;
-        return false;
+        return roll.IsBulletComeToMe() ?true : false;
     }
 
     public bool Rolling()
@@ -202,7 +196,7 @@ public class Alien : Enemy
         agent.isStopped = true;
     }
 
-    public void Exit_Motion()
+    public void Exit_Motion()       // Exit가 붙은함수는 전부 툴이실행해주는 콜백함수
     {
         exit_Motion = false;
     }

@@ -13,9 +13,7 @@ public class BehaviorTree
 
     public bool Run()
     {
-        Debug.Log("vvvv");
         if (root.Run()) return true;
-        Debug.Log("vvvvwqwe");
         return false;
         
     }
