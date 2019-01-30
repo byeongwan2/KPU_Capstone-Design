@@ -12,12 +12,14 @@ public class Alien : Enemy
     private readonly int hashDeath = Animator.StringToHash("isDeath");
     private readonly int hashRoll = Animator.StringToHash("isRoll");
     bool isOther_State_Change = false;
+    float traceCoverage = 6.0f;
     /// /////////////////////////인공지능 
     Wander wander;
     Attack attack;
     Trace trace;
     Roll roll;
     /// /////////////////////기능
+    bool isMust_Trace = false;
     private void Awake()
     {
         base.Init();
@@ -37,10 +39,16 @@ public class Alien : Enemy
         wander.Init(agent,1.0f);      //배회할때 걷는 속도
         trace.Init(agent,2.0f);
         attack.Init(agent, 10);
-        roll.Init(agent,2.0f);
+        roll.Init(agent,4.0f);
         animator.SetTrigger("isWalk");
         Build_BT();
 
+        Init_Data();
+    }
+    
+    void Init_Data()
+    {
+        traceCoverage = 6.0f;
     }
 
     // Update is called once per frame
@@ -91,6 +99,7 @@ public class Alien : Enemy
             animator.SetTrigger("isAttack");
         eEnemy_State = ENEMY_STATE.ATTACK;
         isOther_State_Change = true;
+        isMust_Trace = false;
         return true;
     }  
 
@@ -118,7 +127,7 @@ public class Alien : Enemy
         Leaf_Node lookAround_Condition_Node = new Leaf_Node(LookAround_Condition);
         Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition,6.0f);
         Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
-        Leaf_Node_Float trace_Must_Condition_Node = new Leaf_Node_Float(Distance_Condition, 20.0f);
+        Leaf_Node_Float trace_Must_Condition_Node = new Leaf_Node_Float(Distance_Condition_Must, 30.0f);
         //노드 연결
         // root.AddChild(death);
         root.AddChild(behaviour);
@@ -136,7 +145,8 @@ public class Alien : Enemy
         trace_lookAround_Selector.AddChild(rolling_Sequence);
 
         lookAround_Sequence.AddChild(lookAround_Condition_Node);
-        
+        lookAround_Sequence.AddChild(trace_Must_Condition_Node);
+        lookAround_Sequence.AddChild(trace_Node);
 
         rolling_Sequence.AddChild(isDelayTime_Roll_Node);
         rolling_Sequence.AddChild(isBulletComeToMe_Node);
@@ -204,15 +214,24 @@ public class Alien : Enemy
 
     bool LookAround_Condition()
     {
-        if (eEnemy_State != ENEMY_STATE.LOOKAROUND)    return false;
-        if (Distance_Condition(6.0f))
+        if (isMust_Trace) return true;
+        if (eEnemy_State != ENEMY_STATE.LOOKAROUND)    return false;        //두리번거리고 있지않다면 이조건은 실행할필요없음
+        if (Distance_Condition(6.0f) || IsBulletComeToMe())
         {
             eEnemy_State = ENEMY_STATE.IDLE;
             Exit_Motion();
-            return false;
+            return true;
         }
-        return true;            //트루로 나갈때는 다른상태 실행을 금지
+       
+        return true;            //트루로 나갈때는 다른상태를 실행
     }
+
+    public bool Distance_Condition_Must(float _dis)
+    {
+        isMust_Trace = true;
+        return trace.Condition(_dis) ? true : false;
+    }
+
 
     void Exit_LookAround()
     {
