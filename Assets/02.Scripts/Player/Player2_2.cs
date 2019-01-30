@@ -30,12 +30,12 @@ public partial class Player2
         isRoll = false;
         isKey = false;
     }
+
     private void Event_JumpingExit()
     {
         isMouse = false;
-        eState = ePreState;
-        if (isJumpDelay == true) eState = STATE.STAND;     //버그방지
-        isJumpDelay = false;
+        isJump = false;
+        isKey = false;
     }
 
     private void Event_HitJumping()

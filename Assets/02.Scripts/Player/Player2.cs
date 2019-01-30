@@ -43,7 +43,8 @@ public partial class Player2 : MoveObject
     private bool isMouse;
     private bool isJumpHit;         //점프할때 피격이 가능한지 false이면 가능
     public bool IsJumpHit() { return isJumpHit; }
-    private bool isJumpDelay;   //점프중인지 단순확인 
+    [SerializeField]
+    private bool isJump;   //점프중인지 단순확인 
     private bool isAttackStop;
     [SerializeField]
     private bool isRun;
@@ -90,7 +91,7 @@ public partial class Player2 : MoveObject
         //is로 시작하는 bool변수는 false일때 해당변수를 안하고있다는뜻 isRoll 가 false라면 안굴고 있다는뜻
         isMouse = false;            //true이면 마우스를 사용못한다는뜻
         isRoll = false;
-        isJumpDelay = false;
+        isJump = false;
         isJumpHit = false;
         isAttackStop = false;
         isRun = false;
@@ -135,7 +136,7 @@ public partial class Player2 : MoveObject
     //공격모드인지 확인
     private void Input_MouseRight()
     {
-        if (isRoll) return;
+        if (isRoll || isJump) return;
         if (controller.Is_Input_AttackMode())
         {
 
@@ -161,17 +162,14 @@ public partial class Player2 : MoveObject
 
     private void Jumping()
     {
-        return;
-        if (isDash) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if(ePreState != STATE.JUMP)ePreState = eState;
+            if (isJump || isKey) return;
             eState = STATE.JUMP;
             playerAni.SetTrigger("Jump");
-            isJumpDelay = true;
-            isJumpHit = true;
+            isJump = true;
             isMouse = true;
-           // jump.Action(0.8f, 5.0f);
+            isKey = true;
 
         }
     }
@@ -191,7 +189,7 @@ public partial class Player2 : MoveObject
     {
         if (isAttackMode) return;
         if (isDash) return;     //대시중일떄 뛰지마
-        if (isRoll ) return;    //구를떄 뛰지마
+        if (isRoll || isJump ) return;    //구를떄 뛰지마
         if (isKey) return;
         if (controller.Is_Input_WASD())
         {
@@ -311,11 +309,10 @@ public partial class Player2 : MoveObject
     //진짜구르기
     private void Rolling()
     {
-        if (isRoll)
-            Activate_Effect();
+
         if (Input.GetKeyDown(KeyCode.V))
         {
-            if (isRoll) return;
+            if (isRoll ||isKey) return;
             playerAni.SetTrigger("IsRoll");
             isMouse = true;
             isRoll = true;
@@ -324,11 +321,6 @@ public partial class Player2 : MoveObject
             isKey = true;
             particle.Activate(transform.position);
         }
-    }
-    //이펙트
-    private void Activate_Effect()
-    {
-
     }
 
     int bulletCount = 20;           //총알
@@ -393,7 +385,7 @@ public partial class Player2 : MoveObject
         }
     }
 
-        void Move_Dash()
+    void Move_Dash()
     {
         if (isKey) return;
         if (Input.GetKey(KeyCode.C))
@@ -409,6 +401,7 @@ public partial class Player2 : MoveObject
             isDash = false;
         }
     }
+
     int gunMode = 0;
     void Attack_Gun()
     {
