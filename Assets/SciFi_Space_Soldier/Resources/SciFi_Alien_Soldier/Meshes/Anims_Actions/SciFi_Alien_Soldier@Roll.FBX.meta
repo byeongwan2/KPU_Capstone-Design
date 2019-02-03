@@ -163,8 +163,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 1
-        functionName: Exit_LookAround
+      - time: 0.9769585
+        functionName: Exit_Rolling
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

@@ -115,9 +115,9 @@ public class Alien : Enemy
         
        // Sequence attack_Sequence = new Sequence();
         Sequence trace_Sequence = new Sequence();
-        //Sequence avoid_Sequence = new Sequence();
+        Sequence avoid_Sequence = new Sequence();
 
-       // Selector trace_lookAround_Selector = new Selector();
+        Selector trace_lookAround_Selector = new Selector();
        // Sequence lookAround_Sequence = new Sequence();
        // Sequence rolling_Sequence = new Sequence();
         //Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
@@ -135,14 +135,15 @@ public class Alien : Enemy
         Leaf_Node wander_Node = new Leaf_Node(Wander);
         Sequence trace_Node = new Sequence(Trace);
         Leaf_Node attack_Node = new Leaf_Node(Attack);
-        //Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
-        //Leaf_Node rolling_Node = new Leaf_Node(Rolling);
+        Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
+        Leaf_Node rolling_Node = new Leaf_Node(Rolling);
         Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition, 6.0f);
         Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
-        //Leaf_Node lookAround_Condition_Node = new Leaf_Node(LookAround_Condition);
+        Leaf_Node lookAround_Node = new Leaf_Node(LookAround);
         root.AddChild(behaviour);
-       // behaviour.AddChild(avoid_Sequence);
-       // behaviour.AddChild(attack_Sequence);
+        // behaviour.AddChild(avoid_Sequence);
+        // behaviour.AddChild(attack_Sequence);
+        behaviour.AddChild(avoid_Sequence);
         behaviour.AddChild(trace_Sequence);
         behaviour.AddChild(wander_Node);
       
@@ -153,8 +154,11 @@ public class Alien : Enemy
         trace_Node.AddChild(attack_Condition_Node);
         trace_Node.AddChild(attack_Node);
 
-        //avoid_Sequence.AddChild(isBulletComeToMe_Node);
-       // avoid_Sequence.AddChild(trace_lookAround_Selector);
+        avoid_Sequence.AddChild(isBulletComeToMe_Node);
+        avoid_Sequence.AddChild(trace_lookAround_Selector);
+
+        trace_lookAround_Selector.AddChild(rolling_Node);
+        trace_lookAround_Selector.AddChild(lookAround_Node);
 
         //trace_lookAround_Selector.AddChild()      //처음 쏜게아닌가?
 
@@ -211,6 +215,7 @@ public class Alien : Enemy
         active_Func = "Trace";
         animator.SetTrigger("isRun");
         eEnemy_State = ENEMY_STATE.RUN;
+        agent.isStopped = false;
         return RESULT.SUCCESS;
     }
 
@@ -234,11 +239,24 @@ public class Alien : Enemy
 
     public RESULT Rolling()
     {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Look Around")) return RESULT.FAIL;
+        if (active_Func.Equals("Rolling")) return RESULT.RUNNING;
+        active_Func = "Rolling";
         roll.Rolling(); 
-        if (eEnemy_State != ENEMY_STATE.ROLL)
-            animator.SetTrigger(hashRoll);
+        animator.SetTrigger(hashRoll);
         eEnemy_State = ENEMY_STATE.ROLL;
         isOther_State_Change = true;
+       
+        return RESULT.SUCCESS;
+    }
+
+    public RESULT LookAround()
+    {
+        if (active_Func.Equals("LookAround")) return RESULT.RUNNING;
+        active_Func = "LookAround";
+        eEnemy_State = ENEMY_STATE.LOOKAROUND;
+        animator.SetTrigger("isLookAround");
+        isOther_State_Change = false;
         return RESULT.SUCCESS;
     }
 
@@ -263,23 +281,18 @@ public class Alien : Enemy
     }
 
 
-    void Exit_LookAround()
+    void Exit_Rolling()
     {
-        eEnemy_State = ENEMY_STATE.LOOKAROUND;
-        isOther_State_Change = false;
-       // if (Distance_Condition(6.0f)) return;
-
-       // animator.SetTrigger("isLookAround");
+        LookAround();
     }
 
     void Exit_AnimationState_Reset()
     {
-        eEnemy_State = ENEMY_STATE.IDLE;
+       // eEnemy_State = ENEMY_STATE.IDLE;
     }
 
     public void Exit_Motion()       // Exit가 붙은함수는 전부 툴이실행해주는 콜백함수
     {
-        isOther_State_Change = false;
         agent.isStopped = false;
         active_Func = string.Empty;
     }

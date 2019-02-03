@@ -53,14 +53,14 @@ public class Selector : CompositeNode
 
 public class Sequence : CompositeNode
 {
-    private Func<RESULT> m_func;
+    Leaf_Node behaviour;
     public Sequence()
     {
-        m_func = null;
+        behaviour = new Leaf_Node();
     }
     public Sequence(Func<RESULT> _func)
     {
-        m_func = _func;
+        behaviour = new Leaf_Node(_func);
     }
     public override RESULT Run()
     {
@@ -82,26 +82,21 @@ public class Sequence : CompositeNode
             if (result == RESULT.SUCCESS) continue;                             //차일드는 일단 계속 돌아야함
             if (result== RESULT.FAIL || result == RESULT.RUNNING) break;        //하위에서 실패하면 자신의 행동만 실행하고 리턴
         }
-        if (m_func == null)  return result;                             //시퀸스가 아무 행동도 안보유하면 그냥 리턴
         if (result == RESULT.SUCCESS) return RESULT.SUCCESS;            //시퀸스는 차일드가 우선순위가 높으므로 성공한자식이있다면 그냥리턴
-        Debug.Log(Define.DEBUG_STRING + m_func.Method);
-        switch (m_func())
-        {
-          
-            case RESULT.SUCCESS:
-                return RESULT.SUCCESS;
-            case RESULT.FAIL:
-                return RESULT.FAIL;
-            case RESULT.RUNNING:
-                return RESULT.RUNNING;
-        }
-        return RESULT.FAIL;
+        if (behaviour.Get_m_func() == null)  return result;                             //시퀸스가 아무 행동도 안보유하면 그냥 리턴
+        
+        return behaviour.Run();
     }
 }
 
 public class Leaf_Node: Node 
 {
     private Func<RESULT> m_func;
+    public Func<RESULT>  Get_m_func() { return m_func; }
+    public Leaf_Node()
+    {
+        m_func = null;
+    }
     public Leaf_Node(Func<RESULT> _func)
     {
         m_func = _func;
@@ -118,8 +113,9 @@ public class Leaf_Node: Node
                 return RESULT.FAIL;
             case RESULT.RUNNING:
                 return RESULT.RUNNING;
+            default:
+                return RESULT.FAIL;
         }
-        return RESULT.FAIL;
     }
 }
 
