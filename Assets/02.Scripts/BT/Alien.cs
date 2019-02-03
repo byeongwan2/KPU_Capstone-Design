@@ -109,38 +109,40 @@ public class Alien : Enemy
     void Build_BT() // 행동트리 생성
     {
         // 노드 생성
-        Sequence root = new Sequence();
+        Selector root = new Selector();
         //Sequence death = new Sequence();
         Selector behaviour = new Selector();
         
-        Sequence attack_Sequence = new Sequence();
+       // Sequence attack_Sequence = new Sequence();
         Sequence trace_Sequence = new Sequence();
+        //Sequence avoid_Sequence = new Sequence();
 
-        Selector trace_lookAround_Selector = new Selector();
-        Sequence lookAround_Sequence = new Sequence();
-        Sequence rolling_Sequence = new Sequence();
+       // Selector trace_lookAround_Selector = new Selector();
+       // Sequence lookAround_Sequence = new Sequence();
+       // Sequence rolling_Sequence = new Sequence();
         //Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
         //Leaf_Node die_Node = new Leaf_Node(Die);
         /*
         Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
         Leaf_Node isDelayTime_Roll_Node = new Leaf_Node(IsNotRollingCoolTime);
         Leaf_Node rolling_Node = new Leaf_Node(Rolling);
-        Leaf_Node attack_Node = new Leaf_Node(Attack);
         Leaf_Node lookAround_Condition_Node = new Leaf_Node(LookAround_Condition);
-        
-        Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
+
         Leaf_Node_Float trace_Must_Condition_Node = new Leaf_Node_Float(Distance_Condition_Must, 30.0f);
         */
         //노드 연결
         // root.AddChild(death);
         Leaf_Node wander_Node = new Leaf_Node(Wander);
-        Leaf_Node trace_Node = new Leaf_Node(Trace);
+        Sequence trace_Node = new Sequence(Trace);
         Leaf_Node attack_Node = new Leaf_Node(Attack);
+        //Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
+        //Leaf_Node rolling_Node = new Leaf_Node(Rolling);
         Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition, 6.0f);
         Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
+        //Leaf_Node lookAround_Condition_Node = new Leaf_Node(LookAround_Condition);
         root.AddChild(behaviour);
-
-        behaviour.AddChild(attack_Sequence);
+       // behaviour.AddChild(avoid_Sequence);
+       // behaviour.AddChild(attack_Sequence);
         behaviour.AddChild(trace_Sequence);
         behaviour.AddChild(wander_Node);
       
@@ -148,8 +150,14 @@ public class Alien : Enemy
         trace_Sequence.AddChild(trace_Condition_Node);
         trace_Sequence.AddChild(trace_Node);
 
-        attack_Sequence.AddChild(attack_Condition_Node);
-        attack_Sequence.AddChild(attack_Node);
+        trace_Node.AddChild(attack_Condition_Node);
+        trace_Node.AddChild(attack_Node);
+
+        //avoid_Sequence.AddChild(isBulletComeToMe_Node);
+       // avoid_Sequence.AddChild(trace_lookAround_Selector);
+
+        //trace_lookAround_Selector.AddChild()      //처음 쏜게아닌가?
+
         //death.AddChild(isVitalityZero_Node);
         // death.AddChild(die_Node);
         /*
@@ -192,7 +200,7 @@ public class Alien : Enemy
 
     public RESULT Distance_Condition(float _dis)            //컨디션은 러닝이 필요없음  둘다 퍼스로 리턴
     {
-        if (trace.Condition(_dis)) return RESULT.SUCCESS;
+        if (trace.Condition(_dis))  return RESULT.SUCCESS; 
         return RESULT.FAIL;
     }
 
@@ -206,23 +214,32 @@ public class Alien : Enemy
         return RESULT.SUCCESS;
     }
 
-    public bool IsBulletComeToMe()
+    public RESULT IsBulletComeToMe()
     {
-        return roll.IsBulletComeToMe() ?true : false;
+        switch(roll.IsBulletComeToMe())
+        {
+            case RESULT.SUCCESS:
+                return RESULT.SUCCESS;
+            case RESULT.RUNNING:
+                return RESULT.RUNNING;
+            case RESULT.FAIL:
+                return RESULT.FAIL;
+        }
+        return RESULT.FAIL;
     }
     public bool IsNotRollingCoolTime()
     {
         return roll.IsNotRollingCoolTime() ? true : false;
     }
 
-    public bool Rolling()
+    public RESULT Rolling()
     {
         roll.Rolling(); 
         if (eEnemy_State != ENEMY_STATE.ROLL)
             animator.SetTrigger(hashRoll);
         eEnemy_State = ENEMY_STATE.ROLL;
         isOther_State_Change = true;
-        return true;
+        return RESULT.SUCCESS;
     }
 
     bool LookAround_Condition()

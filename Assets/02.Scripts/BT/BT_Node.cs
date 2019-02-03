@@ -33,6 +33,7 @@ public class CompositeNode : Node
 
 public class Selector : CompositeNode
 {
+    
     public override RESULT Run()
     {
         foreach (var node in GetChildrens())
@@ -41,8 +42,8 @@ public class Selector : CompositeNode
             {
                 case RESULT.SUCCESS:
                     return RESULT.SUCCESS;
-                //case RESULT.RUNNING:
-                //    return RESULT.RUNNING;
+                case RESULT.RUNNING:
+                    return RESULT.RUNNING;
             }
             
         }
@@ -52,21 +53,49 @@ public class Selector : CompositeNode
 
 public class Sequence : CompositeNode
 {
+    private Func<RESULT> m_func;
+    public Sequence()
+    {
+        m_func = null;
+    }
+    public Sequence(Func<RESULT> _func)
+    {
+        m_func = _func;
+    }
     public override RESULT Run()
     {
+        RESULT result = RESULT.FAIL;
         foreach (var node in GetChildrens())
         {
             switch(node.Run())
             {
                 case RESULT.FAIL:
-                    return RESULT.FAIL;
-               // case RESULT.RUNNING:
-               //     return RESULT.RUNNING;
+                    result = RESULT.FAIL;
+                    break;
+                case RESULT.RUNNING:
+                    result = RESULT.RUNNING;
+                    break;
+                case RESULT.SUCCESS:
+                    result = RESULT.SUCCESS;
+                    break;
             }
-            
+            if (result == RESULT.SUCCESS) continue;                             //차일드는 일단 계속 돌아야함
+            if (result== RESULT.FAIL || result == RESULT.RUNNING) break;        //하위에서 실패하면 자신의 행동만 실행하고 리턴
         }
-        if (GetChildrens().Count == 0) return RESULT.FAIL;
-        return RESULT.SUCCESS;
+        if (m_func == null)  return result;                             //시퀸스가 아무 행동도 안보유하면 그냥 리턴
+        if (result == RESULT.SUCCESS) return RESULT.SUCCESS;            //시퀸스는 차일드가 우선순위가 높으므로 성공한자식이있다면 그냥리턴
+        Debug.Log(Define.DEBUG_STRING + m_func.Method);
+        switch (m_func())
+        {
+          
+            case RESULT.SUCCESS:
+                return RESULT.SUCCESS;
+            case RESULT.FAIL:
+                return RESULT.FAIL;
+            case RESULT.RUNNING:
+                return RESULT.RUNNING;
+        }
+        return RESULT.FAIL;
     }
 }
 
@@ -106,7 +135,6 @@ public class Leaf_Node_Float : Node
 
     public override RESULT Run()
     {
-        Debug.Log(data);
         Debug.Log(Define.DEBUG_STRING + m_func.Method);
         switch (m_func(data))
         {

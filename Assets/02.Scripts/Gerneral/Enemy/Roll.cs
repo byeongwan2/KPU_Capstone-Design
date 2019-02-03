@@ -16,7 +16,7 @@ public class Roll : MonoBehaviour
         delayTime = _delayTime;
     }
 
-    public bool IsBulletComeToMe()  // 총알이 나에게 오는가?
+    public RESULT IsBulletComeToMe()  // 총알이 나에게 오는가?
     {
         activeBullet = PrefabSystem.instance.Get_BulletPool();
         
@@ -28,10 +28,10 @@ public class Roll : MonoBehaviour
             if (distance <3.0f)
             {
                 bullet = obj;
-                return true;
+                return RESULT.SUCCESS ;
             }            
         }
-        return false;
+        return RESULT.FAIL ;
     }
 
     public bool IsNotRollingCoolTime()  // 구르기가 쿨타임이 아닌가?
