@@ -17,18 +17,15 @@ public class Trace : MonoBehaviour
     }
 
 
-    public RESULT Work()
+    public void Work()
     {
         agent.destination = target.transform.position;
-        return RESULT.SUCCESS;
     }
 
     public bool Condition(float _dis)
     {
         if (_dis > Check.Distance(target.transform.position,this.transform.position))
         {
-            if (_dis == 6.0f) 
-            Debug.Log("sss");
             return true;
 
         }

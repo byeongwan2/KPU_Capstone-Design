@@ -11,8 +11,17 @@ public class BehaviorTree
         root = node;
     }
 
-    public bool Run()
+    public RESULT Run()
     {
-        return root.Run() ? true :false;  
+        switch(root.Run())
+        {
+            case RESULT.SUCCESS:
+                return RESULT.SUCCESS;
+            case RESULT.RUNNING:
+                return RESULT.RUNNING;
+            case RESULT.FAIL:
+                return RESULT.FAIL;
+        }
+        return RESULT.FAIL;
     }
 }

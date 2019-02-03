@@ -24,19 +24,19 @@ public class Wander : MonoBehaviour
     }
 
 
-    public RESULT Work()
+    public void Work()
     {
-        if (check_Destination) return RESULT.RUNNING;
+        if (check_Destination) return;
         check_Destination = false;
         if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 0.5f && !check_Destination)
         {
             pointIndex = pointIndex == 0 ? 1 : 0;
             agent.destination = wayPoints[pointIndex].position;
             check_Destination = true;
-            Change_After_Time_Bool( 3.0f);
-            return RESULT.SUCCESS;
+            Change_After_Time_Bool(3.0f);
+            return;
         }
-        return RESULT.FAIL;
+        return;
     }
     public void Change_After_Time_Bool(float _time)
     {

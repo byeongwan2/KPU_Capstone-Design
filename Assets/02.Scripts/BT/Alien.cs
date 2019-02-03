@@ -20,6 +20,8 @@ public class Alien : Enemy
     Roll roll;
     /// /////////////////////기능
     bool isMust_Trace = false;
+
+    string active_Func = string.Empty;
     private void Awake()
     {
         base.Init();
@@ -57,8 +59,7 @@ public class Alien : Enemy
         if (!isOther_State_Change)
              bt.Run();
 
-        Debug.Log(agent.isStopped);
-        Render();
+        Debug.Log(active_Func);                 //디버깅
     }
     
     void Idle()             //쓰지않음
@@ -92,15 +93,17 @@ public class Alien : Enemy
         return true;
     }                   
     
-    public bool Attack()   
+    public RESULT Attack()   
     {
+        if (active_Func.Equals("Attack")) return RESULT.RUNNING;
         attack.Work();
-        if (eEnemy_State != ENEMY_STATE.ATTACK)
-            animator.SetTrigger("isAttack");
+        active_Func = "Attack";
+        animator.SetTrigger("isAttack");
         eEnemy_State = ENEMY_STATE.ATTACK;
-        isOther_State_Change = true;
-        isMust_Trace = false;
-        return true;
+
+        isOther_State_Change = true;                //다른 상태로 바꿀수 없다
+        isMust_Trace = false;                       //반드시 추적하는 기능을 해제한다.
+        return RESULT.SUCCESS;
     }  
 
     void Build_BT() // 행동트리 생성
@@ -118,22 +121,38 @@ public class Alien : Enemy
         Sequence rolling_Sequence = new Sequence();
         //Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
         //Leaf_Node die_Node = new Leaf_Node(Die);
+        /*
         Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
         Leaf_Node isDelayTime_Roll_Node = new Leaf_Node(IsNotRollingCoolTime);
         Leaf_Node rolling_Node = new Leaf_Node(Rolling);
         Leaf_Node attack_Node = new Leaf_Node(Attack);
-        Leaf_Node wander_Node = new Leaf_Node(Wander);
-        Leaf_Node trace_Node = new Leaf_Node(Trace);
         Leaf_Node lookAround_Condition_Node = new Leaf_Node(LookAround_Condition);
-        Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition,6.0f);
+        
         Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
         Leaf_Node_Float trace_Must_Condition_Node = new Leaf_Node_Float(Distance_Condition_Must, 30.0f);
+        */
         //노드 연결
         // root.AddChild(death);
+        Leaf_Node wander_Node = new Leaf_Node(Wander);
+        Leaf_Node trace_Node = new Leaf_Node(Trace);
+        Leaf_Node attack_Node = new Leaf_Node(Attack);
+        Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition, 6.0f);
+        Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
         root.AddChild(behaviour);
 
+        behaviour.AddChild(attack_Sequence);
+        behaviour.AddChild(trace_Sequence);
+        behaviour.AddChild(wander_Node);
+      
+        
+        trace_Sequence.AddChild(trace_Condition_Node);
+        trace_Sequence.AddChild(trace_Node);
+
+        attack_Sequence.AddChild(attack_Condition_Node);
+        attack_Sequence.AddChild(attack_Node);
         //death.AddChild(isVitalityZero_Node);
         // death.AddChild(die_Node);
+        /*
         behaviour.AddChild(trace_lookAround_Selector);
         
 
@@ -157,40 +176,34 @@ public class Alien : Enemy
 
         trace_Sequence.AddChild(trace_Condition_Node);
         trace_Sequence.AddChild(trace_Node);                        
-        
+        */
         bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
     }
 
-    public bool Wander()
+    public RESULT Wander()
     {
-        RESULT result = wander.Work();
-        if (eEnemy_State != ENEMY_STATE.WALK)
-            animator.SetTrigger("isWalk");
+        if (eEnemy_State == ENEMY_STATE.WALK ) wander.Work();
+        if (active_Func.Equals("Wander")) return RESULT.RUNNING;
+        active_Func = "Wander";
+        animator.SetTrigger("isWalk");
         eEnemy_State = ENEMY_STATE.WALK;
-        return true;
+        return RESULT.SUCCESS;
     }
 
-    public bool Distance_Condition(float _dis) 
+    public RESULT Distance_Condition(float _dis)            //컨디션은 러닝이 필요없음  둘다 퍼스로 리턴
     {
-        return trace.Condition(_dis) ? true : false; 
+        if (trace.Condition(_dis)) return RESULT.SUCCESS;
+        return RESULT.FAIL;
     }
 
-    public bool Trace()
+    public RESULT Trace()
     {
-        RESULT result = trace.Work();
-        if (eEnemy_State != ENEMY_STATE.RUN)
-            animator.SetTrigger("isRun");
+        if(eEnemy_State == ENEMY_STATE.RUN) trace.Work();
+        if (active_Func.Equals("Trace")) return RESULT.RUNNING;
+        active_Func = "Trace";
+        animator.SetTrigger("isRun");
         eEnemy_State = ENEMY_STATE.RUN;
-        return true;
-    }
-
-    void Render()
-    {
-        switch(eEnemy_State)
-        {
-            case ENEMY_STATE.IDLE:               
-                break;
-        }
+        return RESULT.SUCCESS;
     }
 
     public bool IsBulletComeToMe()
@@ -216,12 +229,12 @@ public class Alien : Enemy
     {
         if (isMust_Trace) return true;
         if (eEnemy_State != ENEMY_STATE.LOOKAROUND)    return false;        //두리번거리고 있지않다면 이조건은 실행할필요없음
-        if (Distance_Condition(6.0f) || IsBulletComeToMe())
-        {
-            eEnemy_State = ENEMY_STATE.IDLE;
-            Exit_Motion();
-            return true;
-        }
+        //if (Distance_Condition(6.0f) || IsBulletComeToMe())
+        //{
+        ////    eEnemy_State = ENEMY_STATE.IDLE;
+        //    Exit_Motion();
+        //    return true;
+        //}
        
         return true;            //트루로 나갈때는 다른상태를 실행
     }
@@ -237,9 +250,9 @@ public class Alien : Enemy
     {
         eEnemy_State = ENEMY_STATE.LOOKAROUND;
         isOther_State_Change = false;
-        if (Distance_Condition(6.0f)) return;
+       // if (Distance_Condition(6.0f)) return;
 
-        animator.SetTrigger("isLookAround");
+       // animator.SetTrigger("isLookAround");
     }
 
     void Exit_AnimationState_Reset()
@@ -251,5 +264,6 @@ public class Alien : Enemy
     {
         isOther_State_Change = false;
         agent.isStopped = false;
+        active_Func = string.Empty;
     }
 }
