@@ -11,6 +11,7 @@ public class Alien : Enemy
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
     private readonly int hashRoll = Animator.StringToHash("isRoll");
+    [SerializeField]
     bool isOther_State_Change = false;
     float traceCoverage = 6.0f;
     /// /////////////////////////인공지능 
@@ -19,9 +20,12 @@ public class Alien : Enemy
     Trace trace;
     Roll roll;
     /// /////////////////////기능
+    [SerializeField]
     bool isMust_Trace = false;
-
+    [SerializeField]
     string active_Func = string.Empty;
+    [SerializeField]
+    int is_Rolling_Count = 0;
     private void Awake()
     {
         base.Init();
@@ -56,16 +60,15 @@ public class Alien : Enemy
     // Update is called once per frame
     void Update()
     {
+
         if (!isOther_State_Change)
-             bt.Run();
+        { 
+            bt.Run();
+        }
 
         Debug.Log(active_Func);                 //디버깅
     }
-    
-    void Idle()             //쓰지않음
-    {
-        eEnemy_State = ENEMY_STATE.IDLE;
-    }
+   
 
     private void OnTriggerEnter(Collider other)
     {
@@ -115,9 +118,9 @@ public class Alien : Enemy
         
        // Sequence attack_Sequence = new Sequence();
         Sequence trace_Sequence = new Sequence();
-        Sequence avoid_Sequence = new Sequence();
+        Selector avoid_Selecter = new Selector();
 
-        Selector trace_lookAround_Selector = new Selector();
+        Sequence trace_lookAround_Sequence = new Sequence();
        // Sequence lookAround_Sequence = new Sequence();
        // Sequence rolling_Sequence = new Sequence();
         //Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
@@ -138,12 +141,12 @@ public class Alien : Enemy
         Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
         Leaf_Node rolling_Node = new Leaf_Node(Rolling);
         Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition, 6.0f);
-        Leaf_Node_Float attack_Condition_Node = new Leaf_Node_Float(Distance_Condition, 2.0f);
+        Leaf_Node attack_Condition_Node = new Leaf_Node(Distance_Attack_Condition);
         Leaf_Node lookAround_Node = new Leaf_Node(LookAround);
         root.AddChild(behaviour);
         // behaviour.AddChild(avoid_Sequence);
         // behaviour.AddChild(attack_Sequence);
-        behaviour.AddChild(avoid_Sequence);
+        behaviour.AddChild(avoid_Selecter);
         behaviour.AddChild(trace_Sequence);
         behaviour.AddChild(wander_Node);
       
@@ -154,11 +157,20 @@ public class Alien : Enemy
         trace_Node.AddChild(attack_Condition_Node);
         trace_Node.AddChild(attack_Node);
 
-        avoid_Sequence.AddChild(isBulletComeToMe_Node);
-        avoid_Sequence.AddChild(trace_lookAround_Selector);
+        Sequence rolling_Sequence = new Sequence();
+        rolling_Sequence.AddChild(isBulletComeToMe_Node);
+        rolling_Sequence.AddChild(rolling_Node);
 
-        trace_lookAround_Selector.AddChild(rolling_Node);
-        trace_lookAround_Selector.AddChild(lookAround_Node);
+        avoid_Selecter.AddChild(rolling_Sequence);
+        avoid_Selecter.AddChild(trace_lookAround_Sequence);
+
+        Leaf_Node LookAround_Condition_Node = new Leaf_Node(LookAround_Condition);
+        Leaf_Node Get_IsRolling_Play_Node = new Leaf_Node(Get_IsRolling_Play);
+        trace_lookAround_Sequence.AddChild(Get_IsRolling_Play_Node);
+        trace_lookAround_Sequence.AddChild(LookAround_Condition_Node);
+        trace_lookAround_Sequence.AddChild(lookAround_Node);
+            
+
 
         //trace_lookAround_Selector.AddChild()      //처음 쏜게아닌가?
 
@@ -204,7 +216,14 @@ public class Alien : Enemy
 
     public RESULT Distance_Condition(float _dis)            //컨디션은 러닝이 필요없음  둘다 퍼스로 리턴
     {
+        if (isMust_Trace) _dis = 30.0f;
         if (trace.Condition(_dis))  return RESULT.SUCCESS; 
+        return RESULT.FAIL;
+    }
+
+    public RESULT Distance_Attack_Condition()
+    {
+        if (trace.Condition(2.0f)) return RESULT.SUCCESS;
         return RESULT.FAIL;
     }
 
@@ -221,7 +240,12 @@ public class Alien : Enemy
 
     public RESULT IsBulletComeToMe()
     {
-        switch(roll.IsBulletComeToMe())
+        if (is_Rolling_Count > 1)
+        {
+            isMust_Trace = true;
+            return RESULT.FAIL;
+        }
+        switch (roll.IsBulletComeToMe())
         {
             case RESULT.SUCCESS:
                 return RESULT.SUCCESS;
@@ -239,14 +263,13 @@ public class Alien : Enemy
 
     public RESULT Rolling()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Look Around")) return RESULT.FAIL;
         if (active_Func.Equals("Rolling")) return RESULT.RUNNING;
         active_Func = "Rolling";
         roll.Rolling(); 
         animator.SetTrigger(hashRoll);
         eEnemy_State = ENEMY_STATE.ROLL;
         isOther_State_Change = true;
-       
+        is_Rolling_Count ++;
         return RESULT.SUCCESS;
     }
 
@@ -260,40 +283,42 @@ public class Alien : Enemy
         return RESULT.SUCCESS;
     }
 
-    bool LookAround_Condition()
+    public RESULT Get_IsRolling_Play()
     {
-        if (isMust_Trace) return true;
-        if (eEnemy_State != ENEMY_STATE.LOOKAROUND)    return false;        //두리번거리고 있지않다면 이조건은 실행할필요없음
-        //if (Distance_Condition(6.0f) || IsBulletComeToMe())
-        //{
-        ////    eEnemy_State = ENEMY_STATE.IDLE;
-        //    Exit_Motion();
-        //    return true;
-        //}
-       
-        return true;            //트루로 나갈때는 다른상태를 실행
+        if (isMust_Trace) return RESULT.FAIL;
+        if (is_Rolling_Count > 0) return RESULT.SUCCESS;
+        else  return RESULT.FAIL;
     }
 
-    public bool Distance_Condition_Must(float _dis)
+    public RESULT LookAround_Condition()
     {
-        isMust_Trace = true;
-        return trace.Condition(_dis) ? true : false;
+         switch(Distance_Condition(6.0f))
+        {
+            case RESULT.SUCCESS:
+                is_Rolling_Count = 0;
+                return RESULT.FAIL;
+            default: return RESULT.SUCCESS;
+        }
     }
+
+  
 
 
     void Exit_Rolling()
     {
-        LookAround();
+        isOther_State_Change = false;           //구르기이후실행
     }
 
-    void Exit_AnimationState_Reset()
-    {
-       // eEnemy_State = ENEMY_STATE.IDLE;
-    }
-
-    public void Exit_Motion()       // Exit가 붙은함수는 전부 툴이실행해주는 콜백함수
+    public void Exit_Motion()       // Exit가 붙은함수는 전부 툴이실행해주는 콜백함수      //공격/두리번 이후 실행
     {
         agent.isStopped = false;
         active_Func = string.Empty;
+        isOther_State_Change = false;
+
+    }
+    
+    void Exit_LookAround()
+    {
+        is_Rolling_Count = 0;
     }
 }
