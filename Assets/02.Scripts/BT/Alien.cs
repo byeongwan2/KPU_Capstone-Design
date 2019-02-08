@@ -113,55 +113,40 @@ public class Alien : Enemy
     {
         // 노드 생성
         Selector root = new Selector();
-        //Sequence death = new Sequence();
+
         Selector behaviour = new Selector();
-        
-       // Sequence attack_Sequence = new Sequence();
-        Sequence trace_Sequence = new Sequence();
+        root.AddChild(behaviour);
         Selector avoid_Selecter = new Selector();
+        Sequence trace_Sequence = new Sequence();
+        Leaf_Node wander_Node = new Leaf_Node(Wander);
+
+        Leaf_Node Valid_Range_Condition = new Leaf_Node(IsValid_Range_Condition);
+        Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition, 6.0f);
+        Sequence trace_Sequence_Node = new Sequence(Trace);
 
         Sequence trace_lookAround_Sequence = new Sequence();
-       // Sequence lookAround_Sequence = new Sequence();
-       // Sequence rolling_Sequence = new Sequence();
-        //Leaf_Node isVitalityZero_Node = new Leaf_Node(isVitalityZero);
-        //Leaf_Node die_Node = new Leaf_Node(Die);
-        /*
-        Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
-        Leaf_Node isDelayTime_Roll_Node = new Leaf_Node(IsNotRollingCoolTime);
-        Leaf_Node rolling_Node = new Leaf_Node(Rolling);
-        Leaf_Node lookAround_Condition_Node = new Leaf_Node(LookAround_Condition);
-
-        Leaf_Node_Float trace_Must_Condition_Node = new Leaf_Node_Float(Distance_Condition_Must, 30.0f);
-        */
-        //노드 연결
-        // root.AddChild(death);
-        Leaf_Node wander_Node = new Leaf_Node(Wander);
-        Sequence trace_Node = new Sequence(Trace);
         Leaf_Node attack_Node = new Leaf_Node(Attack);
         Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
         Leaf_Node rolling_Node = new Leaf_Node(Rolling);
-        Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition, 6.0f);
         Leaf_Node attack_Condition_Node = new Leaf_Node(Distance_Attack_Condition);
         Leaf_Node lookAround_Node = new Leaf_Node(LookAround);
-        root.AddChild(behaviour);
-        // behaviour.AddChild(avoid_Sequence);
-        // behaviour.AddChild(attack_Sequence);
+        
         behaviour.AddChild(avoid_Selecter);
         behaviour.AddChild(trace_Sequence);
         behaviour.AddChild(wander_Node);
-      
-        
-        trace_Sequence.AddChild(trace_Condition_Node);
-        trace_Sequence.AddChild(trace_Node);
 
-        trace_Node.AddChild(attack_Condition_Node);
-        trace_Node.AddChild(attack_Node);
+        trace_Sequence.AddChild(Valid_Range_Condition);
+        trace_Sequence.AddChild(trace_Condition_Node);
+        trace_Sequence.AddChild(trace_Sequence_Node);
+
+        trace_Sequence_Node.AddChild(attack_Condition_Node);
+        trace_Sequence_Node.AddChild(attack_Node);
 
         Sequence rolling_Sequence = new Sequence();
+        avoid_Selecter.AddChild(rolling_Sequence);
         rolling_Sequence.AddChild(isBulletComeToMe_Node);
         rolling_Sequence.AddChild(rolling_Node);
 
-        avoid_Selecter.AddChild(rolling_Sequence);
         avoid_Selecter.AddChild(trace_lookAround_Sequence);
 
         Leaf_Node LookAround_Condition_Node = new Leaf_Node(LookAround_Condition);
@@ -170,37 +155,6 @@ public class Alien : Enemy
         trace_lookAround_Sequence.AddChild(LookAround_Condition_Node);
         trace_lookAround_Sequence.AddChild(lookAround_Node);
             
-
-
-        //trace_lookAround_Selector.AddChild()      //처음 쏜게아닌가?
-
-        //death.AddChild(isVitalityZero_Node);
-        // death.AddChild(die_Node);
-        /*
-        behaviour.AddChild(trace_lookAround_Selector);
-        
-
-        behaviour.AddChild(attack_Sequence);
-        behaviour.AddChild(trace_Sequence);
-        behaviour.AddChild(wander_Node);
-
-        trace_lookAround_Selector.AddChild(lookAround_Sequence);
-        trace_lookAround_Selector.AddChild(rolling_Sequence);
-
-        lookAround_Sequence.AddChild(lookAround_Condition_Node);
-        lookAround_Sequence.AddChild(trace_Must_Condition_Node);
-        lookAround_Sequence.AddChild(trace_Node);
-
-        rolling_Sequence.AddChild(isDelayTime_Roll_Node);
-        rolling_Sequence.AddChild(isBulletComeToMe_Node);
-        rolling_Sequence.AddChild(rolling_Node);
-        
-        attack_Sequence.AddChild(attack_Condition_Node);
-        attack_Sequence.AddChild(attack_Node);
-
-        trace_Sequence.AddChild(trace_Condition_Node);
-        trace_Sequence.AddChild(trace_Node);                        
-        */
         bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
     }
 
@@ -271,6 +225,19 @@ public class Alien : Enemy
         isOther_State_Change = true;
         is_Rolling_Count ++;
         return RESULT.SUCCESS;
+    }
+
+    public RESULT IsValid_Range_Condition()         //에일리언의 행동범위를 벗어나면 무조건추적해야되도 그만둔다
+    {
+        float dis = Check.Distance(wander.wayPoints[0].position, transform.position);
+        if (dis < 20.0f) return RESULT.SUCCESS;
+        else
+        {
+            isMust_Trace = false;
+            is_Rolling_Count = 0;
+            return RESULT.FAIL;
+
+        }
     }
 
     public RESULT LookAround()

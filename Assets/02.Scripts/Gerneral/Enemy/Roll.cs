@@ -44,7 +44,7 @@ public class Roll : MonoBehaviour
         isPossibility_Roll = false;
         agent.isStopped = true;
         float rotateDegree = Mathf.Atan2(bullet.transform.position.x - transform.position.x, bullet.transform.position.z - transform.position.z) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree + 45.0f, 0.0f), Time.deltaTime * 10.0f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree + 60.0f, 0.0f), Time.deltaTime * 10.0f);
         Invoke("Renew_Roll_DelayTime", delayTime);
         return true;
     }
