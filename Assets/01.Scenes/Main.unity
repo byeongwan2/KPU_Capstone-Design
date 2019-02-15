@@ -666,7 +666,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dcfd6c8fe82d574398ff1750f282b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
   eEnemy_State: 0
 --- !u!114 &380278967
 MonoBehaviour:
@@ -978,7 +977,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dcfd6c8fe82d574398ff1750f282b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
   eEnemy_State: 0
 --- !u!136 &592075544
 CapsuleCollider:
@@ -1250,9 +1248,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3df627bc49c90b4a966cd025c1e1cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
   eEnemy_State: 0
   vitality: 5
+  isOther_State_Change: 0
+  isMust_Trace: 0
+  active_Func: 
+  is_Rolling_Count: 0
 --- !u!65 &619214248
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1332,18 +1333,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &619214253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619214246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3791e35c8aecef046ae196e5afa87446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &619214254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8138,7 +8127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3fd26c26d8af846916f0a49c1b85ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 0
   eEnemy_State: 0
 --- !u!114 &1420105291
 MonoBehaviour:

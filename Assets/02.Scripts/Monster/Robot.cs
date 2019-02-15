@@ -16,7 +16,7 @@ public class Robot : Enemy {
 
         base.Init();
 
-        eState = STATE.STAND;
+//        eState = STATE.STAND;
         tr = GetComponent<Transform>();
         move = GetComponent<Move>();
         agent = GetComponent<MoveAgent>();
@@ -34,17 +34,7 @@ public class Robot : Enemy {
 
     void Render()
     {
-        switch (eState)
-        {
-            case STATE.WALK:
-                //  enemyAni.SetBool("IsAttack", true);
-                animator.SetBool("IsMove", true);
-                break;
-
-            case STATE.STAND:
-                animator.SetBool("IsMove", false);
-                break;
-        }
+        
     }
 
     void MotionRender()
@@ -62,7 +52,7 @@ public class Robot : Enemy {
 
     private void Logic()
     {
-        if (agent.pPatrolling)   eState = STATE.WALK; 
+       // if (agent.pPatrolling)   eState = STATE.WALK; 
 
 
     }

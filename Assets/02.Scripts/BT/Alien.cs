@@ -26,6 +26,8 @@ public class Alien : Enemy
     string active_Func = string.Empty;
     [SerializeField]
     int is_Rolling_Count = 0;
+
+    Rigidbody rb;
     private void Awake()
     {
         base.Init();
@@ -34,7 +36,6 @@ public class Alien : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        hp = 100;
         wander = GetComponent<Wander>();
         attack = GetComponent<Attack>();
         trace = GetComponent<Trace>();
@@ -50,6 +51,8 @@ public class Alien : Enemy
         Build_BT();
 
         Init_Data();
+
+        rb = GetComponent<Rigidbody>();
     }
     
     void Init_Data()
@@ -60,7 +63,8 @@ public class Alien : Enemy
     // Update is called once per frame
     void Update()
     {
-
+        if (eEnemy_State == ENEMY_STATE.DIE)
+            return;
         if (!isOther_State_Change)
         { 
             bt.Run();
@@ -75,25 +79,24 @@ public class Alien : Enemy
         if(other.CompareTag("Bullet"))
         {
             vitality--;
+            Debug.Log("맞음");
+            other.gameObject.SetActive(false);
+            if (vitality <= 0)
+            {
+                Die();
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
+            }
         }
+        
     }
 
-    public bool isVitalityZero()    // 체력이 0이하인가?
+    void Die() // Die 액션
     {
-        if(vitality<=0)
-        {            
-            return true;
-        }
-        else
-        {            
-            return false;
-        }
-    }
-
-    public bool Die() // Die 액션
-    {
-        animator.SetTrigger(hashDeath);        
-        return true;
+        active_Func = "Death";
+        animator.SetTrigger(hashDeath);
+        eEnemy_State = ENEMY_STATE.DIE;
+        isOther_State_Change = true;
+        agent.isStopped = true;
     }                   
     
     public RESULT Attack()   
@@ -116,6 +119,9 @@ public class Alien : Enemy
 
         Selector behaviour = new Selector();
         root.AddChild(behaviour);
+
+
+
         Selector avoid_Selecter = new Selector();
         Sequence trace_Sequence = new Sequence();
         Leaf_Node wander_Node = new Leaf_Node(Wander);
@@ -130,7 +136,8 @@ public class Alien : Enemy
         Leaf_Node rolling_Node = new Leaf_Node(Rolling);
         Leaf_Node attack_Condition_Node = new Leaf_Node(Distance_Attack_Condition);
         Leaf_Node lookAround_Node = new Leaf_Node(LookAround);
-        
+
+   
         behaviour.AddChild(avoid_Selecter);
         behaviour.AddChild(trace_Sequence);
         behaviour.AddChild(wander_Node);
@@ -268,7 +275,6 @@ public class Alien : Enemy
         }
     }
 
-  
 
 
     void Exit_Rolling()

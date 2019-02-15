@@ -16,7 +16,7 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
         var id = this_gameObject.Get_Id();
         if (this_gameObject.Compare_This(id)) return;
         ////  int damage = _obj.gameObject.GetComponent<Bullet>().Damage;
-        this_gameObject.MinusHp(10);         //임시
+       // this_gameObject.MinusHp(10);         //임시
         Wound_Effect();
         _obj.gameObject.SetActive(false);
     }
@@ -51,6 +51,6 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
     }
     public void ExplosionDamage(int _damage)
     {
-        this_gameObject.MinusHp(_damage);
+      //  this_gameObject.MinusHp(_damage);
     }
 }

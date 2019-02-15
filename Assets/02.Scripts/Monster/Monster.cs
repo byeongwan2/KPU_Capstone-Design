@@ -6,7 +6,7 @@ using UnityEngine;
 public partial class Monster : Enemy
 {
     Shot bulletShot;
-
+    STATE eState;
     [SerializeField]
     private readonly float patrolSpeed = 1.5f;
     [SerializeField]
@@ -19,7 +19,6 @@ public partial class Monster : Enemy
     bool isDie;
     void Start()
     {
-        hp = 100;
 
         base.Init();
 
