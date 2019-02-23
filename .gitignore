@@ -34,3 +34,15 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/Top-Down SF/Origin/Textures/Atlas1.ti*
+Assets/Top-Down SF/Origin/Textures/Atlas1_AO.ti*
+Assets/Top-Down SF/Origin/Textures/Atlas1_illum.ti*
+Assets/Top-Down SF/Origin/Textures/Atlas1_ms.pn*
+Assets/Top-Down SF/Origin/Textures/Atlas1_nmp.ti*
+Assets/Top-Down SF/Origin/Textures/cubemap.ti*
+Assets/Top-Down SF/Origin/Textures/Glows.ti*
+Assets/Top-Down SF/Origin/Textures/Grid1.ti*
+Assets/Top-Down SF/Origin/Textures/Grid1_ms.pn*
+Assets/Top-Down SF/Origin/Textures/Grid1_nmp.ti*
+Assets/Top-Down SF/Origin/Textures/Atlas1_m.ti*
+
