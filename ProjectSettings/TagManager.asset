@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Bullet
   - Trap
+  - Map_Object
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - MainObject
   - 
   - Item_Field
-  - 
+  - Map_Object
   - 
   - 
   - 

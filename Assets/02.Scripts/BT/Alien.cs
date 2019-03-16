@@ -76,6 +76,7 @@ public class Alien : Enemy
 
     private void OnTriggerEnter(Collider other)
     {
+        if (vitality <= 0) return;
         if(other.CompareTag("Bullet"))
         {
             vitality--;
@@ -127,7 +128,7 @@ public class Alien : Enemy
         Leaf_Node wander_Node = new Leaf_Node(Wander);
 
         Leaf_Node Valid_Range_Condition = new Leaf_Node(IsValid_Range_Condition);
-        Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition, 6.0f);
+        Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition, traceCoverage);
         Sequence trace_Sequence_Node = new Sequence(Trace);
 
         Sequence trace_lookAround_Sequence = new Sequence();
@@ -266,7 +267,7 @@ public class Alien : Enemy
 
     public RESULT LookAround_Condition()
     {
-         switch(Distance_Condition(6.0f))
+         switch(Distance_Condition(traceCoverage))
         {
             case RESULT.SUCCESS:
                 is_Rolling_Count = 0;

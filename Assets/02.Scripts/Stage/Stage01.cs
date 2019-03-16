@@ -2,26 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+enum CHAPTER { ONE,TWO}
 public class Stage01 : MonoBehaviour {
 
+    GameSystem system;
     RezenCore rezenCore;
-	// Use this for initialization
+    GameObject []mapObject = new GameObject[1000];
+    CHAPTER nowChapter = CHAPTER.ONE;
 	void Start () {
-        rezenCore = GetComponent<RezenCore>();
-        rezenCore.Init(20);
-        TestZen();
-
+        //rezenCore = GetComponent<RezenCore>();
+        //rezenCore.Init(20);
+        system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
+        mapObject = GameObject.FindGameObjectsWithTag("Map_Object");
+        Debug.Log(system.pPlayer2.transform.position.y);
+        Culling_Sight_Height();
     }
 
-
-    void TestZen()
+    void Culling_Sight_Height()
     {
-        for(int i = 0; i < 1; i++) 
-        rezenCore.Work();
+        foreach (var obj in mapObject)
+        {
+            if(obj.transform.position.y > system.pPlayer2.transform.position.y)
+            {
+                obj.SetActive(false);
+            }
+            else
+            {
+                obj.SetActive(true);
+            }
+            
+        }
+
+
     }
+
+    void Update()
+    {
+       switch (nowChapter)
+        {
+            case CHAPTER.ONE:
+                if(30 < system.pPlayer2.transform.position.x)
+                {
+                    nowChapter = CHAPTER.TWO;
+                    Culling_Sight_Height();
+                }
+                break;
+        }
+    }
+
+
+  
 	
-	void Create_NodeMap()
-    {
-
-    }
+	
 }

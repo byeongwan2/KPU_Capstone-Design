@@ -4,8 +4,9 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Atlas1
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP _SPECGLOSSMAP
@@ -89,7 +90,9 @@ Material:
     - _DstBlend: 0
     - _EmissionLM: 0
     - _Fresnel: 0
+    - _GlossMapScale: 1
     - _Glossiness: 0.5
+    - _GlossyReflections: 1
     - _GlowStrength: 1
     - _Metallic: 0
     - _Mode: 0
@@ -97,7 +100,9 @@ Material:
     - _OcclusionStrength: 0.58
     - _Parallax: 0.03
     - _Shininess: 0.54060346
+    - _SmoothnessTextureChannel: 0
     - _SpecInt: 1
+    - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
