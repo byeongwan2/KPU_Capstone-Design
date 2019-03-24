@@ -10,6 +10,7 @@ TagManager:
   - Bullet
   - Trap
   - Map_Object
+  - Map_Object2
   layers:
   - Default
   - TransparentFX
