@@ -133,6 +133,10 @@ public partial class Player2 : MoveObject
 
     //마우스 바라보기
 
+    void FixedUpdate()
+    {
+        Gravity();
+    }
     //공격모드인지 확인
     private void Input_MouseRight()
     {
@@ -219,6 +223,10 @@ public partial class Player2 : MoveObject
             case STATE.WALK:
                 move.Set_MoveSpeed(2.0f);
                 break;
+            case STATE.STAND:
+                Debug.Log(eState);
+                
+                break;
         }
     }
     //애니메이터 컨트롤러 해시값 추출    
@@ -228,12 +236,12 @@ public partial class Player2 : MoveObject
     private readonly int hashZ = Animator.StringToHash("Z");
 
     //애니메이션
-    private void Render()                
+    private void Render()
     {
         switch (eState)
         {
             case STATE.DASH:
-                playerAni.SetBool("Dash", true);               
+                playerAni.SetBool("Dash", true);
                 break;
             case STATE.RUN:
                 playerAni.SetBool("IsRun", true);
@@ -249,14 +257,16 @@ public partial class Player2 : MoveObject
                 playerAni.SetBool("IsRun", false);
                 playerAni.SetBool("IsWalk", false);
                 playerAni.SetBool("Dash", false);
-                
+
                 break;
         }
         //playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);       //이게뭐임?
         playerAni.SetFloat(hashX, move.Horizontal);
         playerAni.SetFloat(hashZ, move.Vertical);
-        if (eState == STATE.STAND && !isAttackMode)
+        if (eState == STATE.STAND && !isAttackMode) { 
             playerRb.constraints = RigidbodyConstraints.FreezeRotation;
+            playerRb.constraints = RigidbodyConstraints.FreezePosition;
+        }
         else
         {
             playerRb.constraints = constraints;

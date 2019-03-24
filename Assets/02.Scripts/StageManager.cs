@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum eCHAPTER { ONE, TWO, THREE }
 public class StageManager : MonoBehaviour {
 
     Stage01 stage01;
+    eCHAPTER chap = eCHAPTER.ONE;
     public static StageManager instance = null;
     void Awake()
     {
@@ -16,8 +17,36 @@ public class StageManager : MonoBehaviour {
     {
         stage01 = GameObject.Find("Stage01").GetComponent<Stage01>();
     }
-    public void Renew(float _sight_range,float _culling_range)
+    public void Renew()
     {
-        stage01.Culling_Sight_Height(_sight_range,_culling_range);
+        stage01.Appear_Sight_Height();
+        switch(chap)
+        {
+            case eCHAPTER.ONE:
+                chap = eCHAPTER.TWO;
+                break;
+            case eCHAPTER.TWO:
+                chap = eCHAPTER.THREE;
+                break;
+        }
+    }
+
+    public void Backnew()
+    {
+        stage01.Culling_Sight_Height();
+        switch (chap)
+        {
+            case eCHAPTER.TWO:
+                chap = eCHAPTER.ONE;
+                break;
+            case eCHAPTER.THREE:
+                chap = eCHAPTER.TWO;
+                break;
+        }
+    }
+
+    public eCHAPTER Get_NowChapter()
+    {
+        return chap;
     }
 }

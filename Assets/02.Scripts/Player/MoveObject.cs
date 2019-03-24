@@ -8,6 +8,7 @@ public enum Object_Id
 public class MoveObject : MonoBehaviour
 {
     protected Object_Id m_id;
+   
     public Object_Id Get_Id()
     {
         return m_id;
@@ -17,5 +18,10 @@ public class MoveObject : MonoBehaviour
     {
         if (m_id == _id) return true;
         else return false;
+    }
+
+    protected void Gravity()
+    {
+        
     }
 }

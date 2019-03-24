@@ -21,7 +21,7 @@ public class Move : Behaviour {
 	void FixedUpdate ()
     {
         //전후좌우 이동 방향 벡터 계산
-        Vector3 moveDir = (Vector3.forward * Vertical) + (Vector3.right * Horizontal);
+        Vector3 moveDir = (Vector3.forward * Vertical) + (Vector3.right * Horizontal) ;
         //Translate(이동 방향 * 속도 * 변위값 * Time.deltaTime, 기준 좌표)
         transform.Translate(moveDir.normalized *moveSpeed * Time.deltaTime, Space.World);
     }
