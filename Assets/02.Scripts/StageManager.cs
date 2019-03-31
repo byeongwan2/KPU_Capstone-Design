@@ -19,13 +19,14 @@ public class StageManager : MonoBehaviour {
     }
     public void Renew()
     {
-        stage01.Appear_Sight_Height();
         switch(chap)
         {
             case eCHAPTER.ONE:
+                stage01.Appear_Sight_Height();
                 chap = eCHAPTER.TWO;
                 break;
             case eCHAPTER.TWO:
+                stage01.Open_Door_One();
                 chap = eCHAPTER.THREE;
                 break;
         }

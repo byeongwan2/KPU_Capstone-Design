@@ -6,7 +6,7 @@ public class Stage01 : MonoBehaviour {
 
     GameSystem system;
     GameObject []mapObject1_sight = new GameObject[15];
-
+    Door one_door;
     public ParentChapter[] chapter= new ParentChapter[10];
 	void Start ()
     {
@@ -16,8 +16,10 @@ public class Stage01 : MonoBehaviour {
         {
             obj.SetActive(false);
         }
+        one_door = GameObject.Find("Door1").GetComponent<Door>();
         chapter[0].Set_Init(eCHAPTER.ONE);
         chapter[1].Set_Init(eCHAPTER.ONE);
+        chapter[2].Set_Init(eCHAPTER.TWO);
     }
 
     public void Appear_Sight_Height()
@@ -33,6 +35,11 @@ public class Stage01 : MonoBehaviour {
         {
             obj.SetActive(false);
         }
+    }
+
+    public void Open_Door_One()
+    {
+        one_door.Active(0.0f);
     }
 
 
