@@ -7,11 +7,23 @@ public class GameSystem : MonoBehaviour {           //어떤오브젝트에서 �
     private Player2 player2;
 
     public Player2 pPlayer2 { get { return player2; } }
-
+    public Vector3 mousePoint;
     void Awake()
     {
 
         player2 = GameObject.Find("Player2").GetComponent<Player2>();
+    }
+
+    void Update()
+    {
+        Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
+        Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
+        mousePoint = Camera.main.ScreenToWorldPoint(mpos2);
+    }
+
+    public Vector3 MousePoint()
+    {
+        return mousePoint;
     }
 
   
