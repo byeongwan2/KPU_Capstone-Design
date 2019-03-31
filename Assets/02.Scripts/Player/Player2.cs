@@ -60,9 +60,15 @@ public partial class Player2 : MoveObject
     private bool isDown = false;
     public static Player2 instance;     //조심해서 써야함
 
+    GameSystem system;
     private Particle particle;
+    public bool GetIsAttackMode()
+    {
+        return isAttackMode;
+    }
     void Start ()
     {
+        system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
         instance = this;
         playerRb = GetComponent<Rigidbody>();
         playerTr = GetComponent<Transform>();
@@ -145,9 +151,8 @@ public partial class Player2 : MoveObject
         {
 
             isAttackMode = true;
-            Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       
-            Vector3 mpos2 = new Vector3(mpos.x, mpos.y, Camera.main.transform.position.y);
-            Vector3 aim1 = Camera.main.ScreenToWorldPoint(mpos2);
+
+            Vector3 aim1 = system.MousePoint();
             float rotateDegree = Mathf.Atan2(aim1.x - transform.position.x, aim1.z - transform.position.z) * Mathf.Rad2Deg;
             playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
         }
