@@ -7,6 +7,7 @@ public class Stage01 : MonoBehaviour {
     GameSystem system;
     GameObject []mapObject1_sight = new GameObject[15];
     Door one_door;
+    Door two_door;
     public ParentChapter[] chapter= new ParentChapter[10];
 	void Start ()
     {
@@ -17,6 +18,9 @@ public class Stage01 : MonoBehaviour {
             obj.SetActive(false);
         }
         one_door = GameObject.Find("Door1").GetComponent<Door>();
+        one_door.Setting(eDir.FORWARD);
+        two_door = GameObject.Find("Door2").GetComponent<Door>();
+        two_door.Setting(eDir.BACK);
         chapter[0].Set_Init(eCHAPTER.ONE);
         chapter[1].Set_Init(eCHAPTER.ONE);
         chapter[2].Set_Init(eCHAPTER.TWO);

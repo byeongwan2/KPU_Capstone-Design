@@ -11,7 +11,7 @@ public class ViewPoint : MonoBehaviour
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Vector3 vec = system.pPlayer2.transform.position;
         if (system.pPlayer2.GetIsAttackMode())

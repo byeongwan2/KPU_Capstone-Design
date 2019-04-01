@@ -22,7 +22,7 @@ public class PlayerCam : MonoBehaviour{
 	void LateUpdate ()
     {
         transform.position = aimTr.position - 1 * (Vector3.forward * distance) + (Vector3.up * height);
-        transform.LookAt(aimTr);
+        transform.LookAt(aimTr.position);
         /*
         Vector3 vec = aimTr.position - 1 * (Vector3.forward * distance) + (Vector3.up * height);
         float x = Mathf.Lerp(transform.position.x, vec.x, Time.deltaTime);
