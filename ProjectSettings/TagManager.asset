@@ -12,6 +12,7 @@ TagManager:
   - Map_Object
   - Map_Object2
   - Chapter
+  - Door
   layers:
   - Default
   - TransparentFX

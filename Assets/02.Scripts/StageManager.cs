@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum eCHAPTER { ONE, TWO, THREE , FOUR }
+public enum eCHAPTER { ONE, TWO, THREE , FOUR ,FIVE}
 public class StageManager : MonoBehaviour {
 
     Stage01 stage01;
     eCHAPTER chap = eCHAPTER.ONE;
     public static StageManager instance = null;
+    bool ischap = false;
     void Awake()
     {
         if (instance == null) instance = this;
@@ -16,9 +17,11 @@ public class StageManager : MonoBehaviour {
     void Start()
     {
         stage01 = GameObject.Find("Stage01").GetComponent<Stage01>();
+        ischap = true ;
     }
     public void Renew()
     {
+        if (!ischap) return;
         switch(chap)
         {
             case eCHAPTER.ONE:
@@ -33,16 +36,26 @@ public class StageManager : MonoBehaviour {
                 stage01.Open_Door_Two();
                 chap = eCHAPTER.FOUR;
                 break;
+            case eCHAPTER.FOUR:
+                stage01.Close_Door_One();
+                chap = eCHAPTER.FIVE;
+                break;
 
         }
+        ischap = false;
+    }
+    public void Set_IsChap()
+    {
+        ischap = true;
     }
 
     public void Backnew()
     {
-        stage01.Culling_Sight_Height();
         switch (chap)
         {
+          
             case eCHAPTER.TWO:
+                stage01.Culling_Sight_Height();
                 chap = eCHAPTER.ONE;
                 break;
             case eCHAPTER.THREE:

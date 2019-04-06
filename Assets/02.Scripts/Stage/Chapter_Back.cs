@@ -12,4 +12,6 @@ public class Chapter_Back : ParentChapter
             StageManager.instance.Backnew();
         }
     }
+
+    
 }

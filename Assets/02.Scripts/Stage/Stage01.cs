@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,9 @@ public class Stage01 : MonoBehaviour {
     GameObject []mapObject1_sight = new GameObject[15];
     Door one_door;
     Door two_door;
-    public ParentChapter[] chapter= new ParentChapter[5];
+    Door three_door;
+    public Chapter[] chapter= new Chapter[5];
+    public Chapter_Back[] chapter_back = new Chapter_Back[5];
     public Chapter_Event[] chapter_event = new Chapter_Event[5];
     void Start ()
     {
@@ -22,11 +25,15 @@ public class Stage01 : MonoBehaviour {
         one_door.Setting(eDir.FORWARD);
         two_door = GameObject.Find("Door2").GetComponent<Door>();
         two_door.Setting(eDir.BACK);
+        three_door = GameObject.Find("Door3").GetComponent<Door>();
+        three_door.Setting(eDir.UP);
         chapter[0].Set_Init(eCHAPTER.ONE);
-        chapter[1].Set_Init(eCHAPTER.ONE);
-        chapter[2].Set_Init(eCHAPTER.TWO);
+        chapter[1].Set_Init(eCHAPTER.TWO);
+        chapter_back[0].Set_Init(eCHAPTER.ONE);
 
         chapter_event[0].Set_Init(eCHAPTER.THREE);
+
+        chapter[2].Set_Init(eCHAPTER.FOUR);
     }
 
     public void Appear_Sight_Height()
@@ -36,6 +43,14 @@ public class Stage01 : MonoBehaviour {
             obj.SetActive(true);
         }
     }
+
+    public void Close_Door_One()
+    {
+        one_door.Close();
+        Debug.Log("1번문 닫힘");
+        three_door.Close();
+    }
+
     public void Culling_Sight_Height()
     {
         foreach (var obj in mapObject1_sight)

@@ -10,6 +10,7 @@ public class Chapter_Event : ParentChapter
         if (StageManager.instance.Get_NowChapter() != mychap) return;
         if (_player.collider.CompareTag("Player"))
         {
+            StageManager.instance.Set_IsChap();
             isReady = true;
 
         }
