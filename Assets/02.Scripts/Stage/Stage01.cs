@@ -8,8 +8,9 @@ public class Stage01 : MonoBehaviour {
     GameObject []mapObject1_sight = new GameObject[15];
     Door one_door;
     Door two_door;
-    public ParentChapter[] chapter= new ParentChapter[10];
-	void Start ()
+    public ParentChapter[] chapter= new ParentChapter[5];
+    public Chapter_Event[] chapter_event = new Chapter_Event[5];
+    void Start ()
     {
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
         mapObject1_sight = GameObject.FindGameObjectsWithTag("Map_Object");
@@ -24,6 +25,8 @@ public class Stage01 : MonoBehaviour {
         chapter[0].Set_Init(eCHAPTER.ONE);
         chapter[1].Set_Init(eCHAPTER.ONE);
         chapter[2].Set_Init(eCHAPTER.TWO);
+
+        chapter_event[0].Set_Init(eCHAPTER.THREE);
     }
 
     public void Appear_Sight_Height()
@@ -44,8 +47,21 @@ public class Stage01 : MonoBehaviour {
     public void Open_Door_One()
     {
         one_door.Active(0.0f);
+        Debug.Log("1번문 열림");
     }
 
+    public void Open_Door_Two()
+    {
+        two_door.Active(0.0f);
+        Debug.Log("2번문 열림");
+    }
+
+    public bool Is_Get_Event_One()
+    {
+        if (chapter_event[0].isReady)
+            return true;
+        return false;
+    }
 
 
 

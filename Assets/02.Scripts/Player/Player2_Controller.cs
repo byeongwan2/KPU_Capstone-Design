@@ -21,5 +21,8 @@ public class Player2_Controller : MonoBehaviour {
         else return 1.0f;
     }
 
-
+    public bool Is_Input_EventMode()
+    {
+        return Input.GetKeyDown(KeyCode.B);
+    }
 }

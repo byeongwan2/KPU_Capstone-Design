@@ -114,6 +114,7 @@ public partial class Player2 : MoveObject
     void Update () {
 
         Input_MouseRight();
+        Proceed_Event();
         Attack();
         //구르기
         Rolling();
@@ -157,6 +158,14 @@ public partial class Player2 : MoveObject
             playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
         }
         else isAttackMode = false;
+    }
+    //플레이어가 이벤트를 발생시킴
+    void Proceed_Event()
+    {
+        if(controller.Is_Input_EventMode())
+        {
+            StageManager.instance.Input_EventKey();
+        }
     }
 
 

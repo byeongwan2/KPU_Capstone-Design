@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum eCHAPTER { ONE, TWO, THREE }
+public enum eCHAPTER { ONE, TWO, THREE , FOUR }
 public class StageManager : MonoBehaviour {
 
     Stage01 stage01;
@@ -29,6 +29,11 @@ public class StageManager : MonoBehaviour {
                 stage01.Open_Door_One();
                 chap = eCHAPTER.THREE;
                 break;
+            case eCHAPTER.THREE:
+                stage01.Open_Door_Two();
+                chap = eCHAPTER.FOUR;
+                break;
+
         }
     }
 
@@ -49,5 +54,13 @@ public class StageManager : MonoBehaviour {
     public eCHAPTER Get_NowChapter()
     {
         return chap;
+    }
+
+    public void Input_EventKey()
+    {
+        if(stage01.Is_Get_Event_One())
+        {
+            Renew();
+        }
     }
 }
