@@ -10,10 +10,15 @@ public class Roll : MonoBehaviour
 
     float delayTime;
     bool isPossibility_Roll = true;
-    public void Init(NavMeshAgent _agent,float _delayTime)
+    public void Setting(NavMeshAgent _agent,float _delayTime)
     {
         agent = _agent;
         delayTime = _delayTime;
+    }
+
+    public void Init()
+    {
+
     }
 
     public RESULT IsBulletComeToMe()  // 총알이 나에게 오는가?

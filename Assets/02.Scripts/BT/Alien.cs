@@ -23,7 +23,7 @@ public class Alien : Enemy
     [SerializeField]
     bool isMust_Trace = false;
     [SerializeField]
-    string active_Func = string.Empty;
+    string activing_Func = string.Empty;
     [SerializeField]
     int is_Rolling_Count = 0;
 
@@ -42,14 +42,15 @@ public class Alien : Enemy
         roll = GetComponent<Roll>();
         trace.Init_Target(system.pPlayer2);
         attack.Init_Target(system.pPlayer2);
-        
-        wander.Init(agent,1.0f);      //배회할때 걷는 속도
-        trace.Init(agent,2.0f);
-        attack.Init(agent, 10);
-        roll.Init(agent,4.0f);
+
+
+        wander.Setting(agent,0.25f);      //배회할때 걷는 속도
+        trace.Setting(agent,2.0f);
+        attack.Setting(agent, 10);
+        roll.Setting(agent,4.0f);
         animator.SetTrigger("isWalk");
         Build_BT();
-
+        
         Init_Data();
 
         rb = GetComponent<Rigidbody>();
@@ -63,6 +64,7 @@ public class Alien : Enemy
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(activing_Func);
         if (eEnemy_State == ENEMY_STATE.DIE)
             return;
         if (!isOther_State_Change)
@@ -70,7 +72,7 @@ public class Alien : Enemy
             bt.Run();
         }
 
-        Debug.Log(active_Func);                 //디버깅
+        
     }
    
 
@@ -93,7 +95,7 @@ public class Alien : Enemy
 
     void Die() // Die 액션
     {
-        active_Func = "Death";
+        activing_Func = "Death";
         animator.SetTrigger(hashDeath);
         eEnemy_State = ENEMY_STATE.DIE;
         isOther_State_Change = true;
@@ -102,9 +104,10 @@ public class Alien : Enemy
     
     public RESULT Attack()   
     {
-        if (active_Func.Equals("Attack")) return RESULT.RUNNING;
+        if (activing_Func.Equals("Attack")) return RESULT.RUNNING;
+        attack.Init();
         attack.Work();
-        active_Func = "Attack";
+        activing_Func = "Attack";
         animator.SetTrigger("isAttack");
         eEnemy_State = ENEMY_STATE.ATTACK;
 
@@ -169,8 +172,9 @@ public class Alien : Enemy
     public RESULT Wander()
     {
         if (eEnemy_State == ENEMY_STATE.WALK ) wander.Work();
-        if (active_Func.Equals("Wander")) return RESULT.RUNNING;
-        active_Func = "Wander";
+        if (activing_Func.Equals("Wander")) return RESULT.RUNNING;
+        wander.Init();      //상태가 바뀔때 한번만 호출되어야함
+        activing_Func = "Wander";
         animator.SetTrigger("isWalk");
         eEnemy_State = ENEMY_STATE.WALK;
         return RESULT.SUCCESS;
@@ -192,8 +196,9 @@ public class Alien : Enemy
     public RESULT Trace()
     {
         if(eEnemy_State == ENEMY_STATE.RUN) trace.Work();
-        if (active_Func.Equals("Trace")) return RESULT.RUNNING;
-        active_Func = "Trace";
+        if (activing_Func.Equals("Trace")) return RESULT.RUNNING;
+        trace.Init();
+        activing_Func = "Trace";
         animator.SetTrigger("isRun");
         eEnemy_State = ENEMY_STATE.RUN;
         agent.isStopped = false;
@@ -225,8 +230,9 @@ public class Alien : Enemy
 
     public RESULT Rolling()
     {
-        if (active_Func.Equals("Rolling")) return RESULT.RUNNING;
-        active_Func = "Rolling";
+        if (activing_Func.Equals("Rolling")) return RESULT.RUNNING;
+        activing_Func = "Rolling";
+        roll.Init();
         roll.Rolling(); 
         animator.SetTrigger(hashRoll);
         eEnemy_State = ENEMY_STATE.ROLL;
@@ -248,24 +254,24 @@ public class Alien : Enemy
         }
     }
 
-    public RESULT LookAround()
+    public RESULT LookAround()              //주변을 두리번거린다
     {
-        if (active_Func.Equals("LookAround")) return RESULT.RUNNING;
-        active_Func = "LookAround";
+        if (activing_Func.Equals("LookAround")) return RESULT.RUNNING;
+        activing_Func = "LookAround";
         eEnemy_State = ENEMY_STATE.LOOKAROUND;
         animator.SetTrigger("isLookAround");
         isOther_State_Change = false;
         return RESULT.SUCCESS;
     }
 
-    public RESULT Get_IsRolling_Play()
+    public RESULT Get_IsRolling_Play()          
     {
         if (isMust_Trace) return RESULT.FAIL;
         if (is_Rolling_Count > 0) return RESULT.SUCCESS;
         else  return RESULT.FAIL;
     }
 
-    public RESULT LookAround_Condition()
+    public RESULT LookAround_Condition()                    //주변에 없다면 두리번거리기위해서 검사
     {
          switch(Distance_Condition(traceCoverage))
         {
@@ -286,7 +292,7 @@ public class Alien : Enemy
     public void Exit_Motion()       // Exit가 붙은함수는 전부 툴이실행해주는 콜백함수      //공격/두리번 이후 실행
     {
         agent.isStopped = false;
-        active_Func = string.Empty;
+        activing_Func = string.Empty;
         isOther_State_Change = false;
 
     }

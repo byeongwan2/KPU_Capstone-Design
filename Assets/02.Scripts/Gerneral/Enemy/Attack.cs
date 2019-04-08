@@ -11,10 +11,15 @@ public class Attack : MonoBehaviour
     {
         target = _target;
     }
-    public void Init(NavMeshAgent _agent,int _attackDamage)
+    public void Setting(NavMeshAgent _agent,int _attackDamage)
     {
         agent = _agent;
         attackDamage = _attackDamage;
+    }
+
+    public void Init()
+    {
+
     }
     
     public bool Work()

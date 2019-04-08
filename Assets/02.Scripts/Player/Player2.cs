@@ -238,7 +238,6 @@ public partial class Player2 : MoveObject
                 move.Set_MoveSpeed(2.0f);
                 break;
             case STATE.STAND:
-                Debug.Log(eState);
                 
                 break;
         }

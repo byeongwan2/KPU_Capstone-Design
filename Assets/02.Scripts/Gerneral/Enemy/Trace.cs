@@ -6,14 +6,21 @@ public class Trace : MonoBehaviour
 {
     NavMeshAgent agent;
     MoveObject target;
+    float speed;
     public void Init_Target(MoveObject _target)
     {
         target = _target;
     }
-    public void Init(NavMeshAgent _agent,float _speed)
+    public void Setting(NavMeshAgent _agent, float _speed)              //게임실행할떄 한번만 호출 다른스크립트 Start의존
     {
         agent = _agent;
         agent.speed = _speed;
+        speed = _speed;
+    }
+
+    public void Init()              //상태가 바뀔때마다 1번만 호출되는함수
+    {
+        agent.speed = speed;
     }
 
 
