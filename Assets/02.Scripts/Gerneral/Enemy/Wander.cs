@@ -22,6 +22,7 @@ public class Wander : MonoBehaviour
 
     public void Init()
     {
+        agent.destination = wayPoints[pointIndex].position;
         agent.speed = speed;
         check_Destination = false;
     }
@@ -29,7 +30,7 @@ public class Wander : MonoBehaviour
     public void Work()
     {
         if (check_Destination) return;
-        if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 0.5f && !check_Destination)
+        if (agent.velocity.sqrMagnitude >= 0.2f * 0.2f && agent.remainingDistance <= 0.5f )
         {
             pointIndex = pointIndex == 0 ? 1 : 0;
             agent.destination = wayPoints[pointIndex].position;
@@ -37,7 +38,7 @@ public class Wander : MonoBehaviour
             Change_After_Time_Bool(2.0f);
             return;
         }
-        return;
+
     }
     public void Change_After_Time_Bool(float _time)
     {

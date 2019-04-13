@@ -189,7 +189,7 @@ public class Alien : Enemy
 
     public RESULT Distance_Attack_Condition()
     {
-        if (trace.Condition(2.0f)) return RESULT.SUCCESS;
+        if (trace.Condition(1.6f)) return RESULT.SUCCESS;
         return RESULT.FAIL;
     }
 
@@ -205,14 +205,14 @@ public class Alien : Enemy
         return RESULT.SUCCESS;
     }
 
-    public RESULT IsBulletComeToMe()
+    public RESULT IsBulletComeToMe()                    //총알이 오는지
     {
         if (is_Rolling_Count > 1)
         {
             isMust_Trace = true;
             return RESULT.FAIL;
         }
-        switch (roll.IsBulletComeToMe())
+        switch (roll.IsBulletComeToMe())                // 총알거리체크
         {
             case RESULT.SUCCESS:
                 return RESULT.SUCCESS;
@@ -264,9 +264,9 @@ public class Alien : Enemy
         return RESULT.SUCCESS;
     }
 
-    public RESULT Get_IsRolling_Play()          
+    public RESULT Get_IsRolling_Play()                  //구르는중인지
     {
-        if (isMust_Trace) return RESULT.FAIL;
+        if (isMust_Trace) return RESULT.FAIL;           //추적중이라면 실패
         if (is_Rolling_Count > 0) return RESULT.SUCCESS;
         else  return RESULT.FAIL;
     }

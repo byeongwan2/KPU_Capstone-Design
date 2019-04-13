@@ -30,6 +30,7 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
         }
         return activeBullet;
     }
+
     public void Create_Prefab(TYPE _type,GameObject _gameObject , int _count)       //여러가지 폭탄을 생성할수 잇게끔
     {
         if (_type == TYPE.BOMB) Select_PoolType(bombPool, _gameObject, _count);

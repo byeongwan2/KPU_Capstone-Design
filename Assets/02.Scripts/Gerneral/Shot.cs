@@ -6,6 +6,8 @@ public class Shot : Behaviour
 {
     [SerializeField]
     protected GameObject startPosition;
+
+   // List<Bullet> list = new List<Bullet>(); 
     //총알이름//총알오브젝트풀수//총알스피드//총알데미지
     public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage,TYPE _type )
     {
@@ -13,7 +15,8 @@ public class Shot : Behaviour
         bullet.GetComponent<Bullet>().StatSetting();
         bullet.GetComponent<Bullet>().DamageSetting(_damage);
         bullet.GetComponent<Bullet>().SpeedSetting(_bulletSpeed);
-        PrefabSystem.instance.Create_Prefab(_type, bullet, _maxCount);      //오브젝트풀           
+        PrefabSystem.instance.Create_Prefab(_type, bullet, _maxCount);      //오브젝트풀
+       
     }
 
     public override void Work(TYPE _type)
@@ -22,7 +25,20 @@ public class Shot : Behaviour
         bullet.SetLaunchPos(startPosition.transform.position);     //출발하는장소
         bullet.SetLaunchRot(transform.localRotation);
         bullet.SetActiveLaunch(_type);
+        /* foreach (var obj in list)
+         {
+             if (obj.gameObject.activeSelf == false)
+             {
+                 obj.gameObject.SetActive(true);
+                 obj.SetLaunchPos(startPosition.transform.position);     //출발하는장소
+                 obj.SetLaunchRot(transform.localRotation);
+                 obj.SetActiveLaunch(_type);
+                 return;
+             }
+         }*/
+
 
     }
+    
     
 }
