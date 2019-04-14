@@ -273,7 +273,7 @@ public partial class Player2 : MoveObject
 
                 break;
         }
-        playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);       //이게뭐임?
+        //playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);       //이게뭐임?
         playerAni.SetFloat(hashX, move.Horizontal);
         playerAni.SetFloat(hashZ, move.Vertical);
         if (eState == STATE.STAND && !isAttackMode) { 
