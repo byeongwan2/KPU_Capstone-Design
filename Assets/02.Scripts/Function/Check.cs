@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class Check  {
 
+    public StringBuilder st = new StringBuilder();
 	public static float Distance(Transform _a, Transform _b)
     {
         return Vector3.Distance(_a.position, _b.position);
@@ -49,4 +51,5 @@ static class Define         //c# 은 #define 없다는군;;
     public const int MOUSE_RIGHT_BUTTON = 1;
     public const float ADVANCE_BULLET_LIFE_TIME = 0.8f;
     public const string DEBUG_STRING = "실행중  ";
+    
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public enum TYPE { BOMB, BULLET ,MONSTER  , ADVANCEBULLET}
@@ -16,7 +17,7 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     private List<GameObject> bulletPool = new List<GameObject>();
     private List<GameObject> monsterPool = new List<GameObject>();
     private List<GameObject> advanceBulletPool = new List<GameObject>();
-
+    public StringBuilder st = new StringBuilder();
     List<GameObject> activeBullet = new List<GameObject>();
     public List<GameObject> Get_BulletPool()
     {

@@ -13,6 +13,8 @@ public class Stage01 : MonoBehaviour {
     public Chapter[] chapter= new Chapter[5];
     public Chapter_Back[] chapter_back = new Chapter_Back[5];
     public Chapter_Event[] chapter_event = new Chapter_Event[5];
+
+    //GameObject basic_monster = new
     void Start ()
     {
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
@@ -38,10 +40,15 @@ public class Stage01 : MonoBehaviour {
 
     public void Appear_Sight_Height()
     {
+        Debug.Log("1번스테이지시작");
         foreach (var obj in mapObject1_sight)
         {
             obj.SetActive(true);
         }
+    }
+    void Pour_Monster()
+    {
+
     }
 
     public void Close_Door_One()
