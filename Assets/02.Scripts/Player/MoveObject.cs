@@ -20,8 +20,5 @@ public class MoveObject : MonoBehaviour
         else return false;
     }
 
-    protected void Gravity()
-    {
-        
-    }
+   
 }
