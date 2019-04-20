@@ -142,7 +142,7 @@ public partial class Player2 : MoveObject
 
     void FixedUpdate()
     {
-        
+        Gravity();
     }
     //공격모드인지 확인
     private void Input_MouseRight()
@@ -273,7 +273,7 @@ public partial class Player2 : MoveObject
 
                 break;
         }
-        playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);       //이게뭐임?
+        //playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);       //이게뭐임?
         playerAni.SetFloat(hashX, move.Horizontal);
         playerAni.SetFloat(hashZ, move.Vertical);
         if (eState == STATE.STAND && !isAttackMode) { 

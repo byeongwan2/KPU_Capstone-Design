@@ -76,6 +76,4 @@ public class StageManager : MonoBehaviour {
             Renew();
         }
     }
-
-    
 }

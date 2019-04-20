@@ -72,7 +72,7 @@ public class Alien : Enemy
             bt.Run();
         }
 
-        Debug.Log(activing_Func);
+        
     }
    
 
@@ -100,6 +100,7 @@ public class Alien : Enemy
         eEnemy_State = ENEMY_STATE.DIE;
         isOther_State_Change = true;
         agent.isStopped = true;
+        //BroadcastMessage()
     }                   
     
     public RESULT Attack()   
