@@ -4,11 +4,16 @@ using UnityEngine.UI;
 
 public class PrTopDownCharInventory : MonoBehaviour {
 
+    [Header("Visuals")]
+
+    public string characterName = "Soldier";
+    public bool changeColorsInMultiplayer = true;
+
     [Header("Stats")]
 
     public int Health = 100;
     [HideInInspector] public int ActualHealth = 100;
-        
+    public bool oneShotHealth = false;
     public float Stamina = 1.0f;
     public float StaminaRecoverSpeed = 0.5f;
     [HideInInspector] public float ActualStamina = 1.0f;
@@ -45,12 +50,15 @@ public class PrTopDownCharInventory : MonoBehaviour {
     public int playerWeaponLimit = 2;
 
     public PrWeapon[] InitialWeapons;
+    
 
     private float lastWeaponChange = 0.0f;
     [HideInInspector]
     public bool Armed = true;
     [HideInInspector]
     public GameObject[] Weapon;
+    [HideInInspector]
+    public int[] actualWeaponTypes;
     [HideInInspector]
     public int ActiveWeapon = 0;
     private bool CanShoot = true;
@@ -149,6 +157,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
     public float HUDDamage;
 
     public GameObject HUDWeaponPicture;
+    //public GameObject HUDWeaponName;
     public GameObject HUDWeaponBullets;
     public GameObject HUDWeaponBulletsBar;
     public GameObject HUDWeaponClips;
@@ -167,7 +176,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
     public bool useQuickReload = true;
 
     [Header("Multiplayer HUD")]
-    public float multiplayerHUDOffset = 70.0f;
+    public float multiplayerHUDOffset = 0.0f;//70.0f
     private bool splitScreen = false;
     private int totalPlayers = 1;
     private Vector2 splitOff = new Vector2(200,112);
@@ -192,6 +201,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
     void Start() {
         //Creates weapon array
         Weapon = new GameObject[playerWeaponLimit];
+        actualWeaponTypes = new int[playerWeaponLimit];
 
         //Load Weapon List from Scriptable Object
         WeaponList = WeaponListObject.weapons;
@@ -210,6 +220,14 @@ public class PrTopDownCharInventory : MonoBehaviour {
         HUDHealthBar.GetComponent<RectTransform>().localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
         CreateNoiseTrigger();
+
+        //Start PlayerInfo to Load and Save player Info across levels
+        if (GameObject.Find("playerInfo_" + charController.playerNmb) && charController.playerSettings.TypeSelected == PrPlayerSettings.GameMode.SinglePlayer)
+        {
+            Debug.Log("Player Info already Found");
+            charController.LoadPlayerInfo();
+            SetHealth(ActualHealth);
+        }
 
         //Weapon Instantiate and initialization
         if (InitialWeapons.Length > 0)
@@ -304,6 +322,28 @@ public class PrTopDownCharInventory : MonoBehaviour {
         //Update grenades HUD
         if (HUDGrenadesCount)
             HUDGrenadesCount.GetComponent<Text>().text = grenadesCount.ToString();
+
+        if (oneShotHealth)
+            ApplyOneShotHealth();
+
+        
+        //Create Player Info object if isn´t there yet
+        if (GameObject.Find("playerInfo_" + charController.playerNmb) == null && charController.playerSettings.TypeSelected == PrPlayerSettings.GameMode.SinglePlayer)
+        {
+            charController.CreatePlayerInfo();
+        }
+    }
+
+    public void LoadBulletsAndClipsState(int weapon)
+    {
+        Weapon[weapon].GetComponent<PrWeapon>().ActualBullets = PrPlayerInfo.player1.weaponsAmmo[weapon];
+        Weapon[weapon].GetComponent<PrWeapon>().ActualClips = PrPlayerInfo.player1.weaponsClips[weapon];
+    }
+
+    void ApplyOneShotHealth()
+    {
+        ActualHealth = 1;
+        HUDHealthBar.transform.parent.gameObject.SetActive(false);
     }
 
     public void AIUpdatePlayerCount()
@@ -338,7 +378,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
     void InstantiateWeapons()
     {
-       
+        int weapType = 0;
         foreach (PrWeapon Weap in InitialWeapons)
         {
             int weapInt = 0;
@@ -350,6 +390,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
                 if (Weap.gameObject.name == weap.name)
                 {
                     //Debug.Log("Weapon to pickup = " + weap + " " + weapInt);
+                    actualWeaponTypes[weapType] = weapInt;
                     PickupWeapon(weapInt);
                 }
                     
@@ -357,6 +398,12 @@ public class PrTopDownCharInventory : MonoBehaviour {
                     weapInt += 1;
             }
 
+            if (GameObject.Find("playerInfo_" + charController.playerNmb))
+            {
+                LoadBulletsAndClipsState(weapType);
+            }
+
+            weapType += 1;
         }
 
     }
@@ -431,7 +478,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
     {
         GameObject Grenade = Instantiate(grenadesPrefab, WeaponL.position, Quaternion.LookRotation(transform.forward)) as GameObject;
         Grenade.GetComponent<PrBullet>().team = team;
-        Vector3 grenadeForce = this.transform.forward * Grenade.GetComponent<PrBullet>().BulletSpeed * 10 + Vector3.up * 2000;
+        Vector3 grenadeForce = this.transform.forward * Grenade.GetComponent<PrBullet>().BulletSpeed * 25 + Vector3.up * 2000;
         float targetDistance = Vector3.Distance(AimTarget.transform.position, transform.position);
         Vector3 finalGrenadeForce = grenadeForce * (targetDistance / 20.0f);
         float MaxForce = ThrowGrenadeMaxForce * 17;
@@ -445,6 +492,8 @@ public class PrTopDownCharInventory : MonoBehaviour {
         grenadesCount -= 1;
         if (HUDGrenadesCount)
             HUDGrenadesCount.GetComponent<Text>().text = grenadesCount.ToString();
+
+        //Debug.Break();
     }
 
     void EndThrow()
@@ -491,54 +540,60 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
 
     public void SetPlayerColors(int mode, int team, PrPlayerSettings playerSettings)
-    {
-        if (mode == 0)
+    { 
+        if (changeColorsInMultiplayer)
         {
-            //Singleplayer Colors
-            if (playerSettings.useSinglePlayerColor)
+            if (mode == 0)
             {
+                //Singleplayer Colors
+                if (playerSettings.useSinglePlayerColor)
+                {
+                    foreach (Renderer rend in MeshRenderers)
+                    {
+                        rend.material.SetColor("_MaskedColorA", playerSettings.singlePlayerColor);
+                    }
+                }
+
+            }
+            else if (mode == 1)
+            {
+                //Deathmatch Colors
                 foreach (Renderer rend in MeshRenderers)
                 {
-                    rend.material.SetColor("_MaskedColorA", playerSettings.singlePlayerColor);
+                    rend.material.SetColor("_MaskedColorA", playerSettings.playerColor[team]);
                 }
             }
-
-        }
-        else if (mode == 1)
-        {
-            //Deathmatch Colors
-            foreach (Renderer rend in MeshRenderers)
+            else if (mode == 2)
             {
-                rend.material.SetColor("_MaskedColorA", playerSettings.playerColor[team]);
+                //Coop Colors
+                if (playerSettings.useCoopPlayerColor)
+                {
+                    foreach (Renderer rend in MeshRenderers)
+                    {
+                        rend.material.SetColor("_MaskedColorA", playerSettings.coopPlayerColor[team]);
+                    }
+                }
             }
-        }
-        else if (mode == 2)
-        {
-            //Coop Colors
-            if (playerSettings.useCoopPlayerColor)
+            else if (mode == 3)
             {
+                //Team DeathMatch Colors
                 foreach (Renderer rend in MeshRenderers)
                 {
-                    rend.material.SetColor("_MaskedColorA", playerSettings.coopPlayerColor[team]);
+                    Debug.Log(team);
+                    rend.material.SetColor("_MaskedColorA", playerSettings.teamColor[team]);
+
                 }
-            }
-        }
-        else if (mode == 3)
-        {
-            //Team DeathMatch Colors
-            foreach (Renderer rend in MeshRenderers)
-            {
-                Debug.Log(team);
-                rend.material.SetColor("_MaskedColorA", playerSettings.teamColor[team]);
 
             }
-
         }
+       
     }
 
     void EndMelee()
     {
         charController.useRootMotion = false;
+        charController.Rolling = false;
+        charController.EndRoll();
     }
 
     void MeleeEvent()
@@ -616,10 +671,12 @@ public class PrTopDownCharInventory : MonoBehaviour {
                         //Melee Weapon
                         if (Weapon[ActiveWeapon].GetComponent<PrWeapon>().Type == global::PrWeapon.WT.Melee) 
                         {
+                            charController.Rolling = true;
                             LastFireTimer = Time.time;
                             charAnimator.SetTrigger("AttackMelee");
                             charAnimator.SetInteger("MeleeType", Random.Range(0, 2));
                             charController.useRootMotion = true;
+                            charController.CantRotate();
                         }
                         //Ranged Weapon
                         else 
@@ -787,7 +844,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
     void LateUpdate()
     {
-        if (CompassActive)
+        if (CompassActive && !isDead)
         {
             if (CompassTarget)
             {
@@ -807,7 +864,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
         }
         
-        if (aimingIK)
+        if (aimingIK && !isDead)
         {
             if (Aiming && !Weapon[ActiveWeapon].GetComponent<PrWeapon>().Reloading && !isThrowing && !charController.Rolling && !charController.Jumping && !charController.Sprinting)
             {
@@ -901,6 +958,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
         NewWeapon.transform.parent = WeaponR.transform;
         NewWeapon.transform.localRotation = Quaternion.Euler(90, 0, 0);
         NewWeapon.name = "Player_" + NewWeapon.GetComponent<PrWeapon>().WeaponName;
+        actualWeaponTypes[ActiveWeapon] = WeaponType;
 
         //New multi weapon system
         bool replaceWeapon = true;
@@ -932,6 +990,7 @@ public class PrTopDownCharInventory : MonoBehaviour {
         }
 
         InitializeWeapons();
+        
     }
 
     public void PickupKey(int KeyType)
@@ -951,6 +1010,8 @@ public class PrTopDownCharInventory : MonoBehaviour {
         PrWeapon ActualW = Weapon[ActiveWeapon].GetComponent<PrWeapon>();
         Weapon[ActiveWeapon].SetActive(true);
         HUDWeaponPicture.GetComponent<UnityEngine.UI.Image>().sprite = ActualW.WeaponPicture;
+        //
+
         ActualW.ShootTarget = AimTarget;
         ActualW.Player = this.gameObject;
         FireRateTimer = ActualW.FireRate;
@@ -1030,6 +1091,8 @@ public class PrTopDownCharInventory : MonoBehaviour {
             charAnimator.SetLayerWeight(PistolActLayer, 0.0f);
             charAnimator.SetBool("Armed", true);
         }
+
+        Weapon[ActiveWeapon].GetComponent<PrWeapon>().UpdateWeaponGUI(HUDWeaponPicture);
     }
 
     void InitializeHUD()
@@ -1039,9 +1102,9 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
         if (charController.playerNmb > 0)
         {
-            RectTransform HUDHealtRect = HUDHealthBar.transform.parent.parent.GetComponent<RectTransform>();
+            RectTransform HUDHealtRect = HUDHealthBar.transform.parent.GetComponent<RectTransform>();
             RectTransform HUDWeaponRect = HUDWeaponBulletsBar.transform.parent.GetComponent<RectTransform>();
-            RectTransform HUDQuickReloadPanel = quickReloadPanel.transform.GetComponent<RectTransform>();
+            //RectTransform HUDQuickReloadPanel = quickReloadPanel.transform.GetComponent<RectTransform>();
 
             //FOR MULTIPLAYER PURPOSES
             float XPos = HUDHealtRect.localPosition.x;
@@ -1050,8 +1113,8 @@ public class PrTopDownCharInventory : MonoBehaviour {
             float XWeapPos = HUDWeaponRect.localPosition.x;
             float YWeapPos = HUDWeaponRect.localPosition.y;
 
-            float XQRPos = HUDQuickReloadPanel.localPosition.x;
-            float YQRPos = HUDQuickReloadPanel.localPosition.y;
+            //float XQRPos = HUDQuickReloadPanel.localPosition.x;
+            //float YQRPos = HUDQuickReloadPanel.localPosition.y;
 
             //Debug.Log(XPos);
 
@@ -1059,16 +1122,16 @@ public class PrTopDownCharInventory : MonoBehaviour {
             {
 
                 //Scale HUDS
-                HUDHealtRect.localScale *= splitScaleFactor;
+                //HUDHealtRect.localScale *= splitScaleFactor;
                 HUDWeaponRect.localScale *= splitScaleFactor;
 
                 //Apply Split Screen Margins
-                XPos = XPos - splitMargins.x;
-                YPos = YPos - splitMargins.y;
+                //XPos = XPos - splitMargins.x;
+                //YPos = YPos - splitMargins.y;
                 XWeapPos = XWeapPos - splitMargins.x;
                 YWeapPos = YWeapPos - splitMargins.y;
-                XQRPos = XQRPos - splitMargins.x;
-                YQRPos = YQRPos - splitMargins.y;
+                //XQRPos = XQRPos - splitMargins.x;
+                //YQRPos = YQRPos - splitMargins.y;
 
                 //Damage Rect
                 Vector3 damageScale = HUDDamageFullScreen.GetComponent<RectTransform>().localScale * 1.01f;
@@ -1082,18 +1145,19 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
                     if (charController.playerNmb == 1)
                     {
-                        HUDHealtRect.localPosition = new Vector3(XPos , YPos, 0);
+                       // HUDHealtRect.localPosition = new Vector3(XPos , YPos, 0);
                         HUDWeaponRect.localPosition = new Vector3(XWeapPos, YWeapPos, 0);
-                        HUDQuickReloadPanel.localPosition = new Vector3(XQRPos, YQRPos, 0);
+                        //HUDQuickReloadPanel.localPosition = new Vector3(XQRPos, YQRPos, 0);
 
                         //Damage Position
                         HUDDamageFullScreen.GetComponent<RectTransform>().localPosition = damagePos - new Vector3((splitOff.x * 0.5f), 0, 0);
                     }
                     else if (charController.playerNmb == 2)
                     {
-                        HUDHealtRect.localPosition = new Vector3(XPos + splitOff.x, YPos, 0);
+                        charController.CamScript.GetComponentInChildren<AudioListener>().enabled = false;
+                        // HUDHealtRect.localPosition = new Vector3(XPos + splitOff.x, YPos, 0);
                         HUDWeaponRect.localPosition = new Vector3(XWeapPos + splitOff.x, YWeapPos, 0);
-                        HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + splitOff.x, YQRPos, 0);
+                       // HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + splitOff.x, YQRPos, 0);
                         //Damage Position
                         HUDDamageFullScreen.GetComponent<RectTransform>().localPosition = damagePos + new Vector3((splitOff.x * 0.5f), 0, 0);
                     }
@@ -1106,26 +1170,28 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
                     if (charController.playerNmb == 1)
                     {
-                        HUDHealtRect.localPosition = new Vector3(XPos + (splitOff.x * 0.5f), YPos + splitOff.y, 0);
+                        //HUDHealtRect.localPosition = new Vector3(XPos + (splitOff.x * 0.5f), YPos + splitOff.y, 0);
                         HUDWeaponRect.localPosition = new Vector3(XWeapPos + (splitOff.x * 0.5f), YWeapPos + splitOff.y, 0);
-                        HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + (splitOff.x * 0.5f), YQRPos + splitOff.y, 0);
+                        //HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + (splitOff.x * 0.5f), YQRPos + splitOff.y, 0);
 
                         //Damage Position
                         HUDDamageFullScreen.GetComponent<RectTransform>().localPosition = damagePos + new Vector3(0, splitOff.y * 0.5f, 0);
                     }
                     else if (charController.playerNmb == 2)
                     {
-                        HUDHealtRect.localPosition = new Vector3(XPos, YPos, 0);
+                        charController.CamScript.GetComponentInChildren<AudioListener>().enabled = false;
+                        //HUDHealtRect.localPosition = new Vector3(XPos, YPos, 0);
                         HUDWeaponRect.localPosition = new Vector3(XWeapPos, YWeapPos, 0);
-                        HUDQuickReloadPanel.localPosition = new Vector3(XQRPos, YQRPos, 0);
+                        //HUDQuickReloadPanel.localPosition = new Vector3(XQRPos, YQRPos, 0);
                         //Damage Position
                         HUDDamageFullScreen.GetComponent<RectTransform>().localPosition = damagePos - new Vector3((splitOff.x * 0.5f), splitOff.y * 0.5f, 0);
                     }
                     else if (charController.playerNmb == 3)
                     {
-                        HUDHealtRect.localPosition = new Vector3(XPos + splitOff.x, YPos, 0);
+                        charController.CamScript.GetComponentInChildren<AudioListener>().enabled = false;
+                        //HUDHealtRect.localPosition = new Vector3(XPos + splitOff.x, YPos, 0);
                         HUDWeaponRect.localPosition = new Vector3(XWeapPos + splitOff.x, YWeapPos, 0);
-                        HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + splitOff.x, YQRPos, 0);
+                        //HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + splitOff.x, YQRPos, 0);
                         //Damage Position
                         HUDDamageFullScreen.GetComponent<RectTransform>().localPosition = damagePos + new Vector3((splitOff.x * 0.5f), -splitOff.y * 0.5f, 0);
                     }
@@ -1138,36 +1204,39 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
                     if (charController.playerNmb == 1)
                     {
-                        HUDHealtRect.localPosition = new Vector3(XPos, YPos + splitOff.y, 0);
+                        //HUDHealtRect.localPosition = new Vector3(XPos, YPos + splitOff.y, 0);
                         HUDWeaponRect.localPosition = new Vector3(XWeapPos, YWeapPos + splitOff.y, 0);
-                        HUDQuickReloadPanel.localPosition = new Vector3(XQRPos, YQRPos + splitOff.y, 0);
+                       // HUDQuickReloadPanel.localPosition = new Vector3(XQRPos, YQRPos + splitOff.y, 0);
                         //Damage Position
                         HUDDamageFullScreen.GetComponent<RectTransform>().localPosition = damagePos - new Vector3((splitOff.x * 0.5f), splitOff.y * 0.5f, 0);
                     }
 
                     else if (charController.playerNmb == 2)
                     {
-                        HUDHealtRect.localPosition = new Vector3(XPos + splitOff.x, YPos + splitOff.y, 0);
+                        charController.CamScript.GetComponentInChildren<AudioListener>().enabled = false;
+                        //HUDHealtRect.localPosition = new Vector3(XPos + splitOff.x, YPos + splitOff.y, 0);
                         HUDWeaponRect.localPosition = new Vector3(XWeapPos + splitOff.x, YWeapPos + splitOff.y, 0);
-                        HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + splitOff.x, YQRPos + splitOff.y, 0);
+                       // HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + splitOff.x, YQRPos + splitOff.y, 0);
                         //Damage Position
                         HUDDamageFullScreen.GetComponent<RectTransform>().localPosition = damagePos + new Vector3((splitOff.x * 0.5f), splitOff.y * 0.5f, 0);
                     }
 
                     else if (charController.playerNmb == 3)
                     {
-                        HUDHealtRect.localPosition = new Vector3(XPos, YPos, 0);
+                        charController.CamScript.GetComponentInChildren<AudioListener>().enabled = false;
+                        //HUDHealtRect.localPosition = new Vector3(XPos, YPos, 0);
                         HUDWeaponRect.localPosition = new Vector3(XWeapPos, YWeapPos, 0);
-                        HUDQuickReloadPanel.localPosition = new Vector3(XQRPos, YQRPos, 0);
+                        //HUDQuickReloadPanel.localPosition = new Vector3(XQRPos, YQRPos, 0);
                         //Damage Position
                         HUDDamageFullScreen.GetComponent<RectTransform>().localPosition = damagePos - new Vector3((splitOff.x * 0.5f), splitOff.y * 0.5f, 0);
                     }
 
                     else if (charController.playerNmb == 4)
                     {
-                        HUDHealtRect.localPosition = new Vector3(XPos + splitOff.x, YPos, 0);
+                        charController.CamScript.GetComponentInChildren<AudioListener>().enabled = false;
+                        //HUDHealtRect.localPosition = new Vector3(XPos + splitOff.x, YPos, 0);
                         HUDWeaponRect.localPosition = new Vector3(XWeapPos + splitOff.x, YWeapPos, 0);
-                        HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + splitOff.x, YQRPos, 0);
+                        //HUDQuickReloadPanel.localPosition = new Vector3(XQRPos + splitOff.x, YQRPos, 0);
                         //Damage Position
                         HUDDamageFullScreen.GetComponent<RectTransform>().localPosition = damagePos + new Vector3((splitOff.x * 0.5f), -splitOff.y * 0.5f, 0);
                     }
@@ -1176,22 +1245,22 @@ public class PrTopDownCharInventory : MonoBehaviour {
             }
             else
             {
-                HUDHealthBar.transform.parent.parent.GetComponent<RectTransform>().localPosition = new Vector3(XPos + (multiplayerHUDOffset * (charController.playerNmb - 1)), YPos, 0);
+                //HUDHealthBar.transform.parent.GetComponent<RectTransform>().localPosition = new Vector3(XPos + (multiplayerHUDOffset * (charController.playerNmb - 1)), YPos, 0);
 
                 YPos = HUDWeaponBulletsBar.transform.parent.GetComponent<RectTransform>().localPosition.y;
                 XPos = HUDWeaponBulletsBar.transform.parent.GetComponent<RectTransform>().localPosition.x;
 
                 HUDWeaponBulletsBar.transform.parent.GetComponent<RectTransform>().localPosition = new Vector3(XPos + (multiplayerHUDOffset * (charController.playerNmb - 1)), YPos, 0);
 
-                YPos = HUDQuickReloadPanel.transform.GetComponent<RectTransform>().localPosition.y;
-                XPos = HUDQuickReloadPanel.transform.GetComponent<RectTransform>().localPosition.x;
+                //YPos = HUDQuickReloadPanel.transform.GetComponent<RectTransform>().localPosition.y;
+                //XPos = HUDQuickReloadPanel.transform.GetComponent<RectTransform>().localPosition.x;
 
-                HUDQuickReloadPanel.transform.GetComponent<RectTransform>().localPosition = new Vector3(XPos + (multiplayerHUDOffset * (charController.playerNmb - 1)), YPos, 0);
+                //HUDQuickReloadPanel.transform.GetComponent<RectTransform>().localPosition = new Vector3(XPos + (multiplayerHUDOffset * (charController.playerNmb - 1)), YPos, 0);
             }
 
             //SET HUD COLOR ACCORDING TO PLAYER COLOR
             if (HUDColorBar)
-                HUDColorBar.GetComponent<UnityEngine.UI.Image>().color = charController.playerSettings.playerColor[charController.playerNmb - 1] * 0.625f;
+                HUDColorBar.GetComponent<UnityEngine.UI.Image>().color = charController.playerSettings.playerColor[charController.playerNmb - 1] ;
         }
     }
 
@@ -1477,6 +1546,10 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
     public void Die(bool temperatureDeath)
 	{
+        //Send last position
+        //SendMessageUpwards("UpdateLastPlayerPos", charController.playerNmb, SendMessageOptions.DontRequireReceiver);
+
+        DeactivateCompass();
         EnableArmIK(false);
 		isDead = true;
 		charAnimator.SetBool("Dead", true);
@@ -1498,12 +1571,17 @@ public class PrTopDownCharInventory : MonoBehaviour {
             Vector3 ragdollDirection = transform.position - LastHitPos;
             ragdollDirection = ragdollDirection.normalized;
             if (!temperatureDeath)
-                GetComponent<PrCharacterRagdoll>().SetForceToRagdoll(LastHitPos + new Vector3(0,1.5f,0), ragdollDirection * (ragdollForceFactor * Random.Range(0.8f,1.2f)));
+                GetComponent<PrCharacterRagdoll>().SetForceToRagdoll(LastHitPos + new Vector3(0,1.5f,0), ragdollDirection * (ragdollForceFactor * Random.Range(0.8f,1.2f)), BurnAndFrozenVFXParent);
         }
 
         //Send Message to Game script to notify Dead
         SendMessageUpwards("PlayerDied", charController.playerNmb, SendMessageOptions.DontRequireReceiver);
         SendMessageUpwards("NewFrag", enemyTeam, SendMessageOptions.DontRequireReceiver);
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject i in enemies)
+        {
+            i.SendMessage("FindPlayers", SendMessageOptions.DontRequireReceiver);
+        }
 
         if (explosiveDeath && actualExplosiveDeathVFX)
         {
@@ -1556,8 +1634,12 @@ public class PrTopDownCharInventory : MonoBehaviour {
 
     public void DestroyHUD()
     {
-        //Destroy GUI
-        Weapon[ActiveWeapon].GetComponent<PrWeapon>().updateHUD = false;
+        if (Weapon[ActiveWeapon] != null)
+        {
+            //Destroy GUI
+            Weapon[ActiveWeapon].GetComponent<PrWeapon>().updateHUD = false;
+        }
+       
         if (HUDDamageFullScreen != null)
         {
             if (HUDDamageFullScreen.transform.parent.gameObject != null)
@@ -1596,8 +1678,6 @@ public class PrTopDownCharInventory : MonoBehaviour {
         
 
     }
-	
-    
 
 	void OnTriggerExit(Collider other)
 	{

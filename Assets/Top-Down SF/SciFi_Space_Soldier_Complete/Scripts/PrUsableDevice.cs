@@ -70,8 +70,10 @@ public class PrUsableDevice : MonoBehaviour {
 		{
 			if (InUse)
 			{
-				if (InUseTimer < UseDelay)
+                
+                if (InUseTimer < UseDelay)
 				{
+                    
 					InUseTimer += Time.deltaTime;
                     if (UseBar)
                         UseBar.GetComponent<UnityEngine.UI.Image>().transform.localScale = new Vector3((1 / UseDelay) * InUseTimer, 0.6f, 1.0f);
@@ -83,10 +85,10 @@ public class PrUsableDevice : MonoBehaviour {
 				}
 			}
 		}
-        if (!AffectedTarget && IsEnabled)
+        /*if (!AffectedTarget && IsEnabled)
         {
             IsEnabled = false;
-        }
+        }*/
 	}
 
 	public void Use()
@@ -96,6 +98,7 @@ public class PrUsableDevice : MonoBehaviour {
             if (KeyType == Key.None)
             {
                 InUse = true;
+                //Debug.Log(InUse);
             }
             else if (KeyType == Key.Blue)
             {
@@ -196,6 +199,8 @@ public class PrUsableDevice : MonoBehaviour {
         if (other.CompareTag("Player") && MeshSelector && IsEnabled)
         {
             MeshSelector.SetActive(true);
+            if (!AffectedTarget)
+                AffectedTarget = other.gameObject;
             if (UseText && KeyType != Key.None)
             {
                 if (other.gameObject.GetComponent<PrTopDownCharInventory>().RedKeys > 0)
@@ -226,6 +231,8 @@ public class PrUsableDevice : MonoBehaviour {
         if (other.CompareTag("Player") && MeshSelector)
         {
             MeshSelector.SetActive(false);
+            if (AffectedTarget == other.gameObject)
+                AffectedTarget = null;
         }
 
 

@@ -22,6 +22,12 @@ public class PrPickupWeapon : PrPickupObject {
 	
 	}
 
+    protected override void SetName()
+    {
+        //Debug.Log(weaponNames[(int)WeaponType]);
+        if (weaponNames.Length > 0)
+            itemName = weaponNames[(int)WeaponType];
+    }
     protected override void PickupObjectNow(int ActiveWeapon)
     {
 

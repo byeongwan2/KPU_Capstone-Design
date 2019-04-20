@@ -23,6 +23,7 @@ public class PrDoorManager : MonoBehaviour {
 
     [Header("Visuals")]
     public Renderer[] DoorPanels;
+    public int materialSlot = 0;
     public Light[] PanelLights;
 
     public Color ActiveColor  = Color.green;
@@ -81,7 +82,7 @@ public class PrDoorManager : MonoBehaviour {
         {
             foreach (Renderer Panel in DoorPanels)
             {
-                Panel.materials[0].SetColor("_EmissionColor", ActualColor);
+                Panel.materials[materialSlot].SetColor("_EmissionColor", ActualColor);
             }
             foreach (Light PanelLight in PanelLights )
             {

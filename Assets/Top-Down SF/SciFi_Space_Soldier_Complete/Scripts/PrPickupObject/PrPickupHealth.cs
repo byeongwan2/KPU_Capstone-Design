@@ -9,6 +9,11 @@ public class PrPickupHealth : PrPickupObject {
 	
 	}
 
+    protected override void SetName()
+    {
+        itemName = "Health Pack";
+    }
+
     protected override void PickupObjectNow(int ActiveWeapon)
     {
 

@@ -18,6 +18,11 @@ public class PrPickupGrenades : PrPickupObject {
 	
 	}
 
+    protected override void SetName()
+    {
+        itemName = "Grenades x" + quantity;
+    }
+
     protected override void PickupObjectNow(int ActiveWeapon)
     {
 

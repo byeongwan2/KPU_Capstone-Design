@@ -4,7 +4,8 @@ using System.Collections;
 public class PrEnemySpawner : MonoBehaviour {
 
     [Header("Enemy Settings")]
-    public GameObject Enemy;
+    public GameObject[] Enemy;
+    private int actualEnemy = 0;
 	private GameObject EnemyParent;
     public PrWaypointsRoute EnemyPatrolRoute;
     public bool startInRandomWaypoint = false;
@@ -37,8 +38,15 @@ public class PrEnemySpawner : MonoBehaviour {
     // Use this for initialization
     void Start () {
 		EnemyParent = new GameObject();
-		EnemyParent.name = gameObject.name + "-" + Enemy.name + "_ROOT";
-		EnemyParent.transform.position = transform.position;
+        if (Enemy.Length > 0)
+        {
+            EnemyParent.name = gameObject.name + "-" + Enemy[0].name + "_ROOT";
+        }
+        else
+        {
+            EnemyParent.name = gameObject.name + "-" + "_ROOT";
+        }
+        EnemyParent.transform.position = transform.position;
 		EnemyParent.transform.rotation = transform.rotation;
         EnemyParent.transform.SetParent(this.transform);
         
@@ -87,7 +95,12 @@ public class PrEnemySpawner : MonoBehaviour {
         return pos;
     }
 
-    public void SurivvalSpawnEnemy(GameObject enemyToSpawn)
+    public void SetRandomEnemy()
+    {
+        actualEnemy = Random.Range(0, Enemy.Length);        
+    }
+
+    public void SurvivalSpawnEnemy(GameObject enemyToSpawn)
     {
         
         float RandomRadius = Random.Range(-SpawnerRadius, SpawnerRadius);
@@ -161,8 +174,16 @@ public class PrEnemySpawner : MonoBehaviour {
                     rot = Quaternion.FromToRotation(Vector3.forward, transform.position - FinalSpawnPosition);
                 }
 
-                GameObject EnemySpawned = Instantiate(Enemy, Vector3.zero , rot) as GameObject;
-                EnemySpawned.name = Enemy.name + "_" + TotalSpawned;
+                if (Enemy.Length > 1)
+                {
+                    SetRandomEnemy();
+                }
+                else
+                {
+                    actualEnemy = 0;
+                }
+                GameObject EnemySpawned = Instantiate(Enemy[actualEnemy], Vector3.zero , rot) as GameObject;
+                EnemySpawned.name = Enemy[actualEnemy].name + "_" + TotalSpawned;
 
                 if (EnemyPatrolRoute)
                 {

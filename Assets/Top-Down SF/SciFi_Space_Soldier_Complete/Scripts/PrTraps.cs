@@ -86,15 +86,19 @@ public class PrTraps : MonoBehaviour {
     {
         foreach (GameObject p in playerGO )
         {
-            p.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
-            if (vfxPrefab)
-                PlayVFX(p.transform);
-            if (TrapType == Traps.Explosive)
+            if(p != null)
             {
-                GetComponent<Collider>().enabled = false;
-                damageOn = false;
-                gameObject.SetActive(false);
+                p.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+                if (vfxPrefab)
+                    PlayVFX(p.transform);
+                if (TrapType == Traps.Explosive)
+                {
+                    GetComponent<Collider>().enabled = false;
+                    damageOn = false;
+                    gameObject.SetActive(false);
+                }
             }
+           
         }
         foreach (GameObject e in enemiesGO)
         {

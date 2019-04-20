@@ -8,6 +8,11 @@ public class PrItemsSpawner : MonoBehaviour {
     public Transform[] spawnPositions;
     private GameObject spawnedItem;
 
+    //[HideInInspector]
+    public PrPlayerSettings settings;
+    [HideInInspector]
+    public string[] weaponNames;
+    
     public bool spawnOnce = false;
 
     public float timeAfterRespawn = 10.0f;
@@ -94,6 +99,14 @@ public class PrItemsSpawner : MonoBehaviour {
 
         spawnedItem.transform.parent = this.transform;
         timer = timeAfterRespawn;
+
+        if (settings)
+        {
+            spawnedItem.GetComponent<PrPickupObject>().ColorSetup = settings;
+            spawnedItem.GetComponent<PrPickupObject>().weaponNames = weaponNames;
+            //Debug.Log(weaponNames);
+            spawnedItem.GetComponent<PrPickupObject>().Initialize();
+        }
     }
 
     void OnDrawGizmos()

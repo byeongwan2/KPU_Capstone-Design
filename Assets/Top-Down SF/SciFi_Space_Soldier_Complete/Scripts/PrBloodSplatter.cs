@@ -58,8 +58,9 @@ public class PrBloodSplatter : MonoBehaviour {
 
             RaycastHit hit;
            
-            int layerMask = 1 << 15;
-            layerMask = ~layerMask;
+            int layerMask = 1 << 0;
+            int LayerMask2 = 1 << 8;
+            layerMask = layerMask | LayerMask2;
 
             if (Physics.Raycast(rayDir.position, finalOrientation, out hit, 10.0f , layerMask, QueryTriggerInteraction.Ignore))
             {

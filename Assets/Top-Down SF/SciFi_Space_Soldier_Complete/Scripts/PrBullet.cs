@@ -13,7 +13,6 @@ public class PrBullet : MonoBehaviour {
     //[HideInInspector]
     public int team = 0;
 
-    [HideInInspector]
     public int Damage = 0;
     [HideInInspector]
     public float HitForce = 100.0f;

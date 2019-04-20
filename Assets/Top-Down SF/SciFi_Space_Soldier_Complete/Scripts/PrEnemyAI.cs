@@ -41,6 +41,7 @@ public class PrEnemyAI : MonoBehaviour
     
     [Header("Basic AI Settings")]
     public AIState actualState = AIState.Patrol;
+    private bool stopPlaying = false;
 
     public float chasingSpeed = 1.0f;
     public float normalSpeed = 0.75f;
@@ -135,7 +136,7 @@ public class PrEnemyAI : MonoBehaviour
     [Header("VFX")]
      
     public int hitAnimsMaxTypes = 1;
-    private int lastHitAnim = -1;
+    //private int lastHitAnim = -1;
     private int randomHitAnim = -1;
     public GameObject spawnFX;
     public GameObject damageVFX;
@@ -173,6 +174,7 @@ public class PrEnemyAI : MonoBehaviour
     [Header("Ragdoll setup")]
     public bool useRagdollDeath = false;
     public float ragdollForceFactor = 1.0f;
+    private Vector3 ragdollForce;
 
     [Header("Sound FX")]
 
@@ -342,26 +344,25 @@ public class PrEnemyAI : MonoBehaviour
         }
     }
 
+    public void StopAllActivities()
+    {
+        Debug.Log("Stop Moving");
+        stopPlaying = true;
+        actualState = AIState.Wander;
+
+        enemyAnimator.SetFloat("Speed", 0.0f);
+        enemyAnimator.SetBool("Aiming", false);
+        play = new List<GameObject>();
+    }
+
     public void FindPlayers()
     {
-        //OLD
-        /*
-        players = GameObject.FindGameObjectsWithTag("Player");
-
-        if (friendlyAI)
-        {
-            players = GameObject.FindGameObjectsWithTag("Enemy");
-            UpdateEnemies();
-        }
-
-        GetClosestPlayer();
-        */
-
         //NEW
         //USUAL ENEMY 
 
         if (!friendlyAI)
         {
+            //Debug.Log("Trying to find players");
             play = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
 
             List<GameObject> AIplayers = new List<GameObject>(GameObject.FindGameObjectsWithTag("AIPlayer"));
@@ -452,6 +453,7 @@ public class PrEnemyAI : MonoBehaviour
         {
             playerActualDistance = 9999.0f;
             playerTransform = null;
+            actualState = AIState.Patrol;
             //Debug.Log("NO ENEMIES FOUND " + gameObject.name);
         }
     }
@@ -470,9 +472,17 @@ public class PrEnemyAI : MonoBehaviour
 
     void RandomHitAnim()
     {
-        randomHitAnim = Random.Range(0, hitAnimsMaxTypes);
-        if (randomHitAnim == lastHitAnim)
-            RandomHitAnim();
+        if (randomHitAnim < hitAnimsMaxTypes)
+        {
+            randomHitAnim += 1;
+        }
+        else
+        {
+            randomHitAnim = 0;
+        }
+        //randomHitAnim = Random.Range(0, hitAnimsMaxTypes);
+        //if (randomHitAnim == lastHitAnim)
+        //    RandomHitAnim();
     }
 
     void ApplyDamagePassive(int damage)
@@ -525,8 +535,8 @@ public class PrEnemyAI : MonoBehaviour
                 }
             }
             enemyAnimator.SetTrigger("Hit");
-            RandomHitAnim();
-            lastHitAnim = randomHitAnim;
+            //RandomHitAnim();
+            //lastHitAnim = randomHitAnim;
             enemyAnimator.SetInteger("Type", Random.Range(0, hitAnimsMaxTypes));
             
             Damaged = true;
@@ -615,8 +625,10 @@ public class PrEnemyAI : MonoBehaviour
         if (useRagdollDeath)
         {
             GetComponent<PrCharacterRagdoll>().ActivateRagdoll();
+            ragdollForce = ((transform.position + new Vector3(0, 1.5f, 0)) - (LastHitPos + new Vector3(0f, 1.6f, 0f))) * (ragdollForceFactor * Random.Range(0.8f, 1.2f));
+            
             if (!temperatureDeath)
-                GetComponent<PrCharacterRagdoll>().SetForceToRagdoll(LastHitPos + new Vector3(0, 1.5f, 0), (transform.position - LastHitPos) * (ragdollForceFactor * Random.Range(0.8f, 1.2f)));
+                GetComponent<PrCharacterRagdoll>().SetForceToRagdoll(LastHitPos + new Vector3(0f, 1.6f, 0f), ragdollForce, BurnAndFrozenVFXParent);
         }
 
         if (explosiveDeath && actualExplosiveDeathVFX)
@@ -779,13 +791,17 @@ public class PrEnemyAI : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        UpdateRenderers();
-        UpdateInput();
-        SetState();
-        ApplyState();
-        ApplyRotation();
-        ApplyTemperature();
-        SetDebug();
+        if (!stopPlaying)
+        {
+            UpdateRenderers();
+            UpdateInput();
+            SetState();
+            ApplyState();
+            ApplyRotation();
+            ApplyTemperature();
+            SetDebug();
+        }
+        
     }
 
     public virtual void ApplyTemperature()
@@ -886,6 +902,7 @@ public class PrEnemyAI : MonoBehaviour
             SwitchDebug();
         }
     }
+
     public virtual void SetState()
     {
         if (Health <= 0 || dead)
@@ -1016,6 +1033,9 @@ public class PrEnemyAI : MonoBehaviour
                 }
                 //Debug.Log("patrolling");
                 break;
+            case AIState.Wander:
+                StopMovement();
+                break;
             case AIState.ChasingPlayer:
                 if (playerTransform)
                 {
@@ -1137,6 +1157,7 @@ public class PrEnemyAI : MonoBehaviour
                 CheckPlayerVisibility(lookAngle);
                 //Debug.Log("Dead");
                 break;
+            
             default:
                 // Debug.Log("NOTHING");
                 break;
@@ -1825,6 +1846,14 @@ public class PrEnemyAI : MonoBehaviour
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawMesh(TargetArrow, finalGoal, Quaternion.identity, Vector3.one);
+
+        if (useRagdollDeath && dead)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(LastHitPos + new Vector3(0f, 1.6f, 0f), 0.1f);
+            Gizmos.DrawRay(LastHitPos + new Vector3(0f, 1.6f, 0f),  ragdollForce);
+            
+        }
 
         
     }
