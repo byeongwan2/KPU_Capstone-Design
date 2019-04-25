@@ -20,11 +20,6 @@ public class PrPickupKey : PrPickupObject {
 	
 	}
 
-    protected override void SetName()
-    {
-        itemName = KeyType.ToString();
-    }
-
     protected override void PickupObjectNow(int ActiveWeapon)
     {
 

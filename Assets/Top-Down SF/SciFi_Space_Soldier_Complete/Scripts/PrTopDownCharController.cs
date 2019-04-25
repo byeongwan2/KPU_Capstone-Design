@@ -2,7 +2,6 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
-//using PrUtils;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
@@ -21,12 +20,12 @@ public class PrTopDownCharController : MonoBehaviour {
 
     [Header("Movement")]
     [SerializeField] float m_JumpPower = 12f;
-    [Range(1f, 4f)] [SerializeField] float m_GravityMultiplier = 2f;
-    [SerializeField] float m_MoveSpeedMultiplier = 1f;
+	[Range(1f, 4f)][SerializeField] float m_GravityMultiplier = 2f;
+	[SerializeField] float m_MoveSpeedMultiplier = 1f;
     [HideInInspector]
     public float m_MoveSpeedSpecialModifier = 1f;
     [SerializeField] float m_AnimSpeedMultiplier = 1f;
-    private float m_GroundCheckDistance = 0.25f;
+	private float m_GroundCheckDistance = 0.25f;
 
     public bool useRootMotion = true;
 
@@ -42,44 +41,44 @@ public class PrTopDownCharController : MonoBehaviour {
     public float AnimatorSprintDampValue = 0.2f;
     public float AnimatorAimingDampValue = 0.1f;
 
-    Rigidbody m_Rigidbody;
-    Animator charAnimator;
-    bool m_IsGrounded;
-    float m_OrigGroundCheckDistance;
-    const float k_Half = 0.5f;
-    float m_TurnAmount;
-    float m_ForwardAmount;
-    float m_CapsuleHeight;
-    Vector3 m_CapsuleCenter;
-    CapsuleCollider m_Capsule;
-    bool m_Crouching;
+	Rigidbody m_Rigidbody;
+	Animator charAnimator;
+	bool m_IsGrounded;
+	float m_OrigGroundCheckDistance;
+	const float k_Half = 0.5f;
+	float m_TurnAmount;
+	float m_ForwardAmount;
+	float m_CapsuleHeight;
+	Vector3 m_CapsuleCenter;
+	CapsuleCollider m_Capsule;
+	bool m_Crouching;
     private bool crouch = false;
-
+    
     private bool b_CanRotate = true;
     private bool m_Jump;
     private float lastJump = 0.0f;
-    private bool b_canJump = true;
+    private bool b_canJump = true; 
     [HideInInspector] public bool Jumping = false;
     [HideInInspector] public bool Sprinting = false;
     [HideInInspector] public bool Rolling = false;
 
     public float RollStaminaUse = 0.5f;
 
-    public enum EAction { Jump, Roll }
+    public enum EAction { Jump, Roll}
     public EAction evadeAction = EAction.Jump;
-
+    
     [HideInInspector] public bool m_isDead = false;
     [HideInInspector] public bool m_CanMove = true;
 
     [Header("Aiming")]
     public GameObject AimTargetVisual;
-    public Transform AimFinalPos;
+	public Transform AimFinalPos;
     public PrTopDownCamera CamScript;
 
-    private Transform m_Cam;                  // A reference to the main camera in the scenes transform
+	private Transform m_Cam;                  // A reference to the main camera in the scenes transform
     [HideInInspector]
     public Vector3 m_Move;					  // the world-relative desired move direction, calculated from the camForward and user input.
-    private Vector3 smoothMove;
+    private Vector3 smoothMove; 
 
     [Header("Joystick / Keyboard")]
     public bool JoystickEnabled = true;
@@ -88,13 +87,15 @@ public class PrTopDownCharController : MonoBehaviour {
 
     [Header("VFX")]
     public GameObject RollVFX;
-
+ 
     private PrTopDownCharInventory Inventory;
 
     public List<GameObject> friends;
 
     void Start()
-    {
+	{
+        
+
         Inventory = GetComponent<PrTopDownCharInventory>();
 
         JoystickTarget = new GameObject();
@@ -107,39 +108,34 @@ public class PrTopDownCharController : MonoBehaviour {
         JoystickLookRot.transform.position = transform.position;
         JoystickLookRot.transform.parent = transform;
 
-        // get the transform of the main camera
-        if (Camera.main != null)
-        {
-            m_Cam = CamScript.transform.GetComponentInChildren<Camera>().transform;
-        }
-        else
-        {
-            Debug.LogWarning(
-                "Warning: no main camera found. Third person character needs a Camera tagged \"MainCamera\", for camera-relative controls.");
-            // we use self-relative controls in this case, which probably isn't what the user wants, but hey, we warned them!
-        }
-
-        charAnimator = GetComponent<Animator>();
-        m_Rigidbody = GetComponent<Rigidbody>();
-        m_Capsule = GetComponent<CapsuleCollider>();
-        m_CapsuleHeight = m_Capsule.height;
-        m_CapsuleCenter = m_Capsule.center;
-
-        m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-        m_OrigGroundCheckDistance = m_GroundCheckDistance;
+		// get the transform of the main camera
+		if (Camera.main != null)
+		{
+			m_Cam = CamScript.transform.GetComponentInChildren<Camera>().transform;
+		}
+		else
+		{
+			Debug.LogWarning(
+				"Warning: no main camera found. Third person character needs a Camera tagged \"MainCamera\", for camera-relative controls.");
+			// we use self-relative controls in this case, which probably isn't what the user wants, but hey, we warned them!
+		}
+		
+		charAnimator = GetComponent<Animator>();
+		m_Rigidbody = GetComponent<Rigidbody>();
+		m_Capsule = GetComponent<CapsuleCollider>();
+		m_CapsuleHeight = m_Capsule.height;
+		m_CapsuleCenter = m_Capsule.center;
+		
+		m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+		m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
         SetMultiplayerSettings();
 
         if (playerSettings)
         {
-            playerCtrlMap = PrUtils.SetMultiplayerInputs(playerNmb, playerSettings, playerCtrlMap);
-
-            if (playerNmb > 1)
-            {
-                JoystickEnabled = true;
-            }
+            SetMultiplayerInputs();
         }
-
+            
 
         if (JoystickEnabled)
             ActivateJoystick(true);
@@ -155,84 +151,11 @@ public class PrTopDownCharController : MonoBehaviour {
             }
         }
 
-        //Start PlayerInfo to Load and Save player Info across levels
-        /*if (GameObject.Find("playerInfo_" + playerNmb))
-        {
-            Debug.Log("Player Info Found");
-            LoadPlayerInfo();
-        }*/
+
     }
 
-    public void LoadPlayerInfo()
-    {
-        Debug.Log("player Info found - Loading Info");
+   
 
-        JoystickEnabled = PrPlayerInfo.player1.usingJoystick;
-        Inventory.Health = PrPlayerInfo.player1.health;
-        Inventory.ActualHealth = PrPlayerInfo.player1.actualHealth;
-        for (int i = 0; i < PrPlayerInfo.player1.weapons.Length; i++)
-        {
-            Inventory.InitialWeapons[i] = Inventory.WeaponListObject.weapons[PrPlayerInfo.player1.weapons[i]].GetComponent<PrWeapon>();
-            Inventory.grenadesCount = PrPlayerInfo.player1.grenades;
-        }
-    }
-
-    public void SavePlayerInfo()
-    {
-        Debug.Log("Saving Player Info");
-
-        PrPlayerInfo playerI = PrPlayerInfo.player1.GetComponent<PrPlayerInfo>();
-        playerI.playerNumber = playerNmb;
-        playerI.usingJoystick = JoystickEnabled;
-        playerI.playerName = Inventory.name;
-        playerI.health = Inventory.Health;
-        playerI.actualHealth = Inventory.ActualHealth;
-        playerI.maxWeaponCount = Inventory.playerWeaponLimit;
-        playerI.weapons = new int[Inventory.playerWeaponLimit];
-        playerI.weaponsAmmo = new int[Inventory.playerWeaponLimit];
-        playerI.weaponsClips = new int[Inventory.playerWeaponLimit];
-        playerI.grenades = Inventory.grenadesCount;
-
-        for (int i = 0; i < Inventory.playerWeaponLimit; i++)
-        {
-            //Debug.Log("Weapon " + i + " is " + Inventory.Weapon[i] + " And the Name is " + Inventory.Weapon[i].GetComponent<PrWeapon>().WeaponName + " And the bullets are " + Inventory.Weapon[i].GetComponent<PrWeapon>().ActualBullets);
-            playerI.weapons[i] = Inventory.actualWeaponTypes[i];
-            playerI.weaponsAmmo[i] = Inventory.Weapon[i].GetComponent<PrWeapon>().ActualBullets;
-            playerI.weaponsClips[i] = Inventory.Weapon[i].GetComponent<PrWeapon>().ActualClips;
-        }
-    }
-    
-
-    public void CreatePlayerInfo()
-    {
-        //Create Player info to be able to save player stats during gameplay
-      
-        Debug.Log("player Info NOT found - Saving Info");
-
-        GameObject playerInfo = new GameObject("playerInfo_" + playerNmb);
-        playerInfo.AddComponent<PrPlayerInfo>();
-        PrPlayerInfo playerI = playerInfo.GetComponent<PrPlayerInfo>();
-        playerI.playerNumber = playerNmb;
-        playerI.usingJoystick = JoystickEnabled;
-        playerI.playerName = Inventory.name;
-        playerI.health = Inventory.Health;
-        playerI.actualHealth = Inventory.ActualHealth;
-        playerI.maxWeaponCount = Inventory.playerWeaponLimit;
-        playerI.weapons = new int[Inventory.playerWeaponLimit];
-        playerI.weaponsAmmo = new int[Inventory.playerWeaponLimit];
-        playerI.weaponsClips = new int[Inventory.playerWeaponLimit];
-
-        for (int i =0; i < Inventory.playerWeaponLimit; i++)
-        {
-            //Debug.Log("Weapon " + i + " is " + Inventory.Weapon[i] + " And the Name is " + Inventory.Weapon[i].GetComponent<PrWeapon>().WeaponName + " And the bullets are " + Inventory.Weapon[i].GetComponent<PrWeapon>().ActualBullets);
-            playerI.weapons[i] = Inventory.actualWeaponTypes[i];
-            playerI.weaponsAmmo[i] = Inventory.Weapon[i].GetComponent<PrWeapon>().ActualBullets;
-            playerI.weaponsClips[i] = Inventory.Weapon[i].GetComponent<PrWeapon>().ActualClips;
-        }
-        
-    }
-
-    /*
     public void SetMultiplayerInputs()
     {
         if (playerNmb > 1)
@@ -253,7 +176,7 @@ public class PrTopDownCharController : MonoBehaviour {
             playerCtrlMap = playerSettings.playerCtrlMap;
         }
         
-    }*/
+    }
     
 
     public void SetMultiplayerSettings()
@@ -733,6 +656,5 @@ public class PrTopDownCharController : MonoBehaviour {
         {
             CamScript.TargetHeight = other.GetComponent<PrEnvironmentZone>().CameraHeight;
         }
-        
     }
 }

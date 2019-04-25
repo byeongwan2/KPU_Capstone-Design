@@ -10,8 +10,6 @@ public class PrCharacterRagdoll : MonoBehaviour {
     private ParticleSystem[] VFXParticles;
     private bool active = false;
 
-    private float ragdollTimer = 5.0f;
-    private float activeRagdollTimer = 0.0f;
     // Use this for initialization
     void Start () {
         InitializeRagdoll();
@@ -21,18 +19,7 @@ public class PrCharacterRagdoll : MonoBehaviour {
 
     // Update is called once per frame
 	void Update () {
-	    if (active)
-        {
-            if (activeRagdollTimer < ragdollTimer)
-            {
-                activeRagdollTimer += Time.deltaTime;
-            }
-            else
-            {
-                DeactivateRagdoll();
-            }
-            
-        }
+	
 	}
 
     public void InitializeRagdoll()
@@ -64,13 +51,6 @@ public class PrCharacterRagdoll : MonoBehaviour {
                 {
                     GO.GetComponent<Collider>().enabled = false;
                     GO.GetComponent<Rigidbody>().isKinematic = true;
-                    if (GO.GetComponent<CharacterJoint>())
-                    {
-                        GO.GetComponent<CharacterJoint>().enableProjection = true;
-
-                        //GO.AddComponent<PrRagdollStretchFix>();
-                    }
-                    
                 }
             }
 
@@ -81,21 +61,6 @@ public class PrCharacterRagdoll : MonoBehaviour {
                 weaponObject.gameObject.layer = LayerMask.NameToLayer("Weapon");
             }
         }
-    }
-
-    public void DeactivateRagdoll()
-    {
-        foreach (GameObject GO in ragdollBones)
-        {
-            if (GO != null)
-            {
-                GO.GetComponent<Collider>().enabled = false;
-                GO.GetComponent<Rigidbody>().isKinematic = true;
-
-            }
-        }
-        active = false;
-        activeRagdollTimer = 0.0f;
     }
 
     public void ActivateRagdoll()
@@ -122,44 +87,32 @@ public class PrCharacterRagdoll : MonoBehaviour {
         }
           
     }
-    public void SetForceToRagdoll(Vector3 position, Vector3 force, Transform target)
+    public void SetForceToRagdoll(Vector3 position, Vector3 force)
     {
         if (!active)
             ActivateRagdoll();
 
+        //getClosestBone
+        float dist = 200f;
         GameObject targetBone = ragdollBones[0];
-        if (target != null)
+        foreach (GameObject go in ragdollBones)
         {
-            targetBone = target.gameObject;
-        }
-        else
-        {
-             //getClosestBone
-            float dist = 200f;
-            foreach (GameObject go in ragdollBones)
+            if (go != null)
             {
-                if (go != null)
+                float tempDist = Vector3.Distance(go.transform.position, position);
+                if (dist > tempDist)
                 {
-                    float tempDist = Vector3.Distance(go.transform.position, position);
-                    if (dist > tempDist)
-                    {
-                        dist = tempDist;
-                        targetBone = go;
-                    }
+                    dist = tempDist;
+                    targetBone = go;
                 }
             }
         }
-       
-        //clamp force
-        //Debug.Log("Force Applied =" + force);
 
         targetBone.GetComponent<Rigidbody>().AddForceAtPosition(force, position,ForceMode.Impulse);
 
         if (weaponObject)
-        {    //weaponObject.GetComponent<Rigidbody>().AddExplosionForce(1.0f, position, 1.0f);
+            //weaponObject.GetComponent<Rigidbody>().AddExplosionForce(1.0f, position, 1.0f);
             weaponObject.GetComponent<Rigidbody>().AddForceAtPosition(force * 0.1f, position, ForceMode.Impulse);
-            weaponObject.gameObject.AddComponent<PrDestroyTimer>();
-        }
     }
 
     public void SetExplosiveForce(Vector3 position)

@@ -1,4 +1,4 @@
-﻿Shader "Sci-Fi Space Station/PBR Basic" {
+﻿Shader "PolygonR/PBR_Character_Multiply" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -77,7 +77,7 @@
 		
 			half occ = tex2D(_MetallicGlossMap, RescaledUV).b;
 			o.Occlusion = LerpOneTo(occ , _OcclusionStrength );
-					
+			o.Occlusion = 1.0;
 			o.Alpha = c.a;
 
 			o.Emission = tex2D(_EmissionMap, RescaledUV) * _EmissionColor * _EmissionFactor;

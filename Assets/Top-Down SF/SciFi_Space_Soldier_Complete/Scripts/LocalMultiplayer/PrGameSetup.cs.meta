@@ -1,22 +1,10 @@
 fileFormatVersion: 2
 guid: 41acfb5acfc9b1e46909b4a91dbd9225
-timeCreated: 1542570551
+timeCreated: 1505685526
 licenseType: Store
 MonoImporter:
-  externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - playersSettings: {fileID: 11400000, guid: 8e2d0b354a488ae47bbc60ced1173ff0, type: 2}
-  - weaponList: {fileID: 11400000, guid: 321a528b266638c4f8c71872e97f84d5, type: 2}
-  - playerWinsText: {instanceID: 0}
-  - playerSettings: {fileID: 11400000, guid: 8e2d0b354a488ae47bbc60ced1173ff0, type: 2}
-  - survivalSetup: {instanceID: 0}
-  - HUDSurvivalTimer: {instanceID: 0}
-  - HUDSurvivalActualWave: {instanceID: 0}
-  - multiplayerCam: {instanceID: 0}
-  - actualCameraScript: {instanceID: 0}
-  - areaMesh: {instanceID: 0}
-  - targetArrow: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

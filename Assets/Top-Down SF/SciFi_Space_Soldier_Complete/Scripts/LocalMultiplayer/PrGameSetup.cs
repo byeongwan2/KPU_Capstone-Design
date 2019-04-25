@@ -1,20 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-
 
 public class PrGameSetup : MonoBehaviour {
 
     public enum GameMode
     {
-        SinglePlayer = 0,
-        Coop = 1,
-        DeathMatch = 2,
-        TeamDeathMatch = 3,
-        TowerDefense = 4,
-        Survival = 5
+        SinglePlayer,
+        Coop,
+        DeathMatch,
+        TeamDeathMatch,
+        TowerDefense,
+        Survival
     }
 
     [Header("Game Setup")]
@@ -28,34 +25,15 @@ public class PrGameSetup : MonoBehaviour {
     public Transform[] playersSpawnPos;
     public bool[] spawnPointFull;
     public PrPlayerSettings playersSettings;
-    public PrLevelSettings levelSettings;
-    public PrWeaponList weaponList;
-    private string[] weaponNames;
 
     public enum GameStage
     {
         inGame,
         EndedMatch,
-        levelComplete
     }
-
-    
 
     [Header("In Game Stats")]
     public GameStage stage = GameStage.inGame;
-    public int actualLevel = 0;
-
-    //pickups
-    private GameObject[] pickups;
-    private Vector3[] playersDeathPos;
-    private bool useLives = false;
-    private int[] livesPerPlayer;
-    private bool[] playerReachedEndZone;
-
-
-    [Header("SinglePlayer and coop Setup")]
-
-    public GameObject LevelCompleteUI;
 
     [Header("DeathMatch Setup")]
     public int fragsToWin = 10;
@@ -119,103 +97,21 @@ public class PrGameSetup : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        if (playerSettings && playersSettings.selectedCharacters.Length > 0)
-        {
-            playersPrefabs = playersSettings.selectedCharacters;
-            actualPlayerCount = playersSettings.finalPlayerCount;
-        }
-
         if (mode == GameMode.TeamDeathMatch)
             actualPlayerCount = 4;
 
         //Set initialarrays
         playersControllers = new PrTopDownCharController[4];
         playersInventorys = new PrTopDownCharInventory[4];
-
-        
-
         actualPlayerPrefabs = new GameObject[4];
         spawnPointFull = new bool[playersSpawnPos.Length];
-
-        if (playersSettings)
-        {
-            if (weaponList)
-            {
-                weaponNames = new string[weaponList.weapons.Length];
-                int index = 0;
-                foreach (GameObject w in weaponList.weapons)
-                {
-                    weaponNames[index] = w.gameObject.GetComponent<PrWeapon>().WeaponName;
-                    index++;
-                }
-            }
-            pickups = GameObject.FindGameObjectsWithTag("Pickup");
-            if (pickups.Length > 0)
-            {
-                foreach (GameObject pickup in pickups)
-                {
-                    if (pickup.GetComponent<PrPickupObject>())
-                    {
-                        pickup.GetComponent<PrPickupObject>().ColorSetup = playerSettings;
-                        pickup.GetComponent<PrPickupObject>().weaponNames = weaponNames;
-                        pickup.GetComponent<PrPickupObject>().Initialize();
-                    }
-                }
-            }
-
-            PrItemsSpawner[] itemSpawners = FindObjectsOfType<PrItemsSpawner>();
-            if (itemSpawners.Length > 0)
-            {
-                foreach (PrItemsSpawner itemSpawner in itemSpawners)
-                {
-                    itemSpawner.settings = playerSettings;
-                    itemSpawner.weaponNames = weaponNames;
-                }
-            }
-        }
-
-        //Initialize Endzones
-        initializeEndzones();
-        //Set Actual Level from levelsettings file
-        actualLevel = levelSettings.actualLevel;
+        
         //Start Game Setup
         StartGame();
 
     }
 	
-    void initializeEndzones()
-    {
-        //EndZone Initialization
-        playerReachedEndZone = new bool[4];
-        int indexReached = 0;
-        foreach (bool reached in playerReachedEndZone)
-        {
-            playerReachedEndZone[indexReached] = false;
-            indexReached = indexReached + 1;
-        }
-    }
-
-    void ResetLives()
-    {
-        playersDeathPos = new Vector3[4];
-        useLives = playerSettings.useLives;
-        livesPerPlayer = new int[4];
-
-        for (int x = 0; x < 4; x++)
-        {
-            playersDeathPos[x] = playersSpawnPos[x].position;
-            if (playerSettings.livesPerPlayer >= 0)
-            {
-                livesPerPlayer[x] = playerSettings.livesPerPlayer;
-            }
-            else
-            {
-                livesPerPlayer[x] = 99999;
-            }
-        }
-    }
-
-    // Update is called once per frame
+	// Update is called once per frame
 	void Update () {
 
         if (Input.GetKeyDown(KeyCode.F5))
@@ -245,48 +141,9 @@ public class PrGameSetup : MonoBehaviour {
             NewMultiplayerMatch(actualPlayerCount);
         }
 
-        if (mode == GameMode.SinglePlayer || mode == GameMode.Coop)
-        {
-            if (stage != GameStage.levelComplete)
-            {
-                if (Input.GetButtonDown("Player1Start") && actualPlayerCount >= 1)
-                {
-                    if (stage == GameStage.EndedMatch)
-                    {
-                        NewMultiplayerMatch(1);
-                    }
-                    else
-                    {
-                        if (playersInventorys[0].isDead == true)
-                        {
-                            DestroyPlayer(0);
-                            if (useLives && livesPerPlayer[0] > 0)
-                            {
-                                SpawnPlayer(0, true);
-                                PlayerSpawned();
-                            }
-                            else
-                            {
-                                Debug.Log("Player can´t respawn, you must restart the game using F5");
-                            }
-                        }
-                    }
-
-                }
-            }
-            else
-            {
-                if (Input.GetButtonDown("Player1Start") && actualPlayerCount >= 1)
-                {
-                    LevelDone();
-                }
-            }
-           
-        }
-
         if (mode == GameMode.DeathMatch || mode == GameMode.TeamDeathMatch)
         {
-            if (Input.GetButtonDown("Player1Start") && playersSettings.playersInGame[0])
+            if (Input.GetButtonDown("Player1Start") && actualPlayerCount >= 1)
             {
                 if (stage == GameStage.EndedMatch)
                 {
@@ -304,7 +161,7 @@ public class PrGameSetup : MonoBehaviour {
                     
             }
 
-            if (Input.GetButtonDown("Player2Start") && playersSettings.playersInGame[1])
+            if (Input.GetButtonDown("Player2Start") && actualPlayerCount >= 2)
             {
                 if (stage == GameStage.EndedMatch)
                 {
@@ -321,7 +178,7 @@ public class PrGameSetup : MonoBehaviour {
                 }
 
             }
-            if (Input.GetButtonDown("Player3Start") && playersSettings.playersInGame[2])
+            if (Input.GetButtonDown("Player3Start") && actualPlayerCount >= 3)
             {
                 if (stage == GameStage.EndedMatch)
                 {
@@ -337,7 +194,7 @@ public class PrGameSetup : MonoBehaviour {
                     }
                 }
             }
-            if (Input.GetButtonDown("Player4Start") && playersSettings.playersInGame[3])
+            if (Input.GetButtonDown("Player4Start") && actualPlayerCount >= 4)
             {
                 if (stage == GameStage.EndedMatch)
                 {
@@ -397,111 +254,8 @@ public class PrGameSetup : MonoBehaviour {
         }
     }*/
 
-    void PlayerReachedEndZone(int playerNumber)
-    {
-        if (stage != GameStage.levelComplete)
-        {
-            if (actualPlayerPrefabs[playerNumber - 1] != null)
-            {
-                Debug.Log("player is here " + playerNumber);
-                playerReachedEndZone[playerNumber - 1] = true;
-            }
-            int count = 0;
-            foreach (bool reached in playerReachedEndZone)
-            {
-                if (reached)
-                    count = count + 1;
-            }
-            if (count >= actualPlayerCount)
-            {
-                SetLevelComplete();
-            }
-        }
-        
-    }
-
-    void SetLevelComplete()
-    {
-        if (LevelCompleteUI)
-        {
-            Instantiate(LevelCompleteUI, Vector3.zero, Quaternion.identity);
-        }
-        CallEnemiesToStop();
-        stage = GameStage.levelComplete;
-    }
-
-    void CallEnemiesToStop()
-    {
-        PrEnemyAI[] Enemies = FindObjectsOfType(typeof(PrEnemyAI)) as PrEnemyAI[];
-        if (Enemies.Length != 0)
-        {
-            foreach (PrEnemyAI enemy in Enemies)
-            {
-                enemy.StopAllActivities();
-            }
-        }
-        PrEnemySpawner[] spawners = FindObjectsOfType(typeof(PrEnemySpawner)) as PrEnemySpawner[];
-        foreach (var s in spawners)
-        {
-            s.SpawnerEnabled = false;
-        }
-
-    }
-
-    void LevelDone()
-    {
-        
-        Debug.Log("Level Complete - Loading Next Level");
-
-        if (mode == GameMode.SinglePlayer)
-        {
-            foreach (PrTopDownCharController player in playersControllers)
-            {
-                if (player != null)
-                    player.SavePlayerInfo();
-            }
-        }
-
-
-        LoadNextLevel();
-        
-            
-    }
-
-    void LoadNextLevel()
-    {
-        int nextLevel = actualLevel + 1;
-        levelSettings.actualLevel = nextLevel;
-
-        if (mode == GameMode.SinglePlayer)
-        {
-            if (levelSettings.availableSinglePlayerLevels.Length > nextLevel)
-                SceneManager.LoadScene(levelSettings.availableSinglePlayerLevels[nextLevel]);
-        }
-        else if (mode == GameMode.Coop)
-        {
-            SceneManager.LoadScene(levelSettings.availableCoopLevels[nextLevel]);
-        }
-        else if (mode == GameMode.DeathMatch)
-        {
-            SceneManager.LoadScene(levelSettings.availableMultiplayerLevels[nextLevel]);
-        }
-        else if (mode == GameMode.Survival)
-        {
-            SceneManager.LoadScene(levelSettings.availableSurvivalLevels[nextLevel]);
-        }
-        else if (mode == GameMode.TowerDefense)
-        {
-            SceneManager.LoadScene(levelSettings.availableTowerDefenseLevels[nextLevel]);
-        }
-
-
-    }
-
     void StartGame()
     {
-        ResetLives();
-
         playersFrags = new int[4];
         for (int i = 0; i < 4; i++)
         {
@@ -518,14 +272,9 @@ public class PrGameSetup : MonoBehaviour {
 
         if (playersPrefabs.Length >= actualPlayerCount && playersSpawnPos.Length >= actualPlayerCount)
         {
-           /* for (int x = 0; x < actualPlayerCount; x++)
+            for (int x = 0; x < actualPlayerCount; x++)
             {
                 SpawnPlayer(x, false);
-            }*/
-            for (int x = 0; x < 4; x++)
-            {
-                if (playersSettings.playersInGame[x])
-                    SpawnPlayer(x, false);
             }
 
         }
@@ -551,13 +300,7 @@ public class PrGameSetup : MonoBehaviour {
         {
             StartSurvivalMode();
         }
-
-        Debug.Log(actualPlayerPrefabs[0]);
-    }
-
-    void UpdateLastPlayerPos(int thePlayer)
-    {
-        playersDeathPos[thePlayer] = playersControllers[thePlayer].transform.position;
+        
     }
 
     void StartSurvivalMode()
@@ -635,7 +378,7 @@ public class PrGameSetup : MonoBehaviour {
         int actualSpawner = Random.Range(0, enemySpawners.Length);
         int enemyToSpawn = Random.Range(0, survivalSetup.waves[actualWave].Enemies.Length);
 
-        enemySpawners[actualSpawner].SurvivalSpawnEnemy(survivalSetup.waves[actualWave].Enemies[enemyToSpawn]);
+        enemySpawners[actualSpawner].SurivvalSpawnEnemy(survivalSetup.waves[actualWave].Enemies[enemyToSpawn]);
 
         waveEnemiesSpawned += 1;
         totalEnemiesSpawned += 1;
@@ -694,23 +437,15 @@ public class PrGameSetup : MonoBehaviour {
     {
         int playerCount = 0;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < actualPlayerCount; i++)
         {
-            if (!playersSettings.playersInGame[i])
+            if (playersInventorys[i].isDead)
             {
                 //DoNothing
             }
             else
             {
-                if (playersInventorys[i].isDead)
-                {
-                    //DoNothing
-                }
-                else
-                {
-                    playerCount += 1;
-                }
-                
+                playerCount += 1; 
             }
         }
 
@@ -719,25 +454,17 @@ public class PrGameSetup : MonoBehaviour {
             playersForCamera = new GameObject[playerCount];
 
             int finalCount = 0;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < actualPlayerCount; i++)
             {
-                if (!playersSettings.playersInGame[i])
+                if (playersInventorys[i].isDead)
                 {
                     //DoNothing
                 }
                 else
                 {
-                    if (playersInventorys[i].isDead)
-                    {
-                        //DoNothing
-                    }
-                    else
-                    {
-                        playersForCamera[finalCount] = playersInventorys[i].gameObject;
-                        finalCount += 1;
-                    }
+                    playersForCamera[finalCount] = playersInventorys[i].gameObject;
+                    finalCount += 1;
                 }
-               
             }
         }
         
@@ -775,32 +502,14 @@ public class PrGameSetup : MonoBehaviour {
 
     Vector3 GetCameraCenter()
     {
-        int a = 0;
         Vector3 cameraCenter = Vector3.zero;
-        //if (actualPlayerCount == 1)
-       // {
-        foreach (bool x in playersSettings.playersInGame)
+        if (actualPlayerCount == 1)
         {
-            if (x)
-            {
-                cameraCenter += actualPlayerPrefabs[a].transform.position;
-            }
-            a += 1;
+            cameraCenter = actualPlayerPrefabs[0].transform.position;
         }
-            
-       /* }
         else if (actualPlayerCount == 2)
         {
-            // cameraCenter = (actualPlayerPrefabs[0].transform.position + actualPlayerPrefabs[1].transform.position) / actualPlayerCount;
-            foreach (bool x in playersSettings.playersInGame)
-            {
-                if (x)
-                {
-                    cameraCenter = actualPlayerPrefabs[a].transform.position;
-                }
-                a += 1;
-            }
-            
+            cameraCenter = (actualPlayerPrefabs[0].transform.position + actualPlayerPrefabs[1].transform.position) / actualPlayerCount;
         }
         else if (actualPlayerCount == 3)
         {
@@ -809,9 +518,9 @@ public class PrGameSetup : MonoBehaviour {
         else if (actualPlayerCount == 4)
         {
             cameraCenter = (actualPlayerPrefabs[0].transform.position + actualPlayerPrefabs[1].transform.position + actualPlayerPrefabs[2].transform.position + actualPlayerPrefabs[3].transform.position) / actualPlayerCount;
-        }*/
+        }
     
-        return cameraCenter / actualPlayerCount; 
+        return cameraCenter; 
     }
 
     void DestroyPlayer(int playerNumber)
@@ -828,131 +537,119 @@ public class PrGameSetup : MonoBehaviour {
     
     void SpawnPlayer(int playerNumber, bool randomPos)
     {
-        if (playersSettings.playersInGame[playerNumber])
-        {
-            int posInt = playerNumber;
+        int posInt = playerNumber;
 
-            if (randomPos)
+        if (randomPos)
+        {
+            posInt = RandomNum(posInt);
+            int tries = 0;
+            while (spawnPointFull[posInt] == true && tries < 12)
             {
                 posInt = RandomNum(posInt);
-                int tries = 0;
-                while (spawnPointFull[posInt] == true && tries < 12)
+                tries += 1;
+            }
+            
+        }
+
+        //Instantiate player Prefab in Scene
+        GameObject tempPlayer = Instantiate(playersPrefabs[playerNumber], playersSpawnPos[posInt].position, playersSpawnPos[posInt].rotation) as GameObject;
+        tempPlayer.transform.parent = this.transform;
+        actualPlayerPrefabs[playerNumber] = tempPlayer;
+        playersControllers[playerNumber] = tempPlayer.transform.GetComponentInChildren<PrTopDownCharController>();
+        playersInventorys[playerNumber] = tempPlayer.transform.GetComponentInChildren<PrTopDownCharInventory>();
+
+        playersControllers[playerNumber].playerNmb = playerNumber + 1;
+        //set split screen var
+        playersInventorys[playerNumber].SetSplitScreen(useSplitScreen, actualPlayerCount);
+        
+        //Sets player Team settings
+        if (mode == GameMode.DeathMatch)
+        {
+            playersInventorys[playerNumber].team = playerNumber;
+            playersControllers[playerNumber].JoystickEnabled = true;
+        }
+        else if (mode == GameMode.TeamDeathMatch)
+        { 
+            if (playerNumber < 2)
+            {
+                playersInventorys[playerNumber].team = 1;
+            }
+            else
+            {
+                playersInventorys[playerNumber].team = 2;
+            }
+            playersControllers[playerNumber].JoystickEnabled = true;
+
+        }
+        //Set player Colors
+        if (mode == GameMode.SinglePlayer)
+        {
+            playersInventorys[playerNumber].SetPlayerColors(0, playerNumber, playerSettings);
+        }
+        else if (mode == GameMode.DeathMatch)
+        {
+            playersInventorys[playerNumber].SetPlayerColors(1, playerNumber, playerSettings);
+        }
+        else if (mode == GameMode.Coop || mode == GameMode.Survival)
+        {
+            playersInventorys[playerNumber].SetPlayerColors(2, playerNumber, playerSettings);
+        }
+        else if (mode == GameMode.TeamDeathMatch)
+        {
+            playersInventorys[playerNumber].SetPlayerColors(3, playersInventorys[playerNumber].team - 1, playerSettings);
+        }
+
+        if (mode != GameMode.SinglePlayer)
+        {
+            if (useSplitScreen)
+            {
+                //Debug.Log("Split Screen Active");
+                //Get Player Camera
+                playersControllers[playerNumber].CamScript.gameObject.SetActive(true);
+                Camera tempCam = playersControllers[playerNumber].CamScript.transform.GetComponentInChildren<Camera>();
+
+                if (actualPlayerCount == 1)
                 {
-                    posInt = RandomNum(posInt);
-                    tries += 1;
+                    //DoNothing
                 }
-
-            }
-            //set last position if using lives
-            Vector3 finalSpawnPos = playersSpawnPos[posInt].position;
-            if (useLives && playersDeathPos[playerNumber] != playersSpawnPos[playerNumber].position)
-            {
-                Debug.Log("aaaa" + playersDeathPos[playerNumber]);
-                finalSpawnPos = playersDeathPos[playerNumber];
-            }
-
-            Debug.Log(finalSpawnPos);
-            //Instantiate player Prefab in Scene
-            GameObject tempPlayer = Instantiate(playersPrefabs[playerNumber], finalSpawnPos, playersSpawnPos[posInt].rotation) as GameObject;
-            tempPlayer.transform.parent = this.transform;
-            actualPlayerPrefabs[playerNumber] = tempPlayer;
-            playersControllers[playerNumber] = tempPlayer.transform.GetComponentInChildren<PrTopDownCharController>();
-            playersInventorys[playerNumber] = tempPlayer.transform.GetComponentInChildren<PrTopDownCharInventory>();
-
-            playersControllers[playerNumber].playerNmb = playerNumber + 1;
-            //set split screen var
-            playersInventorys[playerNumber].SetSplitScreen(useSplitScreen, actualPlayerCount);
-
-            //Sets player Team settings
-            if (mode == GameMode.DeathMatch)
-            {
-                playersInventorys[playerNumber].team = playerNumber;
-                playersControllers[playerNumber].JoystickEnabled = true;
-            }
-            else if (mode == GameMode.TeamDeathMatch)
-            {
-                if (playerNumber < 2)
+                else if (actualPlayerCount == 2)
                 {
-                    playersInventorys[playerNumber].team = 1;
+                    if (playerNumber == 0)
+                        SetCamSplitScreen(tempCam, 0, 0, 0.5f, 1);
+                    else if (playerNumber == 1)
+                        SetCamSplitScreen(tempCam, 0.5f, 0, 0.5f, 1);
                 }
-                else
+                else if (actualPlayerCount == 3)
                 {
-                    playersInventorys[playerNumber].team = 2;
+                    if (playerNumber == 0)
+                        SetCamSplitScreen(tempCam, 0.25f, 0.5f, 0.5f, 0.5f);
+                    else if (playerNumber == 1)
+                        SetCamSplitScreen(tempCam, 0.0f, 0, 0.5f, 0.5f);
+                    else if (playerNumber == 2)
+                        SetCamSplitScreen(tempCam, 0.5f, 0, 0.5f, 0.5f);
                 }
-                playersControllers[playerNumber].JoystickEnabled = true;
-
-            }
-            //Set player Colors
-            if (mode == GameMode.SinglePlayer)
-            {
-                playersInventorys[playerNumber].SetPlayerColors(0, playerNumber, playerSettings);
-            }
-            else if (mode == GameMode.DeathMatch)
-            {
-                playersInventorys[playerNumber].SetPlayerColors(1, playerNumber, playerSettings);
-            }
-            else if (mode == GameMode.Coop || mode == GameMode.Survival)
-            {
-                playersInventorys[playerNumber].SetPlayerColors(2, playerNumber, playerSettings);
-            }
-            else if (mode == GameMode.TeamDeathMatch)
-            {
-                playersInventorys[playerNumber].SetPlayerColors(3, playersInventorys[playerNumber].team - 1, playerSettings);
-            }
-
-            if (mode != GameMode.SinglePlayer)
-            {
-                if (useSplitScreen)
+                else if (actualPlayerCount == 4)
                 {
-                    //Debug.Log("Split Screen Active");
-                    //Get Player Camera
-                    playersControllers[playerNumber].CamScript.gameObject.SetActive(true);
-                    Camera tempCam = playersControllers[playerNumber].CamScript.transform.GetComponentInChildren<Camera>();
-
-                    if (actualPlayerCount == 1)
-                    {
-                        //DoNothing
-                    }
-                    else if (actualPlayerCount == 2)
-                    {
-                        if (playerNumber == 0)
-                            SetCamSplitScreen(tempCam, 0, 0, 0.5f, 1);
-                        else if (playerNumber == 1)
-                            SetCamSplitScreen(tempCam, 0.5f, 0, 0.5f, 1);
-                    }
-                    else if (actualPlayerCount == 3)
-                    {
-                        if (playerNumber == 0)
-                            SetCamSplitScreen(tempCam, 0.25f, 0.5f, 0.5f, 0.5f);
-                        else if (playerNumber == 1)
-                            SetCamSplitScreen(tempCam, 0.0f, 0, 0.5f, 0.5f);
-                        else if (playerNumber == 2)
-                            SetCamSplitScreen(tempCam, 0.5f, 0, 0.5f, 0.5f);
-                    }
-                    else if (actualPlayerCount == 4)
-                    {
-                        if (playerNumber == 0)
-                            SetCamSplitScreen(tempCam, 0.0f, 0.5f, 0.5f, 0.5f);
-                        else if (playerNumber == 1)
-                            SetCamSplitScreen(tempCam, 0.5f, 0.5f, 0.5f, 0.5f);
-                        else if (playerNumber == 2)
-                            SetCamSplitScreen(tempCam, 0.0f, 0, 0.5f, 0.5f);
-                        else if (playerNumber == 3)
-                            SetCamSplitScreen(tempCam, 0.5f, 0, 0.5f, 0.5f);
-
-                    }
-                    //SetCamSplitScreen()
-                    // playersControllers[playerNumber].CamScript.transform.GetComponentInChildren<Camera>().rect.
-                }
-                else
-                {
-                    playersControllers[playerNumber].CamScript.gameObject.SetActive(false);
-                    playersInventorys[playerNumber].HUDDamageFullScreen.SetActive(false);
+                    if (playerNumber == 0)
+                        SetCamSplitScreen(tempCam, 0.0f, 0.5f, 0.5f, 0.5f);
+                    else if (playerNumber == 1)
+                        SetCamSplitScreen(tempCam, 0.5f, 0.5f, 0.5f, 0.5f);
+                    else if (playerNumber == 2)
+                        SetCamSplitScreen(tempCam, 0.0f, 0, 0.5f, 0.5f);
+                    else if (playerNumber == 3)
+                        SetCamSplitScreen(tempCam, 0.5f, 0, 0.5f, 0.5f);
 
                 }
+                //SetCamSplitScreen()
+                // playersControllers[playerNumber].CamScript.transform.GetComponentInChildren<Camera>().rect.
+            }
+            else
+            {
+                playersControllers[playerNumber].CamScript.gameObject.SetActive(false);
+                playersInventorys[playerNumber].HUDDamageFullScreen.SetActive(false);
+
             }
         }
-        
         
 
     }
@@ -988,12 +685,8 @@ public class PrGameSetup : MonoBehaviour {
 
         foreach (GameObject text in fragCounter)
         {
-            if (playersSettings.playersInGame[i-1])
-            {
-                playersFrags[i - 1] = 0;
-                text.GetComponent<Text>().text = "P" + i.ToString() + " " + playersFrags[i - 1].ToString();
-            }
-           
+            playersFrags[i - 1] = 0;
+            text.GetComponent<Text>().text = "P" + i.ToString() + " " + playersFrags[i - 1].ToString();
         }
 
         i = 1;
@@ -1018,23 +711,15 @@ public class PrGameSetup : MonoBehaviour {
             int i = 1;
             foreach (GameObject text in fragCounter)
             {
-                if (actualPlayerCount == 1)
+                if (actualPlayerCount <= i - 1)
                 {
-                    Debug.Log("Un Solo player");
+
                     text.GetComponent<Text>().text = "";
                 }
                 else
                 {
-                    if (playersSettings.playersInGame[i-1])
-                    {
-                        text.GetComponent<Text>().color = playerSettings.playerColor[i - 1];
-                        text.GetComponent<Text>().text = "P" + i.ToString() + " " + playersFrags[i - 1].ToString() + "0";
-                    }
-                    else
-                    {
-                        text.GetComponent<Text>().text = "";
-                    }
-                    
+
+                    text.GetComponent<Text>().text = "P" + i.ToString() + " " + playersFrags[i - 1].ToString() + "0";
                 }
 
                 i += 1;
@@ -1121,8 +806,7 @@ public class PrGameSetup : MonoBehaviour {
     public void PlayerSpawned()
     {
         SetPlayersForCamera();
-        if (actualCameraScript)
-            actualCameraScript.MultiplayerCam(playersForCamera, actualPlayerCount);
+        actualCameraScript.MultiplayerCam(playersForCamera, actualPlayerCount);
     }
 
     public void PlayerDied(int playerNumber)
@@ -1136,17 +820,7 @@ public class PrGameSetup : MonoBehaviour {
 
             }
         }
-
-        UpdateLastPlayerPos(playerNumber-1);
-
-        if (mode == GameMode.SinglePlayer || mode == GameMode.SinglePlayer)
-        {
-            if (useLives && livesPerPlayer[playerNumber] > 0 && playerSettings.livesPerPlayer >= 0)
-            {
-                livesPerPlayer[playerNumber-1] -= 1;
-            }
-        }
-
+        
         //Do whatever you need
     }
 

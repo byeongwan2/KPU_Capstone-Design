@@ -109,8 +109,6 @@ public class PrWeapon : MonoBehaviour {
     [HideInInspector]
     public GameObject HUDWeaponPicture;
     [HideInInspector]
-    //public GameObject HUDWeaponName;
-    //[HideInInspector]
     public GameObject HUDWeaponBullets;
     [HideInInspector]
     public GameObject HUDWeaponBulletsBar;
@@ -140,24 +138,19 @@ public class PrWeapon : MonoBehaviour {
     [HideInInspector]
     public int team = 0;
 
-    private void Awake()
-    {
-        ActualBullets = Bullets;
-        ActualClips = Clips;
-
-    }
 
     // Use this for initialization
     void Start()
     {
         Audio = transform.parent.GetComponent<AudioSource>();
 
-       
+        ActualBullets = Bullets;
+        ActualClips = Clips;
+
         if (!AIWeapon)
         {
-            HUDWeaponBullets.GetComponent<Text>().text = (ActualBullets / BulletsPerShoot).ToString();
+            HUDWeaponBullets.GetComponent<Text>().text = ActualBullets.ToString();
             HUDWeaponClips.GetComponent<Text>().text = ActualClips.ToString();
-            HUDWeaponBulletsBar.GetComponent<Image>().fillAmount = (1.0f / Bullets) * ActualBullets;
             HUDWeaponBulletsBar.GetComponent<RectTransform>().localScale = Vector3.one;
 
             team = Player.GetComponent<PrTopDownCharInventory>().team;
@@ -206,13 +199,6 @@ public class PrWeapon : MonoBehaviour {
                 actualLaserHits[i].name = WeaponName + "_Beam_Hit_" + i.ToString();
                 actualLaserHits[i].transform.parent = BulletsParent.transform;
             }
-
-            if (turretWeapon)
-            {
-                ShootTarget = new GameObject("ShootTarget").transform;
-                ShootTarget.SetParent(transform);
-            }
-
 
         }
         else if (Type == WT.Melee)
@@ -337,12 +323,10 @@ public class PrWeapon : MonoBehaviour {
     {
         if (!AIWeapon && Type != WT.Melee && updateHUD)
         {
-            HUDWeaponBullets.GetComponent<Text>().text = (ActualBullets / BulletsPerShoot).ToString();
+            HUDWeaponBullets.GetComponent<Text>().text = ActualBullets.ToString();
             HUDWeaponClips.GetComponent<Text>().text = ActualClips.ToString();
-            HUDWeaponBulletsBar.GetComponent<Image>().fillAmount =(1.0f / Bullets) * ActualBullets;
-            //Debug.Log("Bullets = " + Bullets);
-            //HUDWeaponBulletsBar.GetComponent<RectTransform>().localScale = new Vector3((1.0f / Bullets) * ActualBullets, 1.0f, 1.0f);
-
+            HUDWeaponBulletsBar.GetComponent<RectTransform>().localScale = new Vector3((1.0f / Bullets) * ActualBullets, 1.0f, 1.0f);
+           
         }
     }
 
@@ -350,13 +334,10 @@ public class PrWeapon : MonoBehaviour {
     {
         if (!AIWeapon && Type != WT.Melee)
         {
-            HUDWeaponBullets.GetComponent<Text>().text = (ActualBullets / BulletsPerShoot).ToString();
+            HUDWeaponBullets.GetComponent<Text>().text = ActualBullets.ToString();
             HUDWeaponClips.GetComponent<Text>().text = ActualClips.ToString();
-            HUDWeaponBulletsBar.GetComponent<Image>().fillAmount = (1.0f / Bullets) * ActualBullets;
-            //HUDWeaponBulletsBar.GetComponent<RectTransform>().localScale = new Vector3((1.0f / Bullets) * ActualBullets, 1.0f, 1.0f);
+            HUDWeaponBulletsBar.GetComponent<RectTransform>().localScale = new Vector3((1.0f / Bullets) * ActualBullets, 1.0f, 1.0f);
             HUDWeaponPicture = weapPic;
-            if (HUDWeaponPicture.GetComponentInChildren<Text>())
-                HUDWeaponPicture.GetComponentInChildren<Text>().text = WeaponName;
         }
     }
 
@@ -583,12 +564,8 @@ public class PrWeapon : MonoBehaviour {
             else if (Type == WT.Laser && actualBeams.Length != 0 && ShootFXPos && !Reloading)
             {
                 bool useDefaultImpactFX = true;
-                
                 Vector3 HitPos = ShootTarget.position + new Vector3(0, 1.2f, 0);
-
                 Vector3 hitNormal = ShootTarget.forward;
-
-
                 if (ActualBullets > 0)
                 {
                     

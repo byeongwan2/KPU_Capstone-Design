@@ -17,12 +17,6 @@ public class PrPickupAmmo : PrPickupObject {
 	
 	}
 
-    protected override void SetName()
-    {
-        itemName = LoadType.ToString() + " Ammo";
-
-    }
-
     protected override void PickupObjectNow(int ActiveWeapon)
     {
 
@@ -30,11 +24,7 @@ public class PrPickupAmmo : PrPickupObject {
         {
             PrTopDownCharInventory PlayerInv = Player.GetComponent<PrTopDownCharInventory>();
 
-            if (PlayerInv.Weapon[ActiveWeapon].GetComponent<PrWeapon>() != null)
-            {
-                PlayerInv.Weapon[ActiveWeapon].GetComponent<PrWeapon>().LoadAmmo((int)LoadType);
-            }
-            
+            PlayerInv.Weapon[ActiveWeapon].SendMessage("LoadAmmo", (int)LoadType);
 
         }
 
