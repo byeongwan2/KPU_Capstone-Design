@@ -7,7 +7,8 @@ using UnityEngine.AI;
 public class Alien : Enemy
 {
     BehaviorTree bt;
-    public int vitality = 5;   // 체력
+    public int vitality = 1;   // 체력
+    public int damage = 5;
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
     private readonly int hashRoll = Animator.StringToHash("isRoll");
@@ -64,7 +65,7 @@ public class Alien : Enemy
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(activing_Func);
+       // Debug.Log(activing_Func);
         if (eEnemy_State == ENEMY_STATE.DIE)
             return;
         if (!isOther_State_Change)
@@ -72,7 +73,7 @@ public class Alien : Enemy
             bt.Run();
         }
 
-        Debug.Log(activing_Func);
+       // Debug.Log(activing_Func);
     }
    
 
@@ -100,6 +101,7 @@ public class Alien : Enemy
         eEnemy_State = ENEMY_STATE.DIE;
         isOther_State_Change = true;
         agent.isStopped = true;
+        SendMessage("Create_First_Monster");
     }                   
     
     public RESULT Attack()   
@@ -302,5 +304,11 @@ public class Alien : Enemy
     void Exit_LookAround()
     {
         is_Rolling_Count = 0;
+    }
+
+    void Event_SendDamage()
+    {
+        if(trace.Condition(1.6f))
+            attack.Send_Damage();
     }
 }

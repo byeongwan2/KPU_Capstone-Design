@@ -5,36 +5,58 @@ using UnityEngine;
 public class Robot : Enemy {
     enum UP_BODY_STATE { THROW,SHOT}
     UP_BODY_STATE eMotionState;
-    private MoveAgent agent;
-    private Transform tr;
-    private Move move;
+    BehaviorTree bt;
 
-    private readonly string str = "RobotWayPoint";
-	void Start()
+    Trace trace;
+    float traceCoverage = 6.0f;
+    bool isOther_State_Change = false;
+    [SerializeField]
+    string activing_Func = string.Empty;
+    void Start()
     {
-        //hp
-
         base.Init();
-
-//        eState = STATE.STAND;
-        tr = GetComponent<Transform>();
-        move = GetComponent<Move>();
-        agent = GetComponent<MoveAgent>();
-        agent.Init(str, 2.0f, 3.0f);
-        move.Set_MoveSpeed(4.0f);
+        trace = GetComponent<Trace>();
+        trace.Init_Target(system.pPlayer2);
+        trace.Setting(agent, 2.0f);
+        traceCoverage = 6.0f;
+        eEnemy_State = ENEMY_STATE.WALK;
+        animator.SetTrigger("IsWALK");
+        Build_BT();
     }
 
     void Update()
     {
-        Logic();
-        MotionRender();
-        Render();
-     
+        if (isOther_State_Change == false)
+        {
+            bt.Run();
+        }
+
     }
 
-    void Render()
+    void Build_BT() // 행동트리 생성
     {
+        // 노드 생성
+        Selector root = new Selector();
+
+        Selector behaviour = new Selector();
         
+        
+        Leaf_Node trace_Node = new Leaf_Node(Trace);
+        behaviour.AddChild(trace_Node);
+        root.AddChild(behaviour);
+        bt = new BehaviorTree(root);
+    }
+
+    public RESULT Trace()
+    {
+        if (eEnemy_State == ENEMY_STATE.WALK) trace.Work();
+        if (activing_Func.Equals("Trace")) return RESULT.RUNNING;
+        trace.Init();
+        activing_Func = "Trace";
+        animator.SetTrigger("isWalk");
+        eEnemy_State = ENEMY_STATE.WALK;
+        agent.isStopped = false;
+        return RESULT.SUCCESS;
     }
 
     void MotionRender()
@@ -50,12 +72,7 @@ public class Robot : Enemy {
         }
     }
 
-    private void Logic()
-    {
-       // if (agent.pPatrolling)   eState = STATE.WALK; 
-
-
-    }
+    
 
     
    

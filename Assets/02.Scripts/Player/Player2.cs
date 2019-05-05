@@ -90,6 +90,7 @@ public partial class Player2 : MoveObject
         particle.Init("RollWaveEffect");
 
         wound = GetComponent<Wound>();
+        wound.Init(100);
         //현재상태 // 이전상태 
         eState = STATE.STAND;
         ePreState = STATE.STAND;

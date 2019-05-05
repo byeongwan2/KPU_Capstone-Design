@@ -1,17 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Wound : MonoBehaviour {            //상처를 입는 사물이라면 이 클래스를 Add Component
     SkinnedMeshRenderer[] this_renderer;
     MoveObject this_gameObject;
     bool woundEffect = false;
+    int hp;
+    public Slider healthSlider;
     void Start()
     {
         this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
         this_gameObject = GetComponent<MoveObject>();
+        healthSlider = GetComponentInChildren<Slider>();
+        healthSlider.maxValue = 100;
+        healthSlider.value = 100;
     }
-	public void TriggerEnter(Collider _obj)
+    public void Init(int  _hp = 100)
+    {
+        hp = _hp;
+    }
+    public void TriggerEnter(Collider _obj)
     {
         var id = this_gameObject.Get_Id();
         if (this_gameObject.Compare_This(id)) return;
@@ -53,4 +62,11 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
     {
       //  this_gameObject.MinusHp(_damage);
     }
+    public void GetDamage(int _damage)
+    {
+        hp -= _damage;
+        healthSlider.value -= _damage;
+    }
+
+
 }

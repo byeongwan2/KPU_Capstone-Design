@@ -5,11 +5,12 @@ using UnityEngine.AI;
 public class Attack : MonoBehaviour
 {
     NavMeshAgent agent;
-    MoveObject target;
+    Wound target;
     private int attackDamage = 10;
     public void Init_Target(MoveObject _target)
     {
-        target = _target;
+        target = _target.GetComponent<Wound>();
+        Debug.Log("몇번");
     }
     public void Setting(NavMeshAgent _agent,int _attackDamage)
     {
@@ -28,5 +29,10 @@ public class Attack : MonoBehaviour
         float rotateDegree = Mathf.Atan2(target.transform.position.x - transform.position.x, target.transform.position.z - transform.position.z) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
         return true;
+    }
+
+    public void Send_Damage()
+    {
+        target.GetDamage(attackDamage);
     }
 }
