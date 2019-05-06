@@ -10,6 +10,7 @@ public abstract class Enemy : MoveObject
     protected GameSystem system;
     protected Animator animator;
     protected NavMeshAgent agent;
+    protected Collider col;
     [SerializeField]
     protected ENEMY_STATE eEnemy_State = ENEMY_STATE.IDLE;
     public ENEMY_STATE Get_State()
@@ -22,6 +23,7 @@ public abstract class Enemy : MoveObject
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;
+        col = GetComponent<Collider>();
     }
   
     public void Set_NewPosition(Vector3 _vec)
@@ -31,6 +33,10 @@ public abstract class Enemy : MoveObject
 
     public delegate ENEMY_STATE GetTraceState( ENEMY_STATE _Enemy_State );
 
+    protected void Die()
+    {
+        col.enabled = false;
+    }
  
  
 }

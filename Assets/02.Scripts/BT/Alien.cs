@@ -65,10 +65,14 @@ public class Alien : Enemy
     // Update is called once per frame
     void Update()
     {
-       // Debug.Log(activing_Func);
+        // Debug.Log(activing_Func);
         if (eEnemy_State == ENEMY_STATE.DIE)
+        {
+            isOther_State_Change = true;
+            agent.isStopped = true;
             return;
-        if (!isOther_State_Change)
+        }
+        if (isOther_State_Change == false)
         { 
             bt.Run();
         }
@@ -94,13 +98,14 @@ public class Alien : Enemy
         
     }
 
-    void Die() // Die 액션
+    new void Die() // Die 액션
     {
         activing_Func = "Death";
         animator.SetTrigger(hashDeath);
         eEnemy_State = ENEMY_STATE.DIE;
         isOther_State_Change = true;
         agent.isStopped = true;
+        base.Die();
         SendMessage("Create_First_Monster");
     }                   
     

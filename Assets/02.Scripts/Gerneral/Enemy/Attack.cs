@@ -10,7 +10,6 @@ public class Attack : MonoBehaviour
     public void Init_Target(MoveObject _target)
     {
         target = _target.GetComponent<Wound>();
-        Debug.Log("몇번");
     }
     public void Setting(NavMeshAgent _agent,int _attackDamage)
     {

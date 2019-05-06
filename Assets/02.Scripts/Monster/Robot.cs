@@ -7,25 +7,44 @@ public class Robot : Enemy {
     UP_BODY_STATE eMotionState;
     BehaviorTree bt;
 
+    Attack attack;
+
     Trace trace;
     float traceCoverage = 6.0f;
     bool isOther_State_Change = false;
     [SerializeField]
     string activing_Func = string.Empty;
+
+    int vitality = 3;
+    Rigidbody rb;
     void Start()
     {
         base.Init();
+
+        rb = GetComponent<Rigidbody>();
+        attack = GetComponent<Attack>();
+        attack.Init_Target(system.pPlayer2);
+        attack.Setting(agent, 5);
+
+
+
         trace = GetComponent<Trace>();
         trace.Init_Target(system.pPlayer2);
-        trace.Setting(agent, 2.0f);
+        trace.Setting(agent, 1.0f);
         traceCoverage = 6.0f;
         eEnemy_State = ENEMY_STATE.WALK;
-        animator.SetTrigger("IsWALK");
+        animator.SetTrigger("isWalk");
         Build_BT();
     }
 
     void Update()
     {
+        if (eEnemy_State == ENEMY_STATE.DIE)
+        {
+            isOther_State_Change = true;
+            agent.isStopped = true;
+            return;
+        }
         if (isOther_State_Change == false)
         {
             bt.Run();
@@ -33,18 +52,52 @@ public class Robot : Enemy {
 
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (vitality <= 0) return;
+        if (other.CompareTag("Bullet"))
+        {
+            vitality--;
+            Debug.Log("맞음");
+            other.gameObject.SetActive(false);
+            if (vitality <= 0)
+            {
+                Die();
+                rb.constraints = RigidbodyConstraints.FreezeRotation;
+            }
+        }
+
+    }
+
+
     void Build_BT() // 행동트리 생성
     {
         // 노드 생성
         Selector root = new Selector();
 
         Selector behaviour = new Selector();
-        
-        
+
+        Sequence attack_Sequence_Node = new Sequence();
+
         Leaf_Node trace_Node = new Leaf_Node(Trace);
+        Leaf_Node attack_Node = new Leaf_Node(Attack);
+        Leaf_Node attack_Condition_Node = new Leaf_Node(Distance_Attack_Condition);
+
+        attack_Sequence_Node.AddChild(attack_Condition_Node);
+        attack_Sequence_Node.AddChild(attack_Node);
+
+        behaviour.AddChild(attack_Sequence_Node);
         behaviour.AddChild(trace_Node);
         root.AddChild(behaviour);
         bt = new BehaviorTree(root);
+    }
+
+
+
+    public RESULT Distance_Attack_Condition()
+    {
+        if (trace.Condition(4.0f)) return RESULT.SUCCESS;
+        return RESULT.FAIL;
     }
 
     public RESULT Trace()
@@ -59,18 +112,38 @@ public class Robot : Enemy {
         return RESULT.SUCCESS;
     }
 
-    void MotionRender()
+    public RESULT Attack()
     {
-        switch(eMotionState)
-        {
-            case UP_BODY_STATE.SHOT:
-                animator.SetBool("IsAttack",true);
-                break;
-            case UP_BODY_STATE.THROW:
+        if (activing_Func.Equals("Attack")) return RESULT.RUNNING;
+        attack.Init();
+        attack.Work();
+        activing_Func = "Attack";
+        animator.SetTrigger("isAttack");
+        eEnemy_State = ENEMY_STATE.ATTACK;
 
-                break;
-        }
+        agent.isStopped = true;
+        isOther_State_Change = true;                //다른 상태로 바꿀수 없다
+        return RESULT.SUCCESS;
     }
+
+    new void Die()
+    {
+        activing_Func = "Death";
+        animator.SetTrigger("isDeath");
+        eEnemy_State = ENEMY_STATE.DIE;
+        isOther_State_Change = true;
+        agent.isStopped = true;
+        base.Die();
+    }
+
+
+    void Exit_Attack()
+    {
+        agent.isStopped = false;
+        activing_Func = string.Empty;
+        isOther_State_Change = false;
+    }
+
 
     
 
