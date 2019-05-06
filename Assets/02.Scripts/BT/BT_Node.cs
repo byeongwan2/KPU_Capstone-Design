@@ -105,7 +105,7 @@ public class Leaf_Node: Node
     
     public override RESULT Run()
     {
-        Debug.Log(Define.DEBUG_STRING + m_func.Method);
+        //Debug.Log(Define.DEBUG_STRING + m_func.Method);
         switch(m_func())
         {
             case RESULT.SUCCESS:
@@ -132,7 +132,7 @@ public class Leaf_Node_Float : Node
 
     public override RESULT Run()
     {
-        Debug.Log(Define.DEBUG_STRING + m_func.Method);
+        //Debug.Log(Define.DEBUG_STRING + m_func.Method);
         switch (m_func(data))
         {
             case RESULT.SUCCESS:

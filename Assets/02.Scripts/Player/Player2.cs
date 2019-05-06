@@ -33,7 +33,7 @@ public partial class Player2 : MoveObject
     private CapsuleCollider playerCol;
    
 
-    private readonly int MAXPLAYERBULLETCOUNT = 40;
+    private readonly int MAXPLAYERBULLETCOUNT = 15;
     [SerializeField]
     private int shotDamage = 10;
 
@@ -370,7 +370,7 @@ public partial class Player2 : MoveObject
             playerAni.SetTrigger("Attack");
             Attack_Gun();
         }
-        else if(Input.GetKeyDown(KeyCode.B))
+        else if(Input.GetKeyDown(KeyCode.F))
         {
             playerAni.SetTrigger("Throw");
             isMouse = true;

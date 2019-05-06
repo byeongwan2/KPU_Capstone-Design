@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Robot : Enemy {
     enum UP_BODY_STATE { THROW,SHOT}
     UP_BODY_STATE eMotionState;
@@ -17,6 +17,8 @@ public class Robot : Enemy {
 
     int vitality = 3;
     Rigidbody rb;
+    Slider healthSlider;
+    public int damage = 3;
     void Start()
     {
         base.Init();
@@ -35,6 +37,10 @@ public class Robot : Enemy {
         eEnemy_State = ENEMY_STATE.WALK;
         animator.SetTrigger("isWalk");
         Build_BT();
+
+        healthSlider = GetComponentInChildren<Slider>();
+        healthSlider.maxValue = 3;
+        healthSlider.value = 3;
     }
 
     void Update()
@@ -58,7 +64,7 @@ public class Robot : Enemy {
         if (other.CompareTag("Bullet"))
         {
             vitality--;
-            Debug.Log("맞음");
+            healthSlider.value -= 1;
             other.gameObject.SetActive(false);
             if (vitality <= 0)
             {
@@ -96,7 +102,7 @@ public class Robot : Enemy {
 
     public RESULT Distance_Attack_Condition()
     {
-        if (trace.Condition(4.0f)) return RESULT.SUCCESS;
+        if (trace.Condition(1.2f)) return RESULT.SUCCESS;
         return RESULT.FAIL;
     }
 
@@ -129,7 +135,12 @@ public class Robot : Enemy {
     new void Die()
     {
         activing_Func = "Death";
-        animator.SetTrigger("isDeath");
+
+        int r = Random.Range(0, 2);
+        if (r == 0)
+            animator.SetTrigger("isDeath");
+        else if ( r == 1)
+            animator.SetTrigger("isDeath2");
         eEnemy_State = ENEMY_STATE.DIE;
         isOther_State_Change = true;
         agent.isStopped = true;
@@ -144,9 +155,14 @@ public class Robot : Enemy {
         isOther_State_Change = false;
     }
 
+    void Event_SendDamage()
+    {
+        if (trace.Condition(1.2f))
+            attack.Send_Damage();
+    }
 
-    
 
-    
-   
+
+
+
 }

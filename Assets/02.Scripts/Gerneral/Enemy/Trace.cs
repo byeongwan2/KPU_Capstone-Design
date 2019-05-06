@@ -23,6 +23,10 @@ public class Trace : MonoBehaviour
         agent.speed = speed;
     }
 
+    public void Init(float _speed)
+    {
+        agent.speed = _speed;
+    }
 
     public void Work()
     {

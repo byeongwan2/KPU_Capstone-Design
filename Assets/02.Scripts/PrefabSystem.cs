@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public enum TYPE { BOMB, BULLET ,MONSTER  , ADVANCEBULLET}
+public enum TYPE { BOMB, BULLET ,MONSTER  , ADVANCEBULLET,ROBOT}
 public class PrefabSystem : MonoBehaviour {                //프리팹시스템에서 모든 오브젝트풀을 관리하니까 나중에 분리할필요가있음
     public static PrefabSystem instance = null;             //제네릭클래스로 바꿔야함
     void Awake()
@@ -17,6 +17,7 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     private List<GameObject> bulletPool = new List<GameObject>();
     private List<GameObject> monsterPool = new List<GameObject>();
     private List<GameObject> advanceBulletPool = new List<GameObject>();
+    private List<GameObject> robotPool = new List<GameObject>();
     public StringBuilder st = new StringBuilder();
     List<GameObject> activeBullet = new List<GameObject>();
     public List<GameObject> Get_BulletPool()
@@ -38,6 +39,7 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
         else if (_type == TYPE.BULLET) Select_PoolType(bulletPool, _gameObject, _count);
         else if (_type == TYPE.MONSTER) Select_PoolType(monsterPool, _gameObject, _count);
         else if (_type == TYPE.ADVANCEBULLET) Select_PoolType(advanceBulletPool, _gameObject, _count);
+        else if (_type == TYPE.ROBOT) Select_PoolType(robotPool, _gameObject, _count);
     }
    
     public GameObject Active_Prefab(TYPE _type) 

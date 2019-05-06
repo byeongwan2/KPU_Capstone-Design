@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public enum ENEMY_STATE { IDLE, WALK, RUN ,ATTACK ,RETRACE,ROLL,LOOKAROUND,DIE}
+public enum ENEMY_STATE { IDLE, WALK, RUN ,ATTACK ,RETRACE,ROLL,LOOKAROUND,DIE,RELOAD,ROTATE}
 
 public abstract class Enemy : MoveObject
 {
@@ -36,6 +36,8 @@ public abstract class Enemy : MoveObject
     protected void Die()
     {
         col.enabled = false;
+        agent.radius = 0;
+        agent.height = 0;
     }
  
  

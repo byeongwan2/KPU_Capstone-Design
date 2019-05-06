@@ -7,7 +7,7 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
     MoveObject this_gameObject;
     bool woundEffect = false;
     int hp;
-    public Slider healthSlider;
+    Slider healthSlider;
     void Start()
     {
         this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();

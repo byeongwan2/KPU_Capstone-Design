@@ -13369,7 +13369,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3791e35c8aecef046ae196e5afa87446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 0}
 --- !u!195 &380278968
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -58884,7 +58883,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3791e35c8aecef046ae196e5afa87446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 0}
 --- !u!136 &1420105294
 CapsuleCollider:
   m_ObjectHideFlags: 0

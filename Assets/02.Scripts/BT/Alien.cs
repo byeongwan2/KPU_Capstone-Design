@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
-
+using UnityEngine.UI;
 public class Alien : Enemy
 {
     BehaviorTree bt;
-    public int vitality = 1;   // 체력
+    public int vitality = 5;   // 체력
     public int damage = 5;
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
@@ -29,6 +29,7 @@ public class Alien : Enemy
     int is_Rolling_Count = 0;
 
     Rigidbody rb;
+    Slider healthSlider;
     private void Awake()
     {
         base.Init();
@@ -55,6 +56,9 @@ public class Alien : Enemy
         Init_Data();
 
         rb = GetComponent<Rigidbody>();
+        healthSlider = GetComponentInChildren<Slider>();
+        healthSlider.maxValue = 5;
+        healthSlider.value = 5;
     }
     
     void Init_Data()
@@ -87,6 +91,7 @@ public class Alien : Enemy
         if(other.CompareTag("Bullet"))
         {
             vitality--;
+            healthSlider.value -= 1;
             Debug.Log("맞음");
             other.gameObject.SetActive(false);
             if (vitality <= 0)
@@ -106,7 +111,7 @@ public class Alien : Enemy
         isOther_State_Change = true;
         agent.isStopped = true;
         base.Die();
-        SendMessage("Create_First_Monster");
+        SendMessage("Create_First_Monster",SendMessageOptions.DontRequireReceiver);
     }                   
     
     public RESULT Attack()   
@@ -117,7 +122,6 @@ public class Alien : Enemy
         activing_Func = "Attack";
         animator.SetTrigger("isAttack");
         eEnemy_State = ENEMY_STATE.ATTACK;
-
         isOther_State_Change = true;                //다른 상태로 바꿀수 없다
         isMust_Trace = false;                       //반드시 추적하는 기능을 해제한다.
         return RESULT.SUCCESS;
@@ -148,17 +152,23 @@ public class Alien : Enemy
         Leaf_Node attack_Condition_Node = new Leaf_Node(Distance_Attack_Condition);
         Leaf_Node lookAround_Node = new Leaf_Node(LookAround);
 
-   
+        Sequence dir_Sequence = new Sequence();
+        Leaf_Node dir_Condition_Node = new Leaf_Node(Direction_Condition);
+        Leaf_Node dir_rotate_Node = new Leaf_Node(Rotate_Direction);
+
+        dir_Sequence.AddChild(dir_rotate_Node);
+        dir_Sequence.AddChild(dir_Condition_Node);
+        dir_Sequence.AddChild(attack_Node);
         behaviour.AddChild(avoid_Selecter);
         behaviour.AddChild(trace_Sequence);
         behaviour.AddChild(wander_Node);
 
-        trace_Sequence.AddChild(Valid_Range_Condition);
-        trace_Sequence.AddChild(trace_Condition_Node);
-        trace_Sequence.AddChild(trace_Sequence_Node);
+        trace_Sequence.AddChild(Valid_Range_Condition);         //추적범위에 유효하다면
+        trace_Sequence.AddChild(trace_Condition_Node);          //추적가능한 거리에있는지
+        trace_Sequence.AddChild(trace_Sequence_Node);           //추적시퀸스 실행
 
-        trace_Sequence_Node.AddChild(attack_Condition_Node);
-        trace_Sequence_Node.AddChild(attack_Node);
+        trace_Sequence_Node.AddChild(attack_Condition_Node);    //추적중 공격범위인지
+        trace_Sequence_Node.AddChild(dir_Sequence);
 
         Sequence rolling_Sequence = new Sequence();
         avoid_Selecter.AddChild(rolling_Sequence);
@@ -174,6 +184,24 @@ public class Alien : Enemy
         trace_lookAround_Sequence.AddChild(lookAround_Node);
             
         bt = new BehaviorTree(root);    // 트리가 완성되면 Alien 행동트리 멤버변수에 적용
+    }
+
+    public RESULT Direction_Condition()
+    {
+        if (attack.Condition()) return RESULT.SUCCESS;
+        return RESULT.FAIL;
+    }
+
+    public RESULT Rotate_Direction()
+    {
+        if (eEnemy_State == ENEMY_STATE.ROTATE) attack.Work_Dir();
+        if (activing_Func.Equals("Rotate")) return RESULT.RUNNING;
+        attack.Init();
+        activing_Func = "Rotate";
+        //animator.SetTrigger("isIdle");
+        eEnemy_State = ENEMY_STATE.ROTATE;
+        attack.Work_Dir();
+        return RESULT.SUCCESS;
     }
 
     public RESULT Wander()
