@@ -27,6 +27,8 @@ public class Alien : Enemy
     string activing_Func = string.Empty;
     [SerializeField]
     int is_Rolling_Count = 0;
+    public GameObject hitEffect;
+    public Transform hitPos;
 
     Rigidbody rb;
     Slider healthSlider;
@@ -94,6 +96,8 @@ public class Alien : Enemy
             healthSlider.value -= 1;
             Debug.Log("맞음");
             other.gameObject.SetActive(false);
+            GameObject effect = Instantiate(hitEffect, hitPos.position, Quaternion.identity);    // 피격 이펙트 동적 생성
+            Destroy(effect, 2.0f);  // 1초후 삭제
             if (vitality <= 0)
             {
                 Die();

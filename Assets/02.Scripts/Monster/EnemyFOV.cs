@@ -22,10 +22,10 @@ public class EnemyFOV : MonoBehaviour
     {
         // 컴포넌트 추출
         enemyTr = GetComponent<Transform>();
-        playerTr = GameObject.FindWithTag("PLAYER").transform;
+        playerTr = GameObject.FindWithTag("Player").transform;
 
         // 레이어 마스크 값 계산
-        playerLayer = LayerMask.NameToLayer("PLAYER");
+        playerLayer = LayerMask.NameToLayer("MainObject");
         //obstacleLayer = LayerMask.NameToLayer("OBSTACLE");
         layerMask = 1 << playerLayer;
 

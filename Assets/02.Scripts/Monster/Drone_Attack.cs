@@ -21,11 +21,11 @@ public class Drone_Attack : MonoBehaviour
     // 드론 총알 프리팹
     public GameObject bullet;
     // 총알 발사 위치
-    public Transform firePos;
+    public Transform firePos1, firePos2;
         
     void Start()
     {
-        playerTr = GameObject.FindWithTag("PLAYER").transform;
+        playerTr = GameObject.FindWithTag("Player").transform;
         enemyTr = GetComponent<Transform>();
     }
       
@@ -43,9 +43,11 @@ public class Drone_Attack : MonoBehaviour
         if (Time.time >= nextAttack)
         {
             // 발사
-            GameObject _bullet = Instantiate(bullet, firePos.position, firePos.rotation);
+            GameObject _bullet1 = Instantiate(bullet, firePos1.position, firePos1.rotation);
+            GameObject _bullet2 = Instantiate(bullet, firePos2.position, firePos2.rotation);
             // 3초 후 미사일 삭제
-            Destroy(_bullet, 3.0f);
+            Destroy(_bullet1, 3.0f);
+            Destroy(_bullet2, 3.0f);
             // 다음 공격 시간
             nextAttack = Time.time + fireRate + Random.Range(0.0f, 0.3f);
             return true;

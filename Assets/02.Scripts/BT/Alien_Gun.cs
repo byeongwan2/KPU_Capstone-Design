@@ -19,6 +19,9 @@ public class Alien_Gun : Enemy
     Rigidbody rb;
     Slider healthSlider;
 
+    public GameObject hitEffect;
+    public Transform hitPos;
+
     int bulletCount = 15;
     private void Awake()
     {
@@ -195,6 +198,8 @@ public class Alien_Gun : Enemy
             vitality--;
             healthSlider.value -= 1;
             other.gameObject.SetActive(false);
+            GameObject effect = Instantiate(hitEffect, hitPos.position, Quaternion.identity);    // 피격 이펙트 동적 생성
+            Destroy(effect, 2.0f);  // 1초후 삭제
             if (vitality <= 0)
             {
                 Die();

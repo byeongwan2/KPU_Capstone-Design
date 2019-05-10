@@ -14,7 +14,7 @@ public class Drone_Trace : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerTr = GameObject.FindWithTag("PLAYER").transform;
+        playerTr = GameObject.FindWithTag("Player").transform;
         enemyTr = GetComponent<Transform>();
     }
 

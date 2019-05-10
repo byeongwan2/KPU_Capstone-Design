@@ -11,8 +11,7 @@ public class Drone : Enemy
     
     // 해시값 추출
     private readonly int hashDeath = Animator.StringToHash("isDeath");
-    private readonly int hashAttack = Animator.StringToHash("isAttack");
-    private readonly int hashMove = Animator.StringToHash("isMove");
+    private readonly int hashAttack = Animator.StringToHash("isAttack");    
     
     [SerializeField]
     bool isOther_State_Change = false;
@@ -171,8 +170,7 @@ public class Drone : Enemy
 
     public RESULT Trace()
     {        
-        activing_Func = "Trace";
-        animator.SetTrigger(hashMove);
+        activing_Func = "Trace";        
         trace.Trace();
         eEnemy_State = ENEMY_STATE.RUN;
         return RESULT.SUCCESS;
