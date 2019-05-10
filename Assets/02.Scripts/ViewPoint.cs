@@ -13,7 +13,7 @@ public class ViewPoint : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 vec = system.pPlayer2.transform.position;
+        Vector3 vec = system.pPlayer2.transform.position;   
         if (system.pPlayer2.GetIsAttackMode())
         {
 

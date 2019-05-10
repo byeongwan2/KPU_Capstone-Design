@@ -20,17 +20,13 @@ public class CameraShake : MonoBehaviour
         {
             camTransform = GetComponent(typeof(Transform)) as Transform;
         }
-    }
-
-    void OnEnable()
-    {
-        originalPos = camTransform.localPosition;
-    }
+    }    
 
     void Update()
     {
         if (shakeDuration > 0)
         {
+            originalPos = camTransform.localPosition;
             camTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
 
             shakeDuration -= Time.deltaTime * decreaseFactor;
@@ -38,10 +34,11 @@ public class CameraShake : MonoBehaviour
         else
         {
             shakeDuration = 0f;
-            camTransform.localPosition = originalPos;
+            originalPos = camTransform.localPosition;
         }
     }
     
+    // 총쏠때 주기를 증가시켜서 흔들리게끔 하기 위함
     public void SetDruation(float _shakeDuration)
     {
         shakeDuration += _shakeDuration;

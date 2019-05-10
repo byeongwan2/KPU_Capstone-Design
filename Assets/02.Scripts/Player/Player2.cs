@@ -24,6 +24,7 @@ public partial class Player2 : MoveObject
     private Dash dash;
     private Move move;
     private Wound wound;
+    private CameraShake cameraShake;
     [SerializeField]
     private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
@@ -68,6 +69,7 @@ public partial class Player2 : MoveObject
     }
     void Start ()
     {
+        cameraShake = GameObject.Find("Camera_ViewPoint").GetComponent<CameraShake>();
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
         instance = this;
         playerRb = GetComponent<Rigidbody>();
@@ -369,6 +371,7 @@ public partial class Player2 : MoveObject
             attackCoolTime = true;
             playerAni.SetTrigger("Attack");
             Attack_Gun();
+            cameraShake.SetDruation(0.01f); // 카메라 흔들림 0.01은 흔들리는 시간
         }
         else if(Input.GetKeyDown(KeyCode.F))
         {
