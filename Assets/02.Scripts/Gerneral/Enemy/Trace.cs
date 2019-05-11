@@ -28,6 +28,7 @@ public class Trace : MonoBehaviour
         agent.speed = _speed;
     }
 
+
     public void Work()
     {
         agent.destination = target.transform.position;

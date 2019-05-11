@@ -18,9 +18,9 @@ public class StageManager2 : MonoBehaviour
         stage1 = GameObject.Find("Stage1").GetComponent<Stage1>();
     }
 
-    public void NextChapter()
+    public void NextChapter(eCHAPTER _chapter)
     {
-        stage1.CreateRobotFirst();
+        stage1.CreateRobotFirst(_chapter);
     }
 
 }

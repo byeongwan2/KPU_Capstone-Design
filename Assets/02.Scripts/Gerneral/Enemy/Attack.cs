@@ -24,22 +24,20 @@ public class Attack : MonoBehaviour
         rotateDegree = Mathf.Atan2(target.transform.position.x - transform.position.x, target.transform.position.z - transform.position.z) * Mathf.Rad2Deg;
     }
     
-    public void Work()      //계속호출
+    public void Work()      //계속호출  //임시
     {
-        
+        //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 1.0f);
     }
 
     public bool Condition()
     {
 
-        if (Mathf.Abs(f - d) < 0.05f)               //목표로 한 방향에서 현재방향에 많이가까워졌을떄의 조건을 걸면됨
+        if ( Mathf.Abs(f-d) < 0.1f)               //목표로 한 방향에서 현재방향에 많이가까워졌을떄의 조건을 걸면됨
         {
-            Debug.Log("qwe");
-            return true;
+            return false;
         }
         else
         {
-            Debug.Log("cxz");
             return false;
         }
     }
@@ -48,12 +46,11 @@ public class Attack : MonoBehaviour
     float d = 5.0f;
     public void Work_Dir()
     {
-
-        f = transform.rotation.y;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 1.0f);
+        agent.isStopped = true;
+        f = Quaternion.Euler(0.0f, rotateDegree, 0.0f).y;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 5.0f);
         d = transform.rotation.y;
-        Debug.Log(f);
-        Debug.Log(d);
+   
     }
 
     public void Send_Damage()

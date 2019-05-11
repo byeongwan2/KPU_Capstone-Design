@@ -60,7 +60,19 @@ public class Alien_Gun : Enemy
         {
             bt.Run();
         }
+        if (eEnemy_State == ENEMY_STATE.ATTACK)      //임시방편
+        {
+            Rotate();
+        }
+        // Debug.Log(activing_Func);
     }
+
+    void Rotate()
+    {
+        attack.Work_Dir();
+    }
+
+
 
     void Build_BT()
     {

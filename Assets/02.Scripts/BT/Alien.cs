@@ -32,6 +32,7 @@ public class Alien : Enemy
 
     Rigidbody rb;
     Slider healthSlider;
+    public eCHAPTER chapter = eCHAPTER.ONE;
     private void Awake()
     {
         base.Init();
@@ -78,12 +79,20 @@ public class Alien : Enemy
             agent.isStopped = true;
             return;
         }
-        if (isOther_State_Change == false)
-        { 
+        if (isOther_State_Change == false)          
+        {
             bt.Run();
         }
-
+        if(eEnemy_State == ENEMY_STATE.ATTACK)      //임시방편
+        {
+            Rotate();
+        }
        // Debug.Log(activing_Func);
+    }
+
+    void Rotate()
+    {
+        attack.Work_Dir();
     }
    
 
@@ -115,7 +124,8 @@ public class Alien : Enemy
         isOther_State_Change = true;
         agent.isStopped = true;
         base.Die();
-        SendMessage("Create_First_Monster",SendMessageOptions.DontRequireReceiver);
+        GetComponent<NextEvent>().Create_Monster(chapter);
+       // SendMessage("Create_First_Monster",SendMessageOptions.DontRequireReceiver);
     }                   
     
     public RESULT Attack()   
@@ -149,6 +159,7 @@ public class Alien : Enemy
         Leaf_Node_Float trace_Condition_Node = new Leaf_Node_Float(Distance_Condition, traceCoverage);
         Sequence trace_Sequence_Node = new Sequence(Trace);
 
+        //Leaf_Node trace_Node = new Leaf_Node(Trace);
         Sequence trace_lookAround_Sequence = new Sequence();
         Leaf_Node attack_Node = new Leaf_Node(Attack);
         Leaf_Node isBulletComeToMe_Node = new Leaf_Node(IsBulletComeToMe);
@@ -156,13 +167,12 @@ public class Alien : Enemy
         Leaf_Node attack_Condition_Node = new Leaf_Node(Distance_Attack_Condition);
         Leaf_Node lookAround_Node = new Leaf_Node(LookAround);
 
-        Sequence dir_Sequence = new Sequence();
+        
         Leaf_Node dir_Condition_Node = new Leaf_Node(Direction_Condition);
         Leaf_Node dir_rotate_Node = new Leaf_Node(Rotate_Direction);
+        
+        //dir_Sequence.AddChild(dir_rotate_Node);
 
-        dir_Sequence.AddChild(dir_rotate_Node);
-        dir_Sequence.AddChild(dir_Condition_Node);
-        dir_Sequence.AddChild(attack_Node);
         behaviour.AddChild(avoid_Selecter);
         behaviour.AddChild(trace_Sequence);
         behaviour.AddChild(wander_Node);
@@ -172,8 +182,9 @@ public class Alien : Enemy
         trace_Sequence.AddChild(trace_Sequence_Node);           //추적시퀸스 실행
 
         trace_Sequence_Node.AddChild(attack_Condition_Node);    //추적중 공격범위인지
-        trace_Sequence_Node.AddChild(dir_Sequence);
-
+       // trace_Sequence_Node.AddChild(dir_rotate_Node);
+      //  trace_Sequence_Node.AddChild(dir_Condition_Node);
+        trace_Sequence_Node.AddChild(attack_Node);
         Sequence rolling_Sequence = new Sequence();
         avoid_Selecter.AddChild(rolling_Sequence);
         rolling_Sequence.AddChild(isBulletComeToMe_Node);
@@ -198,12 +209,6 @@ public class Alien : Enemy
 
     public RESULT Rotate_Direction()
     {
-        if (eEnemy_State == ENEMY_STATE.ROTATE) attack.Work_Dir();
-        if (activing_Func.Equals("Rotate")) return RESULT.RUNNING;
-        attack.Init();
-        activing_Func = "Rotate";
-        //animator.SetTrigger("isIdle");
-        eEnemy_State = ENEMY_STATE.ROTATE;
         attack.Work_Dir();
         return RESULT.SUCCESS;
     }
@@ -234,7 +239,8 @@ public class Alien : Enemy
 
     public RESULT Trace()
     {
-        if(eEnemy_State == ENEMY_STATE.RUN) trace.Work();
+     
+        if (eEnemy_State == ENEMY_STATE.RUN) trace.Work();
         if (activing_Func.Equals("Trace")) return RESULT.RUNNING;
         trace.Init();
         activing_Func = "Trace";

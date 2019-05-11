@@ -38,9 +38,10 @@ public class Bullet : AttackObject {
 
         float rayDistance;
 
+        Vector3 point = Vector3.zero ;
         if (groundPlane.Raycast(ray, out rayDistance))
         {
-            Vector3 point = ray.GetPoint(rayDistance);
+            point = ray.GetPoint(rayDistance);
             transform.LookAt(point);
         }
         if (_type == TYPE.BULLET)
@@ -49,7 +50,10 @@ public class Bullet : AttackObject {
         }
         if(_type == TYPE.ADVANCEBULLET)
         {
-            rb.AddForce(new Vector3(1, 0, 0) * 5.0f, ForceMode.Impulse);
+            // point.x = point.x * 1.0f;
+            //point.z = point.z * 1.0f;
+            
+            rb.AddForce(new Vector3(1,0,1)* 5.0f, ForceMode.Impulse);
             Invoke("Explode_Bullet", 2.0f);
         }
     }
