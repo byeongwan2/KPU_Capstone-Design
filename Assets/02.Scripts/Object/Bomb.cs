@@ -38,7 +38,7 @@ public class Bomb : AttackObject {
     {
         transform.position = launchPos;
         transform.rotation = launchRot;
-        this_rigidbody.AddForce(transform.up  + transform.forward* 10.0f, ForceMode.VelocityChange);       //포물선수정필요
+        this_rigidbody.AddForce(transform.up  + transform.forward* 7.0f, ForceMode.VelocityChange);       //포물선수정필요
         rangeEffect.RangeLook(3.5f);
 
         Invoke("LifeOff", 5.0f);        //2초뒤 폭탄삭제
@@ -63,8 +63,10 @@ public class Bomb : AttackObject {
         {
             Debug.Log(enemy);
             if (enemy.activeSelf == false) continue;
-            if( 2.4f > Check.Distance(enemy.transform, this.transform))
+            Debug.Log("폭탄맞을까");
+            if ( 2.8f > Check.Distance(enemy.transform, this.transform))
             {
+                Debug.Log("폭탄맞음");
                 Debug.Log(Check.Distance(enemy.transform, this.transform));
                 enemy.SendMessage("WoundExplosionDamage", SendMessageOptions.DontRequireReceiver);
             }
