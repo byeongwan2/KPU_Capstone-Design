@@ -177,6 +177,20 @@ public class Robot : Enemy {
             attack.Send_Damage();
     }
 
+    public void WoundExplosionDamage()     //시간이없으니까 컴포넌트대신 함수로
+    {
+        if (vitality <= 0) return;
+        vitality -= 2;
+        healthSlider.value -= 2;
+        Debug.Log("맞음");
+        GameObject effect = Instantiate(hitEffect, hitPos.position, Quaternion.identity);    // 피격 이펙트 동적 생성
+        Destroy(effect, 2.0f);  // 1초후 삭제
+        if (vitality <= 0)
+        {
+            Die();
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+    }
 
 
 

@@ -19,6 +19,7 @@ public class Stage1 : MonoBehaviour
     {
         create_start_monster = GameObject.Find("Alien").GetComponent<Alien>();
         robot = GameObject.Find("Robot");
+        robot.SetActive(false);
         for (int i = 0; i < 10; i++)
         {
             robotarray[i] = Instantiate(robot,this.transform);
@@ -28,7 +29,9 @@ public class Stage1 : MonoBehaviour
             robot2array[i] = Instantiate(robot, this.transform);
             robot2array[i].transform.position = create_monster_position2.position;
             robot2array[i].SetActive(false);
-    
+
+            PrefabSystem.instance.allMonster.Add(robotarray[i]);
+            PrefabSystem.instance.allMonster.Add(robot2array[i]);
         }
 
         for(int i = 0; i < 10; i++)
@@ -40,6 +43,9 @@ public class Stage1 : MonoBehaviour
             robot4array[i] = Instantiate(robot, this.transform);
             robot4array[i].transform.position = create_monster_position4.position;
             robot4array[i].SetActive(false);
+
+            PrefabSystem.instance.allMonster.Add(robot3array[i]);
+            PrefabSystem.instance.allMonster.Add(robot4array[i]);
         }
     }
     void Create_Monster()

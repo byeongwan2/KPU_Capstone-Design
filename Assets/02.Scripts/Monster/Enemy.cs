@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 public enum ENEMY_STATE { IDLE, WALK, RUN ,ATTACK ,RETRACE,ROLL,LOOKAROUND,DIE,RELOAD,ROTATE}
 
 public abstract class Enemy : MoveObject
@@ -13,6 +14,8 @@ public abstract class Enemy : MoveObject
     protected Collider col;
     [SerializeField]
     protected ENEMY_STATE eEnemy_State = ENEMY_STATE.IDLE;
+
+  
     public ENEMY_STATE Get_State()
     {
         return eEnemy_State;
@@ -39,6 +42,6 @@ public abstract class Enemy : MoveObject
         agent.radius = 0;
         agent.height = 0;
     }
- 
- 
+
+   
 }

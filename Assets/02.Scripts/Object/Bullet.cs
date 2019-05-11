@@ -6,12 +6,14 @@ public class Bullet : AttackObject {
 
     Rigidbody rb;
     Object_Id fire_ObjectId;
-    
+    TYPE mType;
     void Awake()
     {       
         rb = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐    
         fire_ObjectId = Object_Id.NONE;
     }
+
+ 
 
     public void Check_BulletId(Object_Id _id)
     {
@@ -20,6 +22,11 @@ public class Bullet : AttackObject {
 
     void OnDisable()
     {
+        
+        if(mType == TYPE.ADVANCEBULLET)
+        {
+            EffectManager.Instance.Exercise_Effect(transform.position, 0.0f);
+        }
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.Euler(Vector4.zero);
     }
@@ -31,6 +38,7 @@ public class Bullet : AttackObject {
     
     public void SetActiveLaunch(TYPE _type)          //총알이 켜지면서 초기화
     {
+        mType = _type;
         transform.position = launchPos;
        
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -52,15 +60,18 @@ public class Bullet : AttackObject {
         {
             // point.x = point.x * 1.0f;
             //point.z = point.z * 1.0f;
-            
-            rb.AddForce(new Vector3(1,0,1)* 5.0f, ForceMode.Impulse);
+
+             rb.AddForce(new Vector3(0,1,0)* 4.0f, ForceMode.Impulse);
+            //Vector3 direction = body.transform.position - transform.position;
+            //rb.AddForceAtPosition(Vector3.forward,,ForceMode.Impulse);
+            speed = 4.0f;
             Invoke("Explode_Bullet", 2.0f);
         }
     }
     
     void Explode_Bullet()
     {
-        EffectManager.Instance.Exercise_Effect(transform.position, 0.0f);
+        //EffectManager.Instance.Exercise_Effect(transform.position, 0.0f);
         gameObject.SetActive(false);
     }
 

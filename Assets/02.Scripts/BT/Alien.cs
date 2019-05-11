@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
+﻿
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 public class Alien : Enemy
 {
-    BehaviorTree bt;
+
     public int vitality = 5;   // 체력
+    protected Slider healthSlider;
+    BehaviorTree bt;
     public int damage = 5;
     private readonly int hashAttack = Animator.StringToHash("isAttack");
     private readonly int hashDeath = Animator.StringToHash("isDeath");
@@ -31,16 +31,18 @@ public class Alien : Enemy
     public Transform hitPos;
 
     Rigidbody rb;
-    Slider healthSlider;
+    
     public eCHAPTER chapter = eCHAPTER.ONE;
     private void Awake()
     {
         base.Init();
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        PrefabSystem.instance.allMonster.Add(gameObject);
         wander = GetComponent<Wander>();
         attack = GetComponent<Attack>();
         trace = GetComponent<Trace>();
@@ -94,7 +96,7 @@ public class Alien : Enemy
     {
         attack.Work_Dir();
     }
-   
+    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -105,8 +107,7 @@ public class Alien : Enemy
             healthSlider.value -= 1;
             Debug.Log("맞음");
             other.gameObject.SetActive(false);
-            GameObject effect = Instantiate(hitEffect, hitPos.position, Quaternion.identity);    // 피격 이펙트 동적 생성
-            Destroy(effect, 2.0f);  // 1초후 삭제
+            EffectHit();
             if (vitality <= 0)
             {
                 Die();
@@ -114,6 +115,25 @@ public class Alien : Enemy
             }
         }
         
+    }
+    public void WoundExplosionDamage()     //시간이없으니까 컴포넌트대신 함수로
+    {
+        if (vitality <= 0) return;
+        vitality-=2;
+        healthSlider.value -=2 ;
+        Debug.Log("맞음");
+        EffectHit();
+        if (vitality <= 0)
+        {
+            Die();
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+    }
+
+    void EffectHit()
+    {
+        GameObject effect = Instantiate(hitEffect, hitPos.position, Quaternion.identity);    // 피격 이펙트 동적 생성
+        Destroy(effect, 2.0f);  // 1초후 삭제
     }
 
     new void Die() // Die 액션
@@ -354,4 +374,6 @@ public class Alien : Enemy
         if(trace.Condition(1.6f))
             attack.Send_Damage();
     }
+
+   
 }

@@ -81,7 +81,7 @@ public partial class Player2 : MoveObject
         bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage,TYPE.BULLET);
         bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT, 0, shotDamage,TYPE.ADVANCEBULLET);
         bombThrow = GetComponent<Throw>();
-        bombThrow.Init("PlayerBomb", 10, 15.0f);
+        bombThrow.Init("PlayerBomb", 10, 10.0f);
         jump = GetComponent<Jump>();
         dash = GetComponent<Dash>();
         move = GetComponent<Move>();
@@ -335,7 +335,6 @@ public partial class Player2 : MoveObject
     //진짜구르기
     private void Rolling()
     {
-
         if (Input.GetKeyDown(KeyCode.V))
         {
             if (isRoll ||isKey) return;

@@ -13,27 +13,31 @@ public class EffectManager : MonoBehaviour {
         }
         else DestroyImmediate(this);        //매니저가이미있다면 파괴
     }
-    GameObject m_expEffect;
+
     void Start ()
     {
-        m_expEffect = Resources.Load("Prefabs/BombEffect") as GameObject;
-
+        GameObject expEffect = Resources.Load("Prefabs/BombEffect") as GameObject;
+       
+        PrefabSystem.instance.Create_Prefab(TYPE.BOMBEFFECT, expEffect, 10);      //오브젝트풀
     }
 	
 	public void Exercise_Effect(Vector3 _position,float _delayTime)
     {
-        m_expEffect.transform.rotation = Quaternion.identity;
-        m_expEffect.transform.position = _position;
-        StartCoroutine(Look_Effect(_delayTime));
+      
+        StartCoroutine(Look_Effect(_position,_delayTime));
     }
 
-    IEnumerator Look_Effect(float _delayTime)
+    
+
+    IEnumerator Look_Effect(Vector3 _position , float _delayTime)
     {
         yield return new WaitForSeconds(_delayTime);
-        GameObject expEffect = Instantiate(m_expEffect);
-        expEffect.SetActive(true);
+        var expEffect = PrefabSystem.instance.Active_Prefab(TYPE.BOMBEFFECT);
+        expEffect.transform.rotation = Quaternion.identity;
+        expEffect.transform.position = _position;
+        //expEffect.SetActive(true);
         yield return new WaitForSeconds(Define.ADVANCE_BULLET_LIFE_TIME);
         expEffect.SetActive(false);
-        Destroy(expEffect);
+        //Destroy(expEffect);
     }
 }

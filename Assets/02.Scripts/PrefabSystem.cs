@@ -3,23 +3,36 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public enum TYPE { BOMB, BULLET ,MONSTER  , ADVANCEBULLET,ROBOT}
+public enum TYPE { BOMB, BULLET ,MONSTER  , ADVANCEBULLET,ROBOT,BOMBEFFECT}
 public class PrefabSystem : MonoBehaviour {                //프리팹시스템에서 모든 오브젝트풀을 관리하니까 나중에 분리할필요가있음
     public static PrefabSystem instance = null;             //제네릭클래스로 바꿔야함
+    public List<GameObject> allMonster;
     void Awake()
     {
         if (instance == null) instance = this;
         else if (instance != this) { Destroy(this.gameObject); Debug.Log("매니저중복추적"); }
         //DontDestroyOnLoad(this.gameObject);
+
+    
+    }
+    private void Start()
+    {
+        StartCoroutine("AddMonsterList");
+    }
+    IEnumerator AddMonsterList()
+    {
+        yield return new WaitForSeconds(2.0f);
+        
     }
     enum eWHO { PLAYER }
+
     private List<GameObject> bombPool = new List<GameObject>();         //폭탄을 미리생성
     private List<GameObject> bulletPool = new List<GameObject>();
-    private List<GameObject> monsterPool = new List<GameObject>();
     private List<GameObject> advanceBulletPool = new List<GameObject>();
-    private List<GameObject> robotPool = new List<GameObject>();
     public StringBuilder st = new StringBuilder();
     List<GameObject> activeBullet = new List<GameObject>();
+
+    private List<GameObject> bombEffectPool = new List<GameObject>();
     public List<GameObject> Get_BulletPool()
     {
         activeBullet.Clear();
@@ -35,11 +48,14 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
 
     public void Create_Prefab(TYPE _type,GameObject _gameObject , int _count)       //여러가지 폭탄을 생성할수 잇게끔
     {
+      
+
         if (_type == TYPE.BOMB) Select_PoolType(bombPool, _gameObject, _count);
         else if (_type == TYPE.BULLET) Select_PoolType(bulletPool, _gameObject, _count);
-        else if (_type == TYPE.MONSTER) Select_PoolType(monsterPool, _gameObject, _count);
         else if (_type == TYPE.ADVANCEBULLET) Select_PoolType(advanceBulletPool, _gameObject, _count);
-        else if (_type == TYPE.ROBOT) Select_PoolType(robotPool, _gameObject, _count);
+        else if (_type == TYPE.BOMBEFFECT) Select_PoolType(bombEffectPool, _gameObject, _count);
+
+       
     }
    
     public GameObject Active_Prefab(TYPE _type) 
@@ -47,8 +63,8 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
         
         if (_type == TYPE.BOMB) return Choice_Pool(bombPool);
         else if (_type == TYPE.BULLET) return Choice_Pool(bulletPool);
-        else if (_type == TYPE.MONSTER) return Choice_Pool(monsterPool);
         else if (_type == TYPE.ADVANCEBULLET) return Choice_Pool(advanceBulletPool);
+        else if (_type == TYPE.BOMBEFFECT) return Choice_Pool(bombEffectPool);
         return null;
     }
 
@@ -74,12 +90,10 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
             obj.SetActive(false);
 
             _pool.Add(obj);
-            
         }
+
+        
     }
 
-    public List<GameObject> Get_MonsterList()
-    {
-        return monsterPool;
-    }
+    
 }

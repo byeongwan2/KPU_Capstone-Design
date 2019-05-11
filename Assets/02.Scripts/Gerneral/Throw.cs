@@ -10,7 +10,7 @@ public class Throw : Behaviour
 
     float bombPower;
    
-    public void Init(string _link, int _maxCount, float _bombPower = 15.0f)
+    public void Init(string _link, int _maxCount, float _bombPower = 2.0f)
     {
         bombPower = _bombPower;
         bomb = Resources.Load("Prefabs/" + _link) as GameObject;

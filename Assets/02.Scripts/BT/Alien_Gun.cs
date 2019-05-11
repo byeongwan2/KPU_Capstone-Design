@@ -26,9 +26,11 @@ public class Alien_Gun : Enemy
     private void Awake()
     {
         base.Init();
+       
     }
     void Start()
     {
+        PrefabSystem.instance.allMonster.Add(gameObject);
         attack = GetComponent<Attack>();
         trace = GetComponent<Trace>();
         trace.Init_Target(system.pPlayer2);
@@ -71,7 +73,7 @@ public class Alien_Gun : Enemy
     {
         attack.Work_Dir();
     }
-
+   
 
 
     void Build_BT()
@@ -219,5 +221,19 @@ public class Alien_Gun : Enemy
             }
         }
 
+    }
+    public void WoundExplosionDamage()     //시간이없으니까 컴포넌트대신 함수로
+    {
+        if (vitality <= 0) return;
+        vitality -= 2;
+        healthSlider.value -= 2;
+        Debug.Log("맞음");
+        GameObject effect = Instantiate(hitEffect, hitPos.position, Quaternion.identity);    // 피격 이펙트 동적 생성
+        Destroy(effect, 2.0f);  // 1초후 삭제
+        if (vitality <= 0)
+        {
+            Die();
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+        }
     }
 }

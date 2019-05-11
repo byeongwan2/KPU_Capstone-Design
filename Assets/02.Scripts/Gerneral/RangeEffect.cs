@@ -11,7 +11,7 @@ public class RangeEffect : MonoBehaviour
     public void Init()
     {
         m_line = GetComponent<LineRenderer>();
-        m_line.SetVertexCount(20);
+        m_line.SetVertexCount(30);
         m_line.useWorldSpace = false;
         RangeMaker();
         m_line.enabled = false;
@@ -25,15 +25,15 @@ public class RangeEffect : MonoBehaviour
     public void RangeMaker()
     {
         float x, y,z = 0.0f;
-        float angle = 20.0f;
+        float angle = 30.0f;
 
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < 30; i++)
         {
             x = Mathf.Cos(Mathf.Deg2Rad * angle) * 10.0f;
             y = Mathf.Sin(Mathf.Deg2Rad * angle) * 10.0f;
 
             m_line.SetPosition(i, new Vector3(x, y, z));
-            angle += (360.0f / 19);
+            angle += (360.0f / 29);
         }
     }
 
@@ -63,8 +63,4 @@ public class RangeEffect : MonoBehaviour
         Invoke("OnRangeLook", _dangerTime);
     }
 
-    void TestLine()
-    {
-
-    }
 }
