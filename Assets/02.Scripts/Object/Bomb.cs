@@ -61,12 +61,9 @@ public class Bomb : AttackObject {
     {
         foreach( var enemy in PrefabSystem.instance.allMonster)
         {
-            Debug.Log(enemy);
             if (enemy.activeSelf == false) continue;
-            Debug.Log("폭탄맞을까");
             if ( 2.8f > Check.Distance(enemy.transform, this.transform))
             {
-                Debug.Log("폭탄맞음");
                 Debug.Log(Check.Distance(enemy.transform, this.transform));
                 enemy.SendMessage("WoundExplosionDamage", SendMessageOptions.DontRequireReceiver);
             }

@@ -11,7 +11,7 @@ public class Alien_Gun : Enemy
 
     Attack attack;
     Trace trace;
-
+    Shot shot;
     [SerializeField]
     string activing_Func = string.Empty;
     [SerializeField]
@@ -37,6 +37,9 @@ public class Alien_Gun : Enemy
         attack.Init_Target(system.pPlayer2);
         trace.Setting(agent, 1.0f);
         attack.Setting(agent, 5);
+
+        shot = GetComponent<Shot>();
+        shot.Init("EnemyBullet", 30, 10, 2, TYPE.ENEMYBULLET);
 
         rb = GetComponent<Rigidbody>();
         healthSlider = GetComponentInChildren<Slider>();
@@ -164,6 +167,7 @@ public class Alien_Gun : Enemy
         if (activing_Func.Equals("Attack")) return RESULT.RUNNING;
         attack.Init();
         attack.Work();
+        shot.Work(TYPE.ENEMYBULLET);
         bulletCount--;
         activing_Func = "Attack";
         animator.SetTrigger("isAttack");

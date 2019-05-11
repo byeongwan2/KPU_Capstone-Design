@@ -40,7 +40,12 @@ public class Bullet : AttackObject {
     {
         mType = _type;
         transform.position = launchPos;
-       
+        if (_type == TYPE.ENEMYBULLET)
+        {
+            SetActiveLaunch_Enemy();
+            Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
+            return;
+        }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane groundPlane = new Plane(Vector3.up, Vector3.up * transform.position.y);
 
@@ -67,8 +72,19 @@ public class Bullet : AttackObject {
             speed = 4.0f;
             Invoke("Explode_Bullet", 2.0f);
         }
+        
     }
-    
+
+    void SetActiveLaunch_Enemy( )
+    {
+        transform.LookAt(PrefabSystem.instance.player.transform);
+        float y = transform.rotation.y;
+        Quaternion vec = Quaternion.Euler(Vector4.zero) ;
+        vec.y = y;
+        transform.rotation = vec;
+    }
+
+
     void Explode_Bullet()
     {
         //EffectManager.Instance.Exercise_Effect(transform.position, 0.0f);
