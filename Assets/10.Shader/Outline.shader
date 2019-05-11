@@ -4,8 +4,8 @@
     {
 		_Color("Main Color", Color) = (0.5,0.5,0.5,1)
         //_MainTex ("Texture", 2D) = "	" {}
-		_OutlineColor("Outline color", Color) = (0,0,0,1)
-		_OutlineWidth("Outline width", Range(1.0, 5.0)) = 1.01
+		_OutlineColor("Outline color", Color) = (1,0,0,1)
+		_OutlineWidth("Outline width", Range(1.0, 5.0)) = 1.1
     }
 	CGINCLUDE
 	#include "UnityCG.cginc"
