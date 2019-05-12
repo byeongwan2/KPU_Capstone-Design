@@ -6,9 +6,11 @@ using UnityEngine.AI;
 
 public class Drone : Enemy
 {
+    public int vitality = 5;   // 체력    
     BehaviorTree bt;
-    public int vitality = 5;   // 체력
-    
+    Rigidbody rb;
+    ChangeShader cs;
+
     // 해시값 추출
     private readonly int hashDeath = Animator.StringToHash("isDeath");
     private readonly int hashAttack = Animator.StringToHash("isAttack");    
@@ -28,19 +30,21 @@ public class Drone : Enemy
     bool isMust_Trace = false;
     [SerializeField]
     string activing_Func = string.Empty; // Running을 위한 문자열 비교
+    public GameObject hitEffect;        // 피격 효과 프리팹
+    public Transform hitPos;    
 
-    Rigidbody rb;
-        
     void Start()
     {
+        // 자식 오브젝트의 ChangeMaterial 컴포넌트를 가지고 온다
+        cs = GetComponentInChildren<ChangeShader>();
+
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 
         attack = GetComponent<Drone_Attack>();
         trace = GetComponent<Drone_Trace>();
         enemyFOV = GetComponent<EnemyFOV>();
-        
-        
+                
         Build_BT();
     }
         
@@ -51,7 +55,7 @@ public class Drone : Enemy
         
         if (!isOther_State_Change)
         {
-            bt.Run();            
+            bt.Run();
         }      
     }
 
@@ -61,7 +65,12 @@ public class Drone : Enemy
         if (other.CompareTag("Bullet"))
         {
             vitality--;                         
-            other.gameObject.SetActive(false);            
+            other.gameObject.SetActive(false);
+            GameObject effect = Instantiate(hitEffect, hitPos.position, Quaternion.identity);
+            cs.SetIsHit(true);
+            cs.SetHit();
+            Invoke("ChangeOriginShader", 0.05f);
+            Destroy(effect, 2.0f);
         }
     }
     
@@ -175,4 +184,11 @@ public class Drone : Enemy
         eEnemy_State = ENEMY_STATE.RUN;
         return RESULT.SUCCESS;
     }        
+
+    // invoke에 사용하려고 만듦
+    void ChangeOriginShader()
+    {
+        cs.SetIsHit(false);
+        cs.SetOrigin();
+    }    
 }

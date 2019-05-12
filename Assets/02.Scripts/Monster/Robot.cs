@@ -22,10 +22,14 @@ public class Robot : Enemy {
 
     public GameObject hitEffect;
     public Transform hitPos;
+    ChangeShader cs;
 
     void Start()
     {
         base.Init();
+
+        // 자식 오브젝트의 ChangeMaterial 컴포넌트를 가지고 온다
+        cs = GetComponentInChildren<ChangeShader>();
 
         rb = GetComponent<Rigidbody>();
         attack = GetComponent<Attack>();
@@ -81,6 +85,9 @@ public class Robot : Enemy {
             healthSlider.value -= 1;
             other.gameObject.SetActive(false);
             GameObject effect = Instantiate(hitEffect, hitPos.position, Quaternion.identity);    // 피격 이펙트 동적 생성
+            cs.SetIsHit(true);
+            cs.SetHit();
+            Invoke("ChangeOriginShader", 0.05f);
             Destroy(effect, 2.0f);  // 1초후 삭제
             if (vitality <= 0)
             {
@@ -192,7 +199,10 @@ public class Robot : Enemy {
         }
     }
 
-
-
-
+    // invoke에 사용하려고 만듦
+    void ChangeOriginShader()
+    {
+        cs.SetIsHit(false);
+        cs.SetOrigin();
+    }
 }

@@ -5,27 +5,42 @@ using UnityEngine;
 public class ChangeShader : MonoBehaviour
 {    
     new Renderer renderer;
-
-    Shader shaderOrigin;    // 원래 쉐이더
-    string shaderOutLine;   // 외곽선 쉐이더
     
+    string shaderOrigin;    // 원래 쉐이더
+    string shaderOutLine;   // 외곽선 쉐이더
+    string shaderHit;       // 피격 쉐이더
+    bool isHit;
+
     void Start()
     {
         renderer = GetComponent<Renderer>();
-
-        // 쉐이더 저장
-        shaderOrigin = this.renderer.material.shader;
+        isHit = false;
+        shaderOrigin = "PolygonR/PBR_Character_Multiply";
         shaderOutLine = "N3K/Outline";
-
-    }    
+        shaderHit = "Unlit/Color";
+    }
 
     public void SetOutLine()
-    {        
+    {
+        if (isHit)        
+            return;       
         renderer.material.shader = Shader.Find(shaderOutLine);
     }
     
     public void SetOrigin()
-    {        
-        renderer.material.shader = shaderOrigin;
+    {
+        if (isHit)        
+            return;        
+        renderer.material.shader = Shader.Find(shaderOrigin);
+    }
+
+    public void SetHit()
+    {   if(isHit)        
+            renderer.material.shader = Shader.Find(shaderHit);
+    }
+    
+    public void SetIsHit(bool val)
+    {
+        isHit = val;
     }
 }

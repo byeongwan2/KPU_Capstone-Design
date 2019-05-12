@@ -8,11 +8,11 @@ public class CheckMonster : MonoBehaviour
 {
     [SerializeField]    // 디버깅을 위해서
     public GameObject target;
-    private ChangeShader changeShader;
+    private ChangeShader cs;
     // Start is called before the first frame update
     void Start()
     {
-        changeShader = null;
+        cs = null;
     }
 
     // Update is called once per frame
@@ -23,19 +23,22 @@ public class CheckMonster : MonoBehaviour
         {
             return;
         }
+
         // 적을 감지하면
         if(target.CompareTag("Enemy"))
         {
             // 적의 ChangeMaterial 컴포넌트를 가지고 온다
-            changeShader = target.GetComponentInChildren<ChangeShader>();
+            cs = target.GetComponentInChildren<ChangeShader>();
+            
             // 외곽선 셰이더 설정
-            changeShader.SetOutLine();            
+            cs.SetOutLine();
         }
         else
         {
-            if(changeShader != null)
+            if(cs != null)
             {
-                changeShader.SetOrigin();
+                cs.SetOrigin();
+                cs = null;
             }
         }
     }

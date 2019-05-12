@@ -7,7 +7,7 @@ public class Alien_Gun : Enemy
     BehaviorTree bt;
     public int vitality = 5;   // 체력
     public int damage = 5;
-    // Start is called before the first frame update
+    ChangeShader cs;
 
     Attack attack;
     Trace trace;
@@ -30,6 +30,9 @@ public class Alien_Gun : Enemy
     }
     void Start()
     {
+        // 자식 오브젝트의 ChangeMaterial 컴포넌트를 가지고 온다
+        cs = GetComponentInChildren<ChangeShader>();
+
         PrefabSystem.instance.allMonster.Add(gameObject);
         attack = GetComponent<Attack>();
         trace = GetComponent<Trace>();
@@ -217,6 +220,9 @@ public class Alien_Gun : Enemy
             healthSlider.value -= 1;
             other.gameObject.SetActive(false);
             GameObject effect = Instantiate(hitEffect, hitPos.position, Quaternion.identity);    // 피격 이펙트 동적 생성
+            cs.SetIsHit(true);
+            cs.SetHit();
+            Invoke("ChangeOriginShader", 0.05f);
             Destroy(effect, 2.0f);  // 1초후 삭제
             if (vitality <= 0)
             {
@@ -239,5 +245,12 @@ public class Alien_Gun : Enemy
             Die();
             rb.constraints = RigidbodyConstraints.FreezeRotation;
         }
+    }
+
+    // invoke에 사용하려고 만듦
+    void ChangeOriginShader()
+    {
+        cs.SetIsHit(false);
+        cs.SetOrigin();
     }
 }

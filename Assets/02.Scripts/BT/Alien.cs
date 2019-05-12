@@ -31,7 +31,8 @@ public class Alien : Enemy
     public Transform hitPos;
 
     Rigidbody rb;
-    
+    ChangeShader cs;
+
     public eCHAPTER chapter = eCHAPTER.ONE;
     private void Awake()
     {
@@ -42,6 +43,9 @@ public class Alien : Enemy
     // Start is called before the first frame update
     void Start()
     {
+        // 자식 오브젝트의 ChangeMaterial 컴포넌트를 가지고 온다
+        cs = GetComponentInChildren<ChangeShader>();
+
         PrefabSystem.instance.allMonster.Add(gameObject);
         wander = GetComponent<Wander>();
         attack = GetComponent<Attack>();
@@ -108,6 +112,9 @@ public class Alien : Enemy
             Debug.Log("맞음");
             other.gameObject.SetActive(false);
             EffectHit();
+            cs.SetIsHit(true);
+            cs.SetHit();
+            Invoke("ChangeOriginShader", 0.05f);
             if (vitality <= 0)
             {
                 Die();
@@ -375,5 +382,10 @@ public class Alien : Enemy
             attack.Send_Damage();
     }
 
-   
+    // invoke에 사용하려고 만듦
+    void ChangeOriginShader()
+    {
+        cs.SetIsHit(false);
+        cs.SetOrigin();
+    }
 }
