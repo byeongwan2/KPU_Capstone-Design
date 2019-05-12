@@ -38,7 +38,7 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
     {
         woundEffect = true;
         StartCoroutine(Change_Effect_Color());
-        Invoke("WoundEffectExit", 1.5f);
+        Invoke("WoundEffectExit", 1.2f);
     }
 
     IEnumerator Change_Effect_Color()
@@ -48,11 +48,11 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
             foreach( var part in this_renderer)
                 part.material.color = Color.red;
            
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
 
             foreach (var part in this_renderer)
                 part.material.color = Color.white;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
 
             if (woundEffect == false) yield break;
         }

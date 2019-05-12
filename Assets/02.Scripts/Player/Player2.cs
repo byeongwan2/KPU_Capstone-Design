@@ -348,7 +348,7 @@ public partial class Player2 : MoveObject
         }
     }
 
-    int bulletCount = 20;           //총알
+    int bulletCount = 50;           //총알
     bool attackCoolTime = false;
     //기본공격
     private void Attack()
@@ -432,9 +432,25 @@ public partial class Player2 : MoveObject
     void Attack_Gun()
     {
         if (gunMode == 0)
-            bulletShot.Work(TYPE.BULLET);
+        {
+            StartCoroutine(Time_Submachine_Gun());
+
+        }
         else if (gunMode == 1)
             bulletShot.Work(TYPE.ADVANCEBULLET);
+    }
+
+    IEnumerator Time_Submachine_Gun()
+    {
+        int count = 0;
+        while(true)
+        {
+            bulletShot.Work(TYPE.BULLET);
+            yield return new WaitForSeconds(0.05f);
+            count++;
+            if (count == 4) yield break;
+        }
+
     }
 
     void Change_Gun()
