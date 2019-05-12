@@ -30,7 +30,7 @@ public class Bullet : AttackObject {
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.Euler(Vector4.zero);
     }
-    private void LifeOff()
+    public void LifeOff()
     {
         gameObject.SetActive(false);
     }

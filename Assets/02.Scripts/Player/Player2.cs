@@ -26,13 +26,13 @@ public partial class Player2 : MoveObject
     private Wound wound;
     private CameraShake cameraShake;
     [SerializeField]
-    private STATE eState;           public string TempStateReturn() { return eState.ToString(); }
+    private STATE eState; public string TempStateReturn() { return eState.ToString(); }
     private STATE ePreState;
 
     private Player2_Controller controller;
 
     private CapsuleCollider playerCol;
-   
+
 
     private readonly int MAXPLAYERBULLETCOUNT = 15;
     [SerializeField]
@@ -55,7 +55,7 @@ public partial class Player2 : MoveObject
     [SerializeField]
     private bool isRoll;
     private bool isAttackMode = false;
-    private bool isReload=false;
+    private bool isReload = false;
     //상의 하의 유용할수 있는 변수
     private bool isTop = false;
     private bool isDown = false;
@@ -67,7 +67,7 @@ public partial class Player2 : MoveObject
     {
         return isAttackMode;
     }
-    void Start ()
+    void Start()
     {
         cameraShake = GameObject.Find("Camera_ViewPoint").GetComponent<CameraShake>();
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
@@ -75,11 +75,11 @@ public partial class Player2 : MoveObject
         playerRb = GetComponent<Rigidbody>();
         playerTr = GetComponent<Transform>();
         playerAni = GetComponent<Animator>();
-        
+
 
         bulletShot = GetComponent<Shot>();
-        bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage,TYPE.BULLET);
-        bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT, 0, shotDamage,TYPE.ADVANCEBULLET);
+        bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage, TYPE.BULLET);
+        bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT, 0, shotDamage, TYPE.ADVANCEBULLET);
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", 10, 2.0f);
         jump = GetComponent<Jump>();
@@ -96,7 +96,7 @@ public partial class Player2 : MoveObject
         //현재상태 // 이전상태 
         eState = STATE.STAND;
         ePreState = STATE.STAND;
-       
+
         //is로 시작하는 bool변수는 false일때 해당변수를 안하고있다는뜻 isRoll 가 false라면 안굴고 있다는뜻
         isMouse = false;            //true이면 마우스를 사용못한다는뜻
         isRoll = false;
@@ -108,13 +108,13 @@ public partial class Player2 : MoveObject
         isMove = false;
         bulletCount = 35;       //현재 35발쏘고 장전
 
-        
+
         isReload = false;
         constraints = playerRb.constraints;
     }
     RigidbodyConstraints constraints;
     // Update is called once per frame
-    void Update () {
+    void Update() {
 
         Input_MouseRight();
         Proceed_Event();
@@ -145,7 +145,7 @@ public partial class Player2 : MoveObject
 
     void FixedUpdate()
     {
-        
+
     }
     //공격모드인지 확인
     private void Input_MouseRight()
@@ -165,7 +165,7 @@ public partial class Player2 : MoveObject
     //플레이어가 이벤트를 발생시킴
     void Proceed_Event()
     {
-        if(controller.Is_Input_EventMode())
+        if (controller.Is_Input_EventMode())
         {
             StageManager.instance.Input_EventKey();
         }
@@ -173,7 +173,7 @@ public partial class Player2 : MoveObject
 
 
     //이동값설정
-    private void Move_Update()           
+    private void Move_Update()
     {
         if (isDash) return;
         if (isKey) return;
@@ -210,7 +210,7 @@ public partial class Player2 : MoveObject
     {
         if (isAttackMode) return;
         if (isDash) return;     //대시중일떄 뛰지마
-        if (isRoll || isJump ) return;    //구를떄 뛰지마
+        if (isRoll || isJump) return;    //구를떄 뛰지마
         if (isKey) return;
         if (controller.Is_Input_WASD())
         {
@@ -226,10 +226,10 @@ public partial class Player2 : MoveObject
             isMouse = false;
             eState = STATE.STAND;
             move.Set_Zero();
-        }       
+        }
     }
     //do 혹은 update 역할
-    private void Logic()           
+    private void Logic()
     {
         if (isDash) return;
         switch (eState)
@@ -241,7 +241,7 @@ public partial class Player2 : MoveObject
                 move.Set_MoveSpeed(2.0f);
                 break;
             case STATE.STAND:
-                
+
                 break;
         }
     }
@@ -279,7 +279,7 @@ public partial class Player2 : MoveObject
         playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);       //이게뭐임?
         playerAni.SetFloat(hashX, move.Horizontal);
         playerAni.SetFloat(hashZ, move.Vertical);
-        if (eState == STATE.STAND && !isAttackMode) { 
+        if (eState == STATE.STAND && !isAttackMode) {
             playerRb.constraints = RigidbodyConstraints.FreezeRotation;
             playerRb.constraints = RigidbodyConstraints.FreezePosition;
         }
@@ -289,7 +289,7 @@ public partial class Player2 : MoveObject
         }
 
     }
-   
+
     //달리기
     [SerializeField]
     private float velocity = 0.0f; //가속도   
@@ -318,18 +318,18 @@ public partial class Player2 : MoveObject
             velocity += Time.deltaTime; //  * 10.0f; 
 
             velocity = Check.Clamp(velocity, dest);
-            
+
         }
         else
         {
-            if(velocity != dest)
+            if (velocity != dest)
                 velocity -= Time.deltaTime * 2.0f;
             if (velocity < 0.0f) velocity = 0.0f;
-            
+
         }
         playerAni.SetFloat(hashVelocity, velocity);
     }
-   
+
 
 
     //진짜구르기
@@ -337,7 +337,7 @@ public partial class Player2 : MoveObject
     {
         if (Input.GetKeyDown(KeyCode.V))
         {
-            if (isRoll ||isKey) return;
+            if (isRoll || isKey) return;
             playerAni.SetTrigger("IsRoll");
             isMouse = true;
             isRoll = true;
@@ -372,20 +372,20 @@ public partial class Player2 : MoveObject
             Attack_Gun();
             cameraShake.SetDruation(0.01f); // 카메라 흔들림 0.01은 흔들리는 시간
         }
-        else if(Input.GetKeyDown(KeyCode.F))
+        else if (Input.GetKeyDown(KeyCode.F))
         {
             playerAni.SetTrigger("Throw");
             isMouse = true;
             isAttackStop = true;
         }
     }
-   
+
 
     private void Dancing()
     {
-        if (Input.GetKeyDown(KeyCode.F1)) { playerAni.SetInteger("Dance", 1);  }
-        if (Input.GetKeyDown(KeyCode.F2)){ playerAni.SetInteger("Dance", 2);  }
-        if (Input.GetKeyDown(KeyCode.F3)) { playerAni.SetInteger("Dance", 3);  }
+        if (Input.GetKeyDown(KeyCode.F1)) { playerAni.SetInteger("Dance", 1); }
+        if (Input.GetKeyDown(KeyCode.F2)) { playerAni.SetInteger("Dance", 2); }
+        if (Input.GetKeyDown(KeyCode.F3)) { playerAni.SetInteger("Dance", 3); }
     }
 
     private void Reloading()
@@ -398,7 +398,7 @@ public partial class Player2 : MoveObject
             playerAni.SetTrigger("Reload");
         }
     }
-    
+
     public void Wound_Effect()
     {
         wound.Wound_Effect();
@@ -419,9 +419,9 @@ public partial class Player2 : MoveObject
             isDash = true;
             eState = STATE.DASH;
             Vector3 aim1 = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.y));
-            dash.Dash_Destination(aim1,40.0f);
+            dash.Dash_Destination(aim1, 40.0f);
         }
-        else if(Input.GetKeyUp(KeyCode.C))
+        else if (Input.GetKeyUp(KeyCode.C))
         {
             eState = STATE.STAND;
             isDash = false;
@@ -432,10 +432,8 @@ public partial class Player2 : MoveObject
     void Attack_Gun()
     {
         if (gunMode == 0)
-        {
             StartCoroutine(Time_Submachine_Gun());
 
-        }
         else if (gunMode == 1)
             bulletShot.Work(TYPE.ADVANCEBULLET);
     }
@@ -443,14 +441,13 @@ public partial class Player2 : MoveObject
     IEnumerator Time_Submachine_Gun()
     {
         int count = 0;
-        while(true)
+        while (true)
         {
             bulletShot.Work(TYPE.BULLET);
             yield return new WaitForSeconds(0.05f);
             count++;
             if (count == 4) yield break;
         }
-
     }
 
     void Change_Gun()
