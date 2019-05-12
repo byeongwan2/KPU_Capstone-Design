@@ -5,17 +5,19 @@ using UnityEngine;
 public class Bullet : AttackObject {
 
     Rigidbody rb;
-    Object_Id fire_ObjectId;
+    public Object_Id fire_ObjectId;
     TYPE mType;
-    void Awake()
+    void Start()
     {       
         rb = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐    
-        fire_ObjectId = Object_Id.NONE;
     }
-
+    public Object_Id Get_ID()
+    {
+        return fire_ObjectId;
+    }
  
 
-    public void Check_BulletId(Object_Id _id)
+    public void Resister_ID(Object_Id _id)
     {
         fire_ObjectId = _id;
     }
@@ -29,6 +31,7 @@ public class Bullet : AttackObject {
         }
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.Euler(Vector4.zero);
+        CancelInvoke();
     }
     public void LifeOff()
     {
@@ -77,11 +80,13 @@ public class Bullet : AttackObject {
 
     void SetActiveLaunch_Enemy( )
     {
-        transform.LookAt(PrefabSystem.instance.player.transform);
+        Vector3 target = PrefabSystem.instance.player.transform.position;
+        target.y = target.y + 1.5f;
+        transform.LookAt(target);
         float y = transform.rotation.y;
-        Quaternion vec = Quaternion.Euler(Vector4.zero) ;
-        vec.y = y;
-        transform.rotation = vec;
+        //Quaternion vec = Quaternion.Euler(Vector4.zero) ;
+        //vec.y = y;
+        //transform.rotation = vec;
     }
 
 

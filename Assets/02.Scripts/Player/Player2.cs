@@ -78,8 +78,8 @@ public partial class Player2 : MoveObject
 
 
         bulletShot = GetComponent<Shot>();
-        bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage, TYPE.BULLET);
-        bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT, 0, shotDamage, TYPE.ADVANCEBULLET);
+        bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage, TYPE.BULLET,Object_Id.PLAYER);
+        bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT, 0, shotDamage, TYPE.ADVANCEBULLET, Object_Id.PLAYER);
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", 10, 2.0f);
         jump = GetComponent<Jump>();
@@ -335,6 +335,7 @@ public partial class Player2 : MoveObject
     //진짜구르기
     private void Rolling()
     {
+        if (isMove == false) return;
         if (Input.GetKeyDown(KeyCode.V))
         {
             if (isRoll || isKey) return;
@@ -407,12 +408,14 @@ public partial class Player2 : MoveObject
     {
         if (_obj.CompareTag("Bullet"))
         {
+            if (_obj.GetComponent<Bullet>().Get_ID() == Object_Id.PLAYER) return;
             wound.TriggerEnter(_obj);
         }
     }
 
     void Move_Dash()
     {
+        return;
         if (isKey) return;
         if (Input.GetKey(KeyCode.C))
         {

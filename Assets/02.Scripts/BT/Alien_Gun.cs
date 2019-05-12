@@ -42,7 +42,7 @@ public class Alien_Gun : Enemy
         attack.Setting(agent, 5);
 
         shot = GetComponent<Shot>();
-        shot.Init("EnemyBullet", 30, 10, 2, TYPE.ENEMYBULLET);
+        shot.Init("EnemyBullet", 30, 10, 2, TYPE.ENEMYBULLET,Object_Id.MONSTER);
 
         rb = GetComponent<Rigidbody>();
         healthSlider = GetComponentInChildren<Slider>();
@@ -216,6 +216,8 @@ public class Alien_Gun : Enemy
         if (vitality <= 0) return;
         if (other.CompareTag("Bullet"))
         {
+            Debug.Log(other.GetComponent<Bullet>().Get_ID());
+            if (other.GetComponent<Bullet>().Get_ID() == Object_Id.MONSTER) return;
             vitality--;
             healthSlider.value -= 1;
             other.gameObject.SetActive(false);

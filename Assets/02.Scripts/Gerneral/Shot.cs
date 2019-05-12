@@ -8,15 +8,17 @@ public class Shot : Behaviour
     protected GameObject startPosition;
 
    // List<Bullet> list = new List<Bullet>(); 
-    //총알이름//총알오브젝트풀수//총알스피드//총알데미지
-    public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage,TYPE _type )
+    //총알이름//총알오브젝트풀수//총알스피드//총알데미지//프리팹시스템기준 타입 // 총알을 발사하는 주체
+    public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage,TYPE _type ,Object_Id _id)
     {
         GameObject bullet = Resources.Load("Prefabs/" + _link) as GameObject;      
         bullet.GetComponent<Bullet>().StatSetting();
         bullet.GetComponent<Bullet>().DamageSetting(_damage);
         bullet.GetComponent<Bullet>().SpeedSetting(_bulletSpeed);
+        bullet.GetComponent<Bullet>().Resister_ID(_id);
         PrefabSystem.instance.Create_Prefab(_type, bullet, _maxCount);      //오브젝트풀
        
+
     }
 
     public override void Work(TYPE _type)

@@ -70,6 +70,7 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
     {
         hp -= _damage;
         healthSlider.value -= _damage;
+        Wound_Effect();
     }
 
 
