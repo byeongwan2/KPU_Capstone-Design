@@ -15,11 +15,15 @@ public class Stage1 : MonoBehaviour
     private GameObject[] robot2array = new GameObject[10];
     private GameObject[] robot3array = new GameObject[10];
     private GameObject[] robot4array = new GameObject[10];
+
+    private GameObject alien_gun2;
     void Start()
     {
         create_start_monster = GameObject.Find("Alien").GetComponent<Alien>();
         robot = GameObject.Find("Robot");
         robot.SetActive(false);
+        alien_gun2 = GameObject.Find("Alien_Gun2");
+        alien_gun2.SetActive(false);
         for (int i = 0; i < 10; i++)
         {
             robotarray[i] = Instantiate(robot,this.transform);
@@ -54,10 +58,13 @@ public class Stage1 : MonoBehaviour
     }
     public void CreateRobotFirst(eCHAPTER _chapter)
     {
-        if(_chapter == eCHAPTER.ONE)
+        if (_chapter == eCHAPTER.ONE)
             StartCoroutine(CreateRobot());
-        else if(_chapter == eCHAPTER.TWO)
+        else if (_chapter == eCHAPTER.TWO)
+        {
             StartCoroutine(CreateSecondRobot());
+            alien_gun2.SetActive(true);
+        }
     }
 
     IEnumerator CreateRobot()

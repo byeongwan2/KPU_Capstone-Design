@@ -139,6 +139,8 @@ public partial class Player2 : MoveObject
         Dancing();
         Update_Animation_Parameter();
         Render();
+
+        
     }
 
     //마우스 바라보기

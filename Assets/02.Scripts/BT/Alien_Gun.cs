@@ -216,7 +216,6 @@ public class Alien_Gun : Enemy
         if (vitality <= 0) return;
         if (other.CompareTag("Bullet"))
         {
-            Debug.Log(other.GetComponent<Bullet>().Get_ID());
             if (other.GetComponent<Bullet>().Get_ID() == Object_Id.MONSTER) return;
             vitality--;
             healthSlider.value -= 1;
