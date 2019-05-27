@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Chapter_Event : ParentChapter
 {
-    public bool isReady = false;
-    void OnCollisionEnter(Collision _player)
+    void OnCollisionStay(Collision _player)
     {
-        if (StageManager.instance.Get_NowChapter() != mychap) return;
         if (_player.collider.CompareTag("Player"))
         {
-            StageManager.instance.Set_IsChap();
-            isReady = true;
+            if(StageManager2.instance.Is_AllMonsterDie())
+            {
+                StageManager2.instance.Start_Stage2();
+            }
 
         }
     }

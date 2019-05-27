@@ -7,6 +7,7 @@ public enum Object_Id
 }
 public class MoveObject : MonoBehaviour
 {
+    public int vitality = 5;   // 체력
     protected Object_Id m_id;
    
     public Object_Id Get_Id()
