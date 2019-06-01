@@ -86,6 +86,7 @@ public class Alien : Enemy
         }
         if (isOther_State_Change == false)          
         {
+
             bt.Run();
         }
         if(eEnemy_State == ENEMY_STATE.ATTACK)      //임시방편

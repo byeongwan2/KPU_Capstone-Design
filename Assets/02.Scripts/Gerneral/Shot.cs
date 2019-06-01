@@ -6,7 +6,7 @@ public class Shot : Behaviour
 {
     [SerializeField]
     protected GameObject startPosition;
-
+    private ParticleSystem muzzleFlash;
    // List<Bullet> list = new List<Bullet>(); 
     //총알이름//총알오브젝트풀수//총알스피드//총알데미지//프리팹시스템기준 타입 // 총알을 발사하는 주체
     public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage,TYPE _type ,Object_Id _id)
@@ -17,8 +17,8 @@ public class Shot : Behaviour
         bullet.GetComponent<Bullet>().SpeedSetting(_bulletSpeed);
         bullet.GetComponent<Bullet>().Resister_ID(_id);
         PrefabSystem.instance.Create_Prefab(_type, bullet, _maxCount);      //오브젝트풀
-       
 
+        muzzleFlash = startPosition.GetComponentInChildren<ParticleSystem>();
     }
 
     public override void Work(TYPE _type)
@@ -27,6 +27,7 @@ public class Shot : Behaviour
         bullet.SetLaunchPos(startPosition.transform.position);     //출발하는장소
         bullet.SetLaunchRot(transform.localRotation);
         bullet.SetActiveLaunch(_type);
+        muzzleFlash.Play();
         /* foreach (var obj in list)
          {
              if (obj.gameObject.activeSelf == false)
