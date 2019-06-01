@@ -3,25 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StaticObject : MonoBehaviour
-{   
-
-    private void OnCollisionEnter(Collision other)
+{
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.collider.CompareTag("Bullet"))
+        if (other.CompareTag("Bullet"))
         {
-            if(other.collider.name.Equals("PlayerBasicBullet(Clone)"))
+            if(other.name.Equals("PlayerBasicBullet(Clone)"))
             {
                 other.gameObject.SetActive(false);
-                ShowEffect(other);
             }
         }
-    }
-
-    void ShowEffect(Collision coll)
-    {
-        ContactPoint contact = coll.contacts[0];
-        Quaternion rot = Quaternion.FromToRotation(-Vector3.forward, contact.normal);
-
-        //총알 이펙트 넣으면댐
     }
 }

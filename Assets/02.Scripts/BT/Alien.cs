@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Alien : Enemy
 {
 
+    public int vitality = 5;   // 체력
     protected Slider healthSlider;
     BehaviorTree bt;
     public int damage = 5;
@@ -32,6 +33,7 @@ public class Alien : Enemy
     Rigidbody rb;
     ChangeShader cs;
 
+    public eCHAPTER chapter = eCHAPTER.ONE;
     private void Awake()
     {
         base.Init();
@@ -66,7 +68,6 @@ public class Alien : Enemy
         healthSlider = GetComponentInChildren<Slider>();
         healthSlider.maxValue = 5;
         healthSlider.value = 5;
-        vitality = 5;   // 체력
     }
     
     void Init_Data()
@@ -150,8 +151,8 @@ public class Alien : Enemy
         isOther_State_Change = true;
         agent.isStopped = true;
         base.Die();
-        //GetComponent<NextEvent>().Create_Monster(chapter);
-        SendMessage("Create_Monster", SendMessageOptions.DontRequireReceiver);
+        GetComponent<NextEvent>().Create_Monster(chapter);
+       // SendMessage("Create_First_Monster",SendMessageOptions.DontRequireReceiver);
     }                   
     
     public RESULT Attack()   

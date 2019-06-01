@@ -112,8 +112,8 @@ public class Stage01 : MonoBehaviour
 
     public bool Is_Get_Event_One()
     {
-     //   if (chapter_event[0].isReady)
-     //       return true;
+        if (chapter_event[0].isReady)
+            return true;
         return false;
     }
 

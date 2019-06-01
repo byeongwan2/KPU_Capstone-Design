@@ -16,14 +16,14 @@ public class Stage1 : MonoBehaviour
     private GameObject[] robot3array = new GameObject[10];
     private GameObject[] robot4array = new GameObject[10];
 
-    private Alien_Gun alien_gun2;
+    private GameObject alien_gun2;
     void Start()
     {
         create_start_monster = GameObject.Find("Alien").GetComponent<Alien>();
         robot = GameObject.Find("Robot");
         robot.SetActive(false);
-        alien_gun2 = GameObject.Find("Alien_Gun2").GetComponent<Alien_Gun>();
-        alien_gun2.gameObject.SetActive(false);
+        alien_gun2 = GameObject.Find("Alien_Gun2");
+        alien_gun2.SetActive(false);
         for (int i = 0; i < 10; i++)
         {
             robotarray[i] = Instantiate(robot,this.transform);
@@ -52,7 +52,10 @@ public class Stage1 : MonoBehaviour
             PrefabSystem.instance.allMonster.Add(robot4array[i]);
         }
     }
-  
+    void Create_Monster()
+    {
+            
+    }
     public void CreateRobotFirst(eCHAPTER _chapter)
     {
         if (_chapter == eCHAPTER.ONE)
@@ -60,7 +63,7 @@ public class Stage1 : MonoBehaviour
         else if (_chapter == eCHAPTER.TWO)
         {
             StartCoroutine(CreateSecondRobot());
-            alien_gun2.gameObject.SetActive(true);
+            alien_gun2.SetActive(true);
         }
     }
 
@@ -87,12 +90,5 @@ public class Stage1 : MonoBehaviour
             robot4array[i].SetActive(true);
         }
 
-    }
-
-    public bool Check_MonsterLife()
-    {
-        if (alien_gun2.vitality <= 0)
-            return true;
-        else return false;
     }
 }
