@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class StageManager2 : MonoBehaviour
 {
     Stage1 stage1;
@@ -16,6 +16,7 @@ public class StageManager2 : MonoBehaviour
     void Start()
     {
         stage1 = GameObject.Find("Stage1").GetComponent<Stage1>();
+
     }
 
     public void NextChapter(eCHAPTER _chapter)
@@ -23,4 +24,16 @@ public class StageManager2 : MonoBehaviour
         stage1.CreateRobotFirst(_chapter);
     }
 
+    public bool Is_AllMonsterDie()
+    {
+        return true;                        //테스트용
+        if (stage1.Check_MonsterLife()) return true;
+        else return false;
+    }
+
+    public void Start_Stage2()
+    {
+        Debug.Log("2스테이지");
+        SceneManager.LoadScene("SceneLoader");
+    }
 }

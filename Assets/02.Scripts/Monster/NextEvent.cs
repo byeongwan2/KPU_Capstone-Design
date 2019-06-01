@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class NextEvent : MonoBehaviour
 {
-    public void Create_Monster(eCHAPTER _chapter)
+    public eCHAPTER chapter ;
+    public void Create_Monster()
     {
-        StageManager2.instance.NextChapter(_chapter);
+        StageManager2.instance.NextChapter(chapter);
     }
 }

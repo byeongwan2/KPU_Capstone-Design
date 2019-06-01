@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class Alien_Gun : Enemy
 {
     BehaviorTree bt;
-    public int vitality = 5;   // 체력
     public int damage = 5;
     ChangeShader cs;
 
@@ -48,7 +47,7 @@ public class Alien_Gun : Enemy
         healthSlider = GetComponentInChildren<Slider>();
         healthSlider.maxValue = 5;
         healthSlider.value = 5;
-
+        vitality = 5;
         animator.SetTrigger("isRun");
         eEnemy_State = ENEMY_STATE.RUN;
         Build_BT();

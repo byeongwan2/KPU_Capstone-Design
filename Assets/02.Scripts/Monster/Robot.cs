@@ -15,7 +15,6 @@ public class Robot : Enemy {
     [SerializeField]
     string activing_Func = string.Empty;
 
-    int vitality = 3;
     Rigidbody rb;
     Slider healthSlider;
     public int damage = 3;
@@ -49,6 +48,7 @@ public class Robot : Enemy {
         healthSlider = GetComponentInChildren<Slider>();
         healthSlider.maxValue = 3;
         healthSlider.value = 3;
+        vitality = 3;   // 체력
     }
 
     void Update()
