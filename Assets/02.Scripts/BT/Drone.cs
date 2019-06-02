@@ -6,7 +6,6 @@ using UnityEngine.AI;
 
 public class Drone : Enemy
 {
-    public int vitality = 5;   // 체력    
     BehaviorTree bt;
     Rigidbody rb;
     ChangeShader cs;
@@ -53,7 +52,7 @@ public class Drone : Enemy
         if (eEnemy_State == ENEMY_STATE.DIE)
             return;
         
-        if (!isOther_State_Change)
+        if (isOther_State_Change == false)
         {
             bt.Run();
         }      

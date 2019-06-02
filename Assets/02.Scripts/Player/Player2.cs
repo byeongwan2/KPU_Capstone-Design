@@ -64,7 +64,7 @@ public partial class Player2 : MoveObject
 
     GameSystem system;
     private Particle particle;
-    private int bombCount;
+    private int bombCount =10;
     int bulletCount = 35;           //총알
     private int bulletAdvancedCount;
     public bool GetIsAttackMode()
@@ -378,7 +378,7 @@ public partial class Player2 : MoveObject
             attackCoolTime = true;
             playerAni.SetTrigger("Attack");
             Attack_Gun();
-            cameraShake.SetDruation(0.01f); // 카메라 흔들림 0.01은 흔들리는 시간
+            
         }
         else if (Input.GetKeyDown(KeyCode.F))
         {
@@ -461,10 +461,12 @@ public partial class Player2 : MoveObject
         int count = 0;
         while (true)
         {
+
             bulletShot.Work(TYPE.BULLET);
             yield return new WaitForSeconds(0.05f);
             count++;
             Update_UI_Bullet();
+            cameraShake.SetDruation(0.01f); // 카메라 흔들림 0.01은 흔들리는 시간
             if (count == 4) yield break;
         }
     }

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCam : MonoBehaviour{
-
-    public Transform playerTr;              //Player Transform 컴포넌트   
+ 
     private Transform aimTr;
     public float moveSpeed = 15.0f;         //카메라 이동 속도       
     public float distance = 15.0f;           //카메라와 주인공과의 거리

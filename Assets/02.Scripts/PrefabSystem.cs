@@ -62,7 +62,6 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
    
     public GameObject Active_Prefab(TYPE _type) 
     {
-
         if (_type == TYPE.BOMB) return Choice_Pool(bombPool);
         else if (_type == TYPE.BULLET) return Choice_Pool(bulletPool);
         else if (_type == TYPE.ADVANCEBULLET) return Choice_Pool(advanceBulletPool);
