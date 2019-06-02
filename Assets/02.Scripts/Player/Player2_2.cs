@@ -20,6 +20,7 @@ public partial class Player2
     }
     private void Event_ReloadExit()
     {
+        Update_UI_Bullet();
         isReload = false;
     }
 

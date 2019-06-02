@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 //함수는 동사_단어 혹은 동사 
 //코루틴함수는 동사단어  
 //이벤트함수는 Event_수식 혹은 Event_동사
@@ -15,6 +15,7 @@ using UnityEngine;
 
 public partial class Player2 : MoveObject
 {
+
     private Rigidbody playerRb;
     private Transform playerTr;
     private Animator playerAni; public Animator GetPlayerAni() { return playerAni; }
@@ -63,6 +64,9 @@ public partial class Player2 : MoveObject
 
     GameSystem system;
     private Particle particle;
+    private int bombCount;
+    int bulletCount = 35;           //총알
+    private int bulletAdvancedCount;
     public bool GetIsAttackMode()
     {
         return isAttackMode;
@@ -79,9 +83,9 @@ public partial class Player2 : MoveObject
 
         bulletShot = GetComponent<Shot>();
         bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage, TYPE.BULLET,Object_Id.PLAYER);
-        bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT, 0, shotDamage, TYPE.ADVANCEBULLET, Object_Id.PLAYER);
+        bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT,0, shotDamage, TYPE.ADVANCEBULLET, Object_Id.PLAYER);
         bombThrow = GetComponent<Throw>();
-        bombThrow.Init("PlayerBomb", 10, 2.0f);
+        bombThrow.Init("PlayerBomb", bombCount, 2.0f);
         jump = GetComponent<Jump>();
         dash = GetComponent<Dash>();
         move = GetComponent<Move>();
@@ -107,7 +111,8 @@ public partial class Player2 : MoveObject
         isDash = false;
         isMove = false;
         bulletCount = 35;       //현재 35발쏘고 장전
-
+        bombCount = 10;
+        bulletAdvancedCount = 25;
 
         isReload = false;
         constraints = playerRb.constraints;
@@ -351,7 +356,6 @@ public partial class Player2 : MoveObject
         }
     }
 
-    int bulletCount = 50;           //총알
     bool attackCoolTime = false;
     //기본공격
     private void Attack()
@@ -366,7 +370,8 @@ public partial class Player2 : MoveObject
             {
                 playerAni.SetTrigger("Reload");
                 isReload = true;
-                bulletCount = 20;
+                bulletCount = 35;
+                bulletAdvancedCount = 25;
                 return;
             }
             bulletCount--;
@@ -377,9 +382,11 @@ public partial class Player2 : MoveObject
         }
         else if (Input.GetKeyDown(KeyCode.F))
         {
+            bombCount--;
             playerAni.SetTrigger("Throw");
             isMouse = true;
             isAttackStop = true;
+            Update_UI_Bomb();
         }
     }
 
@@ -399,6 +406,8 @@ public partial class Player2 : MoveObject
         {
             isReload = true;
             playerAni.SetTrigger("Reload");
+            bulletCount = 35;
+            bulletAdvancedCount = 25;
         }
     }
 
@@ -440,7 +449,11 @@ public partial class Player2 : MoveObject
             StartCoroutine(Time_Submachine_Gun());
 
         else if (gunMode == 1)
+        {
+            bulletAdvancedCount--;
             bulletShot.Work(TYPE.ADVANCEBULLET);
+            Update_UI_Bullet();
+        }
     }
 
     IEnumerator Time_Submachine_Gun()
@@ -451,6 +464,7 @@ public partial class Player2 : MoveObject
             bulletShot.Work(TYPE.BULLET);
             yield return new WaitForSeconds(0.05f);
             count++;
+            Update_UI_Bullet();
             if (count == 4) yield break;
         }
     }
@@ -459,10 +473,36 @@ public partial class Player2 : MoveObject
     {
         if (isKey) return;
         if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
             gunMode = 0;
+            Update_UI_Bullet();
+        }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
             gunMode = 1;
+            Update_UI_Bullet();
+        }
 
     }
+    public Image magazineImg_bullet;
+    public Text magazineText_bullet;
 
+    void Update_UI_Bullet()
+    {
+        if (gunMode == 0)
+        {
+            magazineImg_bullet.fillAmount = (float)bulletCount / (float)35;
+            magazineText_bullet.text = string.Format(bulletCount.ToString());
+        }
+        else if (gunMode == 1)
+        {
+            magazineImg_bullet.fillAmount = (float)bulletAdvancedCount / (float)25;
+            magazineText_bullet.text = string.Format(bulletAdvancedCount.ToString());
+        }
+    }
+    public Text magazineText_bomb;
+    void Update_UI_Bomb()
+    {
+        magazineText_bomb.text = string.Format(bombCount.ToString());
+    }
 }

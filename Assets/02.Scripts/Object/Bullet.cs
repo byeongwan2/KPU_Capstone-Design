@@ -7,8 +7,9 @@ public class Bullet : AttackObject {
     Rigidbody rb;
     public Object_Id fire_ObjectId;
     TYPE mType;
-    void Start()
+    void Awake()
     {       
+        
         rb = GetComponent<Rigidbody>();         //성능이슈를 위해 미리 받아놓을뿐    
     }
     public Object_Id Get_ID()
@@ -68,7 +69,6 @@ public class Bullet : AttackObject {
         {
             // point.x = point.x * 1.0f;
             //point.z = point.z * 1.0f;
-
              rb.AddForce(new Vector3(0,1,0)* 4.0f, ForceMode.Impulse);
             //Vector3 direction = body.transform.position - transform.position;
             //rb.AddForceAtPosition(Vector3.forward,,ForceMode.Impulse);

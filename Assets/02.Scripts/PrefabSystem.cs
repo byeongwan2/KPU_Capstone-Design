@@ -52,7 +52,6 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     public void Create_Prefab(TYPE _type,GameObject _gameObject , int _count)       //여러가지 폭탄을 생성할수 잇게끔
     {
 
-
         if (_type == TYPE.BOMB) Select_PoolType(bombPool, _gameObject, _count);
         else if (_type == TYPE.BULLET) Select_PoolType(bulletPool, _gameObject, _count);
         else if (_type == TYPE.ADVANCEBULLET) Select_PoolType(advanceBulletPool, _gameObject, _count);
@@ -91,9 +90,9 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
         for (int i = 0; i < _count; i++)
         {
             var obj = Instantiate<GameObject>(_gameObject, this.transform);
-            obj.SetActive(false);
 
             _pool.Add(obj);
+            obj.active = false;
         }
 
         
