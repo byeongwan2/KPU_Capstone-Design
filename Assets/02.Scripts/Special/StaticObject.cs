@@ -23,6 +23,5 @@ public class StaticObject : MonoBehaviour
         Quaternion rot = Quaternion.FromToRotation(-Vector3.forward, contact.normal);
 
         Instantiate(sparkEffect, contact.point, rot);
-        //총알 이펙트 넣으면댐
     }
 }
