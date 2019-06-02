@@ -17,6 +17,7 @@ public class StaticObject : MonoBehaviour
         }
     }
 
+
     void ShowEffect(Collision coll)
     {
         ContactPoint contact = coll.contacts[0];

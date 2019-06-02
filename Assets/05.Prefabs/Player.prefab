@@ -481,7 +481,6 @@ GameObject:
   - component: {fileID: 3019410307982551244}
   - component: {fileID: 7617865265243175442}
   - component: {fileID: 7503136606471900861}
-  - component: {fileID: 2931137756715715311}
   - component: {fileID: 7168282122687637864}
   - component: {fileID: 5118421064680284970}
   - component: {fileID: 5674158298832979838}
@@ -577,6 +576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928eff3e28344284c959eecccfeeb1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vitality: 5
   eState: 0
   shotDamage: 10
   isKey: 0
@@ -586,6 +586,13 @@ MonoBehaviour:
   isMove: 0
   isRoll: 0
   velocity: 0
+  magazineImg_bullet: {fileID: 0}
+  magazineText_bullet: {fileID: 0}
+  magazineText_bomb: {fileID: 0}
+  currWeapon: 0
+  playerSfx:
+    fire: []
+    reload: []
 --- !u!114 &1585595481429541937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,103 +650,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isJumping: 0
   airborneSpeed: 0
---- !u!82 &2931137756715715311
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 82884392892299112, guid: 099c4edbcd14ffe4ca2d7cdb5e754206,
-    type: 3}
-  m_PrefabInstance: {fileID: 546242060731151879}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6978810310448356688}
-  m_Enabled: 0
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: faf3b71fe43353e4a972af641e433176, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &7168282122687637864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -889,10 +799,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1707413963583456, guid: 099c4edbcd14ffe4ca2d7cdb5e754206, type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 4515116698343254, guid: 099c4edbcd14ffe4ca2d7cdb5e754206, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -925,5 +831,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1707413963583456, guid: 099c4edbcd14ffe4ca2d7cdb5e754206, type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 099c4edbcd14ffe4ca2d7cdb5e754206, type: 3}

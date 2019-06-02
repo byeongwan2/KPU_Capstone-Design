@@ -116,6 +116,9 @@ public partial class Player2 : MoveObject
 
         isReload = false;
         constraints = playerRb.constraints;
+        Start_Sound();
+        laser = GetComponentInChildren<Laser>();
+        laser.gameObject.SetActive(false);
     }
     RigidbodyConstraints constraints;
     // Update is called once per frame
@@ -150,10 +153,7 @@ public partial class Player2 : MoveObject
 
     //마우스 바라보기
 
-    void FixedUpdate()
-    {
-
-    }
+    Laser laser;
     //공격모드인지 확인
     private void Input_MouseRight()
     {
@@ -162,12 +162,16 @@ public partial class Player2 : MoveObject
         {
 
             isAttackMode = true;
-
+            laser.gameObject.SetActive(true);
             Vector3 aim1 = system.MousePoint();
             float rotateDegree = Mathf.Atan2(aim1.x - transform.position.x, aim1.z - transform.position.z) * Mathf.Rad2Deg;
             playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
         }
-        else isAttackMode = false;
+        else
+        {
+            isAttackMode = false;
+            laser.gameObject.SetActive(false);
+        }
     }
     //플레이어가 이벤트를 발생시킴
     void Proceed_Event()
@@ -453,15 +457,16 @@ public partial class Player2 : MoveObject
             bulletAdvancedCount--;
             bulletShot.Work(TYPE.ADVANCEBULLET);
             Update_UI_Bullet();
+            Sfx();
         }
     }
 
     IEnumerator Time_Submachine_Gun()
     {
         int count = 0;
+        Sfx();
         while (true)
         {
-
             bulletShot.Work(TYPE.BULLET);
             yield return new WaitForSeconds(0.05f);
             count++;
@@ -478,12 +483,15 @@ public partial class Player2 : MoveObject
         {
             gunMode = 0;
             Update_UI_Bullet();
+            currWeapon = WeaponType.RIFLE;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             gunMode = 1;
             Update_UI_Bullet();
+            currWeapon = WeaponType.SHOTGUN;
         }
+        
 
     }
     public Image magazineImg_bullet;
@@ -507,4 +515,29 @@ public partial class Player2 : MoveObject
     {
         magazineText_bomb.text = string.Format(bombCount.ToString());
     }
+
+    public enum WeaponType
+    {
+        RIFLE = 0,
+        SHOTGUN = 1
+    }
+    public WeaponType currWeapon = WeaponType.RIFLE;
+    private AudioSource _audio;
+
+    public PlayerSfx playerSfx;
+    void Start_Sound()
+    {
+        _audio = GetComponent<AudioSource>();
+    }
+    void Sfx()
+    {
+        var _sfx = playerSfx.fire[(int)currWeapon];
+        _audio.PlayOneShot(_sfx, 1.0f);
+    }
+}
+[System.Serializable]
+public struct PlayerSfx
+{
+    public AudioClip[] fire;
+    public AudioClip[] reload;
 }
