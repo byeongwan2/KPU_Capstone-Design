@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 //함수는 동사_단어 혹은 동사 
@@ -15,11 +14,11 @@ using UnityEngine.UI;
 
 public partial class Player2 : MoveObject
 {
-
-    private Rigidbody playerRb;
-    private Transform playerTr;
-    private Animator playerAni; public Animator GetPlayerAni() { return playerAni; }
-    private Shot bulletShot;
+    private Rigidbody rb;
+    private Transform tr;
+    private Animator ani;
+    public Animator GetPlayerAni() { return ani; }
+    private Shot shot;
     private Throw bombThrow;
     private Jump jump;
     private Dash dash;
@@ -27,13 +26,10 @@ public partial class Player2 : MoveObject
     private Wound wound;
     private CameraShake cameraShake;
     [SerializeField]
-    private STATE eState; public string TempStateReturn() { return eState.ToString(); }
+    private STATE eState;
     private STATE ePreState;
 
     private Player2_Controller controller;
-
-    private CapsuleCollider playerCol;
-
 
     private readonly int MAXPLAYERBULLETCOUNT = 15;
     [SerializeField]
@@ -42,19 +38,19 @@ public partial class Player2 : MoveObject
     [SerializeField]
     private bool isKey = false;
     [SerializeField]
-    private bool isMouse;
+    private bool isMouse = false;
     private bool isJumpHit;         //점프할때 피격이 가능한지 false이면 가능
     public bool IsJumpHit() { return isJumpHit; }
     [SerializeField]
     private bool isJump;   //점프중인지 단순확인 
     private bool isAttackStop;
     [SerializeField]
-    private bool isRun;
-    private bool isDash;
+    private bool isRun = false;
+    private bool isDash = false;
     [SerializeField]
-    private bool isMove;
+    private bool isMove = false;
     [SerializeField]
-    private bool isRoll;
+    private bool isRoll = false;
     private bool isAttackMode = false;
     private bool isReload = false;
     //상의 하의 유용할수 있는 변수
@@ -76,20 +72,19 @@ public partial class Player2 : MoveObject
         cameraShake = GameObject.Find("Camera_ViewPoint").GetComponent<CameraShake>();
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
         instance = this;
-        playerRb = GetComponent<Rigidbody>();
-        playerTr = GetComponent<Transform>();
-        playerAni = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
+        tr = GetComponent<Transform>();
+        ani = GetComponent<Animator>();
 
 
-        bulletShot = GetComponent<Shot>();
-        bulletShot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage, TYPE.BULLET,Object_Id.PLAYER);
-        bulletShot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT,0, shotDamage, TYPE.ADVANCEBULLET, Object_Id.PLAYER);
+        shot = GetComponent<Shot>();
+        shot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage, TYPE.BULLET,Object_Id.PLAYER);
+        shot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT,0, shotDamage, TYPE.ADVANCEBULLET, Object_Id.PLAYER);
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", bombCount, 2.0f);
         jump = GetComponent<Jump>();
         dash = GetComponent<Dash>();
         move = GetComponent<Move>();
-        playerCol = GetComponent<CapsuleCollider>();        // 없어질 예정?
 
         controller = GetComponent<Player2_Controller>();
         particle = GetComponent<Particle>();
@@ -101,21 +96,15 @@ public partial class Player2 : MoveObject
         eState = STATE.STAND;
         ePreState = STATE.STAND;
 
-        //is로 시작하는 bool변수는 false일때 해당변수를 안하고있다는뜻 isRoll 가 false라면 안굴고 있다는뜻
-        isMouse = false;            //true이면 마우스를 사용못한다는뜻
-        isRoll = false;
         isJump = false;
         isJumpHit = false;
         isAttackStop = false;
-        isRun = false;
-        isDash = false;
-        isMove = false;
         bulletCount = 35;       //현재 35발쏘고 장전
         bombCount = 10;
         bulletAdvancedCount = 25;
 
         isReload = false;
-        constraints = playerRb.constraints;
+        constraints = rb.constraints;
         Start_Sound();
         laser = GetComponentInChildren<Laser>();
         laser.gameObject.SetActive(false);
@@ -164,8 +153,8 @@ public partial class Player2 : MoveObject
             isAttackMode = true;
             laser.gameObject.SetActive(true);
             Vector3 aim1 = system.MousePoint();
-            float rotateDegree = Mathf.Atan2(aim1.x - transform.position.x, aim1.z - transform.position.z) * Mathf.Rad2Deg;
-            playerTr.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
+            float rotateDegree = Mathf.Atan2(aim1.x - tr.position.x, aim1.z - tr.position.z) * Mathf.Rad2Deg;
+            tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 10.0f);
         }
         else
         {
@@ -198,7 +187,7 @@ public partial class Player2 : MoveObject
         {
             if (isJump || isKey) return;
             eState = STATE.JUMP;
-            playerAni.SetTrigger("Jump");
+            ani.SetTrigger("Jump");
             isJump = true;
             isMouse = true;
             isKey = true;
@@ -268,35 +257,35 @@ public partial class Player2 : MoveObject
         switch (eState)
         {
             case STATE.DASH:
-                playerAni.SetBool("Dash", true);
+                ani.SetBool("Dash", true);
                 break;
             case STATE.RUN:
-                playerAni.SetBool("IsRun", true);
-                playerAni.SetBool("IsWalk", false);
+                ani.SetBool("IsRun", true);
+                ani.SetBool("IsWalk", false);
                 break;
             case STATE.WALK:
-                playerAni.SetBool("IsWalk", true);
-                playerAni.SetBool("IsRun", false);
-                playerAni.SetBool("Dash", false);
+                ani.SetBool("IsWalk", true);
+                ani.SetBool("IsRun", false);
+                ani.SetBool("Dash", false);
                 break;
 
             case STATE.STAND:
-                playerAni.SetBool("IsRun", false);
-                playerAni.SetBool("IsWalk", false);
-                playerAni.SetBool("Dash", false);
+                ani.SetBool("IsRun", false);
+                ani.SetBool("IsWalk", false);
+                ani.SetBool("Dash", false);
 
                 break;
         }
-        playerAni.SetFloat(hashAngle, playerTr.rotation.eulerAngles.y);       //이게뭐임?
-        playerAni.SetFloat(hashX, move.Horizontal);
-        playerAni.SetFloat(hashZ, move.Vertical);
+        ani.SetFloat(hashAngle, tr.rotation.eulerAngles.y);       //이게뭐임?
+        ani.SetFloat(hashX, move.Horizontal);
+        ani.SetFloat(hashZ, move.Vertical);
         if (eState == STATE.STAND && !isAttackMode) {
-            playerRb.constraints = RigidbodyConstraints.FreezeRotation;
-            playerRb.constraints = RigidbodyConstraints.FreezePosition;
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+            rb.constraints = RigidbodyConstraints.FreezePosition;
         }
         else
         {
-            playerRb.constraints = constraints;
+            rb.constraints = constraints;
         }
 
     }
@@ -310,14 +299,14 @@ public partial class Player2 : MoveObject
         if (!isRun) return;
         if (isKey) return;
 
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -60.0f, 0.0f), Time.deltaTime * 10.0f);
-        else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 60.0f, 0.0f), Time.deltaTime * 10.0f);
-        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -145.0f, 0.0f), Time.deltaTime * 10.0f);
-        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 145.0f, 0.0f), Time.deltaTime * 10.0f);
-        else if (Input.GetKey(KeyCode.W)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 1.0f, 0.0f), Time.deltaTime * 10.0f);
-        else if (Input.GetKey(KeyCode.S)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 180.0f, 0.0f), Time.deltaTime * 10.0f);
-        else if (Input.GetKey(KeyCode.A)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, -100.0f, 0.0f), Time.deltaTime * 10.0f);
-        else if (Input.GetKey(KeyCode.D)) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, 100.0f, 0.0f), Time.deltaTime * 10.0f);
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A)) tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.Euler(0.0f, -60.0f, 0.0f), Time.deltaTime * 10.0f);
+        else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)) tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.Euler(0.0f, 60.0f, 0.0f), Time.deltaTime * 10.0f);
+        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.Euler(0.0f, -145.0f, 0.0f), Time.deltaTime * 10.0f);
+        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)) tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.Euler(0.0f, 145.0f, 0.0f), Time.deltaTime * 10.0f);
+        else if (Input.GetKey(KeyCode.W)) tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.Euler(0.0f, 1.0f, 0.0f), Time.deltaTime * 10.0f);
+        else if (Input.GetKey(KeyCode.S)) tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.Euler(0.0f, 180.0f, 0.0f), Time.deltaTime * 10.0f);
+        else if (Input.GetKey(KeyCode.A)) tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.Euler(0.0f, -100.0f, 0.0f), Time.deltaTime * 10.0f);
+        else if (Input.GetKey(KeyCode.D)) tr.rotation = Quaternion.Slerp(tr.rotation, Quaternion.Euler(0.0f, 100.0f, 0.0f), Time.deltaTime * 10.0f);
     }
     public enum EFFECT_TYPE { ROLL }
 
@@ -338,7 +327,7 @@ public partial class Player2 : MoveObject
             if (velocity < 0.0f) velocity = 0.0f;
 
         }
-        playerAni.SetFloat(hashVelocity, velocity);
+        ani.SetFloat(hashVelocity, velocity);
     }
 
 
@@ -350,13 +339,13 @@ public partial class Player2 : MoveObject
         if (Input.GetKeyDown(KeyCode.V))
         {
             if (isRoll || isKey) return;
-            playerAni.SetTrigger("IsRoll");
+            ani.SetTrigger("IsRoll");
             isMouse = true;
             isRoll = true;
             ePreState = eState;
             eState = STATE.ROLL;
             isKey = true;
-            particle.Activate(transform.position);
+            particle.Activate(tr.position);
         }
     }
 
@@ -372,7 +361,7 @@ public partial class Player2 : MoveObject
         {
             if (bulletCount == 0)
             {
-                playerAni.SetTrigger("Reload");
+                ani.SetTrigger("Reload");
                 isReload = true;
                 bulletCount = 35;
                 bulletAdvancedCount = 25;
@@ -380,14 +369,14 @@ public partial class Player2 : MoveObject
             }
             bulletCount--;
             attackCoolTime = true;
-            playerAni.SetTrigger("Attack");
+            ani.SetTrigger("Attack");
             Attack_Gun();
             
         }
         else if (Input.GetKeyDown(KeyCode.F))
         {
             bombCount--;
-            playerAni.SetTrigger("Throw");
+            ani.SetTrigger("Throw");
             isMouse = true;
             isAttackStop = true;
             Update_UI_Bomb();
@@ -397,9 +386,9 @@ public partial class Player2 : MoveObject
 
     private void Dancing()
     {
-        if (Input.GetKeyDown(KeyCode.F1)) { playerAni.SetInteger("Dance", 1); }
-        if (Input.GetKeyDown(KeyCode.F2)) { playerAni.SetInteger("Dance", 2); }
-        if (Input.GetKeyDown(KeyCode.F3)) { playerAni.SetInteger("Dance", 3); }
+        if (Input.GetKeyDown(KeyCode.F1)) { ani.SetInteger("Dance", 1); }
+        if (Input.GetKeyDown(KeyCode.F2)) { ani.SetInteger("Dance", 2); }
+        if (Input.GetKeyDown(KeyCode.F3)) { ani.SetInteger("Dance", 3); }
     }
 
     private void Reloading()
@@ -409,7 +398,7 @@ public partial class Player2 : MoveObject
         if (Input.GetKeyDown(KeyCode.R))
         {
             isReload = true;
-            playerAni.SetTrigger("Reload");
+            ani.SetTrigger("Reload");
             bulletCount = 35;
             bulletAdvancedCount = 25;
         }
@@ -455,7 +444,7 @@ public partial class Player2 : MoveObject
         else if (gunMode == 1)
         {
             bulletAdvancedCount--;
-            bulletShot.Work(TYPE.ADVANCEBULLET);
+            shot.Work(TYPE.ADVANCEBULLET);
             Update_UI_Bullet();
             Sfx();
         }
@@ -467,7 +456,7 @@ public partial class Player2 : MoveObject
         Sfx();
         while (true)
         {
-            bulletShot.Work(TYPE.BULLET);
+            shot.Work(TYPE.BULLET);
             yield return new WaitForSeconds(0.05f);
             count++;
             Update_UI_Bullet();

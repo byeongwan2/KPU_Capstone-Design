@@ -41,9 +41,9 @@ public class ViewPoint : MonoBehaviour
                     sq.x = system.pPlayer2.transform.position.x - 3.0f;
                 }
             }
-            if (Mathf.Abs(vec2.z - vec.z) > 2.0f)
+            if (Mathf.Abs(vec2.z - vec.z) > 1.5f)
             {
-                sq.z = Mathf.Abs(vec2.z - (vec.z + 2.0f)) / 2;
+                sq.z = Mathf.Abs(vec2.z - (vec.z + 1.5f)) / 2;
 
                 if (vec2.z >= vec.z)
                 {
@@ -54,13 +54,13 @@ public class ViewPoint : MonoBehaviour
                 {
                     sq.z = sq.z + vec2.z;
                 }
-                if (sq.z > system.pPlayer2.transform.position.z + 1.5f)
+                if (sq.z > system.pPlayer2.transform.position.z + 2.0f)
                 {
-                    sq.z = system.pPlayer2.transform.position.z + 1.5f;
+                    sq.z = system.pPlayer2.transform.position.z + 2.0f;
                 }
-                else if (sq.z < system.pPlayer2.transform.position.z - 1.5f)
+                else if (sq.z < system.pPlayer2.transform.position.z -2.0f)
                 {
-                    sq.z = system.pPlayer2.transform.position.z - 1.5f;
+                    sq.z = system.pPlayer2.transform.position.z - 2.0f;
                 }
             }
             float x = Mathf.Lerp(transform.position.x, sq.x, Time.deltaTime * 1.5f);
