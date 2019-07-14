@@ -7,7 +7,8 @@ using UnityEngine;
 //여기에서만 쓰이는게 아니라면 변수는 1번클래스에서 선언해야함
 public partial class Player2
 {
-    //변수선언금지
+    //변수선언금지 그리고 여기작성하는 함수는 에디터에서호출하므로 전부 private 필수
+
     private void Event_ThrowBomb()
     {
         bombThrow.Work(TYPE.BOMB);

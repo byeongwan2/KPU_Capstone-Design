@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+//근접공격을 하는 적군이 사용하는 컴포넌트
 public class Attack : MonoBehaviour
 {
     NavMeshAgent agent;
@@ -42,6 +43,7 @@ public class Attack : MonoBehaviour
         }
     }
 
+    //방향에맞춰서 공격모션을 취함
     float f= 10.0f;
     float d = 5.0f;
     public void Work_Dir()
@@ -53,6 +55,7 @@ public class Attack : MonoBehaviour
    
     }
 
+    //플레이어에게 데미지를 줌
     public void Send_Damage()
     {
         target.GetDamage(attackDamage);

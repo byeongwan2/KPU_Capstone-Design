@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//플레이어 입력을 위한 스크립트
 public class Player2_Controller : MonoBehaviour {
 
     public bool Is_Input_WASD()

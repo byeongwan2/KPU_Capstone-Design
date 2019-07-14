@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+//현재는 안쓰고 있는 스크립트
 public partial class Monster : Enemy
 {
     Shot bulletShot;

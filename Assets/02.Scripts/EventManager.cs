@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum EVENT_TYPE { NPC_CHAT_START }           //이벤트 종류
-
+//현재는 안쓰고 있는 스크립트
 public class EventManager : MonoBehaviour {
 
 	public static EventManager Instance{ get { return instance; }  }

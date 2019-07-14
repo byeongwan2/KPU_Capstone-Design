@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+//적군은 Move컴포넌트 대신 이 컴포넌트를 사용     
 public class MoveAgent : MonoBehaviour {
 
     public List<Transform> wayPoints;
@@ -41,6 +41,7 @@ public class MoveAgent : MonoBehaviour {
         }
     }
 
+    //게임실행시 한번만 호출  걷는속도 추적속도 방황할 포인트 설정
     public void Init(string _str,float _patrolSpeed, float _traceSpeed)
     {
         agent = GetComponent<NavMeshAgent>();
@@ -56,6 +57,7 @@ public class MoveAgent : MonoBehaviour {
         this.pPatrolling = false;
     }
 
+    //추적해야할 지점
     void TraceTarget(Vector3 pos)
     {
         if (agent.isPathStale) return;
@@ -63,6 +65,7 @@ public class MoveAgent : MonoBehaviour {
         agent.isStopped = false;
     }
 
+    //움직임 스탑
     public void Stop()              
     {
         agent.isStopped = true;

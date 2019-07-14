@@ -140,10 +140,9 @@ public partial class Player2 : MoveObject
         
     }
 
-    //마우스 바라보기
 
     Laser laser;
-    //공격모드인지 확인
+    //공격모드 
     private void Input_MouseRight()
     {
         if (isRoll || isJump) return;
@@ -162,7 +161,7 @@ public partial class Player2 : MoveObject
             laser.gameObject.SetActive(false);
         }
     }
-    //플레이어가 이벤트를 발생시킴
+    //플레이어가 이벤트를 발생시킴  스테이지매니저와 상호작용
     void Proceed_Event()
     {
         if (controller.Is_Input_EventMode())
@@ -181,6 +180,7 @@ public partial class Player2 : MoveObject
         move.Vertical = Input.GetAxis("Vertical");
     }
 
+    //점프
     private void Jumping()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -194,6 +194,7 @@ public partial class Player2 : MoveObject
 
         }
     }
+    //걷기
     private void Input_Move_Walk()
     {
         if (!isAttackMode) return;   //오른쪽마우스버튼(공격모드)일때가 아니면 걷지마
@@ -206,7 +207,9 @@ public partial class Player2 : MoveObject
             isMouse = false;
         }
     }
-    private void Input_Move_Run()       //키보드입력시 상태변경  기본 Run
+
+    //달리기
+    private void Input_Move_Run()       
     {
         if (isAttackMode) return;
         if (isDash) return;     //대시중일떄 뛰지마
@@ -228,7 +231,7 @@ public partial class Player2 : MoveObject
             move.Set_Zero();
         }
     }
-    //do 혹은 update 역할
+    //do 혹은 update 역할   move는 속도를 결정하는 클래스
     private void Logic()
     {
         if (isDash) return;
@@ -251,7 +254,7 @@ public partial class Player2 : MoveObject
     private readonly int hashX = Animator.StringToHash("X");
     private readonly int hashZ = Animator.StringToHash("Z");
 
-    //애니메이션
+    //애니메이션 상태
     private void Render()
     {
         switch (eState)
@@ -279,6 +282,7 @@ public partial class Player2 : MoveObject
         ani.SetFloat(hashAngle, tr.rotation.eulerAngles.y);       //이게뭐임?
         ani.SetFloat(hashX, move.Horizontal);
         ani.SetFloat(hashZ, move.Vertical);
+        
         if (eState == STATE.STAND && !isAttackMode) {
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             rb.constraints = RigidbodyConstraints.FreezePosition;
@@ -310,6 +314,7 @@ public partial class Player2 : MoveObject
     }
     public enum EFFECT_TYPE { ROLL }
 
+    //애니메이션에 따른 이동속도?
     private void Update_Animation_Parameter()
     {
         float dest = controller.Get_f_Run_Sprint();
@@ -349,8 +354,9 @@ public partial class Player2 : MoveObject
         }
     }
 
+
     bool attackCoolTime = false;
-    //기본공격
+    //기본공격  마우스 오른쪽클릭공격 f버튼 폭탄
     private void Attack()
     {
         if (isDash) return;
@@ -370,8 +376,17 @@ public partial class Player2 : MoveObject
             bulletCount--;
             attackCoolTime = true;
             ani.SetTrigger("Attack");
-            Attack_Gun();
-            
+            if (currWeapon == WeaponType.RIFLE)
+                StartCoroutine(Time_Submachine_Gun());
+
+            else if (currWeapon == WeaponType.SHOTGUN)
+            {
+                bulletAdvancedCount--;
+                shot.Work(TYPE.ADVANCEBULLET);
+                Update_UI_Bullet();
+                Sfx();
+            }
+
         }
         else if (Input.GetKeyDown(KeyCode.F))
         {
@@ -383,7 +398,7 @@ public partial class Player2 : MoveObject
         }
     }
 
-
+    //플레이어 댄스
     private void Dancing()
     {
         if (Input.GetKeyDown(KeyCode.F1)) { ani.SetInteger("Dance", 1); }
@@ -391,6 +406,7 @@ public partial class Player2 : MoveObject
         if (Input.GetKeyDown(KeyCode.F3)) { ani.SetInteger("Dance", 3); }
     }
 
+    //플레이어 장전 
     private void Reloading()
     {
         if (isDash) return;
@@ -403,11 +419,14 @@ public partial class Player2 : MoveObject
             bulletAdvancedCount = 25;
         }
     }
-
+    
+    //피격 이펙트
     public void Wound_Effect()
     {
         wound.Wound_Effect();
     }
+
+    //적군이 총알을 쏘면 플레이어 체력이 닳음  체력관리는 wound
     void OnTriggerEnter(Collider _obj)
     {
         if (_obj.CompareTag("Bullet"))
@@ -434,22 +453,8 @@ public partial class Player2 : MoveObject
             isDash = false;
         }
     }
-
-    int gunMode = 0;
-    void Attack_Gun()
-    {
-        if (gunMode == 0)
-            StartCoroutine(Time_Submachine_Gun());
-
-        else if (gunMode == 1)
-        {
-            bulletAdvancedCount--;
-            shot.Work(TYPE.ADVANCEBULLET);
-            Update_UI_Bullet();
-            Sfx();
-        }
-    }
-
+   
+    //1번총   총알 4개 연사 카메라흔들림 포함
     IEnumerator Time_Submachine_Gun()
     {
         int count = 0;
@@ -465,54 +470,61 @@ public partial class Player2 : MoveObject
         }
     }
 
+    //총 종류 바꾸는 키  1번 2번
     void Change_Gun()
     {
         if (isKey) return;
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            gunMode = 0;
             Update_UI_Bullet();
             currWeapon = WeaponType.RIFLE;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            gunMode = 1;
             Update_UI_Bullet();
             currWeapon = WeaponType.SHOTGUN;
         }
         
 
     }
+
+    //총알 UI
     public Image magazineImg_bullet;
     public Text magazineText_bullet;
-
+    
     void Update_UI_Bullet()
     {
-        if (gunMode == 0)
+        if (currWeapon == WeaponType.RIFLE)
         {
             magazineImg_bullet.fillAmount = (float)bulletCount / (float)35;
             magazineText_bullet.text = string.Format(bulletCount.ToString());
         }
-        else if (gunMode == 1)
+        else if (currWeapon == WeaponType.SHOTGUN)
         {
             magazineImg_bullet.fillAmount = (float)bulletAdvancedCount / (float)25;
             magazineText_bullet.text = string.Format(bulletAdvancedCount.ToString());
         }
     }
+
+    //폭탄 UI
     public Text magazineText_bomb;
     void Update_UI_Bomb()
     {
         magazineText_bomb.text = string.Format(bombCount.ToString());
     }
 
+
+    //무기타입
     public enum WeaponType
     {
         RIFLE = 0,
         SHOTGUN = 1
     }
     public WeaponType currWeapon = WeaponType.RIFLE;
-    private AudioSource _audio;
 
+
+    //플레이어 오디오
+    private AudioSource _audio;
     public PlayerSfx playerSfx;
     void Start_Sound()
     {

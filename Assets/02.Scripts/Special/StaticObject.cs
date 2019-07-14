@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//벽, 장애물들이 가지고 있는 컴포넌트
 public class StaticObject : MonoBehaviour
 {
     public GameObject sparkEffect;
+    //플레이어 총알이 벽에 박히면 총알이 박힌 자국을 만듬
     private void OnCollisionEnter(Collision other)
     {
         if (other.collider.CompareTag("Bullet"))
@@ -17,7 +18,7 @@ public class StaticObject : MonoBehaviour
         }
     }
 
-
+    //실제 총알박힌자국을 생성
     void ShowEffect(Collision coll)
     {
         ContactPoint contact = coll.contacts[0];

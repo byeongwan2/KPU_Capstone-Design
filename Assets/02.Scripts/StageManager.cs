@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+//원래는 산맵을 그대로 이용하는줄 알고 만들었던 스테이지매니저  지금은 필요없어졌음
 public enum eCHAPTER { ONE, TWO, THREE , FOUR ,FIVE}
 public class StageManager : MonoBehaviour {
 

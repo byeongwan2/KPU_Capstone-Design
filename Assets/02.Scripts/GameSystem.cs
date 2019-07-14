@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameSystem : MonoBehaviour {           //어떤오브젝트에서 필요한 다른객체들을 일일히 컴포넌트로 받지말고
-    //이거 하나받아놓으면 모든걸(주력오브젝트위주) 접근할수있게끔 현재는 플레이어만있음
+public class GameSystem : MonoBehaviour {          
     private Player2 player2;
 
-    public Player2 pPlayer2 { get { return player2; } }
+    public Player2 pPlayer2 { get { return player2; } } //어디서든지 플레이어객체에 접근할수 있게
     public Vector3 mousePoint;
     void Awake()
     {
@@ -14,6 +13,7 @@ public class GameSystem : MonoBehaviour {           //어떤오브젝트에서 �
         player2 = GameObject.Find("Player2").GetComponent<Player2>();
     }
 
+    //마우스 의 화면좌표를 얻어오는건 항상
     void Update()
     {
         Vector3 mpos = Input.mousePosition; //마우스 좌표 저장       

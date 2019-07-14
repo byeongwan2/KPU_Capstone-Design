@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+//방황하는 스크립트 플레이어를 발견하기전에는 돌아댕긴다
 public class Wander : MonoBehaviour
 {
     int pointIndex = 0;

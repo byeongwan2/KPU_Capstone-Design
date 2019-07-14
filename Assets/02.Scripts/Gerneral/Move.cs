@@ -9,14 +9,12 @@ public class Move : Behaviour {
     public float Horizontal { get; set; }   //좌우 이동방향
    
 
-    //이동 속도
-	
+    //이동 속도	
 	void Start () {
         Vertical = 0.0f;
         Horizontal = 0.0f;
         moveSpeed = 0.0f;
     }
-	
 	
 	void FixedUpdate ()
     {
@@ -26,6 +24,7 @@ public class Move : Behaviour {
         transform.Translate(moveDir.normalized *moveSpeed * Time.deltaTime, Space.World);
     }
 
+    //속도 설정
     [SerializeField]
     private float moveSpeed = 0.0f;         
     public void Set_MoveSpeed(float _moveSpeed)
@@ -33,6 +32,7 @@ public class Move : Behaviour {
         moveSpeed = _moveSpeed;
     }
 
+    //움직임 중단
     public void Set_Zero()
     {
         Vertical = 0.0f;
@@ -46,5 +46,4 @@ public class Move : Behaviour {
     }
 
 
-    //무브컴포넌트에서 적도 네비없이 이동할수있는 기능이 있어야함
 }

@@ -13,7 +13,7 @@ public class Laser : MonoBehaviour
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
     }
 
-    // Update is called once per frame
+    // 레이저 공격모드일때만 켜진다
     void Update()
     {
         lr.SetPosition(0, transform.position);

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//플레이어가 던지는 폭탄 스크립트
 public class Bomb : AttackObject {
     [SerializeField]
     float power = 0.0f;
@@ -19,7 +19,7 @@ public class Bomb : AttackObject {
         collider = GetComponent<BoxCollider>();
        //list = PrefabSystem.instance.Get_MonsterList();
     }
-
+    //폭탄의 수명
     void LifeOff()
     {
         ExplosionEffect();
@@ -34,9 +34,9 @@ public class Bomb : AttackObject {
         // this_rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
     }
 
-    public void SetActiveLaunch()          //폭탄이 켜지면서 초기화
-    {
-
+    //폭탄이 던져질떄 날라가는 코드
+    public void SetActiveLaunch()
+    { 
         transform.position = launchPos;
         transform.rotation = launchRot;
         this_rigidbody.AddForce(transform.up  + transform.forward* 7.0f, ForceMode.VelocityChange);       //포물선수정필요
@@ -47,11 +47,7 @@ public class Bomb : AttackObject {
 
  
 
-    public override void StatSetting()
-    {
-
-    }
-
+    //폭발이펙트를 킴
     void ExplosionEffect()
     {
         EffectManager.Instance.Exercise_Effect(transform.position, 0.0f);

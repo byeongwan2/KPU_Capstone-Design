@@ -41,6 +41,7 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
         Invoke("WoundEffectExit", 1.2f);
     }
 
+    //플레이어나 적군이 데미지를 입었을때 이펙트
     IEnumerator Change_Effect_Color()
     {
         while (true)
@@ -66,6 +67,8 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
     {
       //  this_gameObject.MinusHp(_damage);
     }
+
+    //실제 데미지를 받고 자신의 체력바를 감소시킴
     public void GetDamage(int _damage)
     {
         hp -= _damage;

@@ -12,7 +12,6 @@ public class Shot : Behaviour
     public void Init(string _link, int _maxCount, float _bulletSpeed, int _damage,TYPE _type ,Object_Id _id)
     {
         GameObject bullet = Resources.Load("Prefabs/" + _link) as GameObject;      
-        bullet.GetComponent<Bullet>().StatSetting();
         bullet.GetComponent<Bullet>().DamageSetting(_damage);
         bullet.GetComponent<Bullet>().SpeedSetting(_bulletSpeed);
         bullet.GetComponent<Bullet>().Resister_ID(_id);
@@ -21,6 +20,7 @@ public class Shot : Behaviour
         muzzleFlash = startPosition.GetComponentInChildren<ParticleSystem>();
     }
 
+    //총알 발사
     public override void Work(TYPE _type)
     {
         var bullet = PrefabSystem.instance.Active_Prefab(_type).GetComponent<Bullet>();           //게임오브젝트가 리턴되므로 이부분 수정해야함 // SetActive(true) 상태로 리턴

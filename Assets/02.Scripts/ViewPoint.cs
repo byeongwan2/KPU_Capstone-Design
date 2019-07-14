@@ -11,6 +11,7 @@ public class ViewPoint : MonoBehaviour
         system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
     }
 
+    //카메라가 실제로 쳐다보는 지점을 계산
     void FixedUpdate()
     {
         Vector3 vec = system.pPlayer2.transform.position;   

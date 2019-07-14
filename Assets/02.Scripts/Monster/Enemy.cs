@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 public enum ENEMY_STATE { IDLE, WALK, RUN ,ATTACK ,RETRACE,ROLL,LOOKAROUND,DIE,RELOAD,ROTATE}
 
+//적군들은 모두 상속받아야 하는 클래스     애니메이션,충돌체, 네비게이션등을 포함함
 public abstract class Enemy : MoveObject
 {
     Vector3 newPosition;

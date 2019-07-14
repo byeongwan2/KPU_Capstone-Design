@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//현재는 안쓰고 있음  장애물밟으면 체력소모
 public class Trap : MonoBehaviour {
     private GameSystem system;
     bool isRun = false;     //작동하는지 달리기아님
