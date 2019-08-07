@@ -1,4 +1,4 @@
-﻿Shader "PolygonR/PBR_Character_Multiply" {
+﻿Shader "PolygonR/SpaceSoldier_Male_HD_PBR" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -61,7 +61,7 @@
 			fixed4 colorMask = tex2D(_ColorMask, RescaledUV);
 			fixed3 FinalMaskedColors = (_MaskedColorA * colorMask.r) + (_MaskedColorB * colorMask.g) + (c.rgb *(_MaskedColorC * colorMask.b));
 
-			c.rgb = lerp(c.rgb, FinalMaskedColors, colorMask.r + colorMask.g +  colorMask.b);
+			c.rgb = lerp(c.rgb, FinalMaskedColors * (c.rgb * 1.5), colorMask.r + colorMask.g +  colorMask.b);
 
 			o.Albedo = c.rgb;
 

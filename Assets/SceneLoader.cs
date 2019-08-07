@@ -19,12 +19,11 @@ public class SceneLoader : MonoBehaviour
         InitSceneInfo();
 
         fadeCg.alpha = 1.0f;
-        Debug.Log('a');
+
         foreach (var _loadScene in loadScenes)
         {
             yield return StartCoroutine(LoadScene(_loadScene.Key, _loadScene.Value));
         }
-        Debug.Log('a');
         StartCoroutine(Fade(0.0f));
     }
 

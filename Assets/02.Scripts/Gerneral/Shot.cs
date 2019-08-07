@@ -23,10 +23,12 @@ public class Shot : Behaviour
     //총알 발사
     public override void Work(TYPE _type)
     {
-        var bullet = PrefabSystem.instance.Active_Prefab(_type).GetComponent<Bullet>();           //게임오브젝트가 리턴되므로 이부분 수정해야함 // SetActive(true) 상태로 리턴
-        bullet.SetLaunchPos(startPosition.transform.position);     //출발하는장소
-        bullet.SetLaunchRot(transform.localRotation);
-        bullet.SetActiveLaunch(_type);
+        var bullet = PrefabSystem.instance.Active_Prefab(_type);           //게임오브젝트가 리턴되므로 이부분 수정해야함 // SetActive(true) 상태로 리턴
+        if (bullet == null) return;
+        var b = bullet.GetComponent<Bullet>();
+        b.SetLaunchPos(startPosition.transform.position);     //출발하는장소
+        b.SetLaunchRot(transform.localRotation);
+        b.SetActiveLaunch(_type);
         muzzleFlash.Play();
         /* foreach (var obj in list)
          {
@@ -42,6 +44,12 @@ public class Shot : Behaviour
 
 
     }
-    
-    
+    //벽에박히는 총알 자국 프리팹 풀
+    public void Init_BulletMetalEffect(string _link, int _maxCount,  TYPE _type )
+    {
+        GameObject effect = Resources.Load("Prefabs/" + _link) as GameObject;
+        PrefabSystem.instance.Create_Prefab(_type, effect, _maxCount);      //오브젝트풀
+    }
+
+
 }

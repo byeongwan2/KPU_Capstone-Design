@@ -39,6 +39,7 @@ public class Bullet : AttackObject {
         CancelInvoke();
     }
     
+    // 총알의 수명종료
     public void LifeOff()
     {
         gameObject.SetActive(false);

@@ -80,6 +80,7 @@ public partial class Player2 : MoveObject
         shot = GetComponent<Shot>();
         shot.Init("PlayerBasicBullet", MAXPLAYERBULLETCOUNT, 20.0f, shotDamage, TYPE.BULLET,Object_Id.PLAYER);
         shot.Init("PlayerAdvanceBullet", MAXPLAYERBULLETCOUNT,0, shotDamage, TYPE.ADVANCEBULLET, Object_Id.PLAYER);
+        shot.Init_BulletMetalEffect("BulletImpactMetalEffect", 50, TYPE.BULLETMETALEFFECT);
         bombThrow = GetComponent<Throw>();
         bombThrow.Init("PlayerBomb", bombCount, 2.0f);
         jump = GetComponent<Jump>();
@@ -139,7 +140,7 @@ public partial class Player2 : MoveObject
 
         
     }
-
+  
 
     Laser laser;
     //공격모드 
@@ -185,7 +186,7 @@ public partial class Player2 : MoveObject
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (isJump || isKey) return;
+            if (isJump || isKey || isAttackMode) return;
             eState = STATE.JUMP;
             ani.SetTrigger("Jump");
             isJump = true;
@@ -363,6 +364,7 @@ public partial class Player2 : MoveObject
         if (isReload) return;
         if (isAttackStop) return;
         if (!isAttackMode) return;
+        Debug.Log(attackCoolTime);
         if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackCoolTime == false)
         {
             if (bulletCount == 0)
@@ -376,6 +378,7 @@ public partial class Player2 : MoveObject
             bulletCount--;
             attackCoolTime = true;
             ani.SetTrigger("Attack");
+            Debug.Log(attackCoolTime);
             if (currWeapon == WeaponType.RIFLE)
                 StartCoroutine(Time_Submachine_Gun());
 

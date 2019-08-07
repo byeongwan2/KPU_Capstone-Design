@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class DecalDestroyer : MonoBehaviour {
 
-	public float lifeTime = 5.0f;
+	public float lifeTime = 4.0f;
 
-	private IEnumerator Start()
+	private void Start()
 	{
-		yield return new WaitForSeconds(lifeTime);
-		Destroy(gameObject);
+        StartCoroutine(Active_Life());
 	}
+
+    IEnumerator Active_Life()
+    {
+        yield return new WaitForSeconds(lifeTime);
+        gameObject.SetActive(false);
+    }
+    private void OnEnable()
+    {
+        StartCoroutine(Active_Life());
+    }
 }

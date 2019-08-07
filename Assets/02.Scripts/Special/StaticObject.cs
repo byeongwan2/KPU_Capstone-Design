@@ -13,17 +13,21 @@ public class StaticObject : MonoBehaviour
             if(other.collider.name.Equals("PlayerBasicBullet(Clone)"))
             {
                 other.gameObject.SetActive(false);
-                ShowEffect(other);
+                ShowEffect_Player(other);
             }
         }
     }
 
     //실제 총알박힌자국을 생성
-    void ShowEffect(Collision coll)
+    void ShowEffect_Player(Collision coll)
     {
         ContactPoint contact = coll.contacts[0];
         Quaternion rot = Quaternion.FromToRotation(-Vector3.forward, contact.normal);
 
-        Instantiate(sparkEffect, contact.point, rot);
+        //Instantiate(sparkEffect, contact.point, rot);
+        var effect = PrefabSystem.instance.Active_Prefab(TYPE.BULLETMETALEFFECT);
+        effect.transform.position = contact.point;
+        effect.transform.rotation = rot;
+
     }
 }

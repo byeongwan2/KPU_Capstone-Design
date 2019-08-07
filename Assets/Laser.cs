@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject startPosition;
     private LineRenderer lr;
     private GameSystem system;
     // Start is called before the first frame update
@@ -24,6 +26,8 @@ public class Laser : MonoBehaviour
 
         float rayDistance;
 
+       
+
         Vector3 point = Vector3.zero;
         if (groundPlane.Raycast(ray, out rayDistance))
         {
@@ -31,13 +35,17 @@ public class Laser : MonoBehaviour
             transform.LookAt(point);
         }
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        if (Physics.Raycast(transform.position, transform.forward, out hit,200.0f, (-1) - (1 << 15)))
         {
             if (hit.collider)
             {
-                lr.SetPosition(1, hit.point);
+                
+                    lr.SetPosition(1, hit.point);
+
             }
         }
-        else lr.SetPosition(1, transform.forward);
+
+
+       
     }
 }
