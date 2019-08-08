@@ -171,31 +171,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.02004734
-        functionName: RollSound
-        data: 
-        objectReferenceParameter: {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.122756414
-        functionName: CantRotate
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.65400845
-        functionName: RollSound
-        data: 
-        objectReferenceParameter: {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296,
-          type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.97211534
-        functionName: EndRoll
+      - time: 1
+        functionName: Event_RollingExit
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

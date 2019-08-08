@@ -15,7 +15,7 @@ public class ChangeShader : MonoBehaviour
     {
         renderer = GetComponent<Renderer>();
         isHit = false;
-        shaderOrigin = "PolygonR/PBR_Character_Multiply";
+        shaderOrigin = "PolygonR/PBR_Character_Overlay";
         shaderOutLine = "N3K/Outline";
         shaderHit = "Unlit/Color";
     }
