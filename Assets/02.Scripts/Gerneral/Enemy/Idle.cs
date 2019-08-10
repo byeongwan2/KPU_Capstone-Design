@@ -10,8 +10,8 @@ public class Idle : MonoBehaviour
         
     }
 
-    void Update()
+    public void Work()
     {
-        
+
     }
 }
