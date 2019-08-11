@@ -46,4 +46,6 @@ public class Alert : MonoBehaviour
     {
         isActive = false;
     }
+
+    
 }

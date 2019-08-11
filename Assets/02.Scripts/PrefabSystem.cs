@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 //게임전체에 한개만 존재하는 스크립트
-public enum TYPE { BOMB, BULLET ,MONSTER  , ADVANCEBULLET,ROBOT,BOMBEFFECT,ENEMYBULLET,BULLETMETALEFFECT,MONSTERHITEFFECT}
+public enum TYPE { BOMB, BULLET ,MONSTER  , ADVANCEBULLET,ROBOT,BOMBEFFECT,ENEMYBULLET,BULLETMETALEFFECT,MONSTERHITEFFECT,BOSSBULLET}
 public class PrefabSystem : MonoBehaviour {                //프리팹시스템에서 모든 오브젝트풀을 관리하니까 나중에 분리할필요가있음
     public static PrefabSystem instance = null;             //제네릭클래스로 바꿔야함
     public List<GameObject> allMonster;

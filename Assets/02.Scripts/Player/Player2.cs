@@ -364,7 +364,6 @@ public partial class Player2 : MoveObject
         if (isReload) return;
         if (isAttackStop) return;
         if (!isAttackMode) return;
-        Debug.Log(attackCoolTime);
         if (Input.GetMouseButton(Define.MOUSE_LEFT_BUTTON) && attackCoolTime == false)
         {
             if (bulletCount == 0)
@@ -378,7 +377,6 @@ public partial class Player2 : MoveObject
             bulletCount--;
             attackCoolTime = true;
             ani.SetTrigger("Attack");
-            Debug.Log(attackCoolTime);
             if (currWeapon == WeaponType.RIFLE)
                 StartCoroutine(Time_Submachine_Gun());
 

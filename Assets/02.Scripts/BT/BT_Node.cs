@@ -94,6 +94,7 @@ public class Leaf_Node: Node
 {
     private Func<RESULT> m_func;
     public Func<RESULT>  Get_m_func() { return m_func; }
+    public Action m_end;
     public Leaf_Node()
     {
         m_func = null;
@@ -102,13 +103,19 @@ public class Leaf_Node: Node
     {
         m_func = _func;
     }
-    
+    public Leaf_Node(Func<RESULT> _func,Action _end)
+    {
+        m_func = _func;
+        m_end = _end;
+    }
+
     public override RESULT Run()
     {
         //Debug.Log(Define.DEBUG_STRING + m_func.Method);
         switch(m_func())
         {
             case RESULT.SUCCESS:
+
                 return RESULT.SUCCESS;
             case RESULT.FAIL:
                 return RESULT.FAIL;
@@ -118,6 +125,7 @@ public class Leaf_Node: Node
                 return RESULT.FAIL;
         }
     }
+
 }
 
 public class Leaf_Node_Float : Node
