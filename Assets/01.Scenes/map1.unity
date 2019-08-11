@@ -70755,10 +70755,20 @@ PrefabInstance:
       propertyPath: magazineText_bomb
       value: 
       objectReference: {fileID: 352610264}
+    - target: {fileID: 6312647613265880668, guid: 75bd682060fb7b94b88bf0790561b510,
+        type: 3}
+      propertyPath: playerSfx.fire.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: f2ee5a75160ea61419e5a6ce5adcfd31, type: 3}
     - target: {fileID: 6312647613265880670, guid: 75bd682060fb7b94b88bf0790561b510,
         type: 3}
       propertyPath: woundSound
       value: 
       objectReference: {fileID: 8300000, guid: b6d51eb6ff42fda49b77f93d79ef8bba, type: 3}
+    - target: {fileID: 6312647613265880665, guid: 75bd682060fb7b94b88bf0790561b510,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75bd682060fb7b94b88bf0790561b510, type: 3}
