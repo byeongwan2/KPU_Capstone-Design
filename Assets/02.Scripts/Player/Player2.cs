@@ -239,10 +239,10 @@ public partial class Player2 : MoveObject
         switch (eState)
         {
             case STATE.RUN:
-                move.Set_MoveSpeed(4.0f);
+                move.Set_MoveSpeed(6.0f);
                 break;
             case STATE.WALK:
-                move.Set_MoveSpeed(2.0f);
+                move.Set_MoveSpeed(3.0f);
                 break;
             case STATE.STAND:
 

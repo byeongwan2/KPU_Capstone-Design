@@ -32,6 +32,8 @@ public class Alien : Enemy
     Rigidbody rb;
     ChangeShader cs;
 
+    AudioSource _audio;
+    public AudioClip dieSound;
     private void Awake()
     {
         base.Init();
@@ -67,6 +69,8 @@ public class Alien : Enemy
         healthSlider.maxValue = 5;
         healthSlider.value = 5;
         vitality = 5;   // 체력
+
+        _audio = GetComponent<AudioSource>();
     }
     
     void Init_Data()
@@ -152,6 +156,7 @@ public class Alien : Enemy
         agent.isStopped = true;
         base.Die();
         //GetComponent<NextEvent>().Create_Monster(chapter);
+        _audio.PlayOneShot(dieSound);
         SendMessage("Create_Monster", SendMessageOptions.DontRequireReceiver);
     }                   
     

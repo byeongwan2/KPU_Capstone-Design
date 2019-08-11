@@ -8,6 +8,8 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
     bool woundEffect = false;
     int hp;
     Slider healthSlider;
+    public AudioClip woundSound;
+    AudioSource _audio;
     void Start()
     {
         this_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -15,6 +17,7 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
         healthSlider = GetComponentInChildren<Slider>();
         healthSlider.maxValue = 100;
         healthSlider.value = 100;
+        _audio = GetComponent<AudioSource>();
     }
     public void Init(int  _hp = 100)
     {
@@ -31,7 +34,6 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
         Wound_Effect();
         _obj.gameObject.SetActive(false);
         GetDamage(10);
-        
     }
 
     public void Wound_Effect()
@@ -74,6 +76,7 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
         hp -= _damage;
         healthSlider.value -= _damage;
         Wound_Effect();
+        _audio.PlayOneShot(woundSound);
     }
 
 

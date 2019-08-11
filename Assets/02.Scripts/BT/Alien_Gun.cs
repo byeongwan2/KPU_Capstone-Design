@@ -22,6 +22,9 @@ public class Alien_Gun : Enemy
     public Transform hitPos;
 
     int bulletCount = 15;
+
+    AudioSource _audio;
+    public AudioClip dieSound;
     private void Awake()
     {
         base.Init();
@@ -51,6 +54,8 @@ public class Alien_Gun : Enemy
         animator.SetTrigger("isRun");
         eEnemy_State = ENEMY_STATE.RUN;
         Build_BT();
+
+        _audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -208,6 +213,8 @@ public class Alien_Gun : Enemy
         isOther_State_Change = true;
         agent.isStopped = true;
         base.Die();
+
+        _audio.PlayOneShot(dieSound);
     }
 
     private void OnTriggerEnter(Collider other)
