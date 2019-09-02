@@ -12,10 +12,6 @@ public class Particle : Behaviour
         m_particleSystem = particleGroup.GetComponent<ParticleSystem>();
     }
 
-    public override void Work(TYPE _type)
-    {
-        
-    }
 
     public void Activate(Vector3 _vec)
     {
@@ -24,6 +20,10 @@ public class Particle : Behaviour
         m_particleSystem.transform.position = Check.Insert_Position_XZ(_vec, 0.2f);
         m_particleSystem.Play();
     }
-   
+    
+    public override void End()
+    {
+
+    }
 
 }

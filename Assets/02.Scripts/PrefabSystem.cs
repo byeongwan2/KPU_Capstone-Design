@@ -38,6 +38,8 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
     private List<GameObject> bombEffectPool = new List<GameObject>();
     private List<GameObject> bulletMetalEffectPool = new List<GameObject>();
     private List<GameObject> monsterhitEffectPool = new List<GameObject>();     //현재는 사용안하는중
+
+    private List<GameObject> bossBulletPool = new List<GameObject>();
     //이 함수가 불리는시점에 켜져있는 플레이어 1번총알을 리스트에 담아서 반환
     public List<GameObject> Get_BulletPool()
     {
@@ -61,6 +63,7 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
         else if (_type == TYPE.ENEMYBULLET) Select_PoolType(enemyBulletPool, _gameObject, _count);
         else if (_type == TYPE.BULLETMETALEFFECT) Select_PoolType(bulletMetalEffectPool, _gameObject, _count);
         else if (_type == TYPE.MONSTERHITEFFECT) Select_PoolType(monsterhitEffectPool, _gameObject, _count);
+        else if (_type == TYPE.BOSSBULLET) Select_PoolType(bossBulletPool, _gameObject, _count);
     }
    
     //오브젝트가 필요할떄마다 이 함수가 한개씩 켜줌
@@ -73,6 +76,7 @@ public class PrefabSystem : MonoBehaviour {                //프리팹시스템�
         else if (_type == TYPE.ENEMYBULLET) return Choice_Pool(enemyBulletPool);
         else if (_type == TYPE.BULLETMETALEFFECT) return Choice_Pool(bulletMetalEffectPool);
         else if (_type == TYPE.MONSTERHITEFFECT) return Choice_Pool(monsterhitEffectPool);
+        else if (_type == TYPE.BOSSBULLET) return Choice_Pool(bossBulletPool);
         return null;
     }
     //실제 해당오브젝트에서 한개씩 켜주고 반환

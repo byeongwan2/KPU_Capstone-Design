@@ -40,10 +40,10 @@ public class Move : Behaviour {
         Horizontal = 0.0f;
         moveSpeed = 0.0f;
     }
-
-    public override void Work(TYPE _type)
+    
+    public override void End()
     {
-       
+
     }
 
 

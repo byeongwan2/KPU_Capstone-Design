@@ -51,6 +51,13 @@ public class Bullet : AttackObject {
     {
         mType = _type;
         transform.position = launchPos;
+        if (_type == TYPE.BOSSBULLET)
+        {
+            Invoke("Attack_BossBullet", 3.0f);        //2초뒤 총알삭제
+            return;
+        }
+
+        
         if (_type == TYPE.ENEMYBULLET)
         {
             SetActiveLaunch_Enemy();
@@ -112,13 +119,31 @@ public class Bullet : AttackObject {
     {
         get{ return damage; }
     }
+    bool isFall_Bullet = false; //보스총알은 위에서 아래로 떨어진다
     //1번총알이 작동하는 방법
     void FixedUpdate()
     {
-        if (gameObject.activeSelf == false) return;
-   
-        transform.localPosition += transform.forward * speed * Time.deltaTime;
-        
+        if ( mType == TYPE.BULLET  )
+        {
+            transform.localPosition += transform.forward * speed * Time.deltaTime;
+        }
+        //보스총알
+        if(mType == TYPE.BOSSBULLET && isFall_Bullet == false)
+        {
+            transform.localPosition += transform.up * 1.5f * Time.deltaTime;
+        }
+        else if(mType == TYPE.BOSSBULLET && isFall_Bullet == true)
+        {
+            transform.localPosition += transform.forward * 2.0f * Time.deltaTime;
+        }
+    }
+
+    public void Attack_BossBullet()
+    {
+        transform.LookAt(PrefabSystem.instance.player.transform.position);
+        isFall_Bullet = true;
+        //Invoke("LifeOff");
+
     }
 
     //이 총알의 데미지를 설정     이 총알을 쓰는 주체가 호출
@@ -131,5 +156,17 @@ public class Bullet : AttackObject {
     public void SpeedSetting(float _speed )
     {
         speed = _speed;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (mType != TYPE.BOSSBULLET) return;   //일단 보스의 총알만 사용하는 함수   //그전엔 어떻게처리했는지 기억이잘안남
+
+        if (other.gameObject.layer == 11)
+        {
+            isFall_Bullet = false;
+            LifeOff();
+        }
+
     }
 }

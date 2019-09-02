@@ -36,5 +36,8 @@ public class Throw : Behaviour
         bombPower = _bombPower;
     }
 
-   
+    public override void End()
+    {
+     
+    }
 }

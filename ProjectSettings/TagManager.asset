@@ -7,6 +7,7 @@ TagManager:
   - Shootable
   - Enemy
   - Bullet
+  - StaticObject
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Lighting
   - Ground
   - Postprocessing
-  - 
+  - StaticObject
   - 
   - 
   - 

@@ -35,11 +35,10 @@ public class Alien_Gun : Enemy
         // 자식 오브젝트의 ChangeMaterial 컴포넌트를 가지고 온다
         cs = GetComponentInChildren<ChangeShader>();
 
-        PrefabSystem.instance.allMonster.Add(gameObject);
         attack = GetComponent<Attack>();
         trace = GetComponent<Trace>();
-        trace.Init_Target(system.pPlayer2);
-        attack.Init_Target(system.pPlayer2);
+        trace.Init_Target(PrefabSystem.instance.player);
+        attack.Init_Target(PrefabSystem.instance.player);
         trace.Setting(agent, 1.0f);
         attack.Setting(agent, 5);
 

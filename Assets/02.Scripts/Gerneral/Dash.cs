@@ -11,7 +11,7 @@ public class Dash : Behaviour {
         transform.position += transform.forward * _speed * Time.deltaTime;
     }
 
-    public override void Work(TYPE _type)
+    public override void End()
     {
        
     }

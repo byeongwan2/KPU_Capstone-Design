@@ -4,5 +4,11 @@ using UnityEngine;
 
 public abstract class Behaviour : MonoBehaviour
 {
-    public abstract void Work(TYPE _type);
+
+    public virtual void Work(TYPE _type)
+    {
+
+    }
+    public abstract void End();
+    
 }

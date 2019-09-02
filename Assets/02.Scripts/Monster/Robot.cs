@@ -32,13 +32,13 @@ public class Robot : Enemy {
 
         rb = GetComponent<Rigidbody>();
         attack = GetComponent<Attack>();
-        attack.Init_Target(system.pPlayer2);
+        attack.Init_Target(PrefabSystem.instance.player);
         attack.Setting(agent, 5);
 
 
 
         trace = GetComponent<Trace>();
-        trace.Init_Target(system.pPlayer2);
+        trace.Init_Target(PrefabSystem.instance.player);
         trace.Setting(agent, 1.0f);
         traceCoverage = 6.0f;
         eEnemy_State = ENEMY_STATE.WALK;

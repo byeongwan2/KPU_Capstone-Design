@@ -92,7 +92,7 @@ public partial class Monster : Enemy
 
     IEnumerator CheckPlayerDistance()
     {
-        float distance = Check.Distance(system.pPlayer2.transform, this.transform);
+        float distance = Check.Distance(PrefabSystem.instance.player.transform, this.transform);
         if(distance < 10.0f && distance >= 5.0f )
         {
             TracePlayer();
@@ -135,8 +135,8 @@ public partial class Monster : Enemy
     {
         if (eEnemy_State == ENEMY_STATE.RUN || eEnemy_State == ENEMY_STATE.ATTACK)
         {
-            float dx = system.pPlayer2.transform.position.x - transform.position.x;
-            float dz = system.pPlayer2.transform.position.z - transform.position.z;
+            float dx = PrefabSystem.instance.player.transform.position.x - transform.position.x;
+            float dz = PrefabSystem.instance.player.transform.position.z - transform.position.z;
 
             float rotateDegree = Mathf.Atan2(dx, dz) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, rotateDegree, 0.0f), Time.deltaTime * 5.0f);

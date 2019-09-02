@@ -46,13 +46,13 @@ public class Alien : Enemy
         // 자식 오브젝트의 ChangeMaterial 컴포넌트를 가지고 온다
         cs = GetComponentInChildren<ChangeShader>();
 
-        PrefabSystem.instance.allMonster.Add(gameObject);
+
         wander = GetComponent<Wander>();
         attack = GetComponent<Attack>();
         trace = GetComponent<Trace>();
         roll = GetComponent<Roll>();
-        trace.Init_Target(system.pPlayer2);
-        attack.Init_Target(system.pPlayer2);
+        trace.Init_Target(PrefabSystem.instance.player);
+        attack.Init_Target(PrefabSystem.instance.player);
 
 
         wander.Setting(agent,0.25f);      //배회할때 걷는 속도
@@ -168,6 +168,7 @@ public class Alien : Enemy
         activing_Func = "Attack";
         animator.SetTrigger("isAttack");
         eEnemy_State = ENEMY_STATE.ATTACK;
+
         isOther_State_Change = true;                //다른 상태로 바꿀수 없다
         isMust_Trace = false;                       //반드시 추적하는 기능을 해제한다.
         return RESULT.SUCCESS;

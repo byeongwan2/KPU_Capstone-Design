@@ -30,27 +30,22 @@ public class SceneLoader : MonoBehaviour
     IEnumerator LoadScene(string sceneName , LoadSceneMode mode)
     {
         yield return SceneManager.LoadSceneAsync(sceneName, mode);
-        Debug.Log('a');
         Scene loadedScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
         SceneManager.SetActiveScene(loadedScene);
-        Debug.Log('a');
     }
     IEnumerator Fade(float finalAlpha)
     {
         //SceneManager.SetActiveScene(SceneManager.GetSceneByName("map2"));
 
-        Debug.Log('a');
         fadeCg.blocksRaycasts = true;
 
         float fadeSpeed = Mathf.Abs(fadeCg.alpha - finalAlpha) / fadeDuration;
 
         while(!Mathf.Approximately(fadeCg.alpha, finalAlpha))
         {
-            Debug.Log('b');
             fadeCg.alpha = Mathf.MoveTowards(fadeCg.alpha, finalAlpha, fadeSpeed * Time.deltaTime);
             yield return null;
         }
-        Debug.Log('c');
         fadeCg.blocksRaycasts = false;
 
         SceneManager.UnloadSceneAsync("SceneLoader");

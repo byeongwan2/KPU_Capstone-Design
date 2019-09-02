@@ -49,7 +49,7 @@ public class Jump : Behaviour {
         isJumping = true;
     }
 
-    public override void Work(TYPE _type)
+    public override void End()
     {
 
     }

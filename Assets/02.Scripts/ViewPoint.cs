@@ -14,8 +14,8 @@ public class ViewPoint : MonoBehaviour
     //카메라가 실제로 쳐다보는 지점을 계산
     void FixedUpdate()
     {
-        Vector3 vec = system.pPlayer2.transform.position;   
-        if (system.pPlayer2.GetIsAttackMode())
+        Vector3 vec = PrefabSystem.instance.player.transform.position;   
+        if (PrefabSystem.instance.player.GetIsAttackMode())
         {
 
 
@@ -33,13 +33,13 @@ public class ViewPoint : MonoBehaviour
                 {
                     sq.x = sq.x + vec2.x;
                 }
-                if (sq.x > system.pPlayer2.transform.position.x + 3.0f)
+                if (sq.x > PrefabSystem.instance.player.transform.position.x + 3.0f)
                 {
-                    sq.x = system.pPlayer2.transform.position.x + 3.0f;
+                    sq.x = PrefabSystem.instance.player.transform.position.x + 3.0f;
                 }
-                else if (sq.x < system.pPlayer2.transform.position.x - 3.0f)
+                else if (sq.x < PrefabSystem.instance.player.transform.position.x - 3.0f)
                 {
-                    sq.x = system.pPlayer2.transform.position.x - 3.0f;
+                    sq.x = PrefabSystem.instance.player.transform.position.x - 3.0f;
                 }
             }
             if (Mathf.Abs(vec2.z - vec.z) > 1.5f)
@@ -55,13 +55,13 @@ public class ViewPoint : MonoBehaviour
                 {
                     sq.z = sq.z + vec2.z;
                 }
-                if (sq.z > system.pPlayer2.transform.position.z + 2.0f)
+                if (sq.z > PrefabSystem.instance.player.transform.position.z + 2.0f)
                 {
-                    sq.z = system.pPlayer2.transform.position.z + 2.0f;
+                    sq.z = PrefabSystem.instance.player.transform.position.z + 2.0f;
                 }
-                else if (sq.z < system.pPlayer2.transform.position.z -2.0f)
+                else if (sq.z < PrefabSystem.instance.player.transform.position.z -2.0f)
                 {
-                    sq.z = system.pPlayer2.transform.position.z - 2.0f;
+                    sq.z = PrefabSystem.instance.player.transform.position.z - 2.0f;
                 }
             }
             float x = Mathf.Lerp(transform.position.x, sq.x, Time.deltaTime * 1.5f);
@@ -72,8 +72,8 @@ public class ViewPoint : MonoBehaviour
         }
         else
         {
-            float x = Mathf.Lerp(transform.position.x, system.pPlayer2.transform.position.x, Time.deltaTime * 1.5f);
-            float z = Mathf.Lerp(transform.position.z, system.pPlayer2.transform.position.z, Time.deltaTime * 1.5f);
+            float x = Mathf.Lerp(transform.position.x, PrefabSystem.instance.player.transform.position.x, Time.deltaTime * 1.5f);
+            float z = Mathf.Lerp(transform.position.z, PrefabSystem.instance.player.transform.position.z, Time.deltaTime * 1.5f);
             vec.x = x;
             vec.z = z;
             transform.position = vec;

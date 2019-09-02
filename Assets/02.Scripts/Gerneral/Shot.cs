@@ -29,7 +29,8 @@ public class Shot : Behaviour
         b.SetLaunchPos(startPosition.transform.position);     //출발하는장소
         b.SetLaunchRot(transform.localRotation);
         b.SetActiveLaunch(_type);
-        muzzleFlash.Play();
+        if(muzzleFlash !=null)      //임시
+            muzzleFlash.Play();
         /* foreach (var obj in list)
          {
              if (obj.gameObject.activeSelf == false)
@@ -51,5 +52,8 @@ public class Shot : Behaviour
         PrefabSystem.instance.Create_Prefab(_type, effect, _maxCount);      //오브젝트풀
     }
 
-
+    public override void End()
+    {
+       
+    }
 }

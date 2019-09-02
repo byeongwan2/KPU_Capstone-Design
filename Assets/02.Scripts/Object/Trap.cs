@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 //현재는 안쓰고 있음  장애물밟으면 체력소모
 public class Trap : MonoBehaviour {
-    private GameSystem system;
     bool isRun = false;     //작동하는지 달리기아님
     void Start()
     {
         isRun = false;
-        system = GameObject.Find("GameSystem").GetComponent<GameSystem>();
     }
 	void OnTriggerStay(Collider _col)
     {
         if (isRun) return;
         if (_col.gameObject.tag.Equals("Player"))
         {
-            if (system.pPlayer2.IsJumpHit() == true) return;
+            if (PrefabSystem.instance.player.IsJumpHit() == true) return;
             isRun = true;
-           // system.pPlayer2.MinusHp(10);
-            system.pPlayer2.Wound_Effect();
+            // system.pPlayer2.MinusHp(10);
+            PrefabSystem.instance.player.Wound_Effect();
             StartCoroutine(CoolTime());
         }
     }
