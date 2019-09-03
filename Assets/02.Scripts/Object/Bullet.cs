@@ -134,7 +134,7 @@ public class Bullet : AttackObject {
         }
         else if(mType == TYPE.BOSSBULLET && isFall_Bullet == true)
         {
-            transform.localPosition += transform.forward * 2.0f * Time.deltaTime;
+            transform.localPosition += transform.forward * 5.0f * Time.deltaTime;
         }
     }
 
@@ -164,6 +164,9 @@ public class Bullet : AttackObject {
 
         if (other.gameObject.layer == 11)
         {
+            
+            EffectManager.Instance.Exercise_Effect(transform.position, 0.0f);
+            
             isFall_Bullet = false;
             LifeOff();
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 //적군만 가지고 있는 컴포넌트
-public class Trace : MonoBehaviour
+public class Trace : Behaviour
 {
     NavMeshAgent agent;
     MoveObject target;
@@ -51,7 +51,11 @@ public class Trace : MonoBehaviour
         return false;
     }
 
+    public override void End()
+    {
 
-    
+    }
+
+
 
 }

@@ -7,11 +7,12 @@ public class Robot2 : Enemy
     BehaviorTree bt;
     // Start is called before the first frame update
     Idle idle;
-    Shot shot;
+    Attack attack;
     Trace trace;
     string activing_Func = string.Empty;
     Behaviour haviour;
 
+    Laser laser;
 
     [SerializeField]
     bool isOther_State_Change = false;
@@ -21,12 +22,18 @@ public class Robot2 : Enemy
         base.Init();
 
         idle = GetComponent<Idle>();
-        shot = GetComponent<Shot>();
+        attack = GetComponent<Attack>();
+        attack.Setting(agent, 10);
+        attack.Init_Target(PrefabSystem.instance.player);
         trace = GetComponent<Trace>();
         trace.Init_Target(PrefabSystem.instance.player);
         trace.Setting(agent, 1.0f);
         haviour = idle;
         eEnemy_State = ENEMY_STATE.IDLE;
+
+        laser = GetComponentInChildren<Laser>();
+        laser.gameObject.SetActive(false);
+
         Build_BT();
     }
 
@@ -49,6 +56,14 @@ public class Robot2 : Enemy
         Leaf_Node trace_Condition_Node = new Leaf_Node(Trace_Codition);
         Leaf_Node trace_Node = new Leaf_Node(Trace);
 
+        Sequence attack_Sequence = new Sequence();
+        Leaf_Node attack_Condition_Node = new Leaf_Node(Attack_Condition);
+        Leaf_Node attack_Node = new Leaf_Node(Attack);
+
+        attack_Sequence.AddChild(attack_Condition_Node);
+        attack_Sequence.AddChild(attack_Node);
+        behaviour.AddChild(attack_Sequence);
+
         trace_Sequence.AddChild(trace_Condition_Node);          //추적가능한 거리에있는지
         trace_Sequence.AddChild(trace_Node);           //추적시퀸스 실행
         behaviour.AddChild(trace_Sequence);
@@ -64,6 +79,11 @@ public class Robot2 : Enemy
         return RESULT.FAIL;
     }
 
+    RESULT Attack_Condition()
+    {
+        if (trace.Condition(4.0f)) return RESULT.SUCCESS;
+        return RESULT.FAIL;
+    }
 
     RESULT Idle()
     {
@@ -82,6 +102,8 @@ public class Robot2 : Enemy
     {
         if (eEnemy_State == ENEMY_STATE.RUN) trace.Work();
         if (activing_Func.Equals("Trace")) return RESULT.RUNNING;
+        haviour.End();
+        haviour = trace;
         trace.Init();
         activing_Func = "Trace";
         animator.SetTrigger("Trace");
@@ -93,6 +115,32 @@ public class Robot2 : Enemy
     RESULT Change()
     {
          if (activing_Func.Equals("Change")) return RESULT.RUNNING;
+        haviour.End();
+        activing_Func = "Change";
+        animator.SetTrigger("FormChangeToRoller");
+        eEnemy_State = ENEMY_STATE.CHAGNE;
+        isOther_State_Change = true;
         return RESULT.SUCCESS;
+    }
+    RESULT Attack()
+    {
+        if (activing_Func.Equals("Attack")) return RESULT.RUNNING;
+        haviour.End();
+        haviour = attack;
+        attack.Init();
+        attack.Work();
+        laser.gameObject.SetActive(true);
+        activing_Func = "Attack";
+        animator.SetTrigger("Attack");
+        eEnemy_State = ENEMY_STATE.ATTACK;
+
+        isOther_State_Change = true;                //다른 상태로 바꿀수 없다
+        return RESULT.SUCCESS;
+    }
+    void Exit_Attack()          //장전,공격이 끝나면 이함수 호출
+    {
+        agent.isStopped = false;
+        activing_Func = string.Empty;
+        isOther_State_Change = false;
     }
 }

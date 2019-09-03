@@ -40,6 +40,7 @@ public class Alert : Behaviour
     }
     void FixedUpdate()
     {
+        //고개회전
         if (isActive == false) return;
         timeRotate += Time.deltaTime;
         if (timeRotate < 0.5f)
