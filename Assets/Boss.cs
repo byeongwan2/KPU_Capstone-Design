@@ -23,6 +23,8 @@ public class Boss : MoveObject
     [SerializeField]
     bool isOther_State_Change = false;
 
+    [SerializeField]
+    public GameObject shotSecondPosition ;
 
     public void OffOther_State_Change() { isOther_State_Change = false; }
     void Start()

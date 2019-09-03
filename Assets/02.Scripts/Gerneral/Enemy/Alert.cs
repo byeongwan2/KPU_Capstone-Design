@@ -77,7 +77,7 @@ public class Alert : Behaviour
     {
         isActive = true;
         timeSpan += Time.deltaTime;  // 경과 시간을 계속 등록
-        if (timeSpan > 2.5f)  // 경과 시간이 특정 시간이 보다 커졋을 경우
+        if (timeSpan > 1.5f)  // 경과 시간이 특정 시간이 보다 커졋을 경우
         {
             timeSpan = 0.0f;
             IsShotDelay = true;

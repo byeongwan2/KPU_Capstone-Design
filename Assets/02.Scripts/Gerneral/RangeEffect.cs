@@ -7,7 +7,6 @@ public class RangeEffect : MonoBehaviour
 {
     Transform parentTr;
     public LineRenderer m_line;
-    public LineRenderer test;
     public void Init()
     {
         m_line = GetComponent<LineRenderer>();
@@ -47,15 +46,11 @@ public class RangeEffect : MonoBehaviour
         
         transform.rotation = Quaternion.Euler(new Vector3(90.0f, 0, 0));
     }
-    void OffRangeLook()
-    {
-        m_line.enabled = false;
-    }
 
     public void RangeLookExit()
     {
         transform.rotation = Quaternion.Euler(Vector3.zero);
-        OffRangeLook();
+        m_line.enabled = false;
     }
 
     public void RangeLook(float _dangerTime)

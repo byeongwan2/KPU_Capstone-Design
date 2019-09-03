@@ -29,10 +29,6 @@ public class Bomb : AttackObject {
     }
 	
         
-	void FixedUpdate () {                           //폭탄 그자체가 날라가는 코드를 기입하면댐
-        //if(gameObject.activeSelf == false) return;          
-        // this_rigidbody.AddForce(Vector3.up, ForceMode.Impulse);
-    }
 
     //폭탄이 던져질떄 날라가는 코드
     public void SetActiveLaunch()

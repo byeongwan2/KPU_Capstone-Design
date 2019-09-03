@@ -51,13 +51,21 @@ public class Bullet : AttackObject {
     {
         mType = _type;
         transform.position = launchPos;
+       
         if (_type == TYPE.BOSSBULLET)
         {
-            Invoke("Attack_BossBullet", 3.0f);        //2초뒤 총알삭제
+            var v = GameObject.Find("Boss").GetComponent<Boss>().shotSecondPosition.transform.position;
+            transform.LookAt(v);
+            Invoke("Attack_BossBullet", 3.0f);        //3초뒤 총알삭제
+            return;
+        }
+        if (_type == TYPE.ROBOTBEAM)
+        {
+            SetActiveLaunch_Enemy();
+            Invoke("DestroyBeam", 1.5f);
             return;
         }
 
-        
         if (_type == TYPE.ENEMYBULLET)
         {
             SetActiveLaunch_Enemy();
@@ -75,6 +83,8 @@ public class Bullet : AttackObject {
             point = ray.GetPoint(rayDistance);
             transform.LookAt(point);
         }
+        
+
         if (_type == TYPE.BULLET)
         {
             Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
@@ -91,7 +101,10 @@ public class Bullet : AttackObject {
         }
         
     }
-
+    void DestroyBeam()
+    {
+        Destroy(gameObject);
+    }
     //적군이 쏘는 총알이 발사될때
     void SetActiveLaunch_Enemy( )
     {
@@ -123,7 +136,7 @@ public class Bullet : AttackObject {
     //1번총알이 작동하는 방법
     void FixedUpdate()
     {
-        if ( mType == TYPE.BULLET  || mType == TYPE.ENEMYBULLET)
+        if ( mType == TYPE.BULLET  || mType == TYPE.ENEMYBULLET || mType == TYPE.ROBOTBEAM)
         {
             transform.localPosition += transform.forward * speed * Time.deltaTime;
         }
@@ -136,14 +149,28 @@ public class Bullet : AttackObject {
         {
             transform.localPosition += transform.forward * 5.0f * Time.deltaTime;
         }
+        
     }
-
+    [SerializeField]
+    RangeEffect rangeEffect = null;
     public void Attack_BossBullet()
     {
         transform.LookAt(PrefabSystem.instance.player.transform.position);
         isFall_Bullet = true;
         //Invoke("LifeOff");
-
+        rangeEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Range")).GetComponent<RangeEffect>();
+        rangeEffect.Init();
+        RaycastHit hit;
+        int layerMask = 1 << LayerMask.NameToLayer("StaticObject");
+        if (Physics.Raycast(transform.position, transform.forward,out hit,15.0f, layerMask))
+        {
+            rangeEffect.transform.position = hit.point;
+            Vector3 v =  rangeEffect.transform.position;
+            v.y += 0.5f;
+            rangeEffect.transform.position = v;
+            rangeEffect.RangeLook(0.0f);
+        }
+      
     }
 
     //이 총알의 데미지를 설정     이 총알을 쓰는 주체가 호출
@@ -164,11 +191,15 @@ public class Bullet : AttackObject {
 
         if (other.gameObject.layer == 11)
         {
-            
+            Destroy(rangeEffect.gameObject);
             EffectManager.Instance.Exercise_Effect(transform.position, 0.0f);
-            
             isFall_Bullet = false;
+            if (2.6f > Check.Distance(transform.position, PrefabSystem.instance.player.transform.position))
+            {
+                PrefabSystem.instance.player.GetComponent<Wound>().GetDamage(10);
+            }
             LifeOff();
+
         }
 
     }

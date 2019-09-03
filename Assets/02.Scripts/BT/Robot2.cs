@@ -12,8 +12,7 @@ public class Robot2 : Enemy
     string activing_Func = string.Empty;
     Behaviour haviour;
 
-    Laser laser;
-
+    Bullet beam;
     [SerializeField]
     bool isOther_State_Change = false;
     void Start()
@@ -31,9 +30,8 @@ public class Robot2 : Enemy
         haviour = idle;
         eEnemy_State = ENEMY_STATE.IDLE;
 
-        laser = GetComponentInChildren<Laser>();
-        laser.gameObject.SetActive(false);
-
+        beam = GameObject.Find("Beam").GetComponent<Bullet>();
+        beam.enabled = false;
         Build_BT();
     }
 
@@ -129,7 +127,18 @@ public class Robot2 : Enemy
         haviour = attack;
         attack.Init();
         attack.Work();
-        laser.gameObject.SetActive(true);
+
+
+        var v = Instantiate(beam.gameObject).GetComponent<Bullet>();
+        v.enabled = true;
+        Vector3 vec = transform.position;
+        vec.y += 1.5f;
+        v.SetLaunchPos(vec);
+        v.SetActiveLaunch(TYPE.ROBOTBEAM);
+        Vector3 vv = PrefabSystem.instance.player.transform.position;
+        vv.y += 1.5f;
+        v.gameObject.transform.LookAt(vv);
+
         activing_Func = "Attack";
         animator.SetTrigger("Attack");
         eEnemy_State = ENEMY_STATE.ATTACK;
@@ -137,6 +146,8 @@ public class Robot2 : Enemy
         isOther_State_Change = true;                //다른 상태로 바꿀수 없다
         return RESULT.SUCCESS;
     }
+
+   
     void Exit_Attack()          //장전,공격이 끝나면 이함수 호출
     {
         agent.isStopped = false;
