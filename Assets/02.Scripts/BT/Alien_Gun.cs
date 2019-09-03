@@ -27,11 +27,11 @@ public class Alien_Gun : Enemy
     public AudioClip dieSound;
     private void Awake()
     {
-        base.Init();
-       
+      
     }
     void Start()
     {
+        base.Init();
         // 자식 오브젝트의 ChangeMaterial 컴포넌트를 가지고 온다
         cs = GetComponentInChildren<ChangeShader>();
 

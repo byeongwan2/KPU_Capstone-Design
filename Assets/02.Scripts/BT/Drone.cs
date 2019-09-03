@@ -61,7 +61,7 @@ public class Drone : Enemy
     private void OnTriggerEnter(Collider other)
     {
         if (vitality <= 0) return;
-        if (other.CompareTag("Bullet"))
+        if (other.CompareTag("EnemyBullet"))
         {
             vitality--;                         
             other.gameObject.SetActive(false);

@@ -8,7 +8,7 @@ public class StaticObject : MonoBehaviour
     //플레이어 총알이 벽에 박히면 총알이 박힌 자국을 만듬
     private void OnCollisionEnter(Collision other)
     {
-        if (other.collider.CompareTag("Bullet"))
+        if (other.collider.CompareTag("Bullet") || other.collider.CompareTag("EnemyBullet"))
         {
             if(other.collider.name.Equals("PlayerBasicBullet(Clone)"))
             {

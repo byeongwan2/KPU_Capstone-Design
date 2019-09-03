@@ -22,7 +22,6 @@ public abstract class Enemy : MoveObject
     }
     protected void Init()        //하위에서 호출해야함       //그리고 웬만하면 모든 멤버변수를 여기서 초기화해야함
     {
-        PrefabSystem.instance.allMonster.Add(gameObject);
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = false;

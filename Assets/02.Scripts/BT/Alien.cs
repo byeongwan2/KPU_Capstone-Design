@@ -36,13 +36,14 @@ public class Alien : Enemy
     public AudioClip dieSound;
     private void Awake()
     {
-        base.Init();
+     
         
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        base.Init();
         // 자식 오브젝트의 ChangeMaterial 컴포넌트를 가지고 온다
         cs = GetComponentInChildren<ChangeShader>();
 

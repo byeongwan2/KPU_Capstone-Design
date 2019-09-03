@@ -123,14 +123,14 @@ public class Bullet : AttackObject {
     //1번총알이 작동하는 방법
     void FixedUpdate()
     {
-        if ( mType == TYPE.BULLET  )
+        if ( mType == TYPE.BULLET  || mType == TYPE.ENEMYBULLET)
         {
             transform.localPosition += transform.forward * speed * Time.deltaTime;
         }
         //보스총알
         if(mType == TYPE.BOSSBULLET && isFall_Bullet == false)
         {
-            transform.localPosition += transform.up * 1.5f * Time.deltaTime;
+            transform.localPosition += transform.forward * 1.5f * Time.deltaTime;
         }
         else if(mType == TYPE.BOSSBULLET && isFall_Bullet == true)
         {

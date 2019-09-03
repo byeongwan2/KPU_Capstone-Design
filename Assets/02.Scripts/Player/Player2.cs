@@ -430,7 +430,7 @@ public partial class Player2 : MoveObject
     //적군이 총알을 쏘면 플레이어 체력이 닳음  체력관리는 wound
     void OnTriggerEnter(Collider _obj)
     {
-        if (_obj.CompareTag("Bullet"))
+        if (_obj.CompareTag("EnemyBullet"))
         {
             if (_obj.GetComponent<Bullet>().Get_ID() == Object_Id.PLAYER) return;
             wound.TriggerEnter(_obj);

@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Bullet
   - StaticObject
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
