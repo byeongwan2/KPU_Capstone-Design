@@ -41,9 +41,9 @@ public class Alien_Gun : Enemy
         attack.Init_Target(PrefabSystem.instance.player);
         trace.Setting(agent, 1.0f);
         attack.Setting(agent, 5);
-
+        
         shot = GetComponent<Shot>();
-        shot.Init("EnemyBullet", 30, 10, 2, TYPE.ENEMYBULLET,Object_Id.MONSTER);
+        shot.Init("EnemyBullet", 30, 4, 2, TYPE.ENEMYBULLET,Object_Id.MONSTER);
 
         rb = GetComponent<Rigidbody>();
         healthSlider = GetComponentInChildren<Slider>();
@@ -185,13 +185,13 @@ public class Alien_Gun : Enemy
 
     public RESULT Distance_Attack_Condition()
     {
-        if (trace.Condition(4.0f)) return RESULT.SUCCESS;
+        if (trace.Condition(8.0f)) return RESULT.SUCCESS;
         return RESULT.FAIL;
     }
 
     public RESULT Distance_Walk_Condition()
     {
-        if (trace.Condition(5.5f)) return RESULT.SUCCESS;
+        if (trace.Condition(10.5f)) return RESULT.SUCCESS;
         return RESULT.FAIL;
     }
     

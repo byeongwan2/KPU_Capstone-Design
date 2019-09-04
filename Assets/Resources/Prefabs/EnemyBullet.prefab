@@ -16,20 +16,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &834597700
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3078860760824721983}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.060050666
-  m_Height: 0.3099091
-  m_Direction: 1
-  m_Center: {x: -0.0018722415, y: 0.16906571, z: 0}
 --- !u!96 &709423427986896025
 TrailRenderer:
   serializedVersion: 2
@@ -158,6 +144,20 @@ MonoBehaviour:
   fire_ObjectId: 0
   speed: 10
   damage: 2
+  rangeEffect: {fileID: 0}
+--- !u!65 &3874086676928209701
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3078860760824721983}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1486839, y: 0.14604783, z: 0.47043133}
+  m_Center: {x: -0.0016562343, y: -0.00033813715, z: 0.22175646}
 --- !u!1001 &3078705181544763661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -244,6 +244,18 @@ PrefabInstance:
     - target: {fileID: 4000011902009838, guid: 7af6b07676c52b94ba63b3fa7ff7d0fd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011902009838, guid: 7af6b07676c52b94ba63b3fa7ff7d0fd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011902009838, guid: 7af6b07676c52b94ba63b3fa7ff7d0fd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011902009838, guid: 7af6b07676c52b94ba63b3fa7ff7d0fd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000011977604540, guid: 7af6b07676c52b94ba63b3fa7ff7d0fd, type: 3}
       propertyPath: m_LocalScale.y

@@ -69,7 +69,7 @@ public class Bullet : AttackObject {
         if (_type == TYPE.ENEMYBULLET)
         {
             SetActiveLaunch_Enemy();
-            Invoke("LifeOff", 2.0f);        //2초뒤 총알삭제
+            Invoke("LifeOff", 5.0f);        //2초뒤 총알삭제
             return;
         }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
