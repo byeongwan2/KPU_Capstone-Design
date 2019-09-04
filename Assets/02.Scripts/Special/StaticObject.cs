@@ -15,6 +15,14 @@ public class StaticObject : MonoBehaviour
                 other.gameObject.SetActive(false);
                 ShowEffect_Player(other);
             }
+            other.gameObject.SetActive(false);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if ( other.CompareTag("EnemyBullet"))
+        {
+            other.gameObject.SetActive(false);
         }
     }
 
