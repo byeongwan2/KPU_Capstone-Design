@@ -30,7 +30,7 @@ public class Boss : MoveObject
     void Start()
     {
 
-        vitality = 100;
+        vitality = 25;
 
         //attack = GetComponent<Attack>();
         walk = GetComponent<Walk>();    //보스의 경우 walk는 사실상 trace에서 네비게이션을 뺸것

@@ -25,7 +25,7 @@ public class CompositeNode : Node
         childrens.Enqueue(node);
     }
 
-    public Queue<Node> GetChildrens()  
+    public Queue<Node> GetChildrens()
     {
         return childrens;
     }
@@ -125,7 +125,6 @@ public class Leaf_Node: Node
                 return RESULT.FAIL;
         }
     }
-
 }
 
 public class Leaf_Node_Float : Node

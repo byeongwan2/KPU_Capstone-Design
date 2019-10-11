@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: be3d93a7df7bc14429ef03621deeb542
+ScriptedImporter:
+  fileIDToRecycleName:
+    11400002: Assets/My ML Agent/Brains/test0824_ver0.3.nn
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 83221ad3db87f4b3b91b041047cb2bc5, type: 3}
