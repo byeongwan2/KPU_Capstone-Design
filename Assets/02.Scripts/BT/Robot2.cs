@@ -13,6 +13,9 @@ public class Robot2 : Enemy
     Behaviour haviour;
 
     Bullet beam;
+
+    ChangeShader cs;
+
     [SerializeField]
     bool isOther_State_Change = false;
 
@@ -37,6 +40,7 @@ public class Robot2 : Enemy
         Build_BT();
 
         rb = GetComponent<Rigidbody>();
+        cs = GetComponentInChildren<ChangeShader>();
     }
 
     // Update is called once per frame
@@ -166,7 +170,9 @@ public class Robot2 : Enemy
         {
             vitality--;
             other.gameObject.SetActive(false);
-
+            cs.SetIsHit(true);
+            cs.SetHit();
+            Invoke("ChangeOriginShader", 0.05f);
 
             if (vitality <= 0)
             {
@@ -183,5 +189,12 @@ public class Robot2 : Enemy
             }
         }
 
+    }
+
+    // invoke에 사용하려고 만듦
+    void ChangeOriginShader()
+    {
+        cs.SetIsHit(false);
+        cs.SetOrigin();
     }
 }

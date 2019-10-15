@@ -9,7 +9,7 @@ public class CheckMonster : MonoBehaviour
     [SerializeField]    // 디버깅을 위해서
     public GameObject target;
     private ChangeShader cs;
-    // Start is called before the first frame update
+    
     void Start()
     {
         cs = null;

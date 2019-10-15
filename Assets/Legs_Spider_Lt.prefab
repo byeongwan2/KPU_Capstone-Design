@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 6829341224108340072}
   m_Layer: 0
   m_Name: Legs_Spider_Lt
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -186,9 +186,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6829341224101371018}
   - component: {fileID: 6829341224104185256}
+  - component: {fileID: 3426001383717256721}
   m_Layer: 0
   m_Name: Legs_Spider_Lt_Geom
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -280,6 +281,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000047683716, y: 0.9040242, z: -0.28136975}
     m_Extent: {x: 2.299762, y: 1.104, z: 2.2810717}
   m_DirtyAABB: 0
+--- !u!114 &3426001383717256721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6829341224101068970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fa930cb0649a0747a7765bc2c782db4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6829341224101068972
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +304,7 @@ GameObject:
   - component: {fileID: 6829341224101371020}
   m_Layer: 0
   m_Name: ROOT
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1268,6 +1281,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c247f4754f5b779409e3dc67bf84273e, type: 3}
+--- !u!4 &6829341223739144373 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: c247f4754f5b779409e3dc67bf84273e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6829341223738745397}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6829341223739144371 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400006, guid: c247f4754f5b779409e3dc67bf84273e,
@@ -1283,12 +1302,6 @@ Transform:
 --- !u!4 &6829341223739144383 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400010, guid: c247f4754f5b779409e3dc67bf84273e,
-    type: 3}
-  m_PrefabInstance: {fileID: 6829341223738745397}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6829341223739144373 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400000, guid: c247f4754f5b779409e3dc67bf84273e,
     type: 3}
   m_PrefabInstance: {fileID: 6829341223738745397}
   m_PrefabAsset: {fileID: 0}

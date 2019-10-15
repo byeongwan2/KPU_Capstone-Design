@@ -10,12 +10,14 @@ public class ChangeShader : MonoBehaviour
     string shaderOutLine;   // 외곽선 쉐이더
     string shaderHit;       // 피격 쉐이더
     bool isHit;
-
+    
     void Start()
-    {
+    {        
         renderer = GetComponent<Renderer>();
+        
         isHit = false;
-        shaderOrigin = "PolygonR/PBR_Character_Overlay";
+        //shaderOrigin = "PolygonR/PBR_Character_Overlay";
+        shaderOrigin = renderer.material.shader.name;
         shaderOutLine = "N3K/Outline";
         shaderHit = "Unlit/Color";
     }
