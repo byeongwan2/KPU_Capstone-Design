@@ -61,14 +61,12 @@ public class Wound : MonoBehaviour {            //상처를 입는 사물이라�
         }
     }
 
+    //피격이펙트 종료
     void WoundEffectExit()
     {
         woundEffect = false;
     }
-    public void ExplosionDamage(int _damage)
-    {
-      //  this_gameObject.MinusHp(_damage);
-    }
+ 
 
     //실제 데미지를 받고 자신의 체력바를 감소시킴
     public void GetDamage(int _damage)

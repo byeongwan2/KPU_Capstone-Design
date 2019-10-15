@@ -70979,6 +70979,16 @@ PrefabInstance:
       propertyPath: woundSound
       value: 
       objectReference: {fileID: 8300000, guid: b6d51eb6ff42fda49b77f93d79ef8bba, type: 3}
+    - target: {fileID: 6312647613265880669, guid: 75bd682060fb7b94b88bf0790561b510,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6232299417698517723, guid: 75bd682060fb7b94b88bf0790561b510,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6312647613265880665, guid: 75bd682060fb7b94b88bf0790561b510,
         type: 3}
       propertyPath: m_audioClip

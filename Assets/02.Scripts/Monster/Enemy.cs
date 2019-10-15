@@ -40,6 +40,7 @@ public abstract class Enemy : MoveObject
         col.enabled = false;
         agent.radius = 0;
         agent.height = 0;
+        agent.isStopped = true;
     }
 
    

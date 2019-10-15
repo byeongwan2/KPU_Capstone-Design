@@ -15,11 +15,13 @@ public class Robot2 : Enemy
     Bullet beam;
     [SerializeField]
     bool isOther_State_Change = false;
+
+    Rigidbody rb;
     void Start()
     {
 
         base.Init();
-
+        vitality = 15;   // 체력
         idle = GetComponent<Idle>();
         attack = GetComponent<Attack>();
         attack.Setting(agent, 10);
@@ -33,6 +35,8 @@ public class Robot2 : Enemy
         beam = GameObject.Find("Beam").GetComponent<Bullet>();
         beam.enabled = false;
         Build_BT();
+
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -153,5 +157,31 @@ public class Robot2 : Enemy
         agent.isStopped = false;
         activing_Func = string.Empty;
         isOther_State_Change = false;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (vitality <= 0) return;
+        if (other.gameObject.CompareTag("Bullet"))
+        {
+            vitality--;
+            other.gameObject.SetActive(false);
+
+
+            if (vitality <= 0)
+            {
+                Die();
+                haviour.End();
+                animator.SetTrigger("Death");
+                rb.isKinematic = true;
+
+                var col = GetComponent<SphereCollider>();
+                col.enabled = false;
+                isOther_State_Change = true;
+
+                
+            }
+        }
+
     }
 }
