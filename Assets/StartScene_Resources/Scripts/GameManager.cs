@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
    public void NewGameBtn()
    {        
         SceneManager.LoadScene("map1");
-        loadManager.SetStageLevel();
+        loadManager.SetStageLevel(1);
         loadManager.Save();
         
    }

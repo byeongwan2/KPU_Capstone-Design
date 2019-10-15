@@ -21,18 +21,18 @@ public class LoadManager : MonoBehaviour
     }
 
     void Start()
-    {
-        Load();           
+    {    
+            Load();
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.F5))
+    {        
+        if (Input.GetKeyDown(KeyCode.F9))   // 저장 초기화
         {
-            Save();
+            stageLevel = 0;
         }
-        if (Input.GetKeyDown(KeyCode.F9))
+        if (Input.GetKeyDown(KeyCode.F8))   // 스테이지 UP
         {
             stageLevel++;
         }
@@ -71,8 +71,8 @@ public class LoadManager : MonoBehaviour
         return stageLevel;
     }
 
-    public void SetStageLevel()
+    public void SetStageLevel(int level)
     {
-        stageLevel++;
+        stageLevel = level;
     }
 }

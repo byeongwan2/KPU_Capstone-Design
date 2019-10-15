@@ -6,6 +6,7 @@ public class StageManager2 : MonoBehaviour
 {
     Stage1 stage1;
     public static StageManager2 instance = null;
+    private LoadManager loadManager;
 
     void Awake()
     {
@@ -16,6 +17,7 @@ public class StageManager2 : MonoBehaviour
     void Start()
     {
         stage1 = GameObject.Find("Stage1").GetComponent<Stage1>();
+        loadManager = GameObject.Find("LoadManager").GetComponent<LoadManager>();
 
     }
 
@@ -33,6 +35,11 @@ public class StageManager2 : MonoBehaviour
 
     public void Start_Stage2()
     {
+        // 세이브
+        loadManager.SetStageLevel(2);
+        loadManager.Save();
+
+
         Debug.Log("2스테이지");
         SceneManager.LoadScene("SceneLoader");
     }
