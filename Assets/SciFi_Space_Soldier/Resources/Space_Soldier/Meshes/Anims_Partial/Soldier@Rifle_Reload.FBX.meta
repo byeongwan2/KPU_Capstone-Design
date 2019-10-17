@@ -182,7 +182,7 @@ ModelImporter:
       curves: []
       events:
       - time: 1
-        functionName: Exit_Attack
+        functionName: Event_ReloadExit
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
