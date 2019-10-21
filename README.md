@@ -4,7 +4,7 @@
 
 - Unity 2018.3.12f1  
 - 탑다운 슈팅 게임(PC)  
-- 2인 개발(김병완 전승구)  
+- 2인 개발([김병완](https://github.com/KimSatGat) [전승구](https://github.com/junseougku))  
 - 개발 언어: C#  
 - 개발 기간: 2019.01 ~ 2019.09
 
