@@ -18,7 +18,7 @@
 
 ## ML-Agents
 - Apply to Drone Object's AI
-- Training Contents: If Drone Object detect Enemy Missile Tag, Destroy Enemy Missile.
+- Training Contents: If Drone Object detect Enemy Missile Tag, Destroy Enemy's Missile.
 <img width="607" src=https://user-images.githubusercontent.com/37358180/67198037-0ecadd80-f439-11e9-8bd5-640f012f8c8c.gif>
 
 
