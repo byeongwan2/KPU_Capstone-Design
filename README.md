@@ -2,9 +2,9 @@
 <img width="1896" src=https://user-images.githubusercontent.com/37358180/67192798-2f8e3580-f42f-11e9-9718-c32e43210114.PNG>
 
 
-- Unity 2018.3.12f1
 - TopDown View SF Genre Shooting Game(PC)
-- Two Client Developer([Kim Byeong Wan](https://github.com/KimSatGat), [Jeon Seoug Gu](https://github.com/junseougku))
+- Version: Unity 2018.3.12f1
+- Developer: [Kim Byeong Wan](https://github.com/KimSatGat), [Jeon Seoug Gu](https://github.com/junseougku)
 - Development Language: C#
 - Development Period: 2019.01 ~ 2019.09
 ## Application Technology
